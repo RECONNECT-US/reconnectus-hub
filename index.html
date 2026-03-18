@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ReConnect-Us Support Hub</title>
+  <style>
+    :root {
+      --teal: #0f9d94;
+      --blue: #1f6fb2;
+      --blue-dark: #174f7f;
+      --orange: #f28c28;
+      --text: #1f2933;
+      --muted: #5f6b76;
+      --card: #ffffff;
+      --shadow: 0 10px 30px rgba(16,34,53,0.12);
+      --radius: 22px;
+      --max: 1100px;
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #eef7f8 0%, #f7fbfd 45%, #eef4f9 100%);
+      color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(calc(100% - 28px), var(--max)); margin: 0 auto; }
+    .hero { padding: 28px 0 16px; }
+    .hero-box {
+      background: linear-gradient(135deg, rgba(15,157,148,0.96), rgba(31,111,178,0.96));
+      color: #fff; border-radius: 28px; padding: 26px; box-shadow: var(--shadow);
+    }
+    .brand-row { display: flex; gap: 16px; align-items: center; }
+    .brand-mark {
+      width: 78px; height: 78px; border-radius: 22px; background: #fff; color: var(--blue);
+      display: grid; place-items: center; font-size: 28px; font-weight: 800;
+      flex-shrink: 0;
+    }
+    .brand-copy h1 { margin: 0; font-size: clamp(1.8rem, 2.4vw, 2.7rem); }
+    .brand-copy p { margin: 8px 0 0; line-height: 1.55; max-width: 700px; color: rgba(255,255,255,0.95); }
+    .hero-actions { margin-top: 18px; }
+    .btn {
+      border: 0; border-radius: 999px; padding: 13px 18px; font-size: 0.96rem; font-weight: 700;
+      cursor: pointer; display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn-primary { background: #fff; color: var(--blue-dark); }
+    .panel {
+      background: var(--card); border-radius: var(--radius); padding: 20px; box-shadow: var(--shadow);
+      border: 1px solid rgba(31,111,178,0.08);
+    }
+    .top-grid { display: grid; grid-template-columns: 1fr; gap: 18px; margin: 18px auto 12px; }
+    .section-title { margin: 30px auto 14px; }
+    .section-title h2 { margin: 0; color: var(--blue-dark); }
+    .section-title p { margin: 6px 0 0; color: var(--muted); }
+    .cards { display: grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; margin-bottom: 8px; }
+    .card {
+      background: #fff; border-radius: 24px; padding: 20px; box-shadow: var(--shadow);
+      border: 1px solid rgba(31,111,178,0.08); display: flex; flex-direction: column; gap: 12px;
+    }
+    .icon {
+      width: 56px; height: 56px; border-radius: 18px; display: grid; place-items: center; font-size: 1.4rem;
+      background: linear-gradient(135deg, rgba(242,140,40,0.18), rgba(15,157,148,0.14)); color: #cf6e0a;
+    }
+    .card h3 { margin: 0; color: var(--blue-dark); }
+    .card p { margin: 0; color: var(--muted); line-height: 1.6; flex: 1; }
+    .card-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+    .link-btn, .ghost-btn {
+      border-radius: 14px; padding: 12px 14px; font-weight: 700; cursor: pointer; border: 0;
+    }
+    .link-btn {
+      flex: 1; min-width: 140px; display: inline-flex; justify-content: center; align-items: center;
+      background: linear-gradient(135deg, var(--teal), var(--blue)); color: #fff;
+    }
+    .ghost-btn { border: 1px solid rgba(31,111,178,0.16); background: #fff; color: var(--blue-dark); }
+    .footer {
+      margin: 34px auto 24px; padding: 24px; border-radius: 24px;
+      background: linear-gradient(135deg, #173b58, #205b85); color: #fff; box-shadow: var(--shadow); text-align: center;
+    }
+    .toast {
+      position: fixed; left: 50%; bottom: 22px; transform: translateX(-50%) translateY(20px);
+      background: #173b58; color: #fff; padding: 12px 16px; border-radius: 999px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.16); opacity: 0; pointer-events: none;
+      transition: opacity 0.22s ease, transform 0.22s ease; z-index: 30; font-size: 0.94rem;
+    }
+    .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+    .modal {
+      position: fixed; inset: 0; background: rgba(0,0,0,0.6); display: none; align-items: center;
+      justify-content: center; z-index: 1000; padding: 18px;
+    }
+    .modal.show { display: flex; }
+    .modal-box {
+      background: #fff; padding: 20px; border-radius: 20px; max-width: 760px; width: 100%;
+      max-height: 88vh; overflow-y: auto; box-shadow: 0 18px 45px rgba(0,0,0,0.22);
+    }
+    .modal-box h3 { margin-top: 0; color: var(--blue-dark); }
+    .modal-box p { color: var(--muted); line-height: 1.6; }
+    .item-row {
+      display: grid; grid-template-columns: 1fr auto; gap: 10px; margin: 12px 0; align-items: center;
+    }
+    .item-link {
+      display: flex; align-items: center; gap: 10px; padding: 14px; border-radius: 14px;
+      color: #fff; font-weight: 700;
+    }
+    .item-meta { font-size: 0.88rem; color: var(--muted); text-align: right; }
+    @media (max-width: 920px) { .cards { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <div class="wrap hero">
+    <div class="hero-box">
+      <div class="brand-row">
+        <div class="brand-mark">RU</div>
+        <div class="brand-copy">
+          <h1>ReConnect-Us</h1>
+          <p>Helping you connect through technology, confidence, and practical support.</p>
+        </div>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="#links">Open support links</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="wrap top-grid">
+    <section class="panel">
+      <h2>Welcome to the ReConnect-Us support hub</h2>
+      <p>This cloud-save version keeps the same front screen while letting each section own its own sort of thing.</p>
+    </section>
+  </div>
+
+  <div class="wrap section-title" id="links">
+    <div>
+      <h2>Support links</h2>
+      <p>Choose a section to open.</p>
+    </div>
+  </div>
+
+  <main class="wrap cards" id="cards"></main>
+
+  <footer class="wrap footer">© ReConnect-Us. All rights reserved.</footer>
+  <div class="toast" id="toast"></div>
+
+  <div class="modal" id="menuModal" aria-hidden="true">
+    <div class="modal-box">
+      <h3 id="modalTitle"></h3>
+      <p id="modalDescription"></p>
+      <div id="modalItems"></div>
+      <div style="margin-top:16px; display:flex; justify-content:flex-end;">
+        <button class="ghost-btn" id="closeModalBtn" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const HUB_CONFIG = {
+      cards: [
+        { icon: '🎮', title: 'ReConnect-Us Games', text: 'Open interactive learning games.', button: 'Open category', categoryKey: 'games' },
+        { icon: '💻', title: 'Digital Skills Support', text: 'Open a clean category menu for digital support services.', button: 'Open category', categoryKey: 'digitalSkills' },
+        { icon: '📘', title: 'English and ESOL Learning', text: 'Open English learning resources and activities.', button: 'Open category', categoryKey: 'english' },
+        { icon: '📝', title: 'Forms and Referrals', text: 'Open forms and referrals.', button: 'Open category', categoryKey: 'formsFolder' },
+        { icon: '🤝', title: 'Volunteer With Us', text: 'Open volunteer information and links.', button: 'Open category', categoryKey: 'volunteer' },
+        { icon: '📂', title: 'Guides and Resources', text: 'Open guides and learning resources.', button: 'Open category', categoryKey: 'resources' },
+        { icon: 'ℹ️', title: 'ReConnect-Us Information Page', text: 'Open the main information page.', button: 'Open page', url: './reconnectus-information/' },
+        { icon: '📩', title: 'Contact ReConnect-Us', text: 'Open contact options.', button: 'Open category', categoryKey: 'contact' }
+      ],
+      categories: {
+        digitalSkills: {
+          title: 'Digital Skills Support',
+          description: 'Choose the area of support you need.',
+          items: [
+            { name: 'Device Help', url: '#', icon: '📱', color: '#0f9d94' },
+            { name: 'Email Help', url: '#', icon: '✉️', color: '#1f6fb2' },
+            { name: 'NHS App Support', url: '#', icon: '🏥', color: '#2b7a78' },
+            { name: 'Citizens Advice App Support', url: '#', icon: '💬', color: '#0f9d94' },
+            { name: 'GOV.UK App Support', url: '#', icon: '🏛️', color: '#1f6fb2' }
+          ]
+        },
+        english: {
+          title: 'English and ESOL Learning',
+          description: 'Choose an English or ESOL area to open.',
+          items: [
+            { name: 'Beginner English', url: '#', icon: '📗', color: '#1f6fb2' },
+            { name: 'English Quiz', url: '#', icon: '❓', color: '#0f9d94' },
+            { name: 'Speaking Practice', url: '#', icon: '🗣️', color: '#f28c28' }
+          ]
+        },
+        formsFolder: {
+          title: 'Forms and Referrals',
+          description: 'Select a form below.',
+          items: [
+            { name: 'Referral Form', url: '#', icon: '📝', color: '#0f9d94' },
+            { name: 'Learner Sign-Up', url: '#', icon: '📘', color: '#1f6fb2' },
+            { name: 'Volunteer Application', url: '#', icon: '🤝', color: '#f28c28' }
+          ]
+        },
+        volunteer: {
+          title: 'Volunteer With Us',
+          description: 'Open volunteer forms and information.',
+          items: [
+            { name: 'Volunteer Role Information', url: '#', icon: '📄', color: '#1f6fb2' },
+            { name: 'Volunteer Application Form', url: '#', icon: '🤝', color: '#f28c28' },
+            { name: 'Volunteer Training Guide', url: '#', icon: '🎓', color: '#0f9d94' }
+          ]
+        },
+        resources: {
+          title: 'Guides and Resources',
+          description: 'Choose a guide or resource to open.',
+          items: [
+            { name: 'PDF Guides', url: '#', icon: '📄', color: '#1f6fb2' },
+            { name: 'Posters', url: '#', icon: '🖼️', color: '#f28c28' },
+            { name: 'Worksheets', url: '#', icon: '🗂️', color: '#0f9d94' }
+          ]
+        },
+        contact: {
+          title: 'Contact ReConnect-Us',
+          description: 'Choose how you want to get in touch.',
+          items: [
+            { name: 'Email ReConnect-Us', url: 'mailto:reconnectus@outlook.com?subject=ReConnect-Us%20Enquiry', icon: '📩', color: '#1f6fb2' },
+            { name: 'Call ReConnect-Us', url: 'tel:07518286672', icon: '📞', color: '#0f9d94' }
+          ]
+        },
+        games: {
+          title: 'ReConnect-Us Games',
+          description: 'Choose a game to play.',
+          items: [
+            { name: 'ReConnect-Us Ball Game', url: '#', icon: '🏀', color: '#f28c28' },
+            { name: 'ReConnect-Us Word Search Game', url: '#', icon: '🔤', color: '#1f6fb2' }
+          ]
+        }
+      }
+    };
+
+    const cardsEl = document.getElementById('cards');
+    const toastEl = document.getElementById('toast');
+    const menuModal = document.getElementById('menuModal');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalDescription = document.getElementById('modalDescription');
+    const modalItems = document.getElementById('modalItems');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+
+    function showToast(message) {
+      toastEl.textContent = message;
+      toastEl.classList.add('show');
+      clearTimeout(showToast._timer);
+      showToast._timer = setTimeout(() => toastEl.classList.remove('show'), 1800);
+    }
+
+    function copyText(value, successText = 'Copied') {
+      navigator.clipboard.writeText(value)
+        .then(() => showToast(successText))
+        .catch(() => showToast('Copy failed'));
+    }
+
+    function openCategoryMenu(categoryKey) {
+      const category = HUB_CONFIG.categories[categoryKey];
+      if (!category) return;
+      modalTitle.textContent = category.title;
+      modalDescription.textContent = category.description;
+      modalItems.innerHTML = '';
+
+      category.items.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'item-row';
+
+        const btn = document.createElement('a');
+        btn.className = 'item-link';
+        btn.href = item.url || '#';
+        btn.style.background = item.color || '#0f9d94';
+        if (item.url && item.url.startsWith('http')) {
+          btn.target = '_blank';
+          btn.rel = 'noopener noreferrer';
+        }
+        btn.innerHTML = `<span style="font-size:1.15rem;">${item.icon || '📝'}</span><span>${item.name}</span>`;
+
+        const meta = document.createElement('button');
+        meta.type = 'button';
+        meta.className = 'ghost-btn';
+        meta.textContent = 'Copy link';
+        meta.onclick = () => copyText(item.url || '#', `${item.name} link copied`);
+
+        row.appendChild(btn);
+        row.appendChild(meta);
+        modalItems.appendChild(row);
+      });
+
+      menuModal.classList.add('show');
+      menuModal.setAttribute('aria-hidden', 'false');
+    }
+
+    function closeModal() {
+      menuModal.classList.remove('show');
+      menuModal.setAttribute('aria-hidden', 'true');
+    }
+
+    closeModalBtn.addEventListener('click', closeModal);
+    menuModal.addEventListener('click', (e) => {
+      if (e.target === menuModal) closeModal();
+    });
+
+    function renderCards() {
+      cardsEl.innerHTML = '';
+      HUB_CONFIG.cards.forEach((card) => {
+        const article = document.createElement('article');
+        article.className = 'card';
+        article.innerHTML = `
+          <div class="icon">${card.icon}</div>
+          <h3>${card.title}</h3>
+          <p>${card.text}</p>
+          <div class="card-actions">
+            <a class="link-btn" href="${card.url || '#'}">${card.button}</a>
+            <button class="ghost-btn" type="button">Copy link</button>
+          </div>`;
+
+        const mainBtn = article.querySelector('.link-btn');
+        const copyBtn = article.querySelector('.ghost-btn');
+
+        if (card.categoryKey) {
+          mainBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            openCategoryMenu(card.categoryKey);
+          });
+          copyBtn.addEventListener('click', () => showToast('Open the category to use individual links'));
+        } else if (card.url) {
+          if (card.url.startsWith('http') || card.url.startsWith('./') || card.url.startsWith('../')) {
+            mainBtn.target = '_blank';
+            mainBtn.rel = 'noopener noreferrer';
+          }
+          copyBtn.addEventListener('click', () => copyText(card.url, `${card.title} link copied`));
+        }
+
+        cardsEl.appendChild(article);
+      });
+    }
+
+    renderCards();
+  </script>
+</body>
+</html>
