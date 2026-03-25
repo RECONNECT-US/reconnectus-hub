@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Friendly Help with Digital Technology</title>
+  <style>
+    :root{
+      --blue:#0f67b5;
+      --deep:#123f76;
+      --teal:#17b7c9;
+      --orange:#ee8a1b;
+      --light:#f5f5f7;
+      --panel:#f1f2f5;
+      --text:#17385f;
+      --muted:#3d516a;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      background:#ebe8ee;
+      font-family: Arial, Helvetica, sans-serif;
+      color:var(--text);
+      display:flex;
+      justify-content:center;
+      padding:28px 12px;
+    }
+    .poster{
+      width:100%;
+      max-width:900px;
+      background:white;
+      box-shadow:0 12px 30px rgba(0,0,0,.12);
+      overflow:hidden;
+      border-radius:2px;
+    }
+    .top{
+      position:relative;
+      background:linear-gradient(180deg,#0c72c4 0%, #0c67b2 45%, #0b5aa0 100%);
+      color:#fff;
+      text-align:center;
+      padding:24px 20px 46px;
+    }
+    .top:after{
+      content:"";
+      position:absolute;
+      left:-5%; right:-5%; bottom:-28px;
+      height:62px;
+      background:white;
+      border-top:6px solid rgba(255,255,255,.85);
+      border-radius:0 0 50% 50% / 0 0 100% 100%;
+    }
+    .top:before{
+      content:"";
+      position:absolute;
+      left:-5%; right:-5%; bottom:-22px;
+      height:58px;
+      border-top:8px solid var(--teal);
+      border-radius:0 0 50% 50% / 0 0 100% 100%;
+      z-index:2;
+      opacity:.9;
+    }
+    h1{
+      margin:0;
+      font-size:70px;
+      letter-spacing:1px;
+      line-height:1;
+      font-weight:900;
+      text-shadow:0 3px 7px rgba(0,0,0,.28);
+    }
+    .subtitle{
+      position:relative;
+      z-index:3;
+      font-size:28px;
+      font-weight:700;
+      margin-top:18px;
+      text-shadow:0 2px 4px rgba(0,0,0,.25);
+    }
+    .main{
+      padding:48px 44px 28px;
+    }
+    .question{
+      text-align:center;
+      font-weight:800;
+      font-size:32px;
+      margin:0 0 28px;
+      color:#123a6d;
+    }
+    .lead{
+      text-align:center;
+      font-size:27px;
+      line-height:1.45;
+      font-weight:800;
+      color:#143a6c;
+      margin:0;
+    }
+    .lead .orange{color:var(--orange); font-style:italic;}
+    .sublead{
+      text-align:center;
+      font-size:24px;
+      font-style:italic;
+      color:#3a4f69;
+      margin:22px 0 10px;
+    }
+    .rule{height:2px; background:#e5e6ea; margin:16px 0 8px;}
+    .section-title{
+      display:flex;
+      align-items:center;
+      gap:18px;
+      justify-content:center;
+      font-size:34px;
+      font-weight:900;
+      color:var(--orange);
+      margin:10px 0 16px;
+    }
+    .section-title.teal-title{color:#1c8fa1; font-size:28px; margin-top:20px;}
+    .section-title:before,.section-title:after{
+      content:"";
+      flex:1 1 140px;
+      max-width:230px;
+      height:4px;
+      background:linear-gradient(90deg,#ffffff 0%, #0f7fa6 100%);
+      border-radius:99px;
+    }
+    .section-title:after{background:linear-gradient(90deg,#0f7fa6 0%, #ffffff 100%)}
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:16px;
+      margin-top:8px;
+    }
+    .card{
+      background:linear-gradient(180deg,#f4f4f7 0%, #efeff3 100%);
+      border-radius:10px;
+      padding:14px 18px;
+      display:grid;
+      grid-template-columns:92px 1fr;
+      gap:14px;
+      align-items:center;
+      min-height:104px;
+    }
+    .card h3{
+      margin:0 0 4px;
+      font-size:27px;
+      line-height:1.1;
+      font-weight:900;
+    }
+    .card h3.orange{color:var(--orange)}
+    .card h3.blue{color:#114a87}
+    .card ul{
+      margin:0;
+      padding-left:0;
+      list-style:none;
+      font-size:18px;
+      font-style:italic;
+      line-height:1.5;
+      color:#344862;
+      font-weight:600;
+    }
+    .card li::before{content:"- ";}
+    .icon svg{width:92px; height:78px; display:block}
+    .support-box{
+      max-width:540px;
+      margin:8px auto 10px;
+      background:linear-gradient(180deg,#f4f4f7 0%, #efeff3 100%);
+      border-radius:10px;
+      padding:16px 30px;
+      color:#2f425b;
+      font-size:22px;
+      font-style:italic;
+      line-height:1.7;
+      font-weight:600;
+    }
+    .support-box ul{margin:0; padding-left:28px}
+    .bottom-copy{
+      text-align:center;
+      padding:18px 0 8px;
+      color:#113f75;
+    }
+    .bottom-copy .big{
+      font-size:32px;
+      font-weight:900;
+      margin-bottom:8px;
+    }
+    .bottom-copy .small{
+      font-size:20px;
+      font-style:italic;
+      font-weight:600;
+      color:#36495f;
+    }
+    .footer{
+      position:relative;
+      margin-top:14px;
+      background:linear-gradient(180deg,#0f6fbe 0%, #0e5ca8 100%);
+      color:white;
+      text-align:center;
+      padding:28px 20px 20px;
+    }
+    .footer:before{
+      content:"";
+      position:absolute;
+      left:-5%; right:-5%; top:-30px;
+      height:64px;
+      background:white;
+      border-bottom:6px solid rgba(255,255,255,.9);
+      border-radius:50% 50% 0 0 / 100% 100% 0 0;
+    }
+    .footer:after{
+      content:"";
+      position:absolute;
+      left:-5%; right:-5%; top:-22px;
+      height:58px;
+      border-bottom:8px solid var(--teal);
+      border-top:6px solid var(--orange);
+      border-radius:50% 50% 0 0 / 100% 100% 0 0;
+      opacity:.95;
+    }
+    .email{
+      position:relative;
+      z-index:2;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      gap:14px;
+      font-size:28px;
+      font-weight:800;
+      letter-spacing:.2px;
+      padding-top:16px;
+    }
+    .copyright{
+      text-align:center;
+      color:#2e2e2e;
+      font-size:14px;
+      font-weight:700;
+      padding:10px 10px 16px;
+    }
+    @media (max-width: 760px){
+      h1{font-size:44px}
+      .subtitle{font-size:18px}
+      .main{padding:42px 18px 18px}
+      .question{font-size:22px}
+      .lead{font-size:17px}
+      .sublead{font-size:14px}
+      .section-title{font-size:22px; gap:10px}
+      .section-title.teal-title{font-size:20px}
+      .grid{grid-template-columns:1fr}
+      .card{grid-template-columns:76px 1fr; min-height:unset}
+      .card h3{font-size:18px}
+      .card ul{font-size:14px}
+      .support-box{font-size:16px; padding:14px 18px}
+      .bottom-copy .big{font-size:22px}
+      .bottom-copy .small{font-size:15px}
+      .email{font-size:20px}
+    }
+  </style>
+</head>
+<body>
+  <div class="poster">
+    <div class="top">
+      <h1>RECONNECT-US</h1>
+      <div class="subtitle">Friendly Help with Digital Technology</div>
+    </div>
+
+    <div class="main">
+      <div class="question">Do you need help using technology?</div>
+
+      <p class="lead">
+        RECONNECT-US offers <span class="orange">free friendly support</span> to help you <strong>feel confident online</strong>.
+      </p>
+      <div class="sublead">Learn at your own pace – No experience needed.</div>
+      <div class="rule"></div>
+
+      <div class="section-title">We Can Help With:</div>
+
+      <div class="grid">
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="10" width="52" height="78" rx="8" fill="#143f75"/>
+              <rect x="24" y="16" width="40" height="60" fill="#17a8d8"/>
+              <polygon points="25,74 63,32 63,74" fill="#3ad0ff" opacity=".25"/>
+              <circle cx="44" cy="81" r="3.4" fill="#fff"/>
+              <rect x="46" y="35" width="34" height="28" rx="4" fill="#fff" stroke="#3a6b8d" stroke-width="2"/>
+              <path d="M52 63 l-6 8 h8" fill="#fff" stroke="#3a6b8d" stroke-width="2"/>
+              <rect x="52" y="40" width="22" height="16" fill="#dff3fb"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="orange">Smartphones</h3>
+            <ul>
+              <li>Sending messages</li>
+              <li>Apps &amp; settings</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="18" y="18" width="66" height="42" rx="4" fill="#143f75"/>
+              <rect x="24" y="24" width="54" height="30" fill="#15a4d3"/>
+              <polygon points="24,53 73,24 78,24 78,53" fill="#3ad0ff" opacity=".28"/>
+              <path d="M10 72h82l-8 10H18z" fill="#143f75"/>
+              <rect x="38" y="64" width="24" height="6" fill="#8aa3b8"/>
+              <path d="M20 76h62" stroke="#95a5b5" stroke-width="3"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="blue">Laptops &amp; Computers</h3>
+            <ul>
+              <li>Internet &amp; email</li>
+              <li>Documents &amp; files</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+              <rect x="8" y="16" width="56" height="56" rx="5" fill="#163f75"/>
+              <rect x="15" y="23" width="42" height="42" fill="#18add8"/>
+              <polygon points="15,64 55,23 57,23 57,64" fill="#3ad0ff" opacity=".25"/>
+              <rect x="42" y="38" width="28" height="48" rx="5" fill="#173f75"/>
+              <rect x="47" y="43" width="18" height="31" fill="#f6a11a"/>
+              <rect x="53" y="76" width="6" height="3" rx="1" fill="#fff"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="orange">Tablets &amp; iPads</h3>
+            <ul>
+              <li>Using apps</li>
+              <li>Video calls</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="42" cy="45" r="26" fill="#64d0d2" stroke="#173f75" stroke-width="3"/>
+              <ellipse cx="42" cy="45" rx="13" ry="26" fill="none" stroke="#173f75" stroke-width="2"/>
+              <path d="M16 45h52M20 32h44M20 58h44" stroke="#173f75" stroke-width="2" fill="none"/>
+              <circle cx="18" cy="76" r="12" fill="#f28d1d"/>
+              <text x="18" y="80" font-size="18" text-anchor="middle" fill="#fff" font-weight="700">?</text>
+              <rect x="50" y="44" width="38" height="24" rx="3" fill="#147bb9"/>
+              <text x="69" y="60" font-size="12" text-anchor="middle" fill="#fff" font-weight="900">NHS</text>
+              <rect x="48" y="68" width="28" height="18" rx="2" fill="#fff" stroke="#3b6b8d" stroke-width="2"/>
+              <path d="M54 74h16M54 79h12" stroke="#3b6b8d" stroke-width="2"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="blue">Online Services &amp; Apps</h3>
+            <ul>
+              <li>NHS &amp; Gov Services</li>
+              <li>Online Forms</li>
+              <li>Banking &amp; Job Search</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 18l30-8 30 8v20c0 22-16 38-30 46-14-8-30-24-30-46z" fill="#ffcc1b" stroke="#144074" stroke-width="5"/>
+              <path d="M50 13v66c-14-8-30-24-30-46V18z" fill="#0e70b5" opacity=".45"/>
+              <rect x="56" y="48" width="32" height="24" rx="5" fill="#fff" stroke="#3b6b8d" stroke-width="3"/>
+              <path d="M63 48v-6a9 9 0 0 1 18 0v6" fill="none" stroke="#3b6b8d" stroke-width="3"/>
+              <circle cx="72" cy="59" r="3" fill="#3b6b8d"/>
+              <path d="M72 62v5" stroke="#3b6b8d" stroke-width="3"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="blue">Online Safety</h3>
+            <ul>
+              <li>Avoiding Scams</li>
+              <li>Privacy &amp; Security</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="icon">
+            <svg viewBox="0 0 120 100" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="28" cy="34" r="12" fill="#f0c299"/>
+              <rect x="16" y="48" width="24" height="20" rx="10" fill="#165b9a"/>
+              <circle cx="55" cy="30" r="13" fill="#f0c299"/>
+              <path d="M41 47c2-12 10-18 14-18 6 0 14 5 18 18v18H41z" fill="#5dd2d1"/>
+              <circle cx="78" cy="34" r="12" fill="#f0c299"/>
+              <rect x="66" y="47" width="24" height="23" rx="11" fill="#ee7f28"/>
+              <circle cx="44" cy="54" r="11" fill="#f0c299"/>
+              <path d="M31 72c2-11 8-16 13-16 5 0 11 5 13 16z" fill="#f6c124"/>
+            </svg>
+          </div>
+          <div>
+            <h3 class="blue">Staying Connected</h3>
+            <ul>
+              <li>Video Calls</li>
+              <li>Social Media Help</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title teal-title">Who We Support:</div>
+      <div class="support-box">
+        <ul>
+          <li>Unsure about technology</li>
+          <li>Returning to the community</li>
+          <li>Wanting to reconnect with family</li>
+        </ul>
+      </div>
+
+      <div class="rule" style="margin-top:18px"></div>
+
+      <div class="bottom-copy">
+        <div class="big">Friendly. Patient. Confidential.</div>
+        <div class="small">No pressure. No judgement. Just practical help when you need it.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="email">
+        <svg width="48" height="36" viewBox="0 0 48 36" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <rect x="2" y="2" width="44" height="32" rx="3" fill="#fff" opacity=".95"/>
+          <path d="M4 6l20 15L44 6" fill="none" stroke="#7f8ea1" stroke-width="2.5"/>
+          <path d="M4 30l13-12M44 30L31 18" fill="none" stroke="#7f8ea1" stroke-width="2.5"/>
+        </svg>
+        <span>reconnectus@outlook.com</span>
+      </div>
+    </div>
+    <div class="copyright">© RECONNECT–US — All Rights Reserved</div>
+  </div>
+</body>
+</html>

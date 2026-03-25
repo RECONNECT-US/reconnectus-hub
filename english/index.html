@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US English</title>
+<style>
+body{margin:0;font-family:Arial;background:linear-gradient(135deg,#071a28,#0e3f5f);color:white;}
+.container{max-width:900px;margin:40px auto;padding:20px;}
+h1{text-align:center;margin-bottom:30px;}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:15px;}
+.btn{background:linear-gradient(135deg,#25c7c8,#7df1ef);color:#083340;padding:20px;border-radius:15px;text-align:center;font-weight:bold;cursor:pointer;}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>English Learning</h1>
+<div class="grid">
+<div class="btn" onclick="go('english-easy.html')">English Learning (Standard)</div>
+<div class="btn" onclick="go('english-harder.html')">English Learning (Harder)</div>
+</div>
+</div>
+<script>
+function go(p){window.location.href=p;}
+</script>
+</body>
+</html>

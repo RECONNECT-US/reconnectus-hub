@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RECONNECT-US Drag & Drop Money Builder</title>
+<style>
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: linear-gradient(135deg, #1f2c34, #314854);
+    color: #fff;
+    text-align: center;
+  }
+
+  header {
+    background: #101214;
+    padding: 14px 60px 14px 14px;
+    position: relative;
+    font-weight: 800;
+    letter-spacing: 0.4px;
+  }
+
+  #fullscreenBtn {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    border: none;
+    border-radius: 10px;
+    background: #ff7a00;
+    color: #fff;
+    padding: 9px 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  #overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.88);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    z-index: 9999;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  #helpBtn {
+    position: fixed;
+    bottom: 12px;
+    right: 12px;
+    width: 38px;
+    height: 38px;
+    border: none;
+    border-radius: 50%;
+    background: #ff7a00;
+    color: #fff;
+    font-weight: 800;
+    cursor: pointer;
+    z-index: 9998;
+  }
+
+  .wrap {
+    width: min(1500px, 97vw);
+    margin: 16px auto;
+  }
+
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 14px;
+  }
+
+  .controls button {
+    border: none;
+    border-radius: 10px;
+    background: #333;
+    color: #fff;
+    padding: 10px 14px;
+    min-width: 110px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+
+  .controls button.active {
+    background: #ff7a00;
+  }
+
+  .top-card {
+    background: #fff;
+    color: #111;
+    border-radius: 18px;
+    padding: 22px;
+    box-shadow: 0 14px 34px rgba(0,0,0,0.28);
+    margin-bottom: 16px;
+  }
+
+  .target {
+    font-size: clamp(2rem, 4vw, 3.4rem);
+    font-weight: 900;
+    margin-bottom: 8px;
+  }
+
+  .total-line {
+    font-size: clamp(1.1rem, 2vw, 1.5rem);
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  #helpText {
+    min-height: 1.4em;
+    color: #444;
+    font-weight: 600;
+  }
+
+  #deviceNote {
+    font-size: 14px;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    color: #333;
+    font-weight: 600;
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 16px;
+    align-items: start;
+  }
+
+  .panel {
+    background: rgba(255,255,255,0.08);
+    border-radius: 18px;
+    padding: 14px;
+    backdrop-filter: blur(3px);
+  }
+
+  .panel h3 {
+    margin: 4px 0 12px;
+    font-size: 1.1rem;
+  }
+
+  .money-bank {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 12px;
+  }
+
+  .drop-zone {
+    min-height: 460px;
+    border: 3px dashed rgba(255,255,255,0.45);
+    border-radius: 18px;
+    padding: 14px;
+    background: rgba(255,255,255,0.06);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 12px;
+    align-content: start;
+  }
+
+  .drop-zone.drag-over {
+    background: rgba(255,255,255,0.14);
+    border-color: #ffb066;
+  }
+
+  .money-item {
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  .money-item.draggable {
+    -webkit-user-drag: element;
+    cursor: grab;
+  }
+
+  .money-item.draggable:active {
+    cursor: grabbing;
+  }
+
+  .coin,
+  .note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 900;
+    color: #111;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.25), inset 0 2px 6px rgba(255,255,255,0.35);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .coin {
+    width: 94px;
+    height: 94px;
+    border-radius: 50%;
+    margin: 0 auto;
+    border: 4px solid rgba(255,255,255,0.35);
+    font-size: 1.1rem;
+  }
+
+  .coin small {
+    position: absolute;
+    bottom: 12px;
+    font-size: 0.75rem;
+    font-weight: 800;
+  }
+
+  .copper {
+    background:
+      radial-gradient(circle at 30% 30%, #f7c18f 0%, #d88b51 25%, #ab5f2e 60%, #7a3916 100%);
+  }
+
+  .silver {
+    background:
+      radial-gradient(circle at 30% 30%, #ffffff 0%, #dadada 26%, #b5b5b5 58%, #8d8d8d 100%);
+  }
+
+  .gold {
+    background:
+      radial-gradient(circle at 30% 30%, #fff3b0 0%, #ecc84c 28%, #c79a16 60%, #936c07 100%);
+  }
+
+  .bi {
+    background:
+      radial-gradient(circle at 50% 50%, #cfd2d6 0%, #aeb3b7 35%, #d2a52d 36%, #f1ca58 58%, #b17f0e 100%);
+  }
+
+  .note {
+    width: 132px;
+    height: 78px;
+    border-radius: 12px;
+    margin: 0 auto;
+    border: 3px solid rgba(0,0,0,0.15);
+    font-size: 1.3rem;
+  }
+
+  .note::before {
+    content: "";
+    position: absolute;
+    inset: 8px;
+    border: 2px dashed rgba(0,0,0,0.18);
+    border-radius: 8px;
+  }
+
+  .note span,
+  .coin span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .n5   { background: linear-gradient(135deg, #cceaa1, #7fbc61); }
+  .n10  { background: linear-gradient(135deg, #ffd2e3, #db79a8); }
+  .n20  { background: linear-gradient(135deg, #d8c1ff, #9467df); }
+  .n50  { background: linear-gradient(135deg, #ffccbd, #e57c5c); }
+  .n100 { background: linear-gradient(135deg, #bee9ff, #63a8d6); }
+
+  .mini-label {
+    margin-top: 6px;
+    font-size: 0.88rem;
+    font-weight: 700;
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .actions button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    min-width: 130px;
+    font-size: 1rem;
+    font-weight: 800;
+    cursor: pointer;
+  }
+
+  .check-btn { background: #ff7a00; color: #fff; }
+  .reset-btn { background: #d9d9d9; color: #222; }
+  .new-btn   { background: #0b7285; color: #fff; }
+
+  .stats {
+    margin-top: 16px;
+    font-size: 1rem;
+    font-weight: 700;
+  }
+
+  #resultBackdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    display: none;
+    z-index: 10000;
+  }
+
+  #resultBox {
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(560px, 92vw);
+    background: #fff;
+    color: #111;
+    border-radius: 18px;
+    box-shadow: 0 18px 40px rgba(0,0,0,0.35);
+    padding: 24px 20px 18px;
+    display: none;
+    z-index: 10001;
+  }
+
+  #resultBox.show,
+  #resultBackdrop.show {
+    display: block;
+  }
+
+  #resultTitle {
+    font-size: 1.8rem;
+    font-weight: 900;
+    margin-bottom: 10px;
+  }
+
+  #resultMessage {
+    font-size: 1.05rem;
+    line-height: 1.4;
+    margin-bottom: 16px;
+  }
+
+  #resultCloseBtn {
+    border: none;
+    border-radius: 10px;
+    background: #ff7a00;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 12px 18px;
+    cursor: pointer;
+  }
+
+  .drop-added {
+    animation: moneyPop 0.32s ease;
+  }
+
+  @keyframes moneyPop {
+    0% {
+      transform: scale(0.75) translateY(10px);
+      opacity: 0;
+    }
+    60% {
+      transform: scale(1.08) translateY(-4px);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+  }
+
+  footer {
+    width: min(1500px, 97vw);
+    margin: 18px auto 0;
+    padding: 0 8px 26px;
+    font-size: 12px;
+    line-height: 1.5;
+    color: rgba(255,255,255,0.92);
+  }
+
+  @media (max-width: 960px) {
+    .main-grid {
+      grid-template-columns: 1fr;
+    }
+    .drop-zone {
+      min-height: 260px;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .money-bank {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .controls button,
+    .actions button {
+      width: 100%;
+    }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  RECONNECT-US Drag & Drop Money Builder
+  <button id="fullscreenBtn" type="button">Full Screen</button>
+</header>
+
+<div id="overlay" onclick="enterFullScreen()">
+  Tap anywhere or click to enter full screen
+</div>
+
+<button id="helpBtn" type="button" onclick="showOverlay()">?</button>
+
+<div id="resultBackdrop" onclick="closeResultBox()"></div>
+<div id="resultBox" role="dialog" aria-modal="true" aria-labelledby="resultTitle">
+  <div id="resultTitle">Result</div>
+  <div id="resultMessage"></div>
+  <button id="resultCloseBtn" type="button" onclick="closeResultBox()">Close</button>
+</div>
+
+<div class="wrap">
+  <div class="controls" id="controlsBar">
+    <button class="active" type="button" onclick="setMode('training', this)">Training</button>
+    <button type="button" onclick="setMode('test', this)">Test</button>
+    <button class="active" type="button" onclick="setLevel('easy', this)">Easy</button>
+    <button type="button" onclick="setLevel('normal', this)">Normal</button>
+    <button type="button" onclick="setLevel('hard', this)">Hard</button>
+  </div>
+
+  <div class="top-card">
+    <div class="target" id="target">£0.00</div>
+    <div class="total-line">Your total: <span id="total">£0.00</span></div>
+    <div id="helpText"></div>
+    <div id="deviceNote"></div>
+  </div>
+
+  <div class="main-grid">
+    <div class="panel">
+      <h3>Money to use</h3>
+      <div class="money-bank" id="moneyBank"></div>
+    </div>
+
+    <div class="panel">
+      <h3>Build the amount here</h3>
+      <div class="drop-zone" id="dropZone"></div>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="check-btn" type="button" onclick="checkAnswer()">CHECK</button>
+    <button class="reset-btn" type="button" onclick="resetDropZone()">RESET</button>
+    <button class="new-btn" type="button" onclick="newRound()">NEW</button>
+  </div>
+
+  <div class="stats">
+    Score: <span id="score">0</span> |
+    Attempts: <span id="attempts">0</span> |
+    Accuracy: <span id="accuracy">0%</span>
+  </div>
+</div>
+
+<footer>
+  © Reconnect Us, All rights reserved.<br>
+  This is Reconnect Us property and cannot be copied, moved to another device, shared, or distributed without prior written permission from Reconnect Us.
+</footer>
+
+<script>
+  let total = 0;
+  let target = "0.00";
+  let score = 0;
+  let attempts = 0;
+  let mode = "training";
+  let level = "easy";
+  let autoNextRound = false;
+  let dragValue = null;
+
+  const fullscreenBtn = document.getElementById("fullscreenBtn");
+  const moneyBank = document.getElementById("moneyBank");
+  const dropZone = document.getElementById("dropZone");
+  const resultBox = document.getElementById("resultBox");
+  const resultBackdrop = document.getElementById("resultBackdrop");
+  const resultTitle = document.getElementById("resultTitle");
+  const resultMessage = document.getElementById("resultMessage");
+  const deviceNote = document.getElementById("deviceNote");
+
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+
+  const moneyItems = [
+    { value: 0.01, label: "1p", type: "coin", className: "copper" },
+    { value: 0.02, label: "2p", type: "coin", className: "copper" },
+    { value: 0.05, label: "5p", type: "coin", className: "silver" },
+    { value: 0.10, label: "10p", type: "coin", className: "silver" },
+    { value: 0.20, label: "20p", type: "coin", className: "silver" },
+    { value: 0.50, label: "50p", type: "coin", className: "silver" },
+    { value: 1.00, label: "£1", type: "coin", className: "gold" },
+    { value: 2.00, label: "£2", type: "coin", className: "bi" },
+    { value: 5.00, label: "£5", type: "note", className: "n5" },
+    { value: 10.00, label: "£10", type: "note", className: "n10" },
+    { value: 20.00, label: "£20", type: "note", className: "n20" },
+    { value: 50.00, label: "£50", type: "note", className: "n50" },
+    { value: 100.00, label: "£100", type: "note", className: "n100" }
+  ];
+
+  function formatMoney(value) {
+    return "£" + Number(value).toFixed(2);
+  }
+
+  function buildBank() {
+    moneyBank.innerHTML = "";
+
+    moneyItems.forEach(item => {
+      const wrap = document.createElement("div");
+      wrap.className = "money-item";
+      wrap.dataset.value = item.value;
+
+      if (!isTouchDevice) {
+        wrap.classList.add("draggable");
+        wrap.draggable = true;
+
+        wrap.addEventListener("dragstart", e => {
+          dragValue = Number(item.value);
+          e.dataTransfer.setData("text/plain", String(item.value));
+        });
+      } else {
+        wrap.draggable = false;
+      }
+
+      const visual = document.createElement("div");
+      visual.className = `${item.type} ${item.className}`;
+
+      const span = document.createElement("span");
+      span.textContent = item.label;
+      visual.appendChild(span);
+
+      if (item.type === "coin") {
+        const small = document.createElement("small");
+        small.textContent = "UK";
+        visual.appendChild(small);
+      }
+
+      const label = document.createElement("div");
+      label.className = "mini-label";
+      label.textContent = formatMoney(item.value);
+
+      wrap.appendChild(visual);
+      wrap.appendChild(label);
+      moneyBank.appendChild(wrap);
+    });
+  }
+
+  function makeDroppedItem(value) {
+    const item = moneyItems.find(m => m.value === value);
+    if (!item) return;
+
+    const wrap = document.createElement("div");
+    wrap.className = "money-item drop-added";
+    wrap.dataset.value = value;
+
+    const visual = document.createElement("div");
+    visual.className = `${item.type} ${item.className}`;
+
+    const span = document.createElement("span");
+    span.textContent = item.label;
+    visual.appendChild(span);
+
+    if (item.type === "coin") {
+      const small = document.createElement("small");
+      small.textContent = "UK";
+      visual.appendChild(small);
+    }
+
+    const label = document.createElement("div");
+    label.className = "mini-label";
+    label.textContent = formatMoney(value);
+
+    wrap.appendChild(visual);
+    wrap.appendChild(label);
+
+    wrap.addEventListener("click", () => {
+      total -= Number(value);
+      total = Math.max(0, total);
+      updateTotal();
+      wrap.remove();
+    });
+
+    dropZone.appendChild(wrap);
+    total += Number(value);
+    updateTotal();
+
+    setTimeout(() => {
+      wrap.classList.remove("drop-added");
+    }, 350);
+  }
+
+  if (!isTouchDevice) {
+    dropZone.addEventListener("dragover", e => {
+      e.preventDefault();
+      dropZone.classList.add("drag-over");
+    });
+
+    dropZone.addEventListener("dragleave", () => {
+      dropZone.classList.remove("drag-over");
+    });
+
+    dropZone.addEventListener("drop", e => {
+      e.preventDefault();
+      dropZone.classList.remove("drag-over");
+      const value = Number(e.dataTransfer.getData("text/plain") || dragValue);
+      if (!isNaN(value)) makeDroppedItem(value);
+      dragValue = null;
+    });
+  }
+
+  function enableTouchAdd() {
+    moneyBank.querySelectorAll(".money-item").forEach(el => {
+      el.addEventListener("click", () => {
+        const value = Number(el.dataset.value);
+        makeDroppedItem(value);
+      });
+    });
+  }
+
+  function detectDeviceInstruction() {
+    if (isTouchDevice) {
+      deviceNote.innerHTML = "📱 On phones and tablets, tap the money to add it. Drag and drop is disabled on touch devices.";
+    } else {
+      deviceNote.innerHTML = "🖥 On computers, drag and drop the money into the box. You can also click items to add them.";
+    }
+  }
+
+  function setMode(newMode, btn) {
+    mode = newMode;
+    const buttons = document.querySelectorAll("#controlsBar button");
+    buttons[0].classList.remove("active");
+    buttons[1].classList.remove("active");
+    btn.classList.add("active");
+    updateHelpText();
+  }
+
+  function setLevel(newLevel, btn) {
+    level = newLevel;
+    const buttons = document.querySelectorAll("#controlsBar button");
+    buttons[2].classList.remove("active");
+    buttons[3].classList.remove("active");
+    buttons[4].classList.remove("active");
+    btn.classList.add("active");
+    newRound();
+  }
+
+  function updateHelpText() {
+    const helpText = document.getElementById("helpText");
+    if (mode === "training") {
+      if (level === "easy") {
+        helpText.textContent = "Build the amount using coins and notes. Easy uses £2.00 to £20.00.";
+      } else if (level === "normal") {
+        helpText.textContent = "Build the amount using coins and notes. Normal uses £20.00 to £60.00.";
+      } else {
+        helpText.textContent = "Build the amount using coins and notes. Hard uses £60.00 to £100.00.";
+      }
+    } else {
+      helpText.textContent = "";
+    }
+  }
+
+  function randomAmount(min, max) {
+    const pennies = Math.floor(Math.random() * ((max - min) * 100 + 1)) + min * 100;
+    return (pennies / 100).toFixed(2);
+  }
+
+  function updateTotal() {
+    document.getElementById("total").textContent = formatMoney(total);
+  }
+
+  function resetDropZone() {
+    total = 0;
+    dropZone.innerHTML = "";
+    updateTotal();
+  }
+
+  function newRound() {
+    if (level === "easy") {
+      target = randomAmount(2, 20);
+    } else if (level === "normal") {
+      target = randomAmount(20, 60);
+    } else {
+      target = randomAmount(60, 100);
+    }
+
+    document.getElementById("target").textContent = formatMoney(target);
+    resetDropZone();
+    updateHelpText();
+  }
+
+  function showResultBox(title, message, nextRoundAfterClose = false) {
+    resultTitle.textContent = title;
+    resultMessage.textContent = message;
+    autoNextRound = nextRoundAfterClose;
+    resultBackdrop.classList.add("show");
+    resultBox.classList.add("show");
+  }
+
+  function closeResultBox() {
+    resultBackdrop.classList.remove("show");
+    resultBox.classList.remove("show");
+    if (autoNextRound) {
+      autoNextRound = false;
+      newRound();
+    }
+    setTimeout(updateFullscreenButtonText, 100);
+  }
+
+  function checkAnswer() {
+    attempts++;
+
+    if (Number(total).toFixed(2) === Number(target).toFixed(2)) {
+      score++;
+      updateStats();
+      showResultBox("Correct!", "Well done — you matched the amount exactly.", true);
+    } else {
+      updateStats();
+      showResultBox("Not quite", "Try again and see if you can match the target amount.");
+    }
+  }
+
+  function updateStats() {
+    document.getElementById("score").textContent = score;
+    document.getElementById("attempts").textContent = attempts;
+    const acc = attempts ? Math.round((score / attempts) * 100) : 0;
+    document.getElementById("accuracy").textContent = acc + "%";
+  }
+
+  function requestFullscreenSafe() {
+    if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen().catch(() => {});
+    }
+  }
+
+  function enterFullScreen() {
+    document.getElementById("overlay").style.display = "none";
+    requestFullscreenSafe();
+    updateFullscreenButtonText();
+  }
+
+  function showOverlay() {
+    document.getElementById("overlay").style.display = "flex";
+  }
+
+  function updateFullscreenButtonText() {
+    fullscreenBtn.textContent = document.fullscreenElement ? "Exit Full Screen" : "Full Screen";
+  }
+
+  fullscreenBtn.addEventListener("click", () => {
+    if (!document.fullscreenElement) {
+      requestFullscreenSafe();
+    } else if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+    setTimeout(updateFullscreenButtonText, 150);
+  });
+
+  document.addEventListener("fullscreenchange", updateFullscreenButtonText);
+
+  buildBank();
+  enableTouchAdd();
+  detectDeviceInstruction();
+  newRound();
+  updateStats();
+  updateFullscreenButtonText();
+</script>
+
+</body>
+</html>

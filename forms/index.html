@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Forms - RECONNECT-US</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #1e2a2f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+}
+h1 { margin-bottom: 10px; }
+p { margin-bottom: 30px; color: #ccc; }
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  width: 90%;
+  max-width: 800px;
+}
+.tile {
+  background: linear-gradient(145deg, #5be7a9, #3ecf8e);
+  color: #0b2b1f;
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.2s;
+  box-shadow: 0 6px 12px rgba(0,0,0,0.3);
+}
+.tile:hover { transform: scale(1.05); }
+</style>
+</head>
+<body>
+
+<h1>Forms - RECONNECT-US</h1>
+<p>Select a form or help page</p>
+
+<div class="container">
+  <a class="tile" href="citizens.html">Citizens Advice Bureau</a>
+  <a class="tile" href="device.html">Device Help</a>
+  <a class="tile" href="email.html">Email</a>
+  <a class="tile" href="feedback_form.html">Feedback Form</a>
+  <a class="tile" href="govuk.html">GOV.UK</a>
+</div>
+
+</body>
+</html>

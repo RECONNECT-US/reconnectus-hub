@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Policies</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background: linear-gradient(135deg,#071a28,#0e3f5f);
+    color: white;
+}
+
+.container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit,minmax(200px,1fr));
+    gap: 15px;
+}
+
+.button {
+    background: linear-gradient(135deg,#25c7c8,#7df1ef);
+    color:#083340;
+    padding:18px;
+    border-radius:15px;
+    text-align:center;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.button:hover {
+    transform: translateY(-3px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+<h1>Policies</h1>
+
+<div class="grid">
+
+<div class="button" onclick="openPage('safeguarding.html')">Safeguarding</div>
+<div class="button" onclick="openPage('reporting.html')">Reporting</div>
+<div class="button" onclick="openPage('equality.html')">Equality</div>
+<div class="button" onclick="openPage('gdpr.html')">Data Protection</div>
+<div class="button" onclick="openPage('complaints.html')">Complaints</div>
+<div class="button" onclick="openPage('code-of-conduct.html')">Code of Conduct</div>
+<div class="button" onclick="openPage('prevent.html')">Prevent</div>
+
+</div>
+</div>
+
+<script>
+function openPage(page){
+    window.location.href = page;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RECONNECT-US — Life After Prison Learning</title>
+<style>
+  :root {
+    --primary:#0a6fa8;
+    --primary-dark:#094f79;
+    --accent:#f39c12;
+    --bg:#f3f7fa;
+    --text:#222;
+    --muted:#5b6b76;
+    --danger:#b73239;
+    --danger-dark:#8f252b;
+    --success:#1f7a43;
+  }
+  * { box-sizing:border-box; }
+  body {font-family: Arial, sans-serif; background:var(--bg); margin:0; padding:0; color:var(--text);}
+  header {
+    background: linear-gradient(135deg, var(--primary), #0f9acb);
+    color: white;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap:12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+    position: sticky;
+    top: 0;
+    z-index: 30;
+  }
+  header .title {font-size: 1.2rem; font-weight: bold; max-width: 70%;}
+  .header-actions {display:flex; gap:8px; flex-wrap:wrap; justify-content:flex-end;}
+  .header-btn {
+    padding: 8px 14px; border-radius:20px; border:none; cursor:pointer;
+    font-size:0.92rem; background:rgba(255,255,255,0.15); color:#fff; backdrop-filter:blur(4px);
+  }
+  .header-btn:hover {background:rgba(255,255,255,0.3);}
+  #app {padding:15px; max-width:980px; margin:auto;}
+  .branding-bar {
+    display:flex; justify-content:space-between; align-items:center; gap:12px;
+    margin-bottom:14px; font-size:0.95rem; color:#555; flex-wrap:wrap;
+  }
+  .branding-logo {
+    min-width:140px; height:36px; background:linear-gradient(135deg,var(--primary),var(--accent));
+    display:flex; align-items:center; justify-content:center; border-radius:8px; color:white; font-weight:bold; padding:0 14px;
+  }
+  .status-card {
+    background:#fff; border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.08);
+    padding:14px 16px; margin-bottom:16px;
+  }
+  .status-top {
+    display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap;
+  }
+  .learner-chip {
+    display:inline-flex; align-items:center; gap:8px; background:#e9f2f8; color:var(--primary);
+    padding:8px 12px; border-radius:999px; font-weight:bold;
+  }
+  .status-actions {display:flex; gap:8px; flex-wrap:wrap;}
+  .action-btn {
+    padding:10px 14px; border:none; border-radius:10px; cursor:pointer; font-weight:bold;
+    background:var(--primary); color:#fff;
+  }
+  .action-btn:hover {background:var(--primary-dark);}
+  .delete-btn {background:var(--danger);}
+  .delete-btn:hover {background:var(--danger-dark);}
+  .secondary-btn {background:#6c757d;}
+  .secondary-btn:hover {background:#59636b;}
+  #saveStatus {margin-top:10px; color:var(--muted); font-size:0.92rem; min-height:1.2em;}
+  .module-grid {display:grid; grid-template-columns:1fr; gap:10px;}
+  .module-btn {
+    display:block; width:100%; padding:16px; background:var(--primary); color:white;
+    border:none; font-size:1rem; border-radius:12px; cursor:pointer; text-align:left;
+    box-shadow:0 3px 10px rgba(0,0,0,0.08);
+  }
+  .module-btn:hover {background:var(--primary-dark);}
+  .module-btn .subtitle {display:block; font-size:0.85rem; opacity:0.92; margin-top:4px;}
+  .module-btn .count {display:inline-block; margin-top:8px; font-size:0.75rem; background:rgba(255,255,255,0.15); padding:4px 8px; border-radius:999px;}
+  .question-box {
+    background:white; padding:18px; border-radius:12px; margin-top:16px;
+    box-shadow:0 3px 10px rgba(0,0,0,0.12);
+  }
+  .question-meta {font-size:0.9rem; color:#666; margin-bottom:8px;}
+  .question-text {font-size:1.08rem; margin-bottom:14px; line-height:1.45;}
+  .answer {
+    padding:12px; margin:8px 0; border-radius:8px; background:#e9f2f8; cursor:pointer; transition:0.1s ease;
+  }
+  .answer:hover {background:#d3e7f2;}
+  .answer.correct {background:#d4edda; border:1px solid #7ac28a;}
+  .answer.wrong {background:#f8d7da; border:1px solid #e89aa4;}
+  .answer.disabled {pointer-events:none; opacity:0.95;}
+  #nextBtn {
+    padding:11px 18px; background:var(--primary); color:white; border:none; border-radius:20px;
+    margin-top:12px; display:none; cursor:pointer; font-weight:bold;
+  }
+  #nextBtn:hover {background:var(--primary-dark);}
+  #scoreScreen,#certificateScreen {
+    display:none; text-align:center; padding:20px; margin-top:18px; background:white;
+    border-radius:12px; box-shadow:0 3px 10px rgba(0,0,0,0.12);
+  }
+  .cert-btn {padding:10px 14px; border-radius:20px; border:none; background:var(--primary); color:white; margin-top:10px; cursor:pointer; font-weight:bold;}
+  .cert-input {padding:10px; border:1px solid #c9d6e2; border-radius:8px; width:min(90%,300px);}
+  .back-btn {
+    padding:9px 14px; border-radius:20px; border:none; background:#6c757d; color:white; cursor:pointer; font-size:0.92rem; margin-bottom:8px;
+  }
+  .back-btn:hover {background:#5a6268;}
+  .complete-badge {
+    display:inline-block; margin-left:8px; padding:4px 10px; border-radius:999px; background:#d4edda; color:var(--success); font-size:0.76rem; font-weight:bold;
+  }
+  .footer-legal {
+    max-width:980px; margin:28px auto 18px; padding:14px 16px; color:#36454f; font-size:0.88rem; line-height:1.5;
+  }
+  .footer-legal .legal-box {
+    background:#fff; border-left:5px solid var(--accent); border-radius:10px; box-shadow:0 3px 10px rgba(0,0,0,0.08); padding:14px 16px;
+  }
+  .footer-legal .&copy; {
+    margin-top:10px; font-weight:bold; color:var(--primary);
+  }
+
+  #helpBtn {
+    position:fixed; top:14px; right:14px; width:42px; height:42px; border:none; border-radius:50%;
+    background:rgba(10,111,168,.92); color:#fff; font-size:22px; font-weight:bold; cursor:pointer; z-index:10001; box-shadow:0 4px 12px rgba(0,0,0,.24);
+  }
+  #helpBtn:hover {background:var(--primary-dark);}
+  #startOverlay {
+    position:fixed; inset:0; background:rgba(7,25,38,.55); backdrop-filter:blur(3px); display:flex;
+    align-items:center; justify-content:center; z-index:10000; opacity:1; transition:opacity .35s ease;
+  }
+  #startOverlay.fade-out {opacity:0; pointer-events:none;}
+  .overlay-card {
+    width:min(92vw,760px); background:rgba(255,255,255,.97); color:#183447; border-radius:18px;
+    box-shadow:0 12px 28px rgba(0,0,0,.28); padding:26px 24px; text-align:center; border:2px solid rgba(10,111,168,.18);
+  }
+  .overlay-card h2 {margin:0 0 10px; color:var(--primary); font-size:1.55rem;}
+  .overlay-card p {margin:8px 0; line-height:1.45;}
+  .overlay-tip {margin-top:12px; font-size:.95rem; color:#4f6472;}
+
+  #learnerGate {
+    position:fixed; inset:0; z-index:10020; background:rgba(8,22,32,0.78); display:flex; align-items:center; justify-content:center; padding:18px;
+  }
+  .gate-card {
+    width:min(96vw,560px); background:#fff; border-radius:18px; padding:24px; box-shadow:0 18px 36px rgba(0,0,0,0.28);
+  }
+  .gate-card h2 {margin:0 0 10px; color:var(--primary);}
+  .gate-card p {margin:8px 0; line-height:1.45; color:#33424c;}
+  .gate-fields {display:grid; gap:12px; margin:16px 0;}
+  .gate-fields input {
+    width:100%; padding:12px 14px; border:1px solid #c9d6e2; border-radius:10px; font-size:1rem;
+  }
+  .gate-actions {display:flex; gap:10px; flex-wrap:wrap; margin-top:8px;}
+  .gate-actions button {
+    flex:1 1 160px; padding:12px 14px; border:none; border-radius:10px; cursor:pointer; font-weight:bold;
+    background:var(--primary); color:#fff;
+  }
+  .gate-actions button:hover {background:var(--primary-dark);}
+  .gate-actions .danger {background:var(--danger);}
+  .gate-actions .danger:hover {background:var(--danger-dark);}
+  .small-note {font-size:0.88rem; color:#576872; margin-top:10px;}
+  #learnerError {min-height:1.2em; color:var(--danger); font-weight:bold; margin-top:8px;}
+  @media print {
+    body * {visibility:hidden !important;}
+    #certificateScreen, #certificateScreen * {visibility:visible !important;}
+    #certificateScreen {
+      position:fixed; inset:0; margin:0; padding:40px; box-shadow:none; border-radius:0;
+    }
+  }
+</style>
+</head>
+<body>
+<button id="helpBtn" type="button" aria-label="Show help">?</button>
+
+<div id="startOverlay" role="dialog" aria-label="Start help overlay">
+  <div class="overlay-card">
+    <h2>Welcome to RECONNECT-US</h2>
+    <p><strong>Tap anywhere on the screen</strong> or <strong>click anywhere with the mouse</strong> to begin.</p>
+    <p>This learning programme will try to open in full screen where the device allows it.</p>
+    <p class="overlay-tip">Press the <strong>?</strong> button at any time to bring these instructions back.</p>
+  </div>
+</div>
+
+</div>
+
+<header>
+  <div class="title">RECONNECT-US — Life After Prison Learning</div>
+  <div class="header-actions">
+    <button id="fullscreenBtn" class="header-btn" onclick="toggleFullscreen()">Full screen</button>
+    <button id="backBtn" class="header-btn" type="button">Back</button>
+  </div>
+</header>
+
+<div id="app">
+  <div class="branding-bar">
+    <div>Six modules · 50 questions in each module · built around life after prison, licence conditions, safer choices, and practical re-settlement.</div>
+    <div class="branding-logo">RECONNECT-US</div>
+  </div>
+
+  <div class="status-card">
+    <div class="status-top">
+      <div id="learnerDisplay" class="learner-chip">No shared learner found</div>
+      <div class="status-actions"></div>
+    </div>
+    <div id="saveStatus"></div>
+  </div>
+
+  <div id="menuView">
+    <h2>Select a Module</h2>
+    <p>Work through the modules at your own pace. Progress is stored on this device under the shared learner from the hub.</p>
+    <div class="module-grid" id="moduleMenuButtons"></div>
+  </div>
+
+  <div id="quizView" style="display:none;">
+    <button class="back-btn" onclick="exitModule()">Back to module list</button>
+    <div id="quiz" class="question-box" style="display:none;"></div>
+    <button id="nextBtn" onclick="nextQuestion()">Next question</button>
+    <div id="scoreScreen"></div>
+    <div id="certificateScreen"></div>
+  </div>
+</div>
+
+<div class="footer-legal">
+  <div class="legal-box">
+    <div>This learning programme is for authorised RECONNECT-US use only. It must not be copied, installed, shared, transferred, or placed on any other device unless written permission has been given by RECONNECT-US beforehand.</div>
+    <div class="&copy;">&copy; RECONNECT-US, all rights reserved.</div>
+  </div>
+</div>
+
+<script>
+const TOTAL_MODULES = 6;
+const SHARED_HUB_KEY = "reconnectus_shared_current_learner_v1";
+
+function normaliseHubLearnerName(raw){
+  return (raw || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6);
+}
+function getSharedHubLearnerName(){
+  try{
+    const shared = JSON.parse(localStorage.getItem(SHARED_HUB_KEY) || 'null');
+    if (shared && shared.name) return normaliseHubLearnerName(shared.name);
+  }catch(e){}
+  const params = new URLSearchParams(window.location.search);
+  const learnerFromUrl = normaliseHubLearnerName(params.get('learner') || '');
+  return learnerFromUrl || '';
+}
+
+const questions = {"1": [{"q": "Your probation appointment is at 10:00am and your bus breaks down. What is the best first step?", "answers": ["Call probation straight away, explain the problem, and ask what they want you to do.", "Wait until you arrive and hope they understand.", "Ask a friend to tell them for you later.", "Miss it and explain next week."], "correctIndex": 0}, {"q": "Someone you are not allowed to contact sends you a message saying they 'just want to talk'. What should you do?", "answers": ["Do not reply, keep the message, and tell probation.", "Reply once to be polite.", "Meet them somewhere public.", "Delete it and say nothing."], "correctIndex": 0}, {"q": "You get home 15 minutes after curfew because traffic was bad. What is the safest response?", "answers": ["Contact the monitoring service or probation as soon as possible and explain.", "Say nothing because it was only 15 minutes.", "Blame the taxi only if asked later.", "Turn your phone off and deal with it tomorrow."], "correctIndex": 0}, {"q": "A new licence condition is explained quickly and you do not fully understand it. What should you do?", "answers": ["Ask for it to be explained clearly in plain language and examples.", "Sign it and hope you work it out later.", "Ask another person on licence instead.", "Ignore that condition and focus on the others."], "correctIndex": 0}, {"q": "Your electronic tag is rubbing and hurting your skin. What is the right thing to do?", "answers": ["Tell probation or monitoring so they can advise safely.", "Take it off for a few hours.", "Wrap it tightly so nobody notices.", "Ignore it even if it gets worse."], "correctIndex": 0}, {"q": "You are invited to a family meal near an area you are banned from visiting. What is the best step?", "answers": ["Speak to probation before making plans.", "Go anyway but leave early.", "Ask family to cover for you.", "Switch your phone off while you are there."], "correctIndex": 0}, {"q": "A hospital appointment clashes with probation. What should you do first?", "answers": ["Contact probation as soon as you notice the clash and ask how to deal with it properly.", "Miss probation because health always comes first.", "Miss hospital because probation always comes first.", "Ignore both and rearrange later."], "correctIndex": 0}, {"q": "You are angry after a probation meeting. What is the safest way to handle it?", "answers": ["Calm down first, then raise concerns respectfully or ask to speak to a manager/support worker.", "Skip your next appointment.", "Post about it on social media.", "Turn up next time ready for an argument."], "correctIndex": 0}, {"q": "You have been offered work that might affect reporting times. What should you do?", "answers": ["Tell probation early and ask whether times can be adjusted.", "Start the job and mention it later.", "Ask your employer to lie if anyone rings.", "Turn the job down because work is not allowed."], "correctIndex": 0}, {"q": "A friend says probation 'cannot do much' if you miss one appointment. What should you do?", "answers": ["Check your actual conditions and do not rely on rumours.", "Believe them and risk it.", "Test it once to see what happens.", "Ask around until someone agrees with your friend."], "correctIndex": 0}, {"q": "You want to stay overnight at a relative’s house. What should you do first?", "answers": ["Check whether your licence allows it and ask probation before agreeing.", "Go and say nothing.", "Tell the relative to keep quiet.", "Only go if it is just one night."], "correctIndex": 0}, {"q": "Your phone number changes. What is the best response?", "answers": ["Update probation and any relevant services straight away.", "Wait until your next appointment.", "Only tell them if they ask.", "Keep the old number active and hope messages still come."], "correctIndex": 0}, {"q": "You are told not to enter a certain area, but the quickest route to the shops goes through it. What should you do?", "answers": ["Use a permitted route, even if it takes longer.", "Risk it when nobody is watching.", "Go through quickly and keep your head down.", "Ask a mate to say you were elsewhere."], "correctIndex": 0}, {"q": "You are unsure whether a new relationship could raise concerns under your conditions. What is the safest step?", "answers": ["Discuss it honestly with probation before it becomes a problem.", "Keep it secret.", "Let the other person deal with any consequences.", "Only mention it if someone finds out."], "correctIndex": 0}, {"q": "Your curfew equipment beeps and shows an error. What should you do?", "answers": ["Report the issue straight away using the official contact details.", "Unplug it and plug it back in later.", "Ignore it unless someone calls.", "Move it somewhere quieter so you do not hear it."], "correctIndex": 0}, {"q": "A family emergency happens near curfew time. What should you do?", "answers": ["Contact the relevant service immediately and explain the emergency.", "Break curfew and sort the explanation later.", "Ask family to say you were home.", "Turn your location off."], "correctIndex": 0}, {"q": "You receive a letter changing your reporting day. What should you do?", "answers": ["Read it carefully and make sure the new date is in your diary.", "Assume it is probably the same as before.", "Wait to see if anyone reminds you.", "Attend on both days and hope one is right."], "correctIndex": 0}, {"q": "You need to travel for a college interview in another town. What should you do?", "answers": ["Check first whether the travel fits your licence and get permission if needed.", "Go because education is a good reason.", "Tell probation after the interview.", "Use a false reason for travelling."], "correctIndex": 0}, {"q": "You cannot remember one part of your licence conditions. What is safest?", "answers": ["Ask for a copy or go through them again with probation.", "Guess what it probably means.", "Do what your friend on licence does.", "Ignore that part unless it comes up."], "correctIndex": 0}, {"q": "A stranger asks questions about your tag in public. What should you do?", "answers": ["Keep boundaries and do not feel pressured to explain personal details.", "Tell them everything so they stop asking.", "Get angry and threaten them.", "Remove the tag under your clothes."], "correctIndex": 0}, {"q": "You are running early and think about skipping a required programme because you feel tired. What should you do?", "answers": ["Attend as required or contact the organiser properly if there is a real issue.", "Miss it and say you forgot.", "Ask someone to sign in for you.", "Go once every few times."], "correctIndex": 0}, {"q": "Probation asks you to bring paperwork to your appointment. What should you do?", "answers": ["Prepare it in advance and take it with you.", "Hope they will not need it.", "Bring something different instead.", "Say you never got the message."], "correctIndex": 0}, {"q": "You think a condition may stop you taking a certain volunteer role. What is the right step?", "answers": ["Ask probation before committing to it.", "Start the role quietly.", "Tell the organiser not to mention it.", "Assume volunteering is always allowed."], "correctIndex": 0}, {"q": "You lose track of appointment dates because life feels busy. What would help most?", "answers": ["Use a calendar, reminders, or written planner and check it daily.", "Wait for services to remind you every time.", "Rely on memory alone.", "Only remember the important ones."], "correctIndex": 0}, {"q": "Your friend offers you a lift, but it would take you through a banned area. What should you do?", "answers": ["Decline or ask for a different route that stays within your conditions.", "Go if they drive fast.", "Close your eyes and say you did not know.", "Say yes because you are not the one driving."], "correctIndex": 0}, {"q": "You are asked to sign something you have not read properly. What should you do?", "answers": ["Read it first and ask questions if needed.", "Sign now and read later.", "Pretend you understand.", "Refuse all paperwork automatically."], "correctIndex": 0}, {"q": "You feel embarrassed asking probation for clarity. What should you remember?", "answers": ["It is better to ask than to risk breaching conditions.", "They will think less of you if you ask.", "Other people can explain it better anyway.", "It is safer to stay quiet."], "correctIndex": 0}, {"q": "Someone tells you to leave your tag charger unplugged because it saves electricity. What should you do?", "answers": ["Follow the official instructions, not random advice.", "Try it once.", "Do it at night only.", "Ignore charging until someone complains."], "correctIndex": 0}, {"q": "You are invited to a football match that may finish after curfew. What is the best step?", "answers": ["Check before booking and only go if it can be done lawfully.", "Go and leave during the last few minutes.", "Risk it because it is a special event.", "Tell people you were home."], "correctIndex": 0}, {"q": "A support worker offers to help you organise your week around conditions. What is the best response?", "answers": ["Accept the help if it will help you stay on track.", "Say no because you should manage alone.", "Only accept if probation forces you.", "Use them to complain but not plan."], "correctIndex": 0}, {"q": "You accidentally miss a call from probation. What should you do?", "answers": ["Call back as soon as you reasonably can.", "Ignore it and wait for them.", "Send a vague text days later.", "Block the number because it stresses you."], "correctIndex": 0}, {"q": "You feel pressured by mates to go somewhere you know is not allowed. What is safest?", "answers": ["Say no and leave the situation.", "Go but stay only a short time.", "Blame someone else and follow them.", "Keep quiet and hope plans change."], "correctIndex": 0}, {"q": "Your licence conditions affect internet use and you are not sure what counts as breaking them. What should you do?", "answers": ["Ask directly for clear boundaries and examples.", "Assume general browsing is always fine.", "Use someone else’s device instead.", "Do not mention it unless caught."], "correctIndex": 0}, {"q": "You are thinking about moving address. What should you do first?", "answers": ["Talk to probation and housing support before making changes.", "Move first and explain later.", "Stay with friends without telling anyone.", "Use a different address for post only."], "correctIndex": 0}, {"q": "A person from your past wants to meet and says no one needs to know. What is the best answer?", "answers": ["No, and tell probation if contact itself is relevant or risky.", "Yes, once, for closure.", "Only meet in daylight.", "Let them decide the place."], "correctIndex": 0}, {"q": "You are unsure if alcohol use could affect your conditions or risk level. What should you do?", "answers": ["Discuss it honestly with your support/probation worker.", "Find out by trial and error.", "Hide it as long as possible.", "Copy what others do."], "correctIndex": 0}, {"q": "You keep arriving just on time and it makes you stressed. What is a better plan?", "answers": ["Aim to arrive early and build in travel time.", "Keep cutting it fine.", "Blame public transport every time.", "Only worry if you are actually late."], "correctIndex": 0}, {"q": "You need to prove attendance somewhere. What might help?", "answers": ["Keep letters, emails, or appointment cards organised.", "Throw paperwork away once read.", "Take photos only if you remember.", "Rely on people remembering you were there."], "correctIndex": 0}, {"q": "Your tag monitoring team leaves a voicemail. What should you do?", "answers": ["Listen and respond promptly if action is needed.", "Delete it because it makes you anxious.", "Wait until the weekend.", "Assume probation will tell you instead."], "correctIndex": 0}, {"q": "You think a condition might be unfair. What is the safest way to challenge it?", "answers": ["Use the proper process with professionals rather than just ignoring it.", "Break it to prove a point.", "Complain online with names.", "Tell everyone except the people who can help."], "correctIndex": 0}, {"q": "You are anxious about talking openly in appointments. What could help?", "answers": ["Write notes beforehand so you remember what to ask.", "Say nothing and hope it is obvious.", "Bring a friend to answer for you without permission.", "Miss the appointment."], "correctIndex": 0}, {"q": "You are offered cash-in-hand work by someone linked to your past offending. What should you do?", "answers": ["Think about the risks and discuss safer options with probation or support first.", "Take it because cash helps.", "Ask them to keep it secret.", "Do a few shifts and decide later."], "correctIndex": 0}, {"q": "You are told to attend a course as part of your plan. What is the right attitude?", "answers": ["Treat it as important and engage with it properly.", "Only turn up when convenient.", "Attend but refuse to join in.", "Send apologies every week."], "correctIndex": 0}, {"q": "You realise you may be five minutes late because you left home late. What should you do?", "answers": ["Contact the service immediately rather than waiting.", "Hope traffic speeds up.", "Say your phone battery died.", "Pretend the appointment was a different time."], "correctIndex": 0}, {"q": "Someone online starts asking where you live and what conditions you have. What should you do?", "answers": ["Protect your privacy and avoid sharing sensitive information.", "Tell them so they trust you.", "Give vague answers but keep chatting.", "Send a screenshot of your paperwork."], "correctIndex": 0}, {"q": "You feel your routine slipping and small breaches could become more likely. What should help most?", "answers": ["Ask for support early and tighten your routines before it escalates.", "Wait until something goes wrong.", "Hide the problem.", "Blame stress and carry on."], "correctIndex": 0}, {"q": "You want to visit a new gym or activity group. What should you consider first?", "answers": ["Whether the location, timings, and people involved fit your conditions and recovery plan.", "Only whether it is cheap.", "Whether your mates go there.", "Nothing; just turn up."], "correctIndex": 0}, {"q": "You miss an instruction because you misheard it. What should you do?", "answers": ["Contact the service and clarify exactly what was required.", "Pretend you knew all along.", "Do what seems most convenient.", "Wait until the next appointment."], "correctIndex": 0}, {"q": "At the end of licence, you are confused about what changes immediately and what does not. What should you do?", "answers": ["Ask for clear guidance rather than making assumptions.", "Assume every rule vanishes instantly.", "Do whatever your friends suggest.", "Ignore advice because you are nearly finished."], "correctIndex": 0}, {"q": "You are given an instruction verbally and worry you will forget it later. What is best?", "answers": ["Write it down and repeat it back to make sure you understood.", "Assume you will remember.", "Ignore it if it was not in writing.", "Ask someone else days later."], "correctIndex": 0}], "2": [{"q": "You arrive at temporary accommodation and find out your room is not ready. What is the best first step?", "answers": ["Contact probation or housing support immediately so they can help sort it safely.", "Walk off and sleep rough for the night.", "Stay anywhere you can, even if it breaches conditions.", "Argue until you are removed."], "correctIndex": 0}, {"q": "People in your hostel are using drugs and pressuring you. What should you do?", "answers": ["Tell staff or probation you feel unsafe and ask for support.", "Join in a little so they leave you alone.", "Hide in your room and say nothing.", "Move out secretly."], "correctIndex": 0}, {"q": "You get a letter saying you could lose your accommodation. What is the best response?", "answers": ["Ask a housing worker or support worker to go through it with you quickly.", "Ignore it because letters sound worse than they are.", "Throw it away to avoid stress.", "Move out before anyone notices."], "correctIndex": 0}, {"q": "A flat becomes available in an area linked to your past offending. What is safest?", "answers": ["Discuss the risks with probation or support before deciding.", "Take it because any housing is good housing.", "Move in and promise yourself you will avoid trouble.", "Refuse without explanation."], "correctIndex": 0}, {"q": "You are worried about becoming homeless when your temporary stay ends. When should you ask for help?", "answers": ["As early as possible so there is time to plan.", "Only when you are actually on the street.", "The night before you have to leave.", "Not at all."], "correctIndex": 0}, {"q": "You receive post for a previous tenant with debt letters. What should you do?", "answers": ["Return it to sender or tell housing staff so it is noted.", "Open it to explain who you are.", "Throw it away.", "Ignore every letter."], "correctIndex": 0}, {"q": "Your room checks show your space is becoming cluttered. What could help?", "answers": ["Use a simple cleaning routine or ask for support with organising it.", "Wait until inspection day and hide everything.", "Argue that it is your business.", "Do nothing."], "correctIndex": 0}, {"q": "You want your child to visit but you are unsure if there are restrictions. What should you do first?", "answers": ["Check with probation or any involved professionals before arranging it.", "Invite them round and see what happens.", "Ask a neighbour what they think.", "Keep it secret."], "correctIndex": 0}, {"q": "A neighbour keeps making loud threats in the corridor. What is the safest step?", "answers": ["Report the behaviour to staff/housing and keep yourself safe.", "Threaten them back.", "Film them and post it online.", "Ignore it forever."], "correctIndex": 0}, {"q": "Your approved address changes at short notice. What should you do?", "answers": ["Make sure probation and relevant services know immediately.", "Stay somewhere else and mention it later.", "Use the old address for paperwork only.", "Ask friends not to mention it."], "correctIndex": 0}, {"q": "You have the chance to stay with family, but the home is crowded and stressful. What is best?", "answers": ["Think honestly about safety, stability, and risk before agreeing.", "Say yes because family is always best.", "Move in and hope it works.", "Decide on the day."], "correctIndex": 0}, {"q": "Someone in shared accommodation steals food from the kitchen. What should you do?", "answers": ["Raise it with staff or use the proper process rather than confronting aggressively.", "Take their food back from them.", "Start a shouting match.", "Do the same to them."], "correctIndex": 0}, {"q": "You are offered a sofa to sleep on by someone involved in crime. What should you do?", "answers": ["Avoid unsafe options and speak to support about safer housing.", "Accept because it is only temporary.", "Stay there quietly.", "Ask them not to tell anyone."], "correctIndex": 0}, {"q": "You do not understand your tenancy agreement. What should you do?", "answers": ["Ask someone trustworthy to explain the rules before signing.", "Sign it anyway.", "Only read the rent amount.", "Ignore the small print."], "correctIndex": 0}, {"q": "There is mould in your room and it is affecting your breathing. What should you do?", "answers": ["Report it to the landlord/housing provider and keep a record.", "Paint over it yourself and say nothing.", "Move out overnight.", "Ignore it."], "correctIndex": 0}, {"q": "You are worried visitors to your address could cause trouble. What is sensible?", "answers": ["Set boundaries and follow any rules about guests.", "Let anyone in so you stay popular.", "Hide visitors if staff come.", "Blame others if there is a problem."], "correctIndex": 0}, {"q": "Your hostel says you must attend key-work sessions. What should you do?", "answers": ["Treat them as important and attend, or communicate properly if there is a genuine issue.", "Only go when reminded.", "Skip them if you are tired.", "Complain without attending."], "correctIndex": 0}, {"q": "You want to decorate your room but are unsure what is allowed. What should you do?", "answers": ["Ask first and follow the accommodation rules.", "Do whatever you like because you live there.", "Copy what someone else did.", "Make changes and apologise later."], "correctIndex": 0}, {"q": "You feel isolated in new accommodation. What might help?", "answers": ["Build a routine and connect with safe activities or support groups.", "Lock yourself away all week.", "Spend time with the riskiest people because they are there.", "Ignore the feeling."], "correctIndex": 0}, {"q": "Your housing benefit or rent element seems wrong. What should you do?", "answers": ["Check it quickly with support rather than letting arrears build up.", "Wait a few months.", "Stop paying rent until it is fixed.", "Guess the amount."], "correctIndex": 0}, {"q": "You are offered a room but it is far from your support network. What should you consider?", "answers": ["Balance safety, support, travel, and risk before agreeing.", "Take it because distance solves everything.", "Refuse every option far away.", "Choose whichever is cheapest without thinking further."], "correctIndex": 0}, {"q": "Staff say your room cannot have extra electrical items. What should you do?", "answers": ["Follow the rule or ask politely if there is an approved option.", "Hide them.", "Argue until they give in.", "Borrow electricity from someone else’s room."], "correctIndex": 0}, {"q": "A person from your past keeps turning up near your address. What should you do?", "answers": ["Tell staff or probation because it could affect your safety and stability.", "Meet them outside.", "Ignore it until it gets serious.", "Move without telling anyone."], "correctIndex": 0}, {"q": "You are unsure who to ring when a housing problem happens out of hours. What should help?", "answers": ["Keep emergency/out-of-hours contacts written down or saved safely.", "Wait until morning no matter what.", "Ask random people online.", "Only call family."], "correctIndex": 0}, {"q": "You have an inspection tomorrow and feel embarrassed about the state of your room. What should you do?", "answers": ["Do what you can now and ask for help building a better routine.", "Refuse the inspection.", "Leave before they arrive.", "Hide everything in bin bags."], "correctIndex": 0}, {"q": "A family member asks to use your address for post but it may cause problems. What should you do?", "answers": ["Check whether that is allowed before agreeing.", "Say yes because it is only post.", "Let them do it secretly.", "Agree for one week only."], "correctIndex": 0}, {"q": "You think your accommodation no longer supports your recovery. What is best?", "answers": ["Talk to the right professionals early about safer alternatives.", "Leave immediately without a plan.", "Stay and hope it gets better.", "Start breaking rules so they move you."], "correctIndex": 0}, {"q": "There are rumours about you in supported housing. What is safest?", "answers": ["Keep calm, protect your privacy, and speak to staff if needed.", "Argue with everyone involved.", "Post your side online.", "Threaten to fight people."], "correctIndex": 0}, {"q": "You keep missing housing appointments. What could help most?", "answers": ["Use reminders and treat housing appointments as essential.", "Wait for staff to chase you.", "Only attend when things go wrong.", "Tell them you are too busy."], "correctIndex": 0}, {"q": "You want to move in with a partner. What should you do first?", "answers": ["Think about licence, risk, finances, and support before making the move.", "Do it quickly if feelings are strong.", "Try it secretly.", "Move your things in gradually without telling anyone."], "correctIndex": 0}, {"q": "A neighbour offers you money for holding a parcel. What should you do?", "answers": ["Say no because it could pull you into problems.", "Take it; it is easy money.", "Ask no questions and keep it short-term.", "Hide it until they collect it."], "correctIndex": 0}, {"q": "Your room key goes missing. What should you do?", "answers": ["Report it straight away for safety reasons.", "Wait and see if it turns up next week.", "Leave your door unlocked instead.", "Borrow someone else’s key."], "correctIndex": 0}, {"q": "You are allowed to self-cater but keep running out of food. What might help?", "answers": ["Plan basic meals and a small shopping list/budget.", "Order takeaways until money runs out.", "Skip meals and ignore it.", "Borrow food without asking."], "correctIndex": 0}, {"q": "Your support worker suggests a local community group. What is a good response?", "answers": ["Consider it as a safe way to rebuild routine and connection.", "Refuse everything new automatically.", "Only go if old friends are there.", "Say yes and never attend."], "correctIndex": 0}, {"q": "People are smoking in a shared area where it is not allowed. What should you do?", "answers": ["Use the reporting route or speak to staff rather than causing conflict.", "Join them.", "Scream at them in the hallway.", "Ignore fire risks."], "correctIndex": 0}, {"q": "You have trouble sleeping because of noise in the building. What is sensible?", "answers": ["Raise it properly and try practical coping steps too.", "Start making more noise back.", "Take random sleeping tablets from others.", "Miss all your appointments the next day."], "correctIndex": 0}, {"q": "Your address is part of your licence plan. What does that mean?", "answers": ["You should not make changes casually; discuss them first.", "You can stay anywhere as long as you return sometimes.", "It only matters at night.", "It only matters if police ask."], "correctIndex": 0}, {"q": "You feel judged by where you live. What should you remember?", "answers": ["Stability matters more than pride while you build your future.", "You should leave immediately to save face.", "Hide your address from all support workers.", "Stop engaging with housing staff."], "correctIndex": 0}, {"q": "A landlord asks for a deposit you cannot currently afford. What could help?", "answers": ["Ask about deposit schemes, grants, or support options.", "Borrow from risky people.", "Pay part and disappear.", "Forget the property without asking."], "correctIndex": 0}, {"q": "You need proof of address for a service. What should you do?", "answers": ["Keep safe copies of accepted documents and ask housing if unsure.", "Use someone else’s letter.", "Make one up.", "Wait until the day you need it."], "correctIndex": 0}, {"q": "Shared living is getting tense. What could help reduce conflict?", "answers": ["Clear boundaries, respectful communication, and staff support if needed.", "Keeping score and retaliating.", "Threats.", "Refusing to speak to anyone ever again."], "correctIndex": 0}, {"q": "You are offered a place but the rules feel strict. What is the best view?", "answers": ["Rules can provide stability; understand them before deciding.", "All rules are bad, so refuse it.", "Break the rules quietly.", "Say yes without reading anything."], "correctIndex": 0}, {"q": "A utility bill arrives in a format you do not understand. What should you do?", "answers": ["Ask for help before it becomes a bigger problem.", "Ignore it.", "Pay a random amount.", "Throw it away."], "correctIndex": 0}, {"q": "Your housing worker says planning ahead now could prevent a crisis later. Are they right?", "answers": ["Yes, early action usually gives you more options.", "No, it is better to wait until the last minute.", "Only if things are already serious.", "Only if family get involved."], "correctIndex": 0}, {"q": "You want to rebuild trust with family but need your housing stable too. What is a sensible approach?", "answers": ["Take things steadily and protect the stability you have built.", "Move back with them immediately.", "Expect trust to return overnight.", "Put pressure on them."], "correctIndex": 0}, {"q": "A visitor brings alcohol or drugs into a place where that is not allowed. What should you do?", "answers": ["Protect yourself and tell the right staff if needed.", "Join them briefly.", "Hide it for them.", "Pretend you did not notice."], "correctIndex": 0}, {"q": "You are offered an address but transport to probation would be difficult. What should you consider?", "answers": ["Whether you can realistically keep appointments from there.", "Only the rent price.", "Whether your friends live nearby.", "Nothing; transport always works out."], "correctIndex": 0}, {"q": "You feel ashamed asking for housing help. What should you remember?", "answers": ["Getting help early is smarter than waiting for crisis.", "People will judge you.", "It is better to disappear and sort it alone.", "Only ask after eviction."], "correctIndex": 0}, {"q": "You finally get a stable place. What should be one of your priorities?", "answers": ["Build routine, pay attention to rules, and protect that stability.", "Celebrate by ignoring appointments.", "Invite everyone round.", "Stop engaging with support completely."], "correctIndex": 0}, {"q": "You are finally settled somewhere safer. What helps keep it that way?", "answers": ["Respect the rules, pay attention to appointments, and protect your routine.", "Relax completely and stop engaging.", "Let risky people start visiting.", "Ignore small issues until they grow."], "correctIndex": 0}], "3": [{"q": "You get a text saying your benefits will stop unless you click a link. What should you do?", "answers": ["Ignore the link and check through your official account or helpline.", "Click it quickly.", "Reply asking if it is real.", "Forward it to friends."], "correctIndex": 0}, {"q": "You are short on money for bills this month. What is the best first step?", "answers": ["Contact the important providers early and ask about options.", "Take out a high-cost loan immediately.", "Ignore the bills.", "Borrow from risky people."], "correctIndex": 0}, {"q": "A debt collector contacts you about a debt you do not recognise. What should you do?", "answers": ["Get proper advice before agreeing to anything.", "Pay a bit just in case.", "Throw the letters away.", "Give your card details to verify yourself."], "correctIndex": 0}, {"q": "You feel anxious about a Jobcentre appointment. What is the best approach?", "answers": ["Ask for support or reasonable adjustments rather than not going.", "Miss it and hope for the best.", "Send someone else in your place.", "Turn up very late."], "correctIndex": 0}, {"q": "You have started casual work and are unsure if Universal Credit needs to know. What should you do?", "answers": ["Report the change properly to avoid problems later.", "Keep it quiet.", "Only mention it if they notice.", "Ask a mate and copy them."], "correctIndex": 0}, {"q": "Your bank card goes missing. What should you do?", "answers": ["Freeze or cancel it through the bank straight away and check transactions.", "Wait a few days.", "Write your PIN down in case it turns up.", "Ignore it."], "correctIndex": 0}, {"q": "You always run out of money before payment day. What might help?", "answers": ["Use a simple budget and track spending honestly.", "Borrow every month.", "Stop paying rent for a bit.", "Guess where your money went."], "correctIndex": 0}, {"q": "A friend asks to move money through your account for a fee. What should you do?", "answers": ["Say no because it could be money laundering.", "Do it once.", "Ask no questions and take the fee.", "Use cash only."], "correctIndex": 0}, {"q": "You are told you have been overpaid benefits. What is the best response?", "answers": ["Get help to understand the letter and arrange the right next step.", "Ignore it.", "Move house.", "Wait until they take you to court."], "correctIndex": 0}, {"q": "You are tempted to borrow from someone linked to crime. What is the safer choice?", "answers": ["Look for safer support options instead.", "Borrow a small amount.", "Take the money and hide it.", "Do it only for essentials."], "correctIndex": 0}, {"q": "You receive a prepaid meter bill and do not understand the charges. What should you do?", "answers": ["Ask someone to explain it before it becomes a crisis.", "Ignore it.", "Top up randomly.", "Switch it off."], "correctIndex": 0}, {"q": "You want to start budgeting but numbers overwhelm you. What could help?", "answers": ["Use a very simple weekly plan or get support doing one.", "Give up on budgeting.", "Only count cash, never bills.", "Spend first and total it later."], "correctIndex": 0}, {"q": "A payday lender advertises 'instant approval'. What is safest?", "answers": ["Be cautious and seek better options before borrowing.", "Take it now and worry later.", "Apply to several at once.", "Use it every month."], "correctIndex": 0}, {"q": "You owe money to more than one place. What is sensible?", "answers": ["Prioritise essentials and get debt advice rather than panicking.", "Pay whoever shouts loudest.", "Ignore everyone.", "Borrow more to cover it."], "correctIndex": 0}, {"q": "Your phone contract payment fails. What should you do?", "answers": ["Contact the provider and see what options exist.", "Cancel the bank card.", "Pretend it is their mistake.", "Take out another contract."], "correctIndex": 0}, {"q": "You feel pressured to lend money to a friend when you cannot afford it. What should you do?", "answers": ["Set a boundary and protect your own stability.", "Lend it to keep the peace.", "Borrow to lend it.", "Give them your card instead."], "correctIndex": 0}, {"q": "You get a letter about council tax and do not know whether you must pay it. What should you do?", "answers": ["Check your situation properly with the council or an adviser.", "Ignore it.", "Assume everyone on benefits is exempt.", "Throw the letter away."], "correctIndex": 0}, {"q": "You want to buy a lot after payday because you feel you deserve a treat. What might help?", "answers": ["Pause, check your budget, and leave essentials covered first.", "Spend first and sort the rest later.", "Use buy-now-pay-later for everything.", "Withdraw all your cash immediately."], "correctIndex": 0}, {"q": "You keep paying late fees because you forget dates. What could help?", "answers": ["Use reminders or a calendar for payment days.", "Hope companies remind you every time.", "Only check once bills have doubled.", "Keep all dates in your head."], "correctIndex": 0}, {"q": "A person offers to sell you a very cheap phone but wants cash today. What should you consider?", "answers": ["Cheap deals can be risky; think before spending money you need.", "Buy it quickly.", "Borrow to buy it.", "Sell something essential to get it."], "correctIndex": 0}, {"q": "You are unsure whether a fine must be paid this week or next month. What should you do?", "answers": ["Read the paperwork and ask for clarification if needed.", "Guess.", "Wait for bailiffs.", "Ignore all official letters."], "correctIndex": 0}, {"q": "You want to improve your credit but do not know how. What is a sensible start?", "answers": ["Pay essentials on time and get proper advice if needed.", "Take on more credit immediately.", "Close your bank account.", "Borrow from friends monthly."], "correctIndex": 0}, {"q": "Your gas and electric use feels high. What might help?", "answers": ["Check your usage, meter, and bills rather than guessing.", "Stop topping up until it resets.", "Ignore it.", "Only use candles."], "correctIndex": 0}, {"q": "You get cash from temporary work. What should you do with it?", "answers": ["Record it and manage it honestly alongside benefits rules.", "Hide it completely.", "Spend it before anyone knows.", "Lend it all out."], "correctIndex": 0}, {"q": "A shop offers finance for something non-essential. What is smart?", "answers": ["Ask yourself if you really need it and what it will cost overall.", "Take it because payments look small.", "Apply without reading terms.", "Use finance whenever available."], "correctIndex": 0}, {"q": "You feel embarrassed opening bills. What should you remember?", "answers": ["Opening them early gives you more options.", "It is safer not to know.", "Only open the red ones.", "Ask others to hide them."], "correctIndex": 0}, {"q": "You do not know if your rent has been paid through benefits. What should you do?", "answers": ["Check quickly rather than let arrears grow.", "Assume it is fine.", "Wait for an eviction letter.", "Stop talking to housing."], "correctIndex": 0}, {"q": "A friend asks you to be guarantor for something. What should you do?", "answers": ["Understand fully what that means before agreeing, and say no if you cannot risk it.", "Say yes to help them.", "Sign without reading.", "Assume it is only a formality."], "correctIndex": 0}, {"q": "You want to save small amounts but feel it is impossible. What might help?", "answers": ["Start tiny and regularly rather than waiting for a perfect month.", "Give up because savings need lots of money.", "Save only if you have cash left at year-end.", "Keep money loose in your pocket."], "correctIndex": 0}, {"q": "You receive a suspicious refund email asking for bank details. What should you do?", "answers": ["Do not use the email link; check the company through official routes.", "Reply with your details.", "Click and see where it goes.", "Forward it around."], "correctIndex": 0}, {"q": "You owe someone informal money and they are pressuring you. What is safest?", "answers": ["Get support if you feel threatened and avoid making things worse through panic decisions.", "Borrow from someone riskier.", "Hide from everyone forever.", "Agree to anything they ask."], "correctIndex": 0}, {"q": "You cannot afford food by the end of the week. What could help?", "answers": ["Seek legitimate support early and review your budget.", "Steal to get by.", "Take cash from anyone offering.", "Ignore it."], "correctIndex": 0}, {"q": "You are unsure how benefits change when you start a course. What should you do?", "answers": ["Check the rules properly before assuming anything.", "Do nothing and hope.", "Drop the course.", "Ask random people online."], "correctIndex": 0}, {"q": "Your phone is full of shopping apps and temptations. What might help?", "answers": ["Remove triggers that make overspending easier.", "Keep them and trust willpower alone.", "Use them late at night only.", "Open all sale alerts."], "correctIndex": 0}, {"q": "You think direct debits are causing problems. What should you do?", "answers": ["Review what each payment is for before cancelling anything important.", "Cancel them all at once.", "Ignore the account.", "Open a new account and stop using the old one."], "correctIndex": 0}, {"q": "You receive compensation or a one-off payment and are unsure how it affects benefits. What should you do?", "answers": ["Ask for advice before spending or hiding it.", "Keep quiet and spend it fast.", "Move it to someone else’s account.", "Assume small amounts never matter."], "correctIndex": 0}, {"q": "Your electricity runs out often because you top up too late. What could help?", "answers": ["Build a routine for checking credit before it gets urgent.", "Wait until the lights go off.", "Borrow neighbours’ power.", "Blame the meter."], "correctIndex": 0}, {"q": "You see an online advert for 'easy grant money' for a fee. What should you do?", "answers": ["Be cautious and verify through official sources.", "Pay the fee.", "Share your ID immediately.", "Ask them to take payment tomorrow."], "correctIndex": 0}, {"q": "You want more control over spending. What is a practical step?", "answers": ["Separate essentials from non-essentials in your weekly plan.", "Only look at your balance once a month.", "Spend cash first, bills second.", "Ignore small purchases."], "correctIndex": 0}, {"q": "You are scared to check your bank account after a rough month. What should you do?", "answers": ["Look anyway and face it so you can plan your next step.", "Avoid it for weeks.", "Close the app.", "Guess your balance."], "correctIndex": 0}, {"q": "A family member wants to use your bank card to buy something. What should you do?", "answers": ["Keep your card and PIN private.", "Lend it if they are family.", "Tell them your PIN but not the card.", "Let them use contactless only."], "correctIndex": 0}, {"q": "You feel guilty spending any money on yourself. What is healthier?", "answers": ["Budget a small realistic amount rather than swinging between nothing and overspending.", "Spend nothing ever.", "Spend big when you finally crack.", "Ignore your feelings."], "correctIndex": 0}, {"q": "You are trying to rebuild stability after release. Why does budgeting matter?", "answers": ["Because money stress can trigger bigger problems if ignored.", "It does not matter if you avoid opening bills.", "Only rich people budget.", "Budgeting is just for debt."], "correctIndex": 0}, {"q": "You receive repeated calls about money and feel overwhelmed. What should you do?", "answers": ["Slow things down and get support instead of making rushed promises.", "Agree to anything to stop the calls.", "Change number and ignore all debt.", "Borrow more."], "correctIndex": 0}, {"q": "You are offered 'buy now pay later' for groceries. What should you think?", "answers": ["Using credit for basics can create bigger problems later.", "It is a clever trick for every week.", "It is free money.", "It does not count as debt."], "correctIndex": 0}, {"q": "You want to learn money skills properly. What could help?", "answers": ["A support worker, budgeting session, or simple worksheet you can actually use.", "Waiting until you are in crisis.", "Copying strangers online.", "Doing nothing because money is stressful."], "correctIndex": 0}, {"q": "You have a good week and think you no longer need to track spending. What is wiser?", "answers": ["Keep the routine going because consistency matters.", "Stop tracking immediately.", "Celebrate by spending it all.", "Ignore upcoming bills."], "correctIndex": 0}, {"q": "You feel financial pressure is pushing you toward old habits. What should you do?", "answers": ["Reach out early for support before it turns into risky choices.", "Handle it in secret.", "Take quick illegal money.", "Blame the system and give up."], "correctIndex": 0}, {"q": "You are considering opening a basic bank account after release. Why might that help?", "answers": ["It can make bills, wages, and benefits easier to manage safely.", "Cash is always simpler.", "Banks only create problems.", "It is not worth having an account."], "correctIndex": 0}, {"q": "You are offered a 'deal' on household goods from someone unreliable. What should you think first?", "answers": ["Cheap can still be risky if it drags you into problems or debt.", "Buy now because it is a bargain.", "Use rent money for it.", "Ask no questions."], "correctIndex": 0}], "4": [{"q": "A job application asks about convictions and you are unsure what to say. What is best?", "answers": ["Answer honestly in line with the guidance you have been given and get support if needed.", "Leave it blank.", "Lie.", "Avoid every job that asks."], "correctIndex": 0}, {"q": "You have an interview tomorrow and want to cancel because you are nervous. What should you do?", "answers": ["Get support preparing instead of disappearing.", "Do not turn up.", "Cancel without explanation.", "Turn up late to lower expectations."], "correctIndex": 0}, {"q": "A coworker makes a comment about your past. What is the best response?", "answers": ["Address it calmly or use the right workplace support route.", "Shout back in front of everyone.", "Quit immediately without speaking up.", "Post about them online."], "correctIndex": 0}, {"q": "You want to build a CV but do not know where to begin. What should you do?", "answers": ["Use support, a template, or a worker to help build one step by step.", "Copy someone else’s exactly.", "Leave work history blank.", "Guess what employers want."], "correctIndex": 0}, {"q": "Your course work is building up and you feel behind. What is best?", "answers": ["Speak to the tutor early and ask for support or a catch-up plan.", "Drop out silently.", "Ignore assignments.", "Only attend when you feel confident."], "correctIndex": 0}, {"q": "Work shifts clash with probation. What should you do?", "answers": ["Talk early to both sides and find a proper solution.", "Miss probation.", "Ignore your employer.", "Ask a colleague to lie."], "correctIndex": 0}, {"q": "You think your record means no employer will want you. What might help?", "answers": ["Get advice from someone who understands criminal record disclosure and realistic job options.", "Give up.", "Lie on every application.", "Only apply for impossible jobs."], "correctIndex": 0}, {"q": "You are unsure whether taking a job will leave you better off after benefits changes. What should you do?", "answers": ["Use a calculator or get help to check properly.", "Assume it is not worth it.", "Take it then quit immediately if unsure.", "Ask a mate and go with their guess."], "correctIndex": 0}, {"q": "An argument starts at work and people want you involved. What is safest?", "answers": ["Stay out of it and respond calmly if needed.", "Jump in so you do not look weak.", "Film it and post it.", "Threaten someone."], "correctIndex": 0}, {"q": "You feel exhausted and are thinking about calling in sick often. What is sensible?", "answers": ["Get support with health/routine and communicate honestly where appropriate.", "Stop turning up.", "Lie every day.", "Quit by text."], "correctIndex": 0}, {"q": "You are offered training that could improve your chances. What is a good response?", "answers": ["Consider it seriously as part of building a future.", "Refuse because study is pointless.", "Sign up and never attend.", "Wait until someone forces you."], "correctIndex": 0}, {"q": "You do not have recent references. What could help?", "answers": ["Ask tutors, support workers, or volunteer supervisors if appropriate.", "Make them up.", "Use a friend pretending to be a manager.", "Leave the section blank always."], "correctIndex": 0}, {"q": "You worry people will judge your gaps in employment. What can help?", "answers": ["Prepare a simple honest explanation focused on moving forward.", "Invent years of work.", "Avoid all interviews.", "Get defensive every time."], "correctIndex": 0}, {"q": "Your tutor says attendance matters as much as ability. Why?", "answers": ["Because reliability is a key skill employers and courses look for.", "Because talent never matters.", "Because only attendance gets jobs.", "Because they like rules."], "correctIndex": 0}, {"q": "You are offered cash-in-hand work by someone risky. What is smartest?", "answers": ["Think carefully about safety, legality, and whether it pulls you backwards.", "Take it because it is easy.", "Hide it from everyone.", "Do it short-term only."], "correctIndex": 0}, {"q": "You want to volunteer to build confidence. What is good about that?", "answers": ["It can build routine, references, and confidence if it is safe and realistic.", "It is a waste of time.", "It only matters if paid.", "It replaces probation."], "correctIndex": 0}, {"q": "You freeze up in interviews. What could help?", "answers": ["Practice questions aloud and prepare a few key examples.", "Go in cold every time.", "Avoid eye contact and say little.", "Cancel at the last minute."], "correctIndex": 0}, {"q": "You are not sure what job suits you now. What is a sensible step?", "answers": ["Look at your strengths, interests, and realistic next steps with support if needed.", "Apply for everything randomly.", "Wait for the perfect job to appear.", "Let others decide completely."], "correctIndex": 0}, {"q": "A manager gives you feedback and you feel defensive. What is best?", "answers": ["Listen, ask questions, and use it to improve if it is fair.", "Argue immediately.", "Walk out.", "Ignore them."], "correctIndex": 0}, {"q": "Your travel to work would be long and risky for your routine. What should you consider?", "answers": ["Whether you can sustain it reliably over time.", "Only the wage.", "Whether friends live nearby.", "Nothing; any job will do."], "correctIndex": 0}, {"q": "You want to explain rehabilitation positively in an interview. What helps?", "answers": ["Focus on what you learned, what support you use, and how you stay on track.", "Blame everyone else.", "Give your whole life story.", "Pretend nothing happened."], "correctIndex": 0}, {"q": "You miss one class and feel like quitting. What is wiser?", "answers": ["Get back in quickly rather than turning one wobble into a drop-out.", "Give up.", "Wait months.", "Tell yourself you have failed."], "correctIndex": 0}, {"q": "You feel overwhelmed by forms for training. What could help?", "answers": ["Ask for help with the forms rather than avoiding the opportunity.", "Ignore deadlines.", "Submit blank sections.", "Get someone else to sign for you."], "correctIndex": 0}, {"q": "A workplace asks for ID and proof of address. What should you do?", "answers": ["Prepare your documents early so you are ready.", "Wait until the first shift.", "Use someone else’s.", "Assume they will not ask."], "correctIndex": 0}, {"q": "You struggle with confidence because of your past. What might help?", "answers": ["Small achievable goals and regular positive routine.", "Avoid every challenge.", "Stay home until confidence appears.", "Compare yourself harshly to others."], "correctIndex": 0}, {"q": "A course includes group work and that makes you anxious. What should you do?", "answers": ["Talk to the tutor and find ways to manage rather than dropping out.", "Refuse all group tasks.", "Skip that part.", "Tell others to do it for you."], "correctIndex": 0}, {"q": "You get rejected from a role you wanted. What is healthiest?", "answers": ["See it as one setback, learn from it, and keep going.", "Decide nobody will ever hire you.", "Argue with the employer.", "Stop applying."], "correctIndex": 0}, {"q": "You are unsure whether to tell an employer about probation appointments. What should you do?", "answers": ["Handle it carefully and honestly as needed, especially if scheduling is affected.", "Hide it until it becomes a problem.", "Never mention anything relevant.", "Miss appointments instead."], "correctIndex": 0}, {"q": "A friend says work is pointless because benefits are easier. What should you remember?", "answers": ["Purpose, routine, self-belief, and long-term options matter too.", "They are definitely right.", "Work only matters if you love it.", "There is no future benefit to trying."], "correctIndex": 0}, {"q": "You want to build skills from scratch. What is a realistic approach?", "answers": ["Start where you are and build step by step.", "Wait until you can do a high-level course.", "Pretend you already know it.", "Do five courses at once."], "correctIndex": 0}, {"q": "You are offered an apprenticeship or entry-level role with support. What is worth considering?", "answers": ["Growth matters; not every good step starts at the top.", "Only high pay matters.", "Entry-level roles are beneath you.", "Support means you are weak."], "correctIndex": 0}, {"q": "You forget deadlines easily. What could help?", "answers": ["Use reminders, a planner, and one place for dates.", "Rely on memory.", "Wait until people chase you.", "Only track the fun stuff."], "correctIndex": 0}, {"q": "Your reading or writing skills affect applications. What should you do?", "answers": ["Get support rather than letting shame block progress.", "Hide it and hope.", "Avoid applying.", "Ask someone to do everything for you forever."], "correctIndex": 0}, {"q": "You have a bad first day at work. What is better thinking?", "answers": ["One difficult day does not mean the whole job is wrong.", "Quit at once.", "Argue with everyone.", "Never return."], "correctIndex": 0}, {"q": "A tutor asks why you missed a session. What is best?", "answers": ["Be honest and work on a plan to improve attendance.", "Lie automatically.", "Say it is none of their business.", "Ignore their messages."], "correctIndex": 0}, {"q": "You are invited to a networking event but feel awkward. What could help?", "answers": ["Attend with a simple goal, like speaking to one or two people.", "Avoid all networking forever.", "Pretend to be someone else.", "Stay only if old friends are there."], "correctIndex": 0}, {"q": "You want a stronger routine for work readiness. What might help?", "answers": ["Regular sleep, planning, travel prep, and showing up on time.", "Going to bed at random.", "Skipping meals.", "Leaving late and hoping."], "correctIndex": 0}, {"q": "You are tempted to hide a mistake at work. What is smarter?", "answers": ["Own it early and help put it right.", "Blame someone else.", "Hide it until it gets worse.", "Delete evidence."], "correctIndex": 0}, {"q": "You are asked what you can offer an employer. What should you think about?", "answers": ["Reliability, honesty, willingness to learn, and relevant skills.", "Only what pay you want.", "Only your past struggles.", "Whatever sounds impressive even if false."], "correctIndex": 0}, {"q": "You fear judgement in training spaces. What should you remember?", "answers": ["Many people are there to improve their lives; you do not have to be perfect.", "Everyone is judging you.", "You should leave before they notice you.", "You should never ask questions."], "correctIndex": 0}, {"q": "A course gives homework and you feel annoyed. What is a better view?", "answers": ["Practice between sessions helps progress stick.", "Homework is pointless.", "Only smart people need homework.", "Ignore it and hope for the best."], "correctIndex": 0}, {"q": "You want to change career direction completely. What is a good start?", "answers": ["Research realistic pathways and first steps, not just the end goal.", "Wait for luck.", "Jump in without checking anything.", "Give up because it is too late."], "correctIndex": 0}, {"q": "You are offered support with interview clothes or travel. Is that worth taking?", "answers": ["Yes, practical help can remove barriers.", "No, you should struggle alone.", "Only if it is expensive.", "It means you cannot do the job."], "correctIndex": 0}, {"q": "You think volunteering, study, or work will help you stay out of trouble. Why might that be true?", "answers": ["Routine and purpose can reduce drift and risky choices.", "Being busy never helps anyone.", "Only money matters.", "It only works for other people."], "correctIndex": 0}, {"q": "You are worried about failing. What is the more useful thought?", "answers": ["Trying, learning, and adjusting is how progress usually works.", "Do nothing unless success is guaranteed.", "Failure means stop forever.", "Other people can succeed, not you."], "correctIndex": 0}, {"q": "You complete a course module. What should you do next?", "answers": ["Record the achievement and use it as evidence of progress.", "Forget it immediately.", "Downplay it.", "Assume it changes nothing."], "correctIndex": 0}, {"q": "You want a future different from your past. What role can training and work play?", "answers": ["They can help build identity, stability, income, and confidence over time.", "None at all.", "Only paid work matters.", "It is all luck."], "correctIndex": 0}, {"q": "You have not worked for a while and worry you are 'starting too low'. What is wiser?", "answers": ["A stable next step matters more than pride.", "Wait for a perfect senior role.", "Refuse beginner roles on principle.", "Do nothing until confidence appears."], "correctIndex": 0}, {"q": "You complete a short course and get positive feedback. What should you do with that?", "answers": ["Add it to your CV or records and use it to build momentum.", "Forget it.", "Assume it is not important.", "Hide it because it is only small."], "correctIndex": 0}, {"q": "You are struggling with punctuality. What practical fix could help?", "answers": ["Get ready the night before and plan travel with buffer time.", "Leave later and hope.", "Blame traffic in advance.", "Only be on time for interviews."], "correctIndex": 0}], "5": [{"q": "Someone claiming to be your bank asks you to install an app so they can 'help'. What should you do?", "answers": ["Hang up and contact the bank through official details.", "Install it quickly.", "Let them in for five minutes.", "Call them back on the number they gave."], "correctIndex": 0}, {"q": "A friend sends a link that looks odd. What is safest?", "answers": ["Check with them first and do not open it if unsure.", "Click it because it is from a friend.", "Forward it around.", "Open it on public Wi‑Fi."], "correctIndex": 0}, {"q": "A pop-up says your phone is infected and you must click now. What should you do?", "answers": ["Close it and use trusted routes if you really need support.", "Click it fast.", "Give it your details.", "Download whatever it suggests."], "correctIndex": 0}, {"q": "Someone asks for your National Insurance number and ID photo over social media. What should you do?", "answers": ["Do not send it; verify through official channels.", "Send it if the logo looks real.", "Send only one of the two.", "Ask them to message later."], "correctIndex": 0}, {"q": "A stranger online quickly asks for money after being friendly. What should you do?", "answers": ["Refuse and consider blocking/reporting them.", "Send a small amount.", "Ask for proof then send some.", "Give them your bank details instead."], "correctIndex": 0}, {"q": "An advert promises huge investment returns today. What should you do?", "answers": ["Be cautious and verify properly before doing anything.", "Invest quickly.", "Ask comments if it is good.", "Try a small amount first."], "correctIndex": 0}, {"q": "You are on public Wi‑Fi and want to check your bank. What is safest?", "answers": ["Avoid using sensitive accounts on public Wi‑Fi if possible.", "Use it; it will be fine.", "Share the network with others first.", "Only log in once."], "correctIndex": 0}, {"q": "You get an email saying a law agency wants payment by gift card. What should you do?", "answers": ["Ignore the scam and check official guidance if worried.", "Pay quickly.", "Reply asking for details.", "Send your address."], "correctIndex": 0}, {"q": "You are thinking of posting details about your offence or conditions online. What should you consider?", "answers": ["Privacy, safety, and future consequences before posting.", "Post everything to be honest.", "Ask strangers what to share.", "Share it for attention."], "correctIndex": 0}, {"q": "A caller says they are tech support for a problem you did not know existed. What should you do?", "answers": ["Hang up and contact the real company yourself if needed.", "Let them take control.", "Give them temporary access.", "Ask them to prove it by texting you."], "correctIndex": 0}, {"q": "You use the same password for lots of accounts. What is a better idea?", "answers": ["Use strong different passwords and a safe system to manage them.", "Keep the same one because it is easier.", "Share it with one trusted friend.", "Write it on the phone case."], "correctIndex": 0}, {"q": "You receive a message saying a parcel is waiting and asks for a small fee. What should you do?", "answers": ["Check through the delivery company’s official site or app.", "Pay the fee through the link.", "Reply asking which parcel.", "Use someone else’s card."], "correctIndex": 0}, {"q": "A social media account that looks like a friend asks for a code sent to your phone. What should you do?", "answers": ["Do not share the code; it may be a scam.", "Send it to help them.", "Send part of it.", "Phone them after sending it."], "correctIndex": 0}, {"q": "You want to buy something from an online seller you do not know. What should you do?", "answers": ["Check the seller carefully and avoid rushed payments.", "Send payment by bank transfer instantly.", "Trust them if their photos look nice.", "Buy first, think later."], "correctIndex": 0}, {"q": "Your phone asks to update software. What is usually wise?", "answers": ["Keep your device updated using official updates.", "Ignore updates forever.", "Download updates from random websites.", "Only update once a year."], "correctIndex": 0}, {"q": "You are asked to scan a QR code from a random poster to claim free money. What should you do?", "answers": ["Be cautious; random QR codes can lead to scams.", "Scan it immediately.", "Share it with others first.", "Enter your details quickly."], "correctIndex": 0}, {"q": "A person online says they can clear your debts if you give full access to your phone. What should you do?", "answers": ["Refuse and seek proper debt advice instead.", "Let them help.", "Give access for ten minutes.", "Send them screenshots of banking."], "correctIndex": 0}, {"q": "You feel overwhelmed by constant notifications. What might help?", "answers": ["Turn off non-essential notifications so you can think clearly.", "Leave all alerts on forever.", "Respond instantly to everything.", "Delete every app."], "correctIndex": 0}, {"q": "You think a message may be fake but are embarrassed to ask. What should you remember?", "answers": ["Checking is smarter than guessing when money or safety is involved.", "It is better to click and see.", "Only older people get scammed.", "Ignore your doubts."], "correctIndex": 0}, {"q": "You are joining a new social media group and they ask many personal questions. What should you do?", "answers": ["Keep boundaries and do not overshare.", "Tell them everything so you fit in.", "Share your address if they seem kind.", "Post your paperwork."], "correctIndex": 0}, {"q": "Someone offers to 'fix' your credit or benefits online for a fee. What should you do?", "answers": ["Use trusted official or regulated support instead.", "Pay quickly.", "Give them your login.", "Try it with a small fee."], "correctIndex": 0}, {"q": "Your phone is lost and you had important apps on it. What is the best step?", "answers": ["Use security features, change key passwords, and contact providers if needed.", "Wait and hope.", "Do nothing if it is on silent.", "Tell social media first."], "correctIndex": 0}, {"q": "A message says you have won a prize you do not remember entering. What should you do?", "answers": ["Treat it with suspicion and verify independently.", "Claim it immediately.", "Give card details for delivery.", "Forward it to friends."], "correctIndex": 0}, {"q": "You want to use a second-hand device. What is sensible?", "answers": ["Reset it properly and secure it before using it for personal accounts.", "Log straight into banking.", "Trust that the old owner removed everything.", "Use it without updates."], "correctIndex": 0}, {"q": "Someone asks you to send a selfie holding your ID. What should you do?", "answers": ["Only ever do that through a trusted official process you initiated.", "Send it because it is probably normal.", "Send a blurred version.", "Do it on social media chat."], "correctIndex": 0}, {"q": "You receive pressure to respond quickly or lose out. What is a common scam sign?", "answers": ["Urgency designed to stop you thinking clearly.", "A polite tone.", "A company logo.", "Correct spelling."], "correctIndex": 0}, {"q": "Your email password may have been leaked. What should you do?", "answers": ["Change it promptly and review security on linked accounts.", "Wait for something bad to happen.", "Use the same password again with a number added everywhere.", "Ignore the warning."], "correctIndex": 0}, {"q": "A job advert asks for money upfront to secure an interview. What should you do?", "answers": ["Be very cautious; real jobs should not usually work like that.", "Pay to show commitment.", "Borrow to pay it.", "Ask if they take gift cards."], "correctIndex": 0}, {"q": "You are using a shared computer. What is important?", "answers": ["Log out properly and avoid saving passwords.", "Leave your accounts open.", "Save passwords for convenience.", "Use it for everything sensitive without caution."], "correctIndex": 0}, {"q": "Someone offers you easy money to make new accounts with your details. What should you do?", "answers": ["Say no; misuse of your identity can cause big problems.", "Do it once.", "Use slightly false details.", "Ask how much first."], "correctIndex": 0}, {"q": "You do not recognise a payment on your account. What should you do?", "answers": ["Contact the bank and act quickly.", "Wait until next month.", "Ignore small amounts.", "Ask social media first."], "correctIndex": 0}, {"q": "A video claims there is a secret way to wipe your criminal record online. What should you do?", "answers": ["Be sceptical and look for real legal information instead.", "Believe it because it sounds hopeful.", "Pay for the secret.", "Share your documents."], "correctIndex": 0}, {"q": "You want more privacy online. What could help?", "answers": ["Review privacy settings and think before posting personal details.", "Post less carefully but more often.", "Accept every friend request.", "Use one public profile for everything."], "correctIndex": 0}, {"q": "A romantic contact online starts asking for help with travel money. What should you think?", "answers": ["Romance scams are common; do not send money.", "Send a little to prove trust.", "Give them your card for booking.", "Promise more later."], "correctIndex": 0}, {"q": "Your child or relative borrows your phone and nearly buys something by mistake. What might help?", "answers": ["Use app locks, purchase controls, or remove saved payment methods.", "Leave everything open.", "Give them your bank PIN too.", "Turn off the phone permanently."], "correctIndex": 0}, {"q": "A QR code on social media says you can claim government support instantly. What should you do?", "answers": ["Check official sites instead of trusting random codes.", "Scan it right away.", "Share it to friends first.", "Enter your full details."], "correctIndex": 0}, {"q": "You get a voicemail saying your bank account is under investigation. What should you do?", "answers": ["Use official contact routes, not the voicemail callback number.", "Ring back immediately on that number.", "Send your details by text.", "Delete your banking app."], "correctIndex": 0}, {"q": "You are tired and more likely to click the wrong thing. What is a good rule?", "answers": ["Pause before clicking when money, identity, or pressure is involved.", "Do things faster.", "Trust gut feeling only.", "Answer every call."], "correctIndex": 0}, {"q": "A person says they can manage your online accounts for you. What should you do?", "answers": ["Keep control of your own logins unless there is a safe, formal support process.", "Hand them over.", "Share passwords temporarily.", "Send screenshots only."], "correctIndex": 0}, {"q": "You see misinformation online about licence rules. What should you do?", "answers": ["Check with the actual professionals or official guidance.", "Believe the loudest post.", "Argue in comments.", "Share it just in case."], "correctIndex": 0}, {"q": "You are locked out of an account and a random 'helper' messages you. What should you do?", "answers": ["Use the platform’s own recovery steps.", "Let the stranger help.", "Give them your email password.", "Pay them."], "correctIndex": 0}, {"q": "You want to protect your future employers from finding risky posts. What might help?", "answers": ["Review old posts and tighten privacy settings.", "Post more to push the old ones down.", "Delete the app and ignore it.", "Make everything public and hope."], "correctIndex": 0}, {"q": "You are sent a link to download a cracked app. What is safest?", "answers": ["Avoid unofficial downloads that can carry malware or other risks.", "Try it because it is free.", "Install it then delete it.", "Send it to others."], "correctIndex": 0}, {"q": "Your phone backup is never checked. Why could that matter?", "answers": ["Backups help if your device is lost, stolen, or damaged.", "Backups are only for experts.", "They are pointless if your phone works now.", "They cause scams automatically."], "correctIndex": 0}, {"q": "You feel silly asking for help with online safety. What should you remember?", "answers": ["Scams target everyone; asking is sensible.", "You should already know everything.", "Only older people need help.", "It is safer to guess."], "correctIndex": 0}, {"q": "You want a safer digital routine after release. What is a strong starting point?", "answers": ["Slow down, verify things, and keep personal details protected.", "Click fast and sort it later.", "Trust friendly messages.", "Use the same login everywhere."], "correctIndex": 0}, {"q": "Someone sends a voice note saying your account is locked and you must confirm your details. What should you do?", "answers": ["Do not share details; contact the company using official routes.", "Reply with your details.", "Send half the information.", "Call the number in the voice note."], "correctIndex": 0}, {"q": "You want to keep your phone safer in case it is stolen. What helps?", "answers": ["Use a screen lock and know how to locate or wipe the device.", "Leave it unlocked for speed.", "Keep passwords in notes on the home screen.", "Turn location off forever."], "correctIndex": 0}, {"q": "A message appears saying you can get fast licence advice by paying a stranger online. What should you do?", "answers": ["Use your actual probation/support contacts, not random people online.", "Pay them if the message sounds confident.", "Share paperwork first.", "Ask if they take gift cards."], "correctIndex": 0}, {"q": "You feel pressured to answer unknown calls instantly. What is a safer rule?", "answers": ["Let suspicious calls go to voicemail and verify before responding.", "Answer every call immediately.", "Ring unknown missed calls back without thinking.", "Give details so the call ends faster."], "correctIndex": 0}], "6": [{"q": "You feel close to using again after a stressful week. What is the best first step?", "answers": ["Reach out to support rather than sitting with it alone.", "Keep it secret.", "Visit old contacts.", "Have a little to take the edge off."], "correctIndex": 0}, {"q": "You have stayed indoors for days and feel cut off. What might help first?", "answers": ["Contact someone safe or attend a low-pressure activity.", "Stay isolated.", "Go straight to a risky crowd.", "Ignore it."], "correctIndex": 0}, {"q": "Arguments at home are building and you feel quick to anger. What is the best move?", "answers": ["Take space, calm down, and use support strategies rather than reacting.", "Shout louder.", "Smash something.", "Walk out and never return."], "correctIndex": 0}, {"q": "You are sleeping badly and it is affecting everything. What is sensible?", "answers": ["Look at your routine and seek support if it continues.", "Drink to knock yourself out.", "Accept that nothing can help.", "Stay up all night gaming."], "correctIndex": 0}, {"q": "You feel ashamed asking for mental health help. What should you remember?", "answers": ["Asking for help is a strength.", "It means weakness.", "Only crisis matters.", "Professionals cannot help."], "correctIndex": 0}, {"q": "Old friends involved in crime keep inviting you out. What is safest?", "answers": ["Keep distance even if it feels lonely.", "Meet them once.", "Go for a short time.", "Let them plan the evening."], "correctIndex": 0}, {"q": "You feel overwhelmed by appointments and forms. What might help?", "answers": ["Break tasks down and ask for support prioritising them.", "Stop doing any of it.", "Wait until it explodes.", "Ignore letters."], "correctIndex": 0}, {"q": "You have a bad day and think, 'what is the point?' What is a helpful response?", "answers": ["Focus on the next small step and tell someone how you feel.", "Go back to old behaviours.", "Delete all support numbers.", "Give up."], "correctIndex": 0}, {"q": "You want a positive hobby but feel nervous going alone. What could help?", "answers": ["Ask someone to go with you the first time or contact the group beforehand.", "Forget it.", "Turn up and leave immediately.", "Only go if you know everyone."], "correctIndex": 0}, {"q": "You want long-term goals after licence. What is a good start?", "answers": ["Write a few realistic goals and small steps.", "Keep everything vague.", "Aim huge with no plan.", "Do not plan at all."], "correctIndex": 0}, {"q": "You feel triggered by a place, smell, or situation from the past. What should you do?", "answers": ["Notice it early and use your coping plan or get support.", "Test yourself by staying there.", "Ignore it until it takes over.", "Pretend triggers are not real."], "correctIndex": 0}, {"q": "You are bored and boredom often leads you into trouble. What might help?", "answers": ["Create simple structure in the day before boredom grows.", "Wait until something happens.", "Go looking for excitement in risky places.", "Sleep all day."], "correctIndex": 0}, {"q": "You have had one lapse in routine. What is the healthier view?", "answers": ["A wobble can be corrected before it becomes a collapse.", "You have ruined everything.", "Might as well give up.", "Hide it from support."], "correctIndex": 0}, {"q": "You are missing family but contact with some people is complicated. What is sensible?", "answers": ["Be thoughtful about safe, stable contact rather than acting on impulse.", "Turn up unannounced.", "Send angry messages.", "Cut everyone off forever."], "correctIndex": 0}, {"q": "Your mood changes fast and you feel on edge. What could help?", "answers": ["Track patterns and talk to support or a GP if needed.", "Ignore it.", "Self-medicate.", "Blame everyone else."], "correctIndex": 0}, {"q": "You keep saying yes to things that leave you drained. What might help?", "answers": ["Set boundaries so your recovery and stability stay protected.", "Say yes to everyone.", "Avoid everyone completely.", "Explode when you have had enough."], "correctIndex": 0}, {"q": "You feel lonely in the evenings. What could reduce risk?", "answers": ["Plan safe evening routines before the emptiness hits.", "Wander around aimlessly.", "Call old risky contacts.", "Drink until you sleep."], "correctIndex": 0}, {"q": "You are angry with yourself about the past. What is a more useful approach?", "answers": ["Use that feeling to guide change, not punish yourself forever.", "Tell yourself you are hopeless.", "Take it out on others.", "Ignore all reflection."], "correctIndex": 0}, {"q": "You struggle to trust support workers. What could help?", "answers": ["Start small and build trust gradually while keeping boundaries.", "Tell them nothing ever.", "Assume they are against you.", "Pretend everything is fine."], "correctIndex": 0}, {"q": "You feel pressure to look strong all the time. What should you remember?", "answers": ["Real strength often looks like honesty and asking for help.", "Strong people never need help.", "You should hide stress.", "Only weakness talks."], "correctIndex": 0}, {"q": "You wake up with no motivation. What is a realistic step?", "answers": ["Pick one small task and get moving.", "Stay in bed all day.", "Cancel everything automatically.", "Wait for motivation first."], "correctIndex": 0}, {"q": "You think one mistake means you always fail. What kind of thinking is healthier?", "answers": ["Progress is usually uneven, and one mistake does not define you.", "Failure is permanent.", "Other people can change, not you.", "There is no point trying."], "correctIndex": 0}, {"q": "A safe person checks in on you and you want to say 'I’m fine' when you are not. What is better?", "answers": ["Be a bit honest so they can actually support you.", "Lie out of habit.", "Ignore them.", "Tell them off."], "correctIndex": 0}, {"q": "You feel restless and want quick excitement. What could help?", "answers": ["Do something active and safe that changes your state.", "Go somewhere risky.", "Spend money you do not have.", "Start arguments online."], "correctIndex": 0}, {"q": "You are worried a relapse or breach could begin with small poor choices. What matters?", "answers": ["Noticing the early warning signs and acting early.", "Only big warning signs matter.", "Waiting until crisis.", "Blaming luck."], "correctIndex": 0}, {"q": "You want to rebuild self-respect. What helps most over time?", "answers": ["Keeping small promises to yourself consistently.", "Making one huge promise once.", "Expecting other people to fix it.", "Avoiding all responsibility."], "correctIndex": 0}, {"q": "A support group feels awkward at first. What is a realistic mindset?", "answers": ["It can take time to feel comfortable; trying matters.", "If it is awkward once, never go back.", "Only go if you know everyone.", "Judge it entirely in five minutes."], "correctIndex": 0}, {"q": "You are frightened of the future. What can make it feel more manageable?", "answers": ["Focus on the next right step, not the whole mountain.", "Avoid thinking at all.", "Demand certainty.", "Assume the worst."], "correctIndex": 0}, {"q": "You notice certain music, social media, or places pull you backwards. What should you do?", "answers": ["Be honest about triggers and change your environment where needed.", "Keep testing yourself with them.", "Ignore the pattern.", "Tell yourself you are overreacting."], "correctIndex": 0}, {"q": "You have energy but no direction. What might help?", "answers": ["Channel it into exercise, study, work prep, or practical goals.", "Spend it on arguments.", "Walk into old environments.", "Stay chaotic."], "correctIndex": 0}, {"q": "You are tempted to hide a wobble because you do not want disappointment. What is wiser?", "answers": ["Tell someone early while it is still manageable.", "Hide it until it becomes obvious.", "Disappear.", "Blame others."], "correctIndex": 0}, {"q": "You think everyone else is moving on faster than you. What should you remember?", "answers": ["Your pace can still be real progress.", "You have already lost.", "You should compare constantly.", "There is no point continuing."], "correctIndex": 0}, {"q": "You want more confidence. How is it often built?", "answers": ["By repeated small actions, not waiting to feel ready.", "By doing nothing until confidence appears.", "By pretending loudly.", "By never making mistakes."], "correctIndex": 0}, {"q": "You are asked what helps you stay well. Why is it good to know the answer?", "answers": ["Knowing your protective factors helps you use them on purpose.", "It is pointless self-help talk.", "Only professionals need to know.", "It changes every hour so do not think about it."], "correctIndex": 0}, {"q": "You miss your old identity even though it was destructive. What can help?", "answers": ["Build a new identity around healthier roles and routines.", "Go back to the old one a bit.", "Keep living between both.", "Pretend identity does not matter."], "correctIndex": 0}, {"q": "You feel tense after seeing bad news. What could help regulate you?", "answers": ["Step away, breathe, move your body, and reset before reacting.", "Scroll for more stress.", "Message risky people.", "Bottle it up."], "correctIndex": 0}, {"q": "You want to prove to yourself that change is real. What is strong evidence?", "answers": ["Consistent safe choices over time.", "One dramatic speech.", "What other people say only.", "A single perfect week."], "correctIndex": 0}, {"q": "You are facing a setback in housing, work, or money. What mindset helps recovery?", "answers": ["Setbacks can be addressed without losing the whole journey.", "One setback ends everything.", "You should give up quickly.", "Hide from every service."], "correctIndex": 0}, {"q": "You feel guilty for needing support after prison. What is truer?", "answers": ["Support is part of rebuilding, not proof of failure.", "You should be fully sorted by now.", "Only weak people use support.", "You owe everyone silence."], "correctIndex": 0}, {"q": "You are trying to stay away from old areas. What might make that easier?", "answers": ["Plan your routes and alternatives in advance.", "Just wing it.", "Go near them to test yourself.", "Ask old contacts for lifts."], "correctIndex": 0}, {"q": "You have free time at the weekend and that is often risky. What might help?", "answers": ["Plan something safe before the weekend arrives.", "Decide in the moment.", "Stay bored and hope.", "Call whoever is around."], "correctIndex": 0}, {"q": "You want better emotional control. What could support that?", "answers": ["Learning simple coping tools and practising them before crisis.", "Waiting until anger is huge.", "Assuming it will fix itself.", "Taking it out on others."], "correctIndex": 0}, {"q": "You think nobody understands what you are carrying. What could still help?", "answers": ["Safe connection with one person is often more powerful than isolation.", "Stay alone.", "Only talk to people from your worst days.", "Shut down completely."], "correctIndex": 0}, {"q": "You notice you only contact support when things are already very bad. What is a smarter habit?", "answers": ["Use support earlier, not only at crisis point.", "Wait until breakdown.", "Avoid support on good days.", "Hide the build-up."], "correctIndex": 0}, {"q": "You are asked what your warning signs are. Why does that matter?", "answers": ["Knowing them helps you spot trouble sooner.", "It does not matter.", "Only professionals need warning signs.", "Warning signs appear too late."], "correctIndex": 0}, {"q": "You want a life that feels worth protecting. What usually builds that?", "answers": ["Routine, purpose, relationships, and small progress over time.", "Luck alone.", "Money alone.", "Avoiding everyone."], "correctIndex": 0}, {"q": "You are tired of being judged and tempted to act out. What is stronger?", "answers": ["Staying focused on your future rather than proving something today.", "Reacting to every slight.", "Threatening people.", "Burning bridges."], "correctIndex": 0}, {"q": "You have made progress already. What should you do with that?", "answers": ["Notice it and use it as proof that more progress is possible.", "Dismiss it.", "Say it does not count.", "Undo it by drifting."], "correctIndex": 0}, {"q": "You have a strong craving that feels like it will last forever. What is useful to remember?", "answers": ["Cravings often rise and fall, so getting through the moment matters.", "It will control you no matter what.", "You should give in now.", "Nothing helps once it starts."], "correctIndex": 0}, {"q": "You want to protect your progress on hard days. What could help?", "answers": ["A written coping plan with names, numbers, and practical steps.", "Relying on memory only.", "Throwing support numbers away.", "Waiting until panic hits."], "correctIndex": 0}]};
+
+let currentLearner = "";
+let currentModule = 0;
+let currentIndex = 0;
+let score = 0;
+let hasAnswered = false;
+let completedModules = new Set();
+let selectedAnswers = {};
+
+function sanitiseName(name) {
+  return (name || "").trim().replace(/\s+/g, " ");
+}
+
+function hashPin(pin) {
+  try {
+    return btoa(unescape(encodeURIComponent(pin)));
+  } catch (e) {
+    return pin;
+  }
+}
+
+function learnerKey(name, pin) {
+  return "reconnectusLearner__" + sanitiseName(name).toLowerCase() + "__" + hashPin(pin);
+}
+
+function getRegistry() {
+  try {
+    return JSON.parse(localStorage.getItem("reconnectusLearnerRegistry") || "{}");
+  } catch (e) {
+    return {};
+  }
+}
+
+function setRegistry(reg) {
+  localStorage.setItem("reconnectusLearnerRegistry", JSON.stringify(reg));
+}
+
+function getStorageKey() {
+  if (!currentLearner) return null;
+  return learnerKey(currentLearner.name, currentLearner.pin);
+}
+
+function defaultProgress() {
+  return {
+    completedModules: [],
+    currentModule: 0,
+    currentIndex: 0,
+    score: 0,
+    selectedAnswers: {}
+  };
+}
+
+function loadStoredProgress() {
+  const key = getStorageKey();
+  if (!key) return defaultProgress();
+  try {
+    const data = JSON.parse(localStorage.getItem(key) || "null");
+    return data || defaultProgress();
+  } catch (e) {
+    return defaultProgress();
+  }
+}
+
+function persistState(showMessage=true) {
+  const key = getStorageKey();
+  if (!key) {
+    if (showMessage) showSaveStatus("No learner is currently logged in.");
+    return;
+  }
+  const reg = getRegistry();
+  reg[key] = { name: currentLearner.name };
+  setRegistry(reg);
+  const payload = {
+    completedModules: Array.from(completedModules),
+    currentModule,
+    currentIndex,
+    score,
+    selectedAnswers
+  };
+  localStorage.setItem(key, JSON.stringify(payload));
+  localStorage.setItem("reconnectusCurrentLearner", JSON.stringify({ name: currentLearner.name, pin: currentLearner.pin }));
+  if (showMessage) showSaveStatus("Progress saved for " + currentLearner.name + " on this device.");
+}
+
+function applyProgress(progress) {
+  completedModules = new Set(progress.completedModules || []);
+  currentModule = Number(progress.currentModule || 0);
+  currentIndex = Number(progress.currentIndex || 0);
+  score = Number(progress.score || 0);
+  selectedAnswers = progress.selectedAnswers || {};
+  renderModuleMenu();
+}
+
+
+
+
+
+
+
+
+
+
+
+function showSaveStatus(message) {
+  document.getElementById("saveStatus").textContent = message || "";
+}
+
+function updateLearnerDisplay() {
+  const learnerDisplay = document.getElementById('learnerDisplay');
+  if (learnerDisplay) {
+    learnerDisplay.textContent = currentLearner ? ('Learner: ' + currentLearner) : 'No shared learner found';
+  }
+}
+
+function renderModuleMenu() {
+  const wrap = document.getElementById("moduleMenuButtons");
+  let html = "";
+  const subtitles = {
+    1: "Reporting, curfew, tags, travel, relationships, and staying compliant",
+    2: "Accommodation, approved addresses, visitors, neighbours, and rebuilding safely",
+    3: "Budgeting, bills, claims, debt, and sensible decisions",
+    4: "Jobs, volunteering, courses, routines, and staying motivated",
+    5: "Scams, passwords, privacy, messages, and safer tech use",
+    6: "Stress, relapse prevention, support, choices, and long-term change"
+  };
+  const titles = {
+    1: "Module 1 — Licence Conditions & Responsibilities",
+    2: "Module 2 — Housing, Family & Community",
+    3: "Module 3 — Money, Benefits & Daily Living",
+    4: "Module 4 — Work, Training & Purpose",
+    5: "Module 5 — Digital Safety, Phones & Online Life",
+    6: "Module 6 — Wellbeing, Triggers & Staying Out"
+  };
+  for (let i = 1; i <= TOTAL_MODULES; i++) {
+    const done = completedModules.has(i) ? '<span class="complete-badge">Completed</span>' : '';
+    html += `
+      <button class="module-btn" onclick="startModule(${i})">
+        ${titles[i]} ${done}
+        <span class="subtitle">${subtitles[i]}</span>
+        <span class="count">50 questions</span>
+      </button>
+    `;
+  }
+  wrap.innerHTML = html;
+}
+
+function startModule(moduleNumber) {
+  if (!currentLearner) {
+    
+    showSaveStatus("Please log in as a learner first.");
+    return;
+  }
+  currentModule = moduleNumber;
+  const savedForModule = selectedAnswers[String(currentModule)];
+  if (savedForModule && typeof savedForModule.currentIndex === "number") {
+    currentIndex = savedForModule.currentIndex;
+    score = savedForModule.score || 0;
+  } else {
+    currentIndex = 0;
+    score = 0;
+    selectedAnswers[String(currentModule)] = { answers: {}, currentIndex: 0, score: 0, complete: false };
+  }
+  hasAnswered = false;
+  document.getElementById("menuView").style.display = "none";
+  document.getElementById("quizView").style.display = "block";
+  document.getElementById("scoreScreen").style.display = "none";
+  document.getElementById("certificateScreen").style.display = "none";
+  document.getElementById("quiz").style.display = "block";
+  loadQuestion();
+}
+
+function loadQuestion() {
+  const moduleQuestions = questions[String(currentModule)];
+  const qObj = moduleQuestions[currentIndex];
+  const total = moduleQuestions.length;
+  const savedModule = selectedAnswers[String(currentModule)] || { answers: {}, currentIndex: currentIndex, score: score, complete: false };
+  selectedAnswers[String(currentModule)] = savedModule;
+  savedModule.currentIndex = currentIndex;
+  savedModule.score = score;
+  const priorAnswer = savedModule.answers[String(currentIndex)];
+  const box = document.getElementById("quiz");
+  let html = "";
+  html += `<div class="question-meta">Learner: ${currentLearner.name} · Module ${currentModule} · Question ${currentIndex + 1} of ${total}</div>`;
+  html += `<div class="question-text">${qObj.q}</div>`;
+  qObj.answers.forEach((ans, i) => {
+    html += `<div class="answer" data-index="${i}" onclick="selectAnswer(${i})">${ans}</div>`;
+  });
+  box.innerHTML = html;
+  document.getElementById("nextBtn").style.display = "none";
+  hasAnswered = false;
+  if (typeof priorAnswer === "number") {
+    applySavedAnswer(priorAnswer);
+  }
+  persistState(false);
+}
+
+function applySavedAnswer(index) {
+  const moduleQuestions = questions[String(currentModule)];
+  const qObj = moduleQuestions[currentIndex];
+  const answersEls = document.querySelectorAll(".answer");
+  answersEls.forEach((el, i) => {
+    el.classList.add("disabled");
+    if (i === qObj.correctIndex) el.classList.add("correct");
+    if (i === index && index !== qObj.correctIndex) el.classList.add("wrong");
+  });
+  hasAnswered = true;
+  document.getElementById("nextBtn").style.display = "inline-block";
+}
+
+function selectAnswer(index) {
+  if (hasAnswered) return;
+  hasAnswered = true;
+  const moduleQuestions = questions[String(currentModule)];
+  const qObj = moduleQuestions[currentIndex];
+  const answersEls = document.querySelectorAll(".answer");
+  const savedModule = selectedAnswers[String(currentModule)] || { answers: {}, currentIndex: 0, score: 0, complete: false };
+  selectedAnswers[String(currentModule)] = savedModule;
+  savedModule.answers[String(currentIndex)] = index;
+  answersEls.forEach((el, i) => {
+    el.classList.add("disabled");
+    if (i === qObj.correctIndex) el.classList.add("correct");
+    if (i === index && index !== qObj.correctIndex) el.classList.add("wrong");
+  });
+  const correctSoFar = Object.entries(savedModule.answers).filter(([qIndex, ans]) => {
+    const q = moduleQuestions[Number(qIndex)];
+    return q && ans === q.correctIndex;
+  }).length;
+  score = correctSoFar;
+  savedModule.score = score;
+  savedModule.currentIndex = currentIndex;
+  document.getElementById("nextBtn").style.display = "inline-block";
+  persistState(false);
+}
+
+function nextQuestion() {
+  const moduleQuestions = questions[String(currentModule)];
+  currentIndex++;
+  const savedModule = selectedAnswers[String(currentModule)];
+  if (currentIndex >= moduleQuestions.length) {
+    endModule();
+  } else {
+    if (savedModule) savedModule.currentIndex = currentIndex;
+    loadQuestion();
+  }
+}
+
+function endModule() {
+  document.getElementById("quiz").style.display = "none";
+  const scr = document.getElementById("scoreScreen");
+  const moduleQuestions = questions[String(currentModule)];
+  const total = moduleQuestions.length;
+  const savedModule = selectedAnswers[String(currentModule)] || { answers: {}, score: 0 };
+  const finalScore = Object.entries(savedModule.answers).filter(([qIndex, ans]) => {
+    const q = moduleQuestions[Number(qIndex)];
+    return q && ans === q.correctIndex;
+  }).length;
+  score = finalScore;
+  const percent = Math.round((finalScore / total) * 100);
+  completedModules.add(currentModule);
+  savedModule.complete = true;
+  savedModule.currentIndex = total - 1;
+  savedModule.score = finalScore;
+  const modulesDone = completedModules.size;
+  let html = `
+    <h2>Module ${currentModule} complete</h2>
+    <p>You scored <strong>${finalScore}</strong> out of <strong>${total}</strong> (${percent}%).</p>
+    <p>You have completed <strong>${modulesDone}</strong> out of <strong>${TOTAL_MODULES}</strong> modules.</p>
+  `;
+  if (modulesDone === TOTAL_MODULES) {
+    html += `
+      <p>You have completed all modules in the RECONNECT-US programme.</p>
+      <p>If you would like a final certificate, enter the learner's name below.</p>
+      <input id="certName" class="cert-input" placeholder="Learner name" value="${currentLearner ? currentLearner.name : 'Learner'}" />
+      <br />
+      <button class="cert-btn" onclick="generateProgrammeCertificate()">Generate final certificate</button>
+    `;
+  } else {
+    html += `<p>Use <strong>Back to module list</strong> to choose the next module.</p>`;
+  }
+  scr.innerHTML = html;
+  scr.style.display = "block";
+  renderModuleMenu();
+  persistState(true);
+}
+
+function generateProgrammeCertificate() {
+  const nameInput = document.getElementById("certName");
+  const name = (nameInput && nameInput.value.trim()) || (currentLearner ? currentLearner.name : "Learner");
+  const certDiv = document.getElementById("certificateScreen");
+  const scr = document.getElementById("scoreScreen");
+  const today = new Date().toLocaleDateString();
+  scr.style.display = "none";
+  certDiv.innerHTML = `
+    <div class="question-box" style="max-width:760px; margin:auto;">
+      <div style="border:3px solid var(--primary); padding:34px 26px; border-radius:16px;">
+        <div style="font-size:1.9rem; font-weight:bold; margin-bottom:18px; color:var(--primary);">Certificate of Achievement</div>
+        <p>This certifies that</p>
+        <p><strong>${name}</strong></p>
+        <p>has successfully completed all six modules of the</p>
+        <p><strong>RECONNECT-US Life After Prison Learning Programme</strong>.</p>
+        <p>Date: ${today}</p>
+        <p>Facilitator / Organisation: <strong>RECONNECT-US</strong></p>
+        <button class="cert-btn" onclick="window.print()">Print / Save as PDF</button>
+      </div>
+    </div>
+  `;
+  certDiv.style.display = "block";
+}
+
+function exitModule() {
+  document.getElementById("quizView").style.display = "none";
+  document.getElementById("menuView").style.display = "block";
+  document.getElementById("quiz").style.display = "none";
+  document.getElementById("scoreScreen").style.display = "none";
+  document.getElementById("certificateScreen").style.display = "none";
+  currentModule = 0;
+  currentIndex = 0;
+  score = 0;
+  hasAnswered = false;
+  persistState(false);
+}
+
+function syncLearnerFromHub(){
+  const hubLearner = getSharedHubLearnerName();
+  if (hubLearner) {
+    currentLearner = hubLearner;
+  } else {
+    currentLearner = "";
+  }
+  updateLearnerDisplay();
+}
+function toggleFullscreen() {
+  if (!document.fullscreenElement && document.documentElement.requestFullscreen) {
+    document.documentElement.requestFullscreen().catch(()=>{});
+  } else if (document.exitFullscreen) {
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+
+let ruFullscreenWanted = true;
+function ruTryFullscreen() {
+  if (!ruFullscreenWanted) return;
+  if (document.fullscreenElement) return;
+  const el = document.documentElement;
+  const req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
+  if (req) {
+    try {
+      const p = req.call(el);
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    } catch (e) {}
+  }
+}
+function ruDismissOverlay() {
+  const overlay = document.getElementById("startOverlay");
+  if (!overlay) return;
+  overlay.classList.add("fade-out");
+  setTimeout(() => {
+    overlay.style.display = "none";
+  }, 360);
+}
+function ruShowOverlay() {
+  const overlay = document.getElementById("startOverlay");
+  if (!overlay) return;
+  overlay.style.display = "flex";
+  requestAnimationFrame(() => overlay.classList.remove("fade-out"));
+}
+function ruStartFromInteraction(e) {
+  const overlay = document.getElementById("startOverlay");
+  if (overlay && overlay.style.display !== "none" && !e.target.closest('.overlay-card')) {
+    ruTryFullscreen();
+    ruDismissOverlay();
+    return;
+  }
+  if (!document.fullscreenElement) ruTryFullscreen();
+}
+document.addEventListener("click", ruStartFromInteraction, true);
+document.addEventListener("touchstart", ruStartFromInteraction, {passive:true, capture:true});
+document.addEventListener("fullscreenchange", () => {
+  const btn = document.getElementById("fullscreenBtn");
+  if (btn) btn.textContent = document.fullscreenElement ? "Exit full screen" : "Full screen";
+});
+window.addEventListener("load", () => {
+  const helpBtn = document.getElementById("helpBtn");
+  if (helpBtn) {
+    helpBtn.addEventListener("click", function(ev) {
+      ev.stopPropagation();
+      ruShowOverlay();
+    });
+  }
+  renderModuleMenu();
+  updateLearnerDisplay();
+  const current = localStorage.getItem("reconnectusCurrentLearner");
+  if (current) {
+    try {
+      const parsed = JSON.parse(current);
+      if (parsed && parsed.name && parsed.pin) {
+        document.getElementById("learnerNameInput").value = parsed.name;
+        document.getElementById("learnerPinInput").value = parsed.pin;
+      }
+    } catch (e) {}
+  }
+});
+
+document.addEventListener('DOMContentLoaded', function(){
+  syncLearnerFromHub();
+  const backBtn = document.getElementById('backBtn');
+  if (backBtn){
+    backBtn.addEventListener('click', function(){
+      if (document.referrer && history.length > 1) {
+        history.back();
+      } else {
+        window.location.href = 'index.html';
+      }
+    });
+  }
+});
+
+</script>
+
+<script>
+function goFullscreenOnce(){
+  if (!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
+  document.removeEventListener('click', goFullscreenOnce);
+  document.removeEventListener('touchstart', goFullscreenOnce);
+}
+document.addEventListener('click', goFullscreenOnce);
+document.addEventListener('touchstart', goFullscreenOnce);
+</script>
+
+</body>
+</html>
