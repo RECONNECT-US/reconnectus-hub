@@ -1,0 +1,1166 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>RECONNECT-US – Online Survival Game (Levels + Fullscreen)</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+:root {
+  --bg-gradient-start: #020617;
+  --bg-gradient-end: #0b1120;
+  --accent-teal: #22d3ee;
+  --accent-orange: #fb923c;
+  --accent-green: #22c55e;
+}
+* { box-sizing: border-box; }
+html, body {
+  margin:0; padding:0; height:100%;
+}
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: radial-gradient(circle at top, var(--bg-gradient-start), var(--bg-gradient-end));
+  color:#f9fafb;
+}
+.outer-frame {
+  padding:15px;
+  border:6px solid #1f2937;
+  height:100vh;
+  box-sizing:border-box;
+  overflow:auto;
+}
+.inner {
+  max-width:900px;
+  margin:auto;
+  background:#020617;
+  padding:15px;
+  border-radius:12px;
+  border:2px solid #374151;
+}
+.logo {
+  width:100%;
+  max-width:420px;
+  display:block;
+  margin:0 auto 10px auto;
+}
+.header-text {
+  text-align:center;
+  font-size:12px;
+  color:#9ca3af;
+  margin-bottom:10px;
+}
+.game-card {
+  background:rgba(2,6,23,0.96);
+  border:1px solid #111827;
+  border-radius:14px;
+  padding:10px;
+}
+h2 { margin:4px 0 8px; font-size:18px; }
+h3 { margin:4px 0 6px; font-size:16px; }
+.small { font-size:12px; color:#9ca3af; }
+.level-buttons {
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin:8px 0;
+}
+button {
+  font-family:inherit;
+  font-size:14px;
+  padding:6px 12px;
+  border-radius:999px;
+  border:none;
+  cursor:pointer;
+}
+
+.password-input {
+  width:100%;
+  padding:6px 12px;
+  border-radius:999px;
+  border:1px solid #4b5563;
+  background:#020617;
+  color:#f9fafb;
+  margin-top:4px;
+}
+
+.btn-primary {
+  background:var(--accent-green);
+  color:#022c22;
+  font-weight:bold;
+}
+.btn-secondary {
+  background:#020617;
+  color:#f9fafb;
+  border:1px solid #4b5563;
+}
+.btn-ghost {
+  background:transparent;
+  color:#e5e7eb;
+  border:1px solid transparent;
+  font-size:12px;
+}
+.cog-button {
+  font-size:20px;
+  width:32px;
+  height:32px;
+  border-radius:999px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(15,23,42,0.7);
+  color:#e5e7eb;
+  border:1px solid #4b5563;
+  box-shadow:0 0 12px rgba(148,163,184,0.9);
+  padding:0;
+}
+.score-line {
+  font-size:12px;
+  color:#9ca3af;
+  display:flex;
+  justify-content:space-between;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.progress-bar-outer {
+  width:100%;
+  height:6px;
+  border-radius:999px;
+  background:#020617;
+  border:1px solid #111827;
+  overflow:hidden;
+  margin:4px 0 8px;
+}
+.progress-bar-inner {
+  height:100%;
+  width:0%;
+  background:var(--accent-green);
+  transition:width 0.2s ease-out;
+}
+.meta {
+  font-size:12px;
+  color:#9ca3af;
+  margin-bottom:6px;
+}
+.story {
+  font-size:14px;
+  margin:4px 0 6px;
+}
+.character {
+  font-size:12px;
+  color:#9ca3af;
+}
+.options { margin-top:4px; }
+.option-btn {
+  width:100%;
+  text-align:left;
+  margin-top:6px;
+  background:#020617;
+  color:#f9fafb;
+  border-radius:8px;
+  border:1px solid #374151;
+  padding:8px;
+  display:flex;
+  gap:6px;
+}
+.option-label {
+  font-weight:bold;
+  font-size:13px;
+  color:#9ca3af;
+  min-width:18px;
+}
+.option-text { font-size:13px; }
+.option-btn.selected {
+  border-color:#e5e7eb;
+  background:#111827;
+}
+.option-btn.correct {
+  background:#064e3b;
+  border-color:#22c55e;
+}
+.option-btn.wrong {
+  background:#7f1d1d;
+  border-color:#f97373;
+}
+.option-btn:disabled {
+  opacity:0.9;
+  cursor:default;
+}
+.feedback {
+  margin-top:8px;
+  padding:8px;
+  background:#020617;
+  border-radius:8px;
+  border:1px solid #374151;
+  font-size:13px;
+  white-space:pre-line;
+}
+.history-list {
+  margin-top:6px;
+  padding:6px;
+  background:#020617;
+  border-radius:8px;
+  border:1px solid #111827;
+  font-size:11px;
+  color:#9ca3af;
+}
+.history-list table {
+  width:100%;
+  border-collapse:collapse;
+  font-size:11px;
+}
+.history-list th,
+.history-list td {
+  padding:2px 4px;
+  border-bottom:1px solid #111827;
+  text-align:left;
+}
+.history-list th { color:#e5e7eb; }
+.history-empty { font-size:11px; color:#6b7280; }
+.fullscreen-note {
+  font-size:11px;
+  color:#9ca3af;
+  margin-top:4px;
+}
+@media (max-width:768px) {
+  .outer-frame { padding:10px; }
+  .inner { padding:10px; }
+  .game-card { padding:8px; }
+}
+</style>
+</head>
+<body>
+<div class="outer-frame">
+  <div class="inner">
+    <img class="logo" src="data:image/jpeg;base64,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" alt="RECONNECT-US Logo">
+    <div class="header-text">
+      Realistic situations from your RECONNECT-US sessions, with Beginner, Intermediate and Advanced levels.<br><span id="sharedLearnerLabel" style="color:#ffffff;font-weight:bold;">Learner: —</span>
+    </div>
+    <div id="app" style="display:block;">
+      <div class="game-card">
+      <!-- Start Screen -->
+      <div id="screenStart">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+  <h2 style="margin:0;">Online Survival Game</h2>
+</div>
+        <p class="small">
+          Choose a level to play. Beginner uses easier situations. Intermediate uses trickier ones. Advanced uses the hardest, most realistic scenarios.
+        </p>
+        <div class="level-buttons">
+          <button class="btn-primary" onclick="startGame('Beginner')">Beginner</button>
+          <button class="btn-secondary" onclick="startGame('Intermediate')">Intermediate</button>
+          <button class="btn-secondary" onclick="startGame('Advanced')">Advanced</button>
+        </div>
+        <button class="btn-secondary" onclick="goFullscreen()">Go full screen</button>
+        <button class="btn-secondary" id="backBtn" type="button">Back</button>
+        <p class="fullscreen-note">
+          Full screen hides browser bars so it feels like an app. Press Esc to come out of full screen.
+        </p>
+        <p class="small">
+          Some questions have more than one safe answer. Select as many as you think are right, then press <strong>Check answers</strong>.
+        </p>
+        <div id="resumeBlock" style="margin-top:8px; display:none;">
+          <button class="btn-ghost" onclick="resumeGame()">Resume last game</button>
+          <span class="small" id="resumeInfo"></span>
+        </div>
+        <div class="history-list" id="historyBlock">
+          <strong style="font-size:12px;">Recent scores on this device</strong>
+          <div id="historyContent" class="history-empty">No games played yet.</div>
+        </div>
+      </div>
+
+      <!-- Game Screen -->
+      <div id="screenGame" style="display:none;">
+        <div class="score-line">
+          <span>Level: <strong id="levelLabel"></strong></span>
+          <span>Score: <strong id="scoreDisplay">0</strong></span>
+          
+        </div>
+        <div class="progress-bar-outer">
+          <div class="progress-bar-inner" id="progressBar"></div>
+        </div>
+        <p class="meta">
+          Scenario <span id="num"></span> / <span id="total"></span><br>
+          Category: <strong id="cat"></strong> · Difficulty: <span id="diff"></span>
+        </p>
+        <h3 id="title"></h3>
+        <p class="story" id="story"></p>
+        <p class="character" id="char"></p>
+
+        <div class="options" id="opts"></div>
+
+        <div style="margin-top:8px;">
+          <button id="checkBtn" class="btn-primary" onclick="checkAnswers()" disabled>Check answers</button>
+          <button id="nextBtn" class="btn-secondary" onclick="nextScenario()" disabled>Next scenario</button>
+          <button class="btn-ghost" onclick="backToStart()">Quit to levels</button>
+        </div>
+        <div id="feedback" class="feedback" style="display:none;"></div>
+        <p class="small">Tip: Some questions have more than one safe answer.</p>
+        <p class="fullscreen-note">Press Esc to leave full screen at any time.</p>
+      </div>
+
+      <!-- End Screen -->
+      <div id="screenEnd" style="display:none;">
+        <h2>Game complete</h2>
+        <p>Your final score on <strong id="finalLevel"></strong>: <strong id="finalScore"></strong></p>
+        <p class="small" id="summaryText"></p>
+        <div class="level-buttons">
+          <button class="btn-primary" onclick="replaySameLevel()">Play again (same level)</button>
+          <button class="btn-secondary" onclick="backToStart()">Back to level select</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+</div>
+
+<script>
+var PASSWORD_KEY = 'reconnectus_game_password';
+var ACCESS_PASSWORD = getStoredPassword();
+
+function getStoredPassword() {
+  try {
+    var p = localStorage.getItem(PASSWORD_KEY);
+    if (p && p.trim().length > 0) return p;
+  } catch (e) {}
+  return "A5435AEr51031";
+}
+
+function unlockGame() {
+  var input = (document.getElementById('accessPassword').value || '').trim();
+  var error = document.getElementById('passwordError');
+  if (input === ACCESS_PASSWORD) {
+    var ps = document.getElementById('passwordScreen');
+    if (ps) ps.style.display = 'none';
+    var app = document.getElementById('app');
+    if (app) app.style.display = 'block';
+    if (error) error.style.display = 'none';
+  } else {
+    if (error) error.style.display = 'block';
+  }
+}
+
+function toggleChangePassword() {
+  var panel = document.getElementById('changePasswordPanel');
+  if (!panel) return;
+  panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+  var msg = document.getElementById('changePasswordMessage');
+  if (msg) { msg.textContent = ''; msg.style.color = '#9ca3af'; }
+}
+
+function changePassword() {
+  var masterP = (document.getElementById('masterPassword').value || '').trim();
+  var oldP = (document.getElementById('oldPassword').value || '').trim();
+  var newP = (document.getElementById('newPassword').value || '').trim();
+  var confirmP = (document.getElementById('confirmPassword').value || '').trim();
+  var msg = document.getElementById('changePasswordMessage');
+  if (!msg) return;
+
+  if (masterP !== 'Wl0375') {
+    msg.textContent = 'Master password is not correct.';
+    msg.style.color = '#f97373';
+    return;
+  }
+
+  if (oldP !== ACCESS_PASSWORD) {
+    msg.textContent = 'Old password is not correct.';
+    msg.style.color = '#f97373';
+    return;
+  }
+  if (!newP) {
+    msg.textContent = 'New password cannot be empty.';
+    msg.style.color = '#f97373';
+    return;
+  }
+  if (newP !== confirmP) {
+    msg.textContent = 'New password and confirmation do not match.';
+    msg.style.color = '#f97373';
+    return;
+  }
+
+  try {
+    localStorage.setItem(PASSWORD_KEY, newP);
+  } catch (e) {}
+  ACCESS_PASSWORD = newP;
+  msg.textContent = 'Password updated successfully.';
+  msg.style.color = '#22c55e';
+
+  var mp = document.getElementById('masterPassword');
+  if (mp) mp.value = '';
+  document.getElementById('oldPassword').value = '';
+  document.getElementById('newPassword').value = '';
+  document.getElementById('confirmPassword').value = '';
+}
+function returnToPassword() {
+  var app = document.getElementById('app');
+  if (app) app.style.display = 'block';
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  var input = document.getElementById('accessPassword');
+  if (input) {
+    input.addEventListener('keyup', function (e) {
+      if (e.key === 'Enter') {
+        unlockGame();
+      }
+    });
+  }
+});
+
+
+const SHARED_HUB_KEY = "reconnectus_shared_current_learner_v1";
+function normaliseHubLearnerName(raw) {
+  return (raw || '').toUpperCase().replace(/[^A-Z]/g, '').slice(0, 6);
+}
+function getSharedHubLearnerName() {
+  try {
+    const shared = JSON.parse(localStorage.getItem(SHARED_HUB_KEY) || 'null');
+    if (shared && shared.name) return normaliseHubLearnerName(shared.name);
+  } catch (e) {}
+  const params = new URLSearchParams(window.location.search);
+  const learnerFromUrl = normaliseHubLearnerName(params.get('learner') || '');
+  return learnerFromUrl || '';
+}
+function updateSharedLearnerLabel() {
+  var label = document.getElementById('sharedLearnerLabel');
+  if (label) label.textContent = 'Learner: ' + (getSharedHubLearnerName() || '—');
+}
+
+const APP_ID = 'quiz_online_survival';
+const PROFILE_KEY = 'reconnectus_profile';
+const APP_DATA_KEY = 'reconnectus_app_data';
+const TRACKING_KEY = 'reconnectus_tracking_data';
+
+function getHubProfile() {
+  try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); } catch (e) { return null; }
+}
+function getCurrentLearnerName() {
+  var profile = getHubProfile();
+  return (profile && profile.name) || getSharedHubLearnerName() || 'Unknown learner';
+}
+function getLearnerStorageKey(baseKey) {
+  return baseKey + '_' + normaliseHubLearnerName(getCurrentLearnerName() || 'guest');
+}
+function getSharedAppStore() {
+  try { return JSON.parse(localStorage.getItem(APP_DATA_KEY) || '{}'); } catch (e) { return {}; }
+}
+function saveSharedAppProgress(data) {
+  var all = getSharedAppStore();
+  var existing = all[APP_ID] || {};
+  all[APP_ID] = {
+    ...existing,
+    ...data,
+    learnerName: data.learnerName || getCurrentLearnerName(),
+    path: 'quiz/index.html',
+    updatedAt: new Date().toISOString()
+  };
+  localStorage.setItem(APP_DATA_KEY, JSON.stringify(all));
+}
+function clearSharedAppProgress() {
+  var all = getSharedAppStore();
+  if (all[APP_ID]) {
+    delete all[APP_ID];
+    localStorage.setItem(APP_DATA_KEY, JSON.stringify(all));
+  }
+}
+function trackSharedEvent(eventType, payload) {
+  var tracking = { events: [], counters: {} };
+  try { tracking = JSON.parse(localStorage.getItem(TRACKING_KEY) || '{"events":[],"counters":{}}'); } catch (e) {}
+  tracking.events = Array.isArray(tracking.events) ? tracking.events : [];
+  tracking.counters = tracking.counters || {};
+  tracking.events.unshift({ eventType: eventType, payload: payload || {}, timestamp: new Date().toISOString() });
+  tracking.events = tracking.events.slice(0, 150);
+  tracking.counters[eventType] = (tracking.counters[eventType] || 0) + 1;
+  localStorage.setItem(TRACKING_KEY, JSON.stringify(tracking));
+}
+
+var scenarios = [{"id": 1, "category": "Scam text \u2013 parcel", "difficulty": "Easy", "kind": "messageScam", "character": "You are at home using your mobile.", "title": "Unexpected parcel fee", "story": "You get a text: 'We tried to deliver your parcel. Pay a \u00a31.50 redelivery fee now' with a link. You are not expecting a parcel."}, {"id": 2, "category": "Reporting scams \u2013 7726", "difficulty": "Easy", "kind": "messageScam", "character": "You are looking through scam texts on your phone.", "title": "What to do with scam messages", "story": "You recognise a text as a scam and want to do something useful before deleting it."}, {"id": 3, "category": "Passwords \u2013 reusing logins", "difficulty": "Easy", "kind": "passwords", "character": "You are creating a new account.", "title": "Same password everywhere?", "story": "You feel tempted to reuse the same simple password for email, UC, banking and social media so it is easier to remember."}, {"id": 4, "category": "App permissions \u2013 simple app", "difficulty": "Easy", "kind": "deviceSecurity", "character": "You are installing an app.", "title": "Torch app wants too much", "story": "A basic torch app asks for access to contacts, location, camera and microphone."}, {"id": 5, "category": "Public Wi\u2011Fi", "difficulty": "Easy", "kind": "deviceSecurity", "character": "You are at a caf\u00e9.", "title": "Free Wi\u2011Fi temptation", "story": "You connect to free Wi\u2011Fi and think about logging into banking and UC from there."}, {"id": 6, "category": "Scam text \u2013 energy rebate", "difficulty": "Easy", "kind": "messageScam", "character": "You are watching TV in the evening.", "title": "Energy bill refund", "story": "You get a text claiming to be from your energy company offering a refund if you click a link and enter card details."}, {"id": 7, "category": "Doorstep \u2013 charity collection", "difficulty": "Easy", "kind": "doorstep", "character": "You are at home on a Saturday.", "title": "Bucket on the doorstep", "story": "Someone knocks collecting cash for charity, has a bucket but no clear ID and pressures you to give money."}, {"id": 8, "category": "Library computer", "difficulty": "Easy", "kind": "passwords", "character": "You are at a library computer.", "title": "Remember me?", "story": "You log in to email. The browser offers to remember your password and keep you signed in on that computer."}, {"id": 9, "category": "Romance / friendship \u2013 early ask", "difficulty": "Easy", "kind": "friendScam", "character": "You are chatting online.", "title": "New friend, quick request", "story": "Someone you just met online asks for a small amount of money to 'help them out this once'."}, {"id": 10, "category": "Scam text \u2013 council rebate", "difficulty": "Easy", "kind": "messageScam", "character": "You are checking texts.", "title": "Council tax refund", "story": "You get a text saying you are owed a council tax rebate and must click a link to claim within 24 hours."}, {"id": 11, "category": "Misinformation \u2013 viral benefits rumour", "difficulty": "Easy", "kind": "misinfo", "character": "You are in a WhatsApp group.", "title": "UC will stop?", "story": "A message claims all UC will stop next month unless everyone fills in a form linked in the chat, but it is not gov.uk."}, {"id": 12, "category": "Device lost", "difficulty": "Easy", "kind": "deviceSecurity", "character": "You are on the bus.", "title": "Phone left behind", "story": "You realise you may have left your phone on the bus. Your email and UC apps are logged in on it."}, {"id": 13, "category": "Online quiz \u2013 personal info", "difficulty": "Easy", "kind": "misinfo", "character": "You are bored on social media.", "title": "Fun quiz questions", "story": "A 'fun quiz' asks for your first pet's name, the street you grew up on and your mum\u2019s maiden name, then asks you to post answers publicly."}, {"id": 14, "category": "UC on someone else\u2019s phone", "difficulty": "Easy", "kind": "accountSharing", "character": "You are at a relative's home.", "title": "Quick UC check", "story": "A relative offers their phone to log into UC and suggests letting the browser save your login for next time."}, {"id": 15, "category": "AI \u2013 harmless use", "difficulty": "Easy", "kind": "aiUse", "character": "You are using an AI app.", "title": "Help writing messages", "story": "You think about using an AI app to help you write a clear message to your housing officer, without giving passwords or bank details."}, {"id": 16, "category": "Basic phishing email", "difficulty": "Easy", "kind": "messageScam", "character": "You are checking email.", "title": "Random invoice", "story": "You get an email from a stranger saying 'Invoice attached' with a file, but you are not expecting any invoice."}, {"id": 17, "category": "Scam text \u2013 bank", "difficulty": "Medium", "kind": "messageScam", "character": "You are checking your messages.", "title": "Urgent bank warning", "story": "You receive a text that says: 'Suspicious activity on your account. Tap this link now to secure it.' The sender name looks like your bank."}, {"id": 18, "category": "Scam text \u2013 UC / DWP", "difficulty": "Medium", "kind": "messageScam", "character": "You are managing UC online.", "title": "UC payment 'failed'", "story": "You get a text saying your UC payment has failed and you must click a link to update bank details. It is not a gov.uk link."}, {"id": 19, "category": "Remote access pop\u2011up", "difficulty": "Medium", "kind": "remoteAccess", "character": "You are browsing on your laptop.", "title": "Your PC is 'infected'", "story": "A pop\u2011up claims your computer is infected and gives a number to call. The caller asks you to install a remote access app."}, {"id": 20, "category": "Authority scam \u2013 court / police", "difficulty": "Medium", "kind": "phoneScam", "character": "You are relaxing at home.", "title": "Fake court fine", "story": "A caller says they are from the police and you must pay a fine immediately over the phone or go to court."}, {"id": 21, "category": "Benefits \u2018help\u2019 scam", "difficulty": "Medium", "kind": "accountSharing", "character": "You are in a community chat.", "title": "Friend of a friend 'sorts benefits'", "story": "Someone claims they can sort your benefits if you send photos of your ID and bank card via chat."}, {"id": 22, "category": "Gas safety text", "difficulty": "Medium", "kind": "doorstep", "character": "You are checking texts at night.", "title": "Gas check tomorrow?", "story": "You get a text about a gas inspection tomorrow asking you to reply with full name, date of birth and tenancy number."}, {"id": 23, "category": "Housing bidding scam", "difficulty": "Medium", "kind": "messageScam", "character": "You are using the housing bidding website.", "title": "Jump the queue", "story": "A website says it can move you up the housing list if you pay a 'priority fee' by bank transfer."}, {"id": 24, "category": "Public Wi\u2011Fi logins", "difficulty": "Medium", "kind": "deviceSecurity", "character": "You are at a caf\u00e9.", "title": "Logging into banking", "story": "You consider logging into your online banking and UC accounts while on free public Wi\u2011Fi."}, {"id": 25, "category": "AI app \u2013 money advice", "difficulty": "Medium", "kind": "aiUse", "character": "You are using an AI chat app.", "title": "Debt 'helper' website", "story": "You ask an AI for debt help. It suggests sending money to a 'debt helper' site you have never heard of."}, {"id": 26, "category": "Misinformation \u2013 viral post", "difficulty": "Medium", "kind": "misinfo", "character": "You are scrolling social media.", "title": "Too good to be true scheme", "story": "A viral post claims the council must give you \u00a32,000 cash if you say a special phrase on the phone, with no official links."}, {"id": 27, "category": "Council tax rebate email", "difficulty": "Medium", "kind": "messageScam", "character": "You are checking email.", "title": "You\u2019re 'owed' a refund", "story": "An email claims you are owed a council tax rebate and asks you to click a link and enter bank details."}, {"id": 28, "category": "UC journal \u2013 strange link", "difficulty": "Medium", "kind": "messageScam", "character": "You are checking your UC journal.", "title": "Journal message with outside link", "story": "You see what looks like a journal message that tells you to click an outside link to re-enter bank and ID details."}, {"id": 29, "category": "Probation \u2013 group chat link", "difficulty": "Medium", "kind": "messageScam", "character": "You are added to a new chat.", "title": "\u2018Official probation\u2019 group", "story": "A group chat claims to be official probation and shares a link to a form asking for address, NI number and licence details."}, {"id": 30, "category": "Online marketplace \u2013 bank transfer", "difficulty": "Medium", "kind": "friendScam", "character": "You are on a local selling site.", "title": "Pay before they post", "story": "A seller refuses secure payment methods and insists on bank transfer before sending the item."}, {"id": 31, "category": "Remote access \u2013 friend fixing laptop", "difficulty": "Medium", "kind": "remoteAccess", "character": "You are at home with a friend.", "title": "\u2018I\u2019ll just remote in\u2019", "story": "A friend offers to install a remote access app so they can control your laptop from their home whenever there is a problem."}, {"id": 32, "category": "AI \u2013 copying letters", "difficulty": "Medium", "kind": "aiUse", "character": "You are confused by a decision letter.", "title": "Paste whole UC letter", "story": "You think about copying your whole UC decision letter, including NI number, into an AI app so it can explain it."}, {"id": 33, "category": "Benefits rumour screenshot", "difficulty": "Medium", "kind": "misinfo", "character": "You are in a group chat.", "title": "Screenshot of a 'new rule'", "story": "Someone shares a screenshot claiming a new rule will cut benefits, but there is no clear source or reference."}, {"id": 34, "category": "Friend pressure \u2013 device logins", "difficulty": "Medium", "kind": "accountSharing", "character": "You are visiting a friend.", "title": "Log in on their device", "story": "A friend asks you to log into email or UC on their device so they can 'help' while watching your passwords being typed."}, {"id": 35, "category": "Remote access refund scam", "difficulty": "Hard", "kind": "remoteAccess", "character": "You are at home with your laptop.", "title": "Refund 'mistake'", "story": "Someone phones saying they accidentally sent you a refund and asks you to install AnyDesk so they can 'help you send the money back'."}, {"id": 36, "category": "Authority scam \u2013 crime agency", "difficulty": "Hard", "kind": "phoneScam", "character": "You are listening to voicemail.", "title": "Serious crime warning", "story": "A recorded message says you are under investigation by a serious crime agency and must press 1 immediately or risk arrest."}, {"id": 37, "category": "Probation \u2013 fake licence change", "difficulty": "Hard", "kind": "messageScam", "character": "You are on licence.", "title": "Licence conditions 'changed'", "story": "You get a text saying your licence conditions have changed and you must click a link and log in with full details and NI number."}, {"id": 38, "category": "Probation \u2013 fake missed appointment fine", "difficulty": "Hard", "kind": "phoneScam", "character": "You are checking your phone later.", "title": "Pay a fine or be breached", "story": "You receive a WhatsApp message saying you missed a probation appointment and must pay a fine by bank transfer or face breach action."}, {"id": 39, "category": "UC coaching scam", "difficulty": "Hard", "kind": "accountSharing", "character": "You are on social media.", "title": "\u2018UC coach\u2019 offers more money", "story": "Someone says they are a UC coach who can increase your payments if you give them UC logins and bank details."}, {"id": 40, "category": "Ex\u2011partner account takeover", "difficulty": "Hard", "kind": "accountSharing", "character": "You are at home with your phone.", "title": "\u2018Let me just check something\u2019", "story": "An ex\u2011partner keeps asking to borrow your phone and wants to know your email and social media passwords."}, {"id": 41, "category": "Housing inspection \u2013 doorstep", "difficulty": "Hard", "kind": "doorstep", "character": "You are at home in your flat.", "title": "Unexpected inspection", "story": "Someone knocks saying they are from housing and must do an urgent inspection now. No letter, no booked appointment, ID looks basic."}, {"id": 42, "category": "Housing \u2013 repair scam", "difficulty": "Hard", "kind": "doorstep", "character": "You are at home mid\u2011morning.", "title": "We can fix it today \u2013 for cash", "story": "Two people in hi\u2011vis say they can fix roof tiles today but want cash up front and cannot show proper ID or paperwork."}, {"id": 43, "category": "Mixed \u2013 UC, council, housing", "difficulty": "Hard", "kind": "messageScam", "character": "You are on your phone in the evening.", "title": "Too many things in one message", "story": "You get a long message claiming to be from council and DWP together asking you to click one link to sort UC, council tax and housing bids all at once."}, {"id": 44, "category": "HMRC tax refund scam", "difficulty": "Hard", "kind": "messageScam", "character": "You are on your phone after work.", "title": "Tax refund in 24 hours", "story": "A text says you are owed a tax refund and must click a link and act within 24 hours to get it."}, {"id": 45, "category": "Phone call \u2013 move money to 'safe account'", "difficulty": "Hard", "kind": "phoneScam", "character": "You are cooking dinner.", "title": "Bank transfer 'for safety'", "story": "A caller claiming to be from your bank says your account is under attack and tells you to move all money to a 'safe account' they give you."}, {"id": 46, "category": "AI deepfake \u2013 leader video", "difficulty": "Hard", "kind": "misinfo", "character": "You are watching videos online.", "title": "Strange speech", "story": "You see a video of a well\u2011known leader saying extreme things. Comments warn it might be an AI deepfake."}, {"id": 47, "category": "AI \u2013 fake official letter", "difficulty": "Hard", "kind": "misinfo", "character": "You are on social media.", "title": "New 'DWP letter' screenshot", "story": "Someone posts a photo of a DWP letter telling people to send ID to a private email. Others say it might have been created with AI."}, {"id": 48, "category": "Phone + text combined scam", "difficulty": "Hard", "kind": "phoneScam", "character": "You are at home.", "title": "Text then instant call", "story": "You get a bank warning text, then the phone rings straight away. The caller repeats the message and asks for security codes just texted to you."}, {"id": 49, "category": "Romance scam \u2013 urgent bills", "difficulty": "Hard", "kind": "friendScam", "character": "You are chatting with an online partner.", "title": "Urgent money for bills", "story": "Someone you have spoken to for weeks online says they cannot pay rent or bills and asks for a larger amount of money urgently."}, {"id": 50, "category": "Device security \u2013 shared login risk", "difficulty": "Hard", "kind": "deviceSecurity", "character": "You are on a shared computer.", "title": "Saved logins everywhere", "story": "You notice the browser on a shared computer is logged into someone else\u2019s email and banking, with passwords saved and auto\u2011fill turned on."}];
+
+var optionSets = {
+  messageScam: [
+    {
+      text: "Click the link and follow the instructions straight away, so it is sorted quickly.",
+      scoreChange: -30,
+      correct: false,
+      feedback: "This is very risky. Scammers rely on you acting quickly without checking."
+    },
+    {
+      text: "Ignore the message completely and never think about it again.",
+      scoreChange: 0,
+      correct: false,
+      feedback: "You avoided danger, but if it was real you could miss something important. It is safer to check using official details."
+    },
+    {
+      text: "Sign in yourself using the official website or app you normally use, not the link in the message, and check for any alerts there.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Strong choice. You stay in control and only use the official site or app to check your account."
+    },
+    {
+      text: "Contact the organisation using an official phone number or email you already trust (from a letter, card, or their real website).",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Also a strong choice. You are double-checking using contact details you know are genuine."
+    },
+    {
+      text: "Reply to the message to ask if it is genuine and see how they answer.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "Replying shows scammers that your number or email is active and keeps them talking to you."
+    }
+  ],
+  phoneScam: [
+    {
+      text: "Stay on the call, follow their instructions and pay whatever they ask so you do not get into trouble.",
+      scoreChange: -30,
+      correct: false,
+      feedback: "Scammers use pressure and fear on the phone. Paying on that call is very risky."
+    },
+    {
+      text: "Hang up the call and do nothing else at all.",
+      scoreChange: 5,
+      correct: false,
+      feedback: "Hanging up keeps you safe from that scam, but if it might be real you should check using official contact details."
+    },
+    {
+      text: "Hang up, then call the official number for that organisation using details from a trusted source.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Good choice. You break contact and check by calling the real organisation yourself."
+    },
+    {
+      text: "Tell them you will not give details or pay on that call, then check your letters or online account afterwards.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "You refuse to act under pressure and then check in your own time. This is much safer."
+    },
+    {
+      text: "Keep them talking to see if you can catch them out as scammers.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "The longer you stay on the line, the more pressure they can use and the more they learn about you."
+    }
+  ],
+  doorstep: [
+    {
+      text: "Let them in straight away because they say it is urgent and you do not want to cause problems.",
+      scoreChange: -30,
+      correct: false,
+      feedback: "Letting unknown people in without checks can be very dangerous."
+    },
+    {
+      text: "Ask to see ID quickly, but still let them in even if you are not sure it is real.",
+      scoreChange: -10,
+      correct: false,
+      feedback: "Checking ID is good, but you should only let them in if you can confirm the visit using trusted contact details."
+    },
+    {
+      text: "Tell them you will not let them in until you have phoned your housing association or landlord using the number on a recent letter to confirm the visit.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Excellent. You check using a contact method you already trust before allowing access."
+    },
+    {
+      text: "Refuse entry, close the door, and then call your housing association or landlord to check whether any inspection or repair was booked.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Also a strong option. You stay safe first, then confirm the situation afterwards."
+    },
+    {
+      text: "Ask neighbours on social media what they think, but do not contact the housing provider directly.",
+      scoreChange: -10,
+      correct: false,
+      feedback: "Asking others can help, but you still need to check directly with your housing provider."
+    }
+  ],
+  accountSharing: [
+    {
+      text: "Give them your login details so they can manage things for you and save you stress.",
+      scoreChange: -30,
+      correct: false,
+      feedback: "Sharing passwords breaks security rules and can let others change details or take money in your name."
+    },
+    {
+      text: "Let them sit with you while you are logged in so they can see everything you do, including your passwords.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "Letting someone watch logins and security codes can let them access your accounts later without you."
+    },
+    {
+      text: "Refuse to share passwords or logins and explain that official staff will never ask for this information.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Good decision. Your password is private and official organisations do not need to know it."
+    },
+    {
+      text: "Ask them to guide you while you stay in control of the mouse and keyboard, without telling them your passwords.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "This keeps you in control while still getting support. They do not need to know your passwords."
+    },
+    {
+      text: "Send photos of your ID and bank cards so they can 'sort things out' for you.",
+      scoreChange: -20,
+      correct: false,
+      feedback: "Photos of ID and bank cards can be used for identity theft or to take money without your permission."
+    }
+  ],
+  remoteAccess: [
+    {
+      text: "Install the remote access app and let them control your device so they can fix the problem.",
+      scoreChange: -30,
+      correct: false,
+      feedback: "Remote access gives full control of your device. Scammers can see everything and move money."
+    },
+    {
+      text: "Keep talking to them while you decide what to do.",
+      scoreChange: -10,
+      correct: false,
+      feedback: "Staying on the call keeps you under pressure. It is safer to end contact completely."
+    },
+    {
+      text: "Hang up, close any pop-ups and run your own trusted security software if you have it.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "This avoids giving control to a stranger and uses tools you trust instead."
+    },
+    {
+      text: "If you are worried, contact your bank using a trusted number to check for unusual payments.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "Checking your bank yourself is a good safety step if you fear you may have been scammed."
+    },
+    {
+      text: "Let a friend or relative install a remote access app so they can control your device whenever it plays up.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "Even people you know should not have full remote control of your device. Boundaries can easily be crossed."
+    }
+  ],
+  aiUse: [
+    {
+      text: "Follow whatever the AI suggests with your money or personal details because 'computers know best'.",
+      scoreChange: -25,
+      correct: false,
+      feedback: "AI can make mistakes and can show risky websites. It does not replace real advice or official channels."
+    },
+    {
+      text: "Upload photos of your ID, benefit letters and bank statements so the AI has all the information.",
+      scoreChange: -25,
+      correct: false,
+      feedback: "Uploading sensitive documents into apps can put your identity and finances at risk."
+    },
+    {
+      text: "Treat the AI like a search tool: use it for ideas, then check important things on official websites like gov.uk, council, bank or NHS.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Good approach. AI can help you understand, but important decisions still need official sources."
+    },
+    {
+      text: "Use AI to help you write or practise messages, but never to send money or share security codes.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "Using AI for wording is fine as long as you protect your personal and financial information."
+    },
+    {
+      text: "Let AI pick a 'debt helper' website and follow its links without checking anywhere else.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "You still need to check that services are genuine using reviews and official sites, not just an AI suggestion."
+    }
+  ],
+  misinfo: [
+    {
+      text: "Share the post or video straight away so friends do not miss it.",
+      scoreChange: -20,
+      correct: false,
+      feedback: "Sharing unproven information helps misinformation spread and can harm others."
+    },
+    {
+      text: "Comment that it might be fake but still share it.",
+      scoreChange: -10,
+      correct: false,
+      feedback: "Even with a warning, you are still helping the content travel further."
+    },
+    {
+      text: "Check trusted sources like gov.uk, council, NHS or reputable news sites to see if the claim is mentioned.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "This is the best way to see if a claim is real—by checking reliable sources."
+    },
+    {
+      text: "If you cannot confirm it from trusted sources, choose not to share and consider reporting it on the platform.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Not sharing and reporting suspicious content helps reduce misinformation."
+    },
+    {
+      text: "Assume it is true because lots of people are commenting and sharing it.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "Popularity does not prove something is true. Many people can be wrong together online."
+    }
+  ],
+  passwords: [
+    {
+      text: "Use the same simple password for email, UC, banking and social media so it is easy to remember.",
+      scoreChange: -25,
+      correct: false,
+      feedback: "If one account is hacked, they can all be at risk when you reuse passwords."
+    },
+    {
+      text: "Write passwords on a note stuck to your screen so you do not forget them.",
+      scoreChange: -15,
+      correct: false,
+      feedback: "Anyone who visits can see and use your passwords."
+    },
+    {
+      text: "Use a strong password made from three random words plus numbers, and keep different passwords for important accounts.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "Three-word passwords are strong and easier to remember. Different passwords limit the damage if one is exposed."
+    },
+    {
+      text: "Turn on two-factor authentication (2FA) so you need a code as well as a password when signing in.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "2FA adds an extra lock, which is very helpful if someone guesses or steals your password."
+    },
+    {
+      text: "Use your pet's name and the year you were born for everything.",
+      scoreChange: -10,
+      correct: false,
+      feedback: "Information like this can often be found on social media, making it easier to guess."
+    }
+  ],
+  deviceSecurity: [
+    {
+      text: "Give every app all the permissions it asks for so it definitely works.",
+      scoreChange: -20,
+      correct: false,
+      feedback: "Unnecessary permissions can expose your contacts, location and more."
+    },
+    {
+      text: "Use free public Wi‑Fi for everything, including banking and benefit accounts, because it saves your data.",
+      scoreChange: -20,
+      correct: false,
+      feedback: "Public Wi‑Fi can be less secure, especially for sensitive accounts."
+    },
+    {
+      text: "Only install apps from official stores and check reviews and permissions before installing.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "This reduces the risk of harmful or badly behaved apps on your device."
+    },
+    {
+      text: "Avoid logging into banking or benefits on unfamiliar or shared devices and networks when possible.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "This helps protect your accounts from being seen or captured by others."
+    },
+    {
+      text: "If you must use a shared device or public Wi‑Fi, log out fully afterwards and avoid saving passwords.",
+      scoreChange: 10,
+      correct: true,
+      feedback: "Not perfect, but it reduces some of the risks when you have no other choice."
+    }
+  ],
+  friendScam: [
+    {
+      text: "Send money straight away to show that you care and keep the relationship or friendship.",
+      scoreChange: -25,
+      correct: false,
+      feedback: "Real friends or partners do not pressure you for money like this, especially online."
+    },
+    {
+      text: "Share your banking and streaming passwords so they trust you more.",
+      scoreChange: -20,
+      correct: false,
+      feedback: "Sharing passwords lets someone access your accounts at any time without your control."
+    },
+    {
+      text: "Refuse to send money or share logins and explain that you keep finances and accounts private.",
+      scoreChange: 25,
+      correct: true,
+      feedback: "This sets a clear boundary and protects you from financial abuse or scams."
+    },
+    {
+      text: "Suggest they contact official support services, debt advice or local help instead of sending money directly.",
+      scoreChange: 20,
+      correct: true,
+      feedback: "Signposting to proper support is kinder and safer than sending money in risky situations."
+    },
+    {
+      text: "Keep chatting and feel guilty for saying no, even if you do not send anything.",
+      scoreChange: -5,
+      correct: false,
+      feedback: "Guilt can be used to wear you down over time. It is okay to step back from conversations that feel pressuring."
+    }
+  ]
+};
+
+var STORAGE_KEY_PROGRESS = 'reconnectus_game_progress_v2';
+var STORAGE_KEY_SCORES = 'reconnectus_game_scores_v2';
+
+var currentLevel = null;
+var pool = [];
+var index = 0;
+var score = 0;
+var shuffledOptions = [];
+var audioCtx = null;
+
+function mapLevelToDifficulty(level) {
+  if (level === 'Beginner') return 'Easy';
+  if (level === 'Intermediate') return 'Medium';
+  return 'Hard';
+}
+
+function getPoolForLevel(level) {
+  var diff = mapLevelToDifficulty(level);
+  return scenarios.filter(function(s) { return s.difficulty === diff; });
+}
+
+function shuffleArray(arr) {
+  for (var i = arr.length - 1; i > 0; i--) {
+    var j = Math.floor(Math.random() * (i + 1));
+    var tmp = arr[i];
+    arr[i] = arr[j];
+    arr[j] = tmp;
+  }
+  return arr;
+}
+
+function playTone(success) {
+  try {
+    var AudioContext = window.AudioContext || window.webkitAudioContext;
+    if (!AudioContext) return;
+    if (!audioCtx) audioCtx = new AudioContext();
+    var osc = audioCtx.createOscillator();
+    var gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+    osc.type = "sine";
+    osc.frequency.value = success ? 880 : 220;
+    gain.gain.setValueAtTime(0.12, audioCtx.currentTime);
+    osc.start();
+    osc.stop(audioCtx.currentTime + 0.15);
+  } catch (e) {}
+}
+
+function goFullscreen() {
+  var elem = document.documentElement;
+  if (elem.requestFullscreen) { elem.requestFullscreen(); }
+  else if (elem.webkitRequestFullscreen) { elem.webkitRequestFullscreen(); }
+  else if (elem.msRequestFullscreen) { elem.msRequestFullscreen(); }
+}
+
+function showScreen(id) {
+  document.getElementById('screenStart').style.display = (id === 'start') ? 'block' : 'none';
+  document.getElementById('screenGame').style.display = (id === 'game') ? 'block' : 'none';
+  document.getElementById('screenEnd').style.display = (id === 'end') ? 'block' : 'none';
+}
+
+function startGame(level) {
+  currentLevel = level;
+  pool = getPoolForLevel(level);
+  shuffleArray(pool);
+  index = 0;
+  score = 0;
+  saveProgress();
+  document.getElementById('levelLabel').innerText = currentLevel;
+  document.getElementById('total').innerText = pool.length;
+  document.getElementById('scoreDisplay').innerText = score;
+  updateProgressBar();
+  showScreen('game');
+  showScenario();
+}
+
+function resumeGame() {
+  var raw = localStorage.getItem(getLearnerStorageKey(STORAGE_KEY_PROGRESS));
+  if (!raw) return;
+  try {
+    var prog = JSON.parse(raw);
+    currentLevel = prog.level;
+    pool = getPoolForLevel(currentLevel);
+    index = Math.min(prog.index || 0, pool.length - 1);
+    score = prog.score || 0;
+    document.getElementById('levelLabel').innerText = currentLevel;
+    document.getElementById('total').innerText = pool.length;
+    document.getElementById('scoreDisplay').innerText = score;
+    updateProgressBar();
+    showScreen('game');
+    showScenario();
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function replaySameLevel() {
+  if (!currentLevel) currentLevel = 'Beginner';
+  startGame(currentLevel);
+}
+
+function updateProgressBar() {
+  var percent = (index / (pool.length || 1)) * 100;
+  document.getElementById('progressBar').style.width = percent + '%';
+}
+
+function showScenario() {
+  var s = pool[index];
+  document.getElementById('num').innerText = index + 1;
+  document.getElementById('cat').innerText = s.category;
+  document.getElementById('diff').innerText = s.difficulty;
+  document.getElementById('title').innerText = s.title;
+  document.getElementById('story').innerText = s.story;
+  document.getElementById('char').innerText = s.character;
+
+  var kind = s.kind || 'messageScam';
+  var set = optionSets[kind] || optionSets['messageScam'];
+
+  shuffledOptions = set.map(function(opt, i) {
+    return { opt: opt, originalIndex: i };
+  });
+  shuffleArray(shuffledOptions);
+
+  var optsDiv = document.getElementById('opts');
+  optsDiv.innerHTML = '';
+  shuffledOptions.forEach(function(item, i) {
+    var btn = document.createElement('button');
+    btn.className = 'option-btn';
+    btn.setAttribute('data-shuffled-index', i);
+
+    var labelSpan = document.createElement('span');
+    labelSpan.className = 'option-label';
+    labelSpan.textContent = String.fromCharCode(65 + i) + '.';
+
+    var textSpan = document.createElement('span');
+    textSpan.className = 'option-text';
+    textSpan.textContent = item.opt.text;
+
+    btn.appendChild(labelSpan);
+    btn.appendChild(textSpan);
+
+    btn.onclick = function() { toggleSelect(btn); };
+    optsDiv.appendChild(btn);
+  });
+
+  document.getElementById('checkBtn').disabled = true;
+  document.getElementById('nextBtn').disabled = true;
+  var fb = document.getElementById('feedback');
+  fb.style.display = 'none';
+  fb.innerText = '';
+}
+
+function toggleSelect(btn) {
+  if (btn.disabled) return;
+  btn.classList.toggle('selected');
+  var anySelected = document.querySelectorAll('.option-btn.selected').length > 0;
+  document.getElementById('checkBtn').disabled = !anySelected;
+}
+
+function checkAnswers() {
+  var selected = document.querySelectorAll('.option-btn.selected');
+  if (selected.length === 0) return;
+
+  var feedbackLines = [];
+  var anyWrong = false;
+  var anyCorrect = false;
+
+  selected.forEach(function(btn) {
+    var idx = parseInt(btn.getAttribute('data-shuffled-index'));
+    var item = shuffledOptions[idx];
+    var opt = item.opt;
+    score += opt.scoreChange;
+    if (score < 0) score = 0;
+    var label = String.fromCharCode(65 + idx);
+    feedbackLines.push(label + ': ' + opt.feedback);
+    if (opt.correct) anyCorrect = true; else anyWrong = true;
+  });
+
+  document.getElementById('scoreDisplay').innerText = score;
+
+  var all = document.querySelectorAll('.option-btn');
+  all.forEach(function(btn) {
+    var idx = parseInt(btn.getAttribute('data-shuffled-index'));
+    var item = shuffledOptions[idx];
+    var opt = item.opt;
+    btn.disabled = true;
+    if (opt.correct) btn.classList.add('correct');
+    if (!opt.correct && btn.classList.contains('selected')) {
+      btn.classList.add('wrong');
+    }
+  });
+
+  var fb = document.getElementById('feedback');
+  fb.innerText = feedbackLines.join('\n');
+  fb.style.display = 'block';
+
+  document.getElementById('checkBtn').disabled = true;
+  document.getElementById('nextBtn').disabled = false;
+
+  if (anyWrong) {
+    playTone(false);
+  } else if (anyCorrect) {
+    playTone(true);
+  }
+
+  saveProgress();
+}
+
+function nextScenario() {
+  index++;
+  if (index >= pool.length) {
+    endGame();
+  } else {
+    updateProgressBar();
+    saveProgress();
+    showScenario();
+  }
+}
+
+function endGame() {
+  clearProgress();
+  document.getElementById('finalLevel').innerText = currentLevel || '';
+  document.getElementById('finalScore').innerText = score;
+  var text = '';
+  if (score >= 500) {
+    text = 'You are very strong at spotting realistic scams and risky situations from your RECONNECT-US course topics.';
+  } else if (score >= 250) {
+    text = 'You have good awareness. Keep practising these ideas to make your online safety habits even stronger.';
+  } else {
+    text = 'These situations are tough and very real. Use what you saw in this game to think more carefully about messages, calls and visits in real life.';
+  }
+  document.getElementById('summaryText').innerText = text;
+  addScoreToHistory();
+  loadHistory();
+  showScreen('end');
+}
+
+function backToStart() {
+  clearProgress();
+  showScreen('start');
+  loadProgressIndicator();
+  loadHistory();
+}
+
+// Progress + history
+function saveProgress() {
+  try {
+    var obj = { level: currentLevel, index: index, score: score };
+    localStorage.setItem(getLearnerStorageKey(STORAGE_KEY_PROGRESS), JSON.stringify(obj));
+    saveSharedAppProgress({
+      title: 'Online Survival Game',
+      summary: currentLevel ? (currentLevel + ' level • Scenario ' + (index + 1) + ' • Score ' + score) : 'Saved progress available',
+      level: currentLevel,
+      currentScenario: index + 1,
+      score: score,
+      learnerName: getCurrentLearnerName()
+    });
+    trackSharedEvent('app_saved', { appId: APP_ID, level: currentLevel || '', scenario: index + 1, score: score });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function clearProgress() {
+  try { localStorage.removeItem(getLearnerStorageKey(STORAGE_KEY_PROGRESS)); } catch (e) {}
+  clearSharedAppProgress();
+}
+
+function loadProgressIndicator() {
+  var block = document.getElementById('resumeBlock');
+  var info = document.getElementById('resumeInfo');
+  var raw = null;
+  try { raw = localStorage.getItem(getLearnerStorageKey(STORAGE_KEY_PROGRESS)); } catch (e) {}
+  if (!raw) {
+    block.style.display = 'none';
+    info.textContent = '';
+    return;
+  }
+  try {
+    var prog = JSON.parse(raw);
+    if (!prog || !prog.level) throw new Error('bad');
+    block.style.display = 'block';
+    var qNum = (prog.index || 0) + 1;
+    info.textContent = "  • Last game: " + prog.level + " at scenario " + qNum + ", score " + (prog.score || 0);
+  } catch (e) {
+    block.style.display = 'none';
+    info.textContent = '';
+  }
+}
+
+function addScoreToHistory() {
+  try {
+    var raw = localStorage.getItem(getLearnerStorageKey(STORAGE_KEY_SCORES));
+    var arr = [];
+    if (raw) arr = JSON.parse(raw);
+    var entry = {
+      level: currentLevel,
+      score: score,
+      when: new Date().toISOString()
+    };
+    arr.unshift(entry);
+    if (arr.length > 10) arr = arr.slice(0,10);
+    localStorage.setItem(getLearnerStorageKey(STORAGE_KEY_SCORES), JSON.stringify(arr));
+    saveSharedAppProgress({
+      title: 'Online Survival Game',
+      summary: 'Completed ' + (currentLevel || 'game') + ' • Final score ' + score,
+      level: currentLevel,
+      finalScore: score,
+      learnerName: getCurrentLearnerName()
+    });
+    trackSharedEvent('app_saved', { appId: APP_ID, status: 'completed', level: currentLevel || '', score: score });
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+function loadHistory() {
+  var container = document.getElementById('historyContent');
+  var raw = null;
+  try { raw = localStorage.getItem(getLearnerStorageKey(STORAGE_KEY_SCORES)); } catch (e) {}
+  if (!raw) {
+    container.className = 'history-empty';
+    container.textContent = 'No games played yet.';
+    return;
+  }
+  try {
+    var arr = JSON.parse(raw) || [];
+    if (!arr.length) {
+      container.className = 'history-empty';
+      container.textContent = 'No games played yet.';
+      return;
+    }
+    var html = '<table><tr><th>Level</th><th>Score</th><th>When</th></tr>';
+    arr.forEach(function(e) {
+      var d = new Date(e.when);
+      var nice = d.toLocaleString();
+      html += '<tr><td>' + (e.level || '') + '</td><td>' + (e.score || 0) + '</td><td>' + nice + '</td></tr>';
+    });
+    html += '</table>';
+    container.className = '';
+    container.innerHTML = html;
+  } catch (e) {
+    container.className = 'history-empty';
+    container.textContent = 'No games played yet.';
+  }
+}
+
+window.addEventListener('DOMContentLoaded', function () {
+  var app = document.getElementById('app');
+  if (app) app.style.display = 'block';
+
+  updateSharedLearnerLabel();
+  loadProgressIndicator();
+  loadHistory();
+  trackSharedEvent('app_opened', { appId: APP_ID, learnerName: getCurrentLearnerName() });
+
+  var backBtn = document.getElementById('backBtn');
+  if (backBtn) {
+    backBtn.addEventListener('click', function () {
+      window.location.href = '../index.html';
+    });
+  }
+});
+
+</script>
+</body>
+</html>

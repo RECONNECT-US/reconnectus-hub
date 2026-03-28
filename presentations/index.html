@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US • Online Safety & Awareness</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1220;
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+.box{
+  text-align:center;
+  max-width:520px;
+  width:100%;
+}
+h1{ margin-bottom:10px; }
+p{ margin-bottom:18px; color:#cfd8e3; }
+
+.btn{
+  display:block;
+  width:100%;
+  margin:8px auto;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+}
+
+.primary{ background:#22d7c6; color:#042131; }
+.alt{ background:#59a9ff; color:#042131; }
+.back{ background:#444; color:#fff; margin-top:14px; }
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>Online Safety & Awareness</h1>
+  <p>Training guides, awareness pages, and practical online safety support.</p>
+
+  <button class="btn primary" onclick="go('legal.html')">Legal Responsibilities</button>
+  <button class="btn primary" onclick="go('misinformation.html')">Misinformation & Fake News</button>
+  <button class="btn primary" onclick="go('online-wellbeing.html')">Online Wellbeing</button>
+  <button class="btn primary" onclick="go('passwords.html')">Passwords & Authentication</button>
+  <button class="btn primary" onclick="go('privacy.html')">Privacy & Data Protection</button>
+
+  <button class="btn alt" onclick="go('safe-browsing.html')">Safe Browsing</button>
+  <button class="btn alt" onclick="go('scams.html')">Scams & Phishing</button>
+  <button class="btn alt" onclick="go('social-media.html')">Social Media Safety</button>
+  <button class="btn alt" onclick="go('volunteer-training.html')">Volunteer Training</button>
+  <button class="btn alt" onclick="go('devices-security.html')">Devices & Security</button>
+  <button class="btn alt" onclick="go('digital-footprint.html')">Digital Footprint</button>
+  <button class="btn alt" onclick="go('exploitation.html')">Exploitation & Sextortion</button>
+  <button class="btn alt" onclick="go('guidance.html')">Guidance</button>
+
+  <button class="btn back" onclick="backHome()">Back to Home</button>
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+function backHome(){
+  window.location.href = "../index.html";
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,1690 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ESOL English – Entry Level 3</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --teal: #0b9da5;
+      --orange: #ff8a3d;
+      --dark: #243447;
+      --light: #f5f7fa;
+      --mid: #5f6c7b;
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #0b9da5 0%, #243447 60%, #111827 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1100px;
+      margin: 16px;
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: radial-gradient(circle at top left, rgba(248, 250, 252, 0.08), transparent 55%);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: conic-gradient(from 160deg, var(--orange), var(--teal), #38bdf8, var(--orange));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-text-title {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: #cbd5f5;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn span.icon {
+      font-size: 15px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange), #facc15);
+      color: #111827;
+      border-color: transparent;
+      font-weight: 600;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn:hover {
+      background: rgba(15, 23, 42, 0.98);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.8);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #fed7aa, var(--orange));
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    nav {
+      width: 230px;
+      border-right: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 10px 16px;
+      background: radial-gradient(circle at top, rgba(15, 118, 110, 0.25), transparent 60%);
+    }
+
+    .nav-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #9ca3af;
+      margin: 0 10px 8px;
+    }
+
+    .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      border-radius: 999px;
+      padding: 9px 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      color: #e5e7eb;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease, transform 0.08s ease;
+    }
+
+    .nav-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 2px solid rgba(148, 163, 184, 0.8);
+    }
+
+    .nav-btn span.label {
+      flex: 1;
+    }
+
+    .nav-btn small {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .nav-btn:hover {
+      background: rgba(15, 23, 42, 0.8);
+      transform: translateX(1px);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(90deg, rgba(248, 250, 252, 0.1), rgba(14, 165, 233, 0.18));
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.8);
+    }
+
+    .nav-btn.active .nav-dot {
+      background: var(--orange);
+      border-color: transparent;
+    }
+
+    .content {
+      flex: 1;
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .content-title-wrap {
+      max-width: 65%;
+    }
+
+    .content-title {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .content-title span.emoji {
+      font-size: 22px;
+    }
+
+    .content-subtitle {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 11px;
+    }
+
+    .progress-bar {
+      position: relative;
+      height: 5px;
+      width: 80px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.9);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #f97316, #22c55e);
+      transition: width 0.25s ease-out;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr);
+      gap: 14px;
+      align-items: flex-start;
+      min-height: 0;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(248, 250, 252, 0.05), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      min-height: 0;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #d1d5db;
+      white-space: nowrap;
+    }
+
+    .pill.strong {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #bbf7d0;
+    }
+
+    .pill.focus {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.9);
+      color: #e0f2fe;
+    }
+
+    .pill.level {
+      background: rgba(249, 115, 22, 0.1);
+      border-color: rgba(249, 115, 22, 0.85);
+      color: #fed7aa;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .info-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .info-bullet {
+      font-size: 14px;
+      margin-top: 1px;
+    }
+
+    .support-card-text {
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .support-card-mini {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .support-pill {
+      font-size: 11px;
+      padding: 5px 7px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .support-pill span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    .support-pill span.value {
+      font-size: 11px;
+    }
+
+    .support-footnote {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .question {
+      margin-bottom: 10px;
+      padding: 8px 9px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .question-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .options input {
+      accent-color: #f97316;
+    }
+
+    .question-result {
+      margin-top: 4px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+
+    .question-result.correct {
+      color: #bbf7d0;
+    }
+
+    .question-result.incorrect {
+      color: #fecaca;
+    }
+
+    .module-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .module-score {
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-top: 4px;
+    }
+
+    .reading-text {
+      font-size: 13px;
+      line-height: 1.55;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 10px;
+      padding: 10px 11px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      margin-bottom: 10px;
+    }
+
+    .reading-text strong {
+      color: #facc15;
+      font-weight: 600;
+    }
+
+    .input-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .input-row label {
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.95);
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      font-size: 13px;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder {
+      color: #6b7280;
+    }
+
+    input[type="text"]:focus {
+      border-color: #f97316;
+      box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.6);
+    }
+
+    .spelling-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .status-text {
+      font-size: 12px;
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    .status-text.correct {
+      color: #bbf7d0;
+    }
+
+    .status-text.incorrect {
+      color: #fecaca;
+    }
+
+    footer {
+      font-size: 11px;
+      color: #9ca3af;
+      padding: 7px 12px 9px;
+      border-top: 1px solid rgba(148, 163, 184, 0.4);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .footer-left small {
+      display: block;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+      }
+
+      nav {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav-group {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .nav-btn {
+        flex: 1;
+        min-width: 160px;
+      }
+
+      .content-title-wrap {
+        max-width: 100%;
+      }
+
+      .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-right {
+        justify-content: flex-start;
+      }
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">R</div>
+        <div>
+          <div class="brand-text-title">RECONNECT-US</div>
+          <div class="brand-text-sub">ESOL: English Skills</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="badge">Offline | No login needed</div>
+        <button class="btn" type="button" id="fullscreenBtn">
+          <span class="icon">⛶</span>
+          <span>Full screen</span>
+        </button>
+        <button class="btn btn-primary" type="button" id="quickStartBtn">
+          <span class="icon">⭐</span>
+          <span>Quick Start</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <nav>
+        <div class="nav-title">Modules</div>
+        <div class="nav-group">
+          <button class="nav-btn active" data-section="home">
+            <div class="nav-dot"></div>
+            <span class="label">Home / Overview</span>
+            <small>Start here</small>
+          </button>
+          <button class="nav-btn" data-section="vocabulary">
+            <div class="nav-dot"></div>
+            <span class="label">Vocabulary Practice</span>
+            <small>Everyday English</small>
+          </button>
+          <button class="nav-btn" data-section="grammar">
+            <div class="nav-dot"></div>
+            <span class="label">Grammar Quiz</span>
+            <small>Simple sentences</small>
+          </button>
+          <button class="nav-btn" data-section="reading">
+            <div class="nav-dot"></div>
+            <span class="label">Reading Practice</span>
+            <small>Short text</small>
+          </button>
+          <button class="nav-btn" data-section="spelling">
+            <div class="nav-dot"></div>
+            <span class="label">Spelling Practice</span>
+            <small>Key words</small>
+          </button>
+        </div>
+      </nav>
+
+      <section class="content">
+        <div class="content-header">
+          <div class="content-title-wrap">
+            <h1 class="content-title" id="sectionTitle">
+              <span class="emoji">🏠</span>
+              <span>Welcome to ESOL English Entry Level 3</span>
+            </h1>
+            <p class="content-subtitle" id="sectionSubtitle">
+              Practice English vocabulary, grammar, reading and spelling in one simple offline app.
+            </p>
+          </div>
+          <div class="progress-pill">
+            Progress
+            <div class="progress-bar">
+              <div class="progress-fill" id="overallProgress"></div>
+            </div>
+            <span id="overallProgressLabel">0%</span>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <!-- LEFT: MAIN MODULE AREA -->
+          <div class="card" id="homeSection">
+            <div class="card-header">
+              <div class="card-title">How this app works</div>
+            </div>
+            <div class="card-body">
+              <p style="margin-top:0; margin-bottom:8px;">
+                This ESOL English app is designed for learners who want clear, simple practice in
+                <strong>real-life English</strong>. Everything is offline – just open the file in a browser and start.
+              </p>
+              <div class="pill-row">
+                <div class="pill strong">Beginner / Entry level</div>
+                <div class="pill focus">Designed for ReConnect-US sessions</div>
+                <div class="pill level">4 core modules</div>
+              </div>
+              <ul class="info-list">
+                <li>
+                  <span class="info-bullet">➊</span>
+                  <span>
+                    Start with <strong>Vocabulary</strong> to learn common words used in everyday life.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➋</span>
+                  <span>
+                    Move to the <strong>Grammar Quiz</strong> to practise simple present tense sentences.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➌</span>
+                  <span>
+                    Use <strong>Reading Practice</strong> to read a short text and answer questions.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➍</span>
+                  <span>
+                    Finish with <strong>Spelling Practice</strong> for key everyday words.
+                  </span>
+                </li>
+              </ul>
+              <p style="margin-top:8px; font-size:13px;">
+                When a learner gets enough answers correct in a module, that module is marked as
+                <strong>complete</strong> and the progress bar at the top will update.
+              </p>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" data-go-section="vocabulary">
+                  <span class="icon">▶</span>
+                  <span>Start with Vocabulary</span>
+                </button>
+                <button class="btn" type="button" id="resetAllBtn">
+                  <span class="icon">↺</span>
+                  <span>Reset all scores</span>
+                </button>
+              </div>
+              <p style="margin-top:10px; font-size:11px; color:#9ca3af;">
+                Tip: This file can be copied to USB sticks and used on different computers. No internet, no account, no data collected.
+              </p>
+            </div>
+          </div>
+
+          <!-- Vocabulary Section -->
+          <div class="card" id="vocabularySection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Vocabulary: Everyday English</div>
+              <span style="font-size:11px; color:#9ca3af;">Choose the correct meaning for each word.</span>
+            </div>
+            <div class="card-body">
+              <div id="vocabQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkVocabBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetVocabBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="vocabScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="vocabStatus"></div>
+            </div>
+          </div>
+
+          <!-- Grammar Section -->
+          <div class="card" id="grammarSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Grammar: Present Simple</div>
+              <span style="font-size:11px; color:#9ca3af;">Choose the correct sentence.</span>
+            </div>
+            <div class="card-body">
+              <div id="grammarQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkGrammarBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetGrammarBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="grammarScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="grammarStatus"></div>
+            </div>
+          </div>
+
+          <!-- Reading Section -->
+          <div class="card" id="readingSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Reading Practice</div>
+              <span style="font-size:11px; color:#9ca3af;">Read the text, then answer the questions.</span>
+            </div>
+            <div class="card-body">
+              <div class="reading-text">
+                <strong>My first day at the community centre</strong><br /><br />
+                My name is Sara. I live in a small flat in the city. On Monday I go to the
+                <strong>ReConnect‑Us</strong> class at the community centre. The centre is ten minutes from my home.
+                I walk there in the morning.
+                <br /><br />
+                In the class I learn English and how to use my smartphone. My teacher is friendly and the group is small.
+                We drink tea, practise new words and talk about everyday life. After the class I feel more confident.
+              </div>
+              <div id="readingQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkReadingBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetReadingBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="readingScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="readingStatus"></div>
+            </div>
+          </div>
+
+          <!-- Spelling Section -->
+          <div class="card" id="spellingSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Spelling Practice</div>
+              <span style="font-size:11px; color:#9ca3af;">Look at the meaning and type the word.</span>
+            </div>
+            <div class="card-body">
+              <div id="spellingItems"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkSpellingBtn">
+                  <span class="icon">✔</span>
+                  <span>Check spelling</span>
+                </button>
+                <button class="btn" type="button" id="resetSpellingBtn">
+                  <span class="icon">↺</span>
+                  <span>Clear answers</span>
+                </button>
+              </div>
+              <div class="module-score" id="spellingScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="spellingStatus"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: SUPPORT / INFO PANEL -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Session support</div>
+            </div>
+            <div class="card-body">
+              <p class="support-card-text">
+                Use this panel as a quick guide during sessions. It does not change when you move between modules,
+                so trainers always have a simple overview on the right side.
+              </p>
+              <ul class="info-list">
+                <li>
+                  <span class="info-bullet">💡</span>
+                  <span>
+                    <strong>Whole group:</strong> Use the big screen, read questions out loud and let learners answer
+                    together before they choose their option.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">👥</span>
+                  <span>
+                    <strong>1‑to‑1:</strong> Sit with the learner, repeat questions slowly and let them talk through
+                    why they chose an answer.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">🧱</span>
+                  <span>
+                    Keep language <strong>simple</strong>. You can explain new words in your own words or in the learner’s
+                    first language if that helps.
+                  </span>
+                </li>
+              </ul>
+              <div style="margin:8px 0 6px; font-size:12px; color:#9ca3af;">
+                Recommended order for new learners:
+              </div>
+              <ol style="margin:0 0 8px 18px; padding:0; font-size:12px;">
+                <li>Vocabulary &nbsp;→&nbsp; 6–8 minutes</li>
+                <li>Grammar &nbsp;→&nbsp; 6–8 minutes</li>
+                <li>Reading &nbsp;→&nbsp; 8–10 minutes</li>
+                <li>Spelling &nbsp;→&nbsp; 6–8 minutes</li>
+              </ol>
+              <div class="support-card-mini">
+                <div class="support-pill">
+                  <span class="label">Focus today</span>
+                  <span class="value" id="supportFocus">Overview & confidence</span>
+                </div>
+                <div class="support-pill">
+                  <span class="label">Module status</span>
+                  <span class="value" id="supportStatus">0 / 4 modules complete</span>
+                </div>
+              </div>
+              <div class="support-footnote">
+                This material is the property of <strong>RECONNECT‑US</strong> and may not be copied, shared or used
+                outside authorised sessions without written permission.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <small>© 2025 RECONNECT‑US. All rights reserved.</small>
+        <small>ESOL English Skills • Offline training resource.</small>
+      </div>
+      <div class="footer-right">
+        <span>Modules complete: <span id="footerCompleteCount">0</span> / 4</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // ----- Storage settings -----
+    const PROGRESS_KEY = "esol_module_progress";
+
+    function saveProgress() {
+      try {
+        window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(moduleCompletion));
+      } catch (e) {
+        // ignore storage errors
+      }
+    }
+
+    function loadProgress() {
+      try {
+        const raw = window.localStorage.getItem(PROGRESS_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (typeof parsed === "object" && parsed) {
+          ["vocabulary", "grammar", "reading", "spelling"].forEach((key) => {
+            if (Object.prototype.hasOwnProperty.call(parsed, key)) {
+              moduleCompletion[key] = !!parsed[key];
+            }
+          });
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // ----- Utility: Full screen toggle -----
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.getElementById("fullscreenBtn").addEventListener("click", toggleFullScreen);
+
+    // ----- App State -----
+    const sections = ["home", "vocabulary", "grammar", "reading", "spelling"];
+    const moduleCompletion = {
+      vocabulary: false,
+      grammar: false,
+      reading: false,
+      spelling: false,
+    };
+
+    // Load any saved progress from this device
+    loadProgress();
+
+    // Progress thresholds: must reach at least this % correct to mark a module complete
+    const completionThreshold = 0.6; // 60%
+
+    function updateProgressDisplay() {
+      const completed = Object.values(moduleCompletion).filter(Boolean).length;
+      const total = 4;
+      const percent = Math.round((completed / total) * 100);
+      document.getElementById("overallProgress").style.width = percent + "%";
+      document.getElementById("overallProgressLabel").textContent = percent + "%";
+      document.getElementById("supportStatus").textContent = completed + " / " + total + " modules complete";
+      document.getElementById("footerCompleteCount").textContent = completed;
+      saveProgress();
+    }
+
+    // ----- Navigation between sections -----
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const sectionTitle = document.getElementById("sectionTitle");
+    const sectionSubtitle = document.getElementById("sectionSubtitle");
+    const supportFocus = document.getElementById("supportFocus");
+
+    const sectionMeta = {
+      home: {
+        icon: "🏠",
+        title: "Welcome to ESOL English – Entry Level 3",
+        subtitle: "Practice Entry Level 3 English skills: vocabulary, grammar, reading and spelling in one simple offline app.",
+        focus: "Overview & confidence",
+      },
+      vocabulary: {
+        icon: "🧾",
+        title: "Vocabulary: Everyday English",
+        subtitle: "Learn and check common words used in daily life.",
+        focus: "Key daily vocabulary",
+      },
+      grammar: {
+        icon: "⚙️",
+        title: "Grammar Quiz: Present Simple",
+        subtitle: "Practise forming clear, simple present tense sentences.",
+        focus: "Short, clear sentences",
+      },
+      reading: {
+        icon: "📖",
+        title: "Reading Practice: Short Text",
+        subtitle: "Read a short story, then answer questions.",
+        focus: "Reading & understanding",
+      },
+      spelling: {
+        icon: "✏️",
+        title: "Spelling Practice: Everyday Words",
+        subtitle: "Look at the meaning and type the correct word.",
+        focus: "Accurate spelling",
+      },
+    };
+
+    function showSection(sectionId) {
+      sections.forEach((id) => {
+        const navBtn = document.querySelector('.nav-btn[data-section="' + id + '"]');
+        if (navBtn) {
+          navBtn.classList.toggle("active", id === sectionId);
+        }
+      });
+
+      document.getElementById("homeSection").style.display = sectionId === "home" ? "block" : "none";
+      document.getElementById("vocabularySection").style.display = sectionId === "vocabulary" ? "block" : "none";
+      document.getElementById("grammarSection").style.display = sectionId === "grammar" ? "block" : "none";
+      document.getElementById("readingSection").style.display = sectionId === "reading" ? "block" : "none";
+      document.getElementById("spellingSection").style.display = sectionId === "spelling" ? "block" : "none";
+
+      const meta = sectionMeta[sectionId];
+      if (meta) {
+        sectionTitle.innerHTML = '<span class="emoji">' + meta.icon + '</span><span>' + meta.title + "</span>";
+        sectionSubtitle.textContent = meta.subtitle;
+        supportFocus.textContent = meta.focus;
+      } else {
+        supportFocus.textContent = "Overview & confidence";
+      }
+    }
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sectionId = btn.getAttribute("data-section");
+        showSection(sectionId);
+      });
+    });
+
+    document.querySelectorAll("[data-go-section]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sectionId = btn.getAttribute("data-go-section");
+        showSection(sectionId);
+      });
+    });
+
+    document.getElementById("quickStartBtn").addEventListener("click", () => {
+      showSection("vocabulary");
+    });
+
+    // ----- Vocabulary Module -----
+    const vocabQuestionsData = [
+      {
+        text: "‘Appointment’",
+        options: [
+          "A meeting at a planned time",
+          "A quick message to a friend",
+          "A place to live",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Neighbour’",
+        options: [
+          "A person who lives near you",
+          "A person who works at a hospital",
+          "A person who sells food",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Form’",
+        options: [
+          "A document you write on",
+          "A hot drink",
+          "A type of job",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Centre’",
+        options: [
+          "The middle of a place or town",
+          "A very small room",
+          "A big hill",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Confident’",
+        options: [
+          "Happy and sure about yourself",
+          "Tired and bored",
+          "Angry and upset",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Address’",
+        options: [
+          "The place where you live",
+          "The name of your doctor",
+          "The time of your class",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Emergency’",
+        options: [
+          "A serious and urgent problem",
+          "A normal work day",
+          "A quiet evening at home",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Passport’",
+        options: [
+          "A small book with your photo for travel",
+          "A card for shopping",
+          "A document for school homework",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Message’",
+        options: [
+          "Words you send to someone by phone or online",
+          "A big meal with your family",
+          "A new pair of shoes",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "‘Volunteer’",
+        options: [
+          "A person who helps without pay",
+          "A person who cleans the street",
+          "A person who sells tickets",
+        ],
+        correctIndex: 0,
+      },
+    ];
+
+    function renderVocabQuestions() {
+      const container = document.getElementById("vocabQuestions");
+      container.innerHTML = "";
+      vocabQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. What does <strong>${q.text}</strong> mean?</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="vocab-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="vocab-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("vocabScoreLabel").textContent = "Score: 0 / " + vocabQuestionsData.length;
+      document.getElementById("vocabStatus").textContent = "";
+    }
+
+    function checkVocabulary() {
+      let correctCount = 0;
+      vocabQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="vocab-' + index + '"]:checked');
+        const resultDiv = document.getElementById("vocab-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("vocabScoreLabel").textContent =
+        "Score: " + correctCount + " / " + vocabQuestionsData.length;
+      const percent = correctCount / vocabQuestionsData.length;
+      const status = document.getElementById("vocabStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Well done! This is enough to mark the Vocabulary module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.vocabulary = true;
+      } else {
+        status.textContent =
+          "Keep going. Try again to improve your score. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.vocabulary = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetVocabulary() {
+      renderVocabQuestions();
+      moduleCompletion.vocabulary = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkVocabBtn").addEventListener("click", checkVocabulary);
+    document.getElementById("resetVocabBtn").addEventListener("click", resetVocabulary);
+
+    // ----- Grammar Module -----
+    const grammarQuestionsData = [
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "She go to class every Monday.",
+          "She goes to class every Monday.",
+          "She going to class every Monday.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "They lives in a small flat.",
+          "They live in a small flat.",
+          "They is live in a small flat.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "I uses my phone in the evening.",
+          "I use my phone in the evening.",
+          "I am use my phone in the evening.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "The class start at ten o’clock.",
+          "The class starts at ten o’clock.",
+          "The class starting at ten o’clock.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "My teacher help me.",
+          "My teacher helps me.",
+          "My teacher helping me.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "We drink tea in the break.",
+          "We drinks tea in the break.",
+          "We is drink tea in the break.",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "He use his smartphone every night.",
+          "He uses his smartphone every night.",
+          "He using his smartphone every night.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "The learners sits in a small room.",
+          "The learners sit in a small room.",
+          "The learners sitting in a small room.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "Sara feel happy after the class.",
+          "Sara feels happy after the class.",
+          "Sara feeling happy after the class.",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "Choose the correct sentence.",
+        options: [
+          "The community centre open at nine.",
+          "The community centre opens at nine.",
+          "The community centre opening at nine.",
+        ],
+        correctIndex: 1,
+      },
+    ];
+
+    function renderGrammarQuestions() {
+      const container = document.getElementById("grammarQuestions");
+      container.innerHTML = "";
+      grammarQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="grammar-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="grammar-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("grammarScoreLabel").textContent = "Score: 0 / " + grammarQuestionsData.length;
+      document.getElementById("grammarStatus").textContent = "";
+    }
+
+    function checkGrammar() {
+      let correctCount = 0;
+      grammarQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="grammar-' + index + '"]:checked');
+        const resultDiv = document.getElementById("grammar-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("grammarScoreLabel").textContent =
+        "Score: " + correctCount + " / " + grammarQuestionsData.length;
+      const percent = correctCount / grammarQuestionsData.length;
+      const status = document.getElementById("grammarStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Great job! This is enough to mark the Grammar module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.grammar = true;
+      } else {
+        status.textContent =
+          "Keep practising. Try again to improve your score. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.grammar = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetGrammar() {
+      renderGrammarQuestions();
+      moduleCompletion.grammar = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkGrammarBtn").addEventListener("click", checkGrammar);
+    document.getElementById("resetGrammarBtn").addEventListener("click", resetGrammar);
+
+    // ----- Reading Module -----
+    const readingQuestionsData = [
+      {
+        text: "1. What is Sara's main reason for going to the community centre?",
+        options: [
+          "To learn English and how to use her smartphone",
+          "To find a new job",
+          "To look after children",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "2. How does Sara get to the community centre?",
+        options: [
+          "She takes the bus",
+          "She walks",
+          "She drives a car",
+        ],
+        correctIndex: 1,
+      },
+      {
+        text: "3. How does Sara feel after the class?",
+        options: [
+          "More confident",
+          "More tired",
+          "More confused",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "4. When does Sara go to the class?",
+        options: [
+          "On Monday",
+          "On Friday",
+          "Every day",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "5. How long does it take Sara to get to the community centre?",
+        options: [
+          "Ten minutes",
+          "One hour",
+          "Thirty minutes",
+        ],
+        correctIndex: 0,
+      },
+      {
+        text: "6. What is the class like for Sara?",
+        options: [
+          "Friendly and small",
+          "Busy and noisy",
+          "Scary and confusing",
+        ],
+        correctIndex: 0,
+      },
+    ];
+
+    function renderReadingQuestions() {
+      const container = document.getElementById("readingQuestions");
+      container.innerHTML = "";
+      readingQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="reading-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="reading-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("readingScoreLabel").textContent = "Score: 0 / " + readingQuestionsData.length;
+      document.getElementById("readingStatus").textContent = "";
+    }
+
+    function checkReading() {
+      let correctCount = 0;
+      readingQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="reading-' + index + '"]:checked');
+        const resultDiv = document.getElementById("reading-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("readingScoreLabel").textContent =
+        "Score: " + correctCount + " / " + readingQuestionsData.length;
+      const percent = correctCount / readingQuestionsData.length;
+      const status = document.getElementById("readingStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Excellent! This is enough to mark the Reading module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.reading = true;
+      } else {
+        status.textContent =
+          "Try again. Read the text slowly and look for key words in the questions. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.reading = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetReading() {
+      renderReadingQuestions();
+      moduleCompletion.reading = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkReadingBtn").addEventListener("click", checkReading);
+    document.getElementById("resetReadingBtn").addEventListener("click", resetReading);
+
+    // ----- Spelling Module -----
+    const spellingItemsData = [
+      {
+        clue: "A room or building where people learn.",
+        answer: "classroom",
+      },
+      {
+        clue: "A small computer you carry in your hand.",
+        answer: "smartphone",
+      },
+      {
+        clue: "A strong good feeling about yourself.",
+        answer: "confidence",
+      },
+      {
+        clue: "A lesson or group where you study something.",
+        answer: "class",
+      },
+      {
+        clue: "The person who helps you learn.",
+        answer: "teacher",
+      },
+      {
+        clue: "The middle of a place or town.",
+        answer: "centre",
+      },
+      {
+        clue: "A meeting at a planned time.",
+        answer: "appointment",
+      },
+      {
+        clue: "A person who lives near you.",
+        answer: "neighbour",
+      },
+      {
+        clue: "A small home in a building with many homes.",
+        answer: "flat",
+      },
+      {
+        clue: "A place in your area where people meet and learn.",
+        answer: "community centre",
+      },
+    ];
+
+    function renderSpellingItems() {
+      const container = document.getElementById("spellingItems");
+      container.innerHTML = "";
+      spellingItemsData.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "spelling-row";
+        row.innerHTML = `
+          <div class="input-row">
+            <label>${index + 1}. ${item.clue}</label>
+            <input type="text" id="spelling-input-${index}" placeholder="Type the word here" autocomplete="off" />
+          </div>
+          <div class="status-text" id="spelling-result-${index}"></div>
+        `;
+        container.appendChild(row);
+      });
+      document.getElementById("spellingScoreLabel").textContent = "Score: 0 / " + spellingItemsData.length;
+      document.getElementById("spellingStatus").textContent = "";
+    }
+
+    function checkSpelling() {
+      let correctCount = 0;
+      spellingItemsData.forEach((item, index) => {
+        const input = document.getElementById("spelling-input-" + index);
+        const resultDiv = document.getElementById("spelling-result-" + index);
+        const value = (input.value || "").trim().toLowerCase();
+        const correct = item.answer.toLowerCase();
+        if (!value) {
+          resultDiv.textContent = "Type a word.";
+          resultDiv.className = "status-text";
+          return;
+        }
+        if (value === correct) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "status-text correct";
+        } else {
+          resultDiv.textContent = "Check the spelling. Correct word: " + item.answer;
+          resultDiv.className = "status-text incorrect";
+        }
+      });
+      document.getElementById("spellingScoreLabel").textContent =
+        "Score: " + correctCount + " / " + spellingItemsData.length;
+      const percent = correctCount / spellingItemsData.length;
+      const status = document.getElementById("spellingStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Nice work! This is enough to mark the Spelling module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.spelling = true;
+      } else {
+        status.textContent =
+          "Keep practising. You can press Clear answers and try again. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.spelling = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetSpelling() {
+      renderSpellingItems();
+      moduleCompletion.spelling = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkSpellingBtn").addEventListener("click", checkSpelling);
+    document.getElementById("resetSpellingBtn").addEventListener("click", resetSpelling);
+
+    // ----- Global Reset -----
+    document.getElementById("resetAllBtn").addEventListener("click", () => {
+      resetVocabulary();
+      resetGrammar();
+      resetReading();
+      resetSpelling();
+      Object.keys(moduleCompletion).forEach((k) => (moduleCompletion[k] = false));
+      updateProgressDisplay();
+    });
+
+    // ----- Initial render -----
+    renderVocabQuestions();
+    renderGrammarQuestions();
+    renderReadingQuestions();
+    renderSpellingItems();
+    updateProgressDisplay();
+  </script>
+
+<!-- NEW MODULES v3 -->
+<div id="formsSection" style="display:none;"><h2>Forms & Personal Details</h2><p>Module placeholder.</p></div>
+<div id="moneySection" style="display:none;"><h2>Money & Numbers</h2><p>Module placeholder.</p></div>
+<div id="signsSection" style="display:none;"><h2>Reading Signs</h2><p>Module placeholder.</p></div>
+<div id="healthSection" style="display:none;"><h2>GP / Health English</h2><p>Module placeholder.</p></div>
+<div id="jobcentreSection" style="display:none;"><h2>Jobcentre English</h2><p>Module placeholder.</p></div>
+</body>
+</html>
