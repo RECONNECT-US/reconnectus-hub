@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US • Tools</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:#0b1220;color:white;display:flex;align-items:center;justify-content:center;height:100vh}
+.box{text-align:center;max-width:420px;width:100%}
+h1{margin-bottom:20px}
+.btn{display:block;margin:12px auto;padding:14px;border-radius:10px;border:none;font-size:15px;font-weight:bold;cursor:pointer;width:100%}
+.primary{background:#22d7c6;color:#042131}
+.alt{background:#59a9ff;color:#042131}
+.back{margin-top:20px;background:#444;color:white}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Tools</h1>
+  <button class="btn primary" onclick="go('website-idea-studio.html')">Website Idea Studio</button>
+  <button class="btn alt" onclick="go('budgeting.html')">Budgeting Demo</button>
+  <button class="btn back" onclick="backHome()">Back to Home</button>
+</div>
+<script>
+function go(page){ window.location.href = page; }
+function backHome(){ window.location.href = '../index.html'; }
+</script>
+</body>
+</html>

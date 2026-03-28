@@ -1,0 +1,1525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Website Idea Studio</title>
+  <style>
+    :root {
+      --bg: #edf3f8;
+      --surface: rgba(255,255,255,0.96);
+      --surface-strong: #ffffff;
+      --surface-soft: #f6f9fc;
+      --ink: #162332;
+      --muted: #617284;
+      --line: #d9e4ee;
+      --brand: #f28c28;
+      --brand-deep: #d87412;
+      --brand-soft: #fff2e3;
+      --navy: #1f3144;
+      --navy-2: #32475d;
+      --success: #17653f;
+      --shadow-xl: 0 24px 70px rgba(20, 37, 63, 0.14);
+      --shadow-lg: 0 16px 42px rgba(20, 37, 63, 0.10);
+      --shadow-md: 0 10px 28px rgba(20, 37, 63, 0.08);
+      --radius-xl: 28px;
+      --radius-lg: 22px;
+      --radius-md: 16px;
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(242,140,40,0.10), transparent 28%),
+        radial-gradient(circle at top right, rgba(31,49,68,0.12), transparent 26%),
+        linear-gradient(180deg, #eef4f9 0%, #f7fafc 48%, #eef3f8 100%);
+      padding: 24px;
+    }
+
+    .app-shell {
+      max-width: 1380px;
+      margin: 0 auto;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      border-radius: 34px;
+      background: linear-gradient(135deg, #192839 0%, #26384b 42%, #3d556d 100%);
+      color: #fff;
+      box-shadow: var(--shadow-xl);
+      padding: 30px;
+      isolation: isolate;
+    }
+
+    .hero::before,
+    .hero::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero::before {
+      width: 420px;
+      height: 420px;
+      right: -130px;
+      top: -170px;
+      background: radial-gradient(circle, rgba(242,140,40,0.18) 0%, rgba(242,140,40,0.04) 56%, transparent 72%);
+    }
+
+    .hero::after {
+      width: 320px;
+      height: 320px;
+      left: -80px;
+      bottom: -140px;
+      background: radial-gradient(circle, rgba(255,255,255,0.10) 0%, transparent 72%);
+    }
+
+    .topbar {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+
+    .brandline {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+
+    .brand-chip,
+    .security-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      border: 1px solid rgba(255,255,255,0.16);
+      background: rgba(255,255,255,0.10);
+      color: rgba(255,255,255,0.96);
+      font-size: 0.88rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, 0.8fr);
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-main {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .hero-brand {
+      display: grid;
+      grid-template-columns: 114px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .logo-box {
+      width: 114px;
+      min-width: 114px;
+      height: 114px;
+      border-radius: 28px;
+      border: 2px dashed rgba(255,255,255,0.42);
+      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.06) 100%);
+      display: grid;
+      place-items: center;
+      text-align: center;
+      padding: 12px;
+      font-size: 0.84rem;
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: 0.04em;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10);
+    }
+
+    .compact-title {
+      margin-left: 40px;
+      padding-top: 2px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      padding: 7px 12px;
+      margin-bottom: 10px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.14);
+      color: rgba(255,255,255,0.95);
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      backdrop-filter: blur(6px);
+    }
+
+    .title-block h1 {
+      margin: 0;
+      font-size: clamp(2.1rem, 4vw, 3.4rem);
+      line-height: 1.02;
+      letter-spacing: -0.03em;
+    }
+
+    .title-block p {
+      margin: 14px 0 0;
+      max-width: 820px;
+      font-size: 1.04rem;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .hero-points {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .hero-point {
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 18px;
+      padding: 14px;
+      backdrop-filter: blur(5px);
+    }
+
+    .hero-point strong {
+      display: block;
+      font-size: 0.95rem;
+      margin-bottom: 6px;
+    }
+
+    .hero-point span {
+      font-size: 0.91rem;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.90);
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 2px;
+    }
+
+    button {
+      appearance: none;
+      border: 0;
+      border-radius: 16px;
+      padding: 13px 18px;
+      font: inherit;
+      font-weight: 800;
+      cursor: pointer;
+      transition: transform 0.16s ease, box-shadow 0.16s ease, opacity 0.16s ease, background 0.16s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .btn-primary {
+      color: #fff;
+      background: linear-gradient(180deg, #f59a3f 0%, #e2801d 100%);
+      box-shadow: 0 16px 28px rgba(242,140,40,0.25);
+    }
+
+    .btn-secondary {
+      color: #fff;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.14);
+      backdrop-filter: blur(6px);
+    }
+
+    .btn-ghost {
+      color: var(--navy);
+      background: #eef4fa;
+      border: 1px solid var(--line);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .hero-side {
+      display: flex;
+    }
+
+    .hero-panel {
+      width: 100%;
+      border-radius: 24px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.08) 100%);
+      border: 1px solid rgba(255,255,255,0.14);
+      padding: 22px;
+      backdrop-filter: blur(8px);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.08);
+    }
+
+    .hero-panel h3 {
+      margin: 0 0 10px;
+      font-size: 1.18rem;
+    }
+
+    .hero-panel p {
+      margin: 0 0 16px;
+      line-height: 1.65;
+      color: rgba(255,255,255,0.92);
+    }
+
+    .mini-stats {
+      display: grid;
+      gap: 12px;
+    }
+
+    .mini-stat {
+      border-radius: 18px;
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.10);
+      border: 1px solid rgba(255,255,255,0.10);
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 1.05rem;
+      margin-bottom: 4px;
+    }
+
+    .mini-stat span {
+      color: rgba(255,255,255,0.90);
+      font-size: 0.92rem;
+      line-height: 1.5;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: minmax(0, 1.08fr) minmax(330px, 0.92fr);
+      gap: 24px;
+      margin-top: 24px;
+    }
+
+    .stack {
+      display: grid;
+      gap: 24px;
+    }
+
+    .card {
+      position: relative;
+      overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(251,253,255,0.96) 100%);
+      border: 1px solid rgba(217,228,238,0.98);
+      border-radius: var(--radius-xl);
+      box-shadow: 0 18px 46px rgba(20, 37, 63, 0.11);
+      padding: 26px;
+      backdrop-filter: blur(10px);
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto auto 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--brand) 0%, rgba(242,140,40,0.12) 65%, transparent 100%);
+    }
+
+    .section-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+
+    .section-heading h2 {
+      margin: 0 0 6px;
+      font-size: 1.38rem;
+      color: #1b2d40;
+      letter-spacing: -0.01em;
+    }
+
+    .section-heading p {
+      margin: 0;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .step-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      min-width: fit-content;
+      background: var(--brand-soft);
+      color: var(--brand-deep);
+      border: 1px solid #ffd8b0;
+      border-radius: 999px;
+      padding: 7px 13px;
+      font-size: 0.82rem;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    .fields {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .field,
+    .field-full {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field-full { grid-column: 1 / -1; }
+
+    label {
+      font-weight: 800;
+      color: #2a3f55;
+      font-size: 0.95rem;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 13px 15px;
+      font: inherit;
+      color: var(--ink);
+      background: linear-gradient(180deg, #fbfdff 0%, #f7fbfe 100%);
+      outline: none;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease;
+      box-shadow: inset 0 1px 2px rgba(19,31,45,0.02);
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 110px;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: rgba(242,140,40,0.88);
+      box-shadow: 0 0 0 4px rgba(242,140,40,0.14);
+      background: #fff;
+      transform: translateY(-1px);
+    }
+
+    .subtle-note {
+      margin-top: 10px;
+      padding: 12px 14px;
+      border-radius: 16px;
+      background: #f7fafc;
+      border: 1px dashed var(--line);
+      color: var(--muted);
+      line-height: 1.6;
+      font-size: 0.94rem;
+    }
+
+    .idea-row {
+      display: grid;
+      grid-template-columns: 1.15fr 0.78fr 0.58fr auto;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .score-card,
+    .support-panel,
+    .result-shell,
+    .notice-card {
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .score-card {
+      background: linear-gradient(180deg, #fff7ef 0%, #ffffff 100%);
+      border: 1px solid #ffdfbc;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.9);
+    }
+
+    .score-card h3,
+    .result-shell h3,
+    .support-panel h3,
+    .notice-card h3 {
+      margin: 0 0 8px;
+      color: #203245;
+      font-size: 1.08rem;
+    }
+
+    .small {
+      font-size: 0.92rem;
+      color: var(--muted);
+      line-height: 1.6;
+    }
+
+    .score-output {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-top: 10px;
+    }
+
+    .score-pill {
+      padding: 11px 15px;
+      border-radius: 999px;
+      background: linear-gradient(180deg, #213347 0%, #32475d 100%);
+      color: #fff;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      box-shadow: var(--shadow-md);
+    }
+
+    .check-list {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      margin-top: 6px;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 13px 14px;
+      background: linear-gradient(180deg, #fbfdff 0%, #f5f9fc 100%);
+      color: #2b4055;
+      min-height: 54px;
+    }
+
+    .check input { transform: scale(1.16); }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .support-panel {
+      background: linear-gradient(180deg, #f7fbff 0%, #ffffff 100%);
+      border: 1px solid #dbe8f4;
+      box-shadow: var(--shadow-md);
+    }
+
+    .support-panel + .support-panel {
+      margin-top: 16px;
+    }
+
+    .support-grid {
+      display: grid;
+      gap: 12px;
+      margin-top: 10px;
+    }
+
+    .muted-box {
+      background: #f8fbfd;
+      border: 1px dashed #d6e1ea;
+      border-radius: 16px;
+      padding: 14px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .result-shell {
+      background: linear-gradient(180deg, #f4f9fe 0%, #ffffff 100%);
+      border: 1px solid #d9e7f5;
+      box-shadow: 0 18px 46px rgba(20, 37, 63, 0.12);
+    }
+
+    .result-card {
+      margin-top: 14px;
+      min-height: 355px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid #e1ebf4;
+      padding: 18px;
+      white-space: pre-wrap;
+      line-height: 1.72;
+      color: #213245;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.85);
+    }
+
+    .notice-card {
+      background: linear-gradient(180deg, #f8fbfd 0%, #ffffff 100%);
+      border: 1px solid #dce6ef;
+      box-shadow: var(--shadow-md);
+      margin-top: 16px;
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      background: linear-gradient(135deg, #1c2d3f 0%, #2b3f54 50%, #3a546d 100%);
+      color: #fff;
+      padding: 26px;
+      box-shadow: var(--shadow-xl);
+    }
+
+    .footer-note::before {
+      content: "";
+      position: absolute;
+      width: 320px;
+      height: 320px;
+      border-radius: 50%;
+      right: -100px;
+      bottom: -160px;
+      background: radial-gradient(circle, rgba(242,140,40,0.16) 0%, transparent 72%);
+      pointer-events: none;
+    }
+
+    .footer-grid {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .footer-note p {
+      margin: 8px 0;
+      line-height: 1.75;
+      color: rgba(255,255,255,0.95);
+    }
+
+    .footer-mini {
+      border-radius: 22px;
+      background: rgba(255,255,255,0.08);
+      border: 1px solid rgba(255,255,255,0.10);
+      padding: 18px;
+      backdrop-filter: blur(6px);
+    }
+
+    .footer-mini strong {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 1rem;
+    }
+
+    .copyright {
+      font-weight: 800;
+      color: #fff;
+      margin-top: 14px;
+      letter-spacing: 0.02em;
+    }
+
+    
+    
+    #overlayToggle,
+    #helpToggle {
+      position: absolute;
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .startup-overlay,
+    .help-overlay-manual {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(16, 24, 35, 0.72);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+    }
+
+    .overlay-dismiss-area {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+    }
+
+    #overlayToggle:checked ~ .startup-overlay {
+      display: none;
+    }
+
+    #helpToggle:not(:checked) ~ .help-overlay-manual {
+      display: none;
+    }
+
+    #helpToggle:checked ~ .help-overlay-manual {
+      display: flex;
+    }
+
+    .overlay-label-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 13px 18px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    #helpBtn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.30);
+      background: rgba(255,255,255,0.10);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 40px;
+      min-height: 40px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    #helpBtn:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+
+    .fullscreen-wrap {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+
+    #fullscreenBtn, #helpBtn {
+      margin-top: 6px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.30);
+      background: rgba(255,255,255,0.10);
+      color: white;
+      font-weight: 800;
+      cursor: pointer;
+      min-width: 40px;
+      min-height: 40px;
+      backdrop-filter: blur(6px);
+      box-shadow: 0 8px 18px rgba(0,0,0,0.18), inset 0 1px 0 rgba(255,255,255,0.15);
+    }
+
+    #fullscreenBtn {
+      animation: pulseGlow 2.2s ease-in-out infinite;
+    }
+
+    #fullscreenBtn:hover, #helpBtn:hover {
+      background: rgba(255,255,255,0.16);
+    }
+
+    @keyframes pulseGlow {
+      0% { transform: translateY(0) scale(1); box-shadow: 0 8px 18px rgba(0,0,0,0.18), 0 0 0 rgba(242,140,40,0.0), inset 0 1px 0 rgba(255,255,255,0.15); }
+      50% { transform: translateY(-1px) scale(1.04); box-shadow: 0 12px 24px rgba(0,0,0,0.22), 0 0 18px rgba(242,140,40,0.28), inset 0 1px 0 rgba(255,255,255,0.18); }
+      100% { transform: translateY(0) scale(1); box-shadow: 0 8px 18px rgba(0,0,0,0.18), 0 0 0 rgba(242,140,40,0.0), inset 0 1px 0 rgba(255,255,255,0.15); }
+    }
+
+    
+    
+
+    .help-panel {
+      max-width: 720px;
+      width: 100%;
+      border-radius: 26px;
+      background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(247,250,252,0.98) 100%);
+      border: 1px solid rgba(217,228,238,0.98);
+      box-shadow: 0 24px 70px rgba(20,37,63,0.26);
+      padding: 26px;
+      text-align: center;
+    }
+
+    .help-panel h2 {
+      margin: 0 0 10px;
+      color: #1b2d40;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+
+    .help-panel p {
+      margin: 8px 0;
+      color: #617284;
+      line-height: 1.75;
+      font-size: 1rem;
+    }
+
+    .help-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .tap-hint {
+      margin-top: 10px;
+      color: #1f3144;
+      font-weight: 800;
+      font-size: 0.96rem;
+    }
+
+
+    @media (max-width: 1120px) {
+      .hero-grid,
+      .grid,
+      .footer-grid,
+      .hero-points {
+        grid-template-columns: 1fr;
+      }
+      .hero-side { order: 2; }
+    }
+
+    @media (max-width: 900px) {
+      body { padding: 14px; }
+      .fields,
+      .check-list,
+      .mini-grid { grid-template-columns: 1fr; }
+      .idea-row { grid-template-columns: 1fr; }
+      .hero { padding: 22px; border-radius: 26px; }
+      .card { padding: 18px; border-radius: 22px; }
+      .footer-note { padding: 22px; border-radius: 24px; }
+      .hero-brand { grid-template-columns: 1fr; }
+      .logo-box { width: 100px; min-width: 100px; height: 100px; }
+    }
+  
+    @media print {
+      body * { visibility: hidden; }
+      #resultBox, #resultBox * { visibility: visible; }
+      #resultBox {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        padding: 20px;
+        font-size: 14px;
+      }
+    }
+
+</style>
+</head>
+<body>
+  <input type="checkbox" id="overlayToggle" hidden>
+  <input type="checkbox" id="helpToggle" hidden>
+
+  <div class="help-overlay startup-overlay">
+    <label for="overlayToggle" class="overlay-dismiss-area" aria-label="Open app"></label>
+    <div class="help-panel" role="dialog" aria-modal="true" aria-labelledby="startupTitle">
+      <h2 id="startupTitle">A product of RECONNECT-US</h2>
+      <p>Tap anywhere outside this message to open the app.</p>
+      <p>Use <strong>Enter Full Screen</strong> for a bigger view, or <strong>Open App</strong> to continue normally.</p>
+      <div class="help-actions">
+        <button class="btn-primary" id="enterFullscreenBtn" type="button">Enter Full Screen</button>
+        <label for="overlayToggle" class="btn-ghost overlay-label-btn">Open App</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="help-overlay help-overlay-manual">
+    <label for="helpToggle" class="overlay-dismiss-area" aria-label="Close help"></label>
+    <div class="help-panel" role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+      <h2 id="helpTitle">A product of RECONNECT-US</h2>
+      <p>Use this RECONNECT-US workspace to brainstorm ideas, compare website subjects, and build a professional website plan.</p>
+      <p>Tap anywhere outside this message to close help.</p>
+      <div class="help-actions">
+        <button class="btn-primary" id="helpFullscreenBtn" type="button">Enter Full Screen</button>
+        <label for="helpToggle" class="btn-ghost overlay-label-btn">Close Help</label>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <section class="hero">
+      <div class="topbar">
+        <div class="brandline">
+          <button class="btn-secondary" id="backHomeBtn" type="button">Back</button>
+          <div class="brand-chip">RECONNECT-US Digital Creation Tool</div>
+          <div class="security-chip">Professional Website Planning Workspace</div>
+        </div>
+      </div>
+
+      <div class="hero-grid">
+        <div class="hero-main">
+          <div class="hero-brand">
+            <div class="fullscreen-wrap">
+              <div class="logo-box" aria-label="RECONNECT-US logo placeholder"><span style="font-size:38px; font-weight:900; letter-spacing:2px; background:linear-gradient(135deg, rgba(242,140,40,0.8), rgba(255,255,255,0.6)); -webkit-background-clip:text; color:transparent;">RU</span></div>
+              <div style="display:flex; flex-direction:column; gap:10px;">
+                <button id="fullscreenBtn" aria-label="Toggle fullscreen" title="Toggle fullscreen">⛶</button>
+                <label id="helpBtn" for="helpToggle" aria-label="Show help" title="Show help">?</label>
+              </div>
+            </div>
+            <div class="title-block compact-title">
+              <div class="eyebrow">RECONNECT-US Professional Planning Tool</div>
+              <h1>Website Idea Studio</h1>
+              <p><strong>RECONNECT-US</strong> — This product is designed to help people brainstorm, refine, and shape strong ideas for their own websites. It takes a rough thought and turns it into a clear, structured website concept that feels purposeful, polished, and worth building.</p>
+            </div>
+          </div>
+
+          <div class="hero-points">
+            <div class="hero-point">
+              <strong>Brainstorm properly</strong>
+              <span>Capture the purpose, audience, problem, and message before committing to a website subject.</span>
+            </div>
+            <div class="hero-point">
+              <strong>Compare ideas clearly</strong>
+              <span>Rate different subjects and identify the one with the best direction, audience fit, and value.</span>
+            </div>
+            <div class="hero-point">
+              <strong>Build a professional plan</strong>
+              <span>Turn the final idea into a structured concept with pages, content, features, tone, and calls to action.</span>
+            </div>
+          </div>
+
+          <div class="hero-actions">
+            <button class="btn-primary" id="summaryBtn" type="button">Create Website Plan</button>
+            <button class="btn-secondary" id="pdfBtn" type="button">Download PDF</button>
+            <button class="btn-secondary" id="saveBtn" type="button">Save Progress</button>
+            <button class="btn-secondary" id="loadBtn" type="button">Load Saved</button>
+          </div>
+        </div>
+
+        <div class="hero-side">
+          <div class="hero-panel">
+            <h3>Why this tool matters</h3>
+            <p>Many people want a website but do not know where to begin. This workspace makes the process feel organised, creative, and achievable — without the mess of random notes and half-formed ideas.</p>
+            <div class="mini-stats">
+              <div class="mini-stat">
+                <strong>Step-by-step workflow</strong>
+                <span>Move from thinking to planning in a cleaner, more professional way.</span>
+              </div>
+              <div class="mini-stat">
+                <strong>Interactive idea scoring</strong>
+                <span>Test subjects against each other instead of guessing which one sounds best.</span>
+              </div>
+              <div class="mini-stat">
+                <strong>Ready-to-use summary output</strong>
+                <span>Create a polished concept brief that can be used to guide the actual website build.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <main class="stack">
+        <section class="card">
+          <div class="section-top">
+            <div class="section-heading">
+              <h2>Start with the big picture</h2>
+              <p>Before building a website, get clear on what it is for, who it helps, and why it matters.</p>
+            </div>
+            <div class="step-tag">Step 1 · Brainstorm</div>
+          </div>
+
+          <div class="fields">
+            <div class="field">
+              <label for="creatorName">Your name or project lead</label>
+              <input id="creatorName" type="text" placeholder="Example: Zoe / Project Lead" />
+            </div>
+            <div class="field">
+              <label for="websiteType">Type of website</label>
+              <select id="websiteType">
+                <option value="">Choose one</option>
+                <option>Information website</option>
+                <option>Community website</option>
+                <option>Business website</option>
+                <option>Learning website</option>
+                <option>Charity / support website</option>
+                <option>Portfolio website</option>
+                <option>Campaign website</option>
+              </select>
+            </div>
+            <div class="field-full">
+              <label for="problemToSolve">What problem should the website solve?</label>
+              <textarea id="problemToSolve" placeholder="Describe the issue, gap, challenge, or need the website will help with."></textarea>
+            </div>
+            <div class="field-full">
+              <label for="targetAudience">Who is the website for?</label>
+              <textarea id="targetAudience" placeholder="Example: people needing digital support, volunteers, learners, the general public, local services."></textarea>
+            </div>
+            <div class="field-full">
+              <label for="mainGoal">Main goal of the website</label>
+              <textarea id="mainGoal" placeholder="Example: give clear information, encourage sign-ups, share resources, help people learn, build trust."></textarea>
+            </div>
+          </div>
+
+          <div class="subtle-note">Strong websites usually begin with a very simple truth: what is the site for, who is it for, and what should people do when they land on it?</div>
+        </section>
+
+        <section class="card">
+          <div class="section-top">
+            <div class="section-heading">
+              <h2>Test and compare your ideas</h2>
+              <p>Add possible website subjects, score them, and identify the strongest option to move forward with.</p>
+            </div>
+            <div class="step-tag">Step 2 · Compare</div>
+          </div>
+
+          <div id="ideasList">
+            <div class="idea-row">
+              <input type="text" class="idea-topic" placeholder="Website subject idea" />
+              <input type="text" class="idea-audience" placeholder="Who it helps" />
+              <input type="number" class="idea-score" min="1" max="10" placeholder="Score 1-10" />
+              <button class="btn-ghost remove-idea" type="button">Remove</button>
+            </div>
+            <div class="idea-row">
+              <input type="text" class="idea-topic" placeholder="Website subject idea" />
+              <input type="text" class="idea-audience" placeholder="Who it helps" />
+              <input type="number" class="idea-score" min="1" max="10" placeholder="Score 1-10" />
+              <button class="btn-ghost remove-idea" type="button">Remove</button>
+            </div>
+            <div class="idea-row">
+              <input type="text" class="idea-topic" placeholder="Website subject idea" />
+              <input type="text" class="idea-audience" placeholder="Who it helps" />
+              <input type="number" class="idea-score" min="1" max="10" placeholder="Score 1-10" />
+              <button class="btn-ghost remove-idea" type="button">Remove</button>
+            </div>
+          </div>
+
+          <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+            <button class="btn-primary" id="addIdeaBtn" type="button">Add Another Idea</button>
+            <button class="btn-ghost" id="pickBestBtn" type="button">Pick Best Subject</button>
+          </div>
+
+          <div class="score-card" style="margin-top:16px;">
+            <h3>Suggested strongest subject</h3>
+            <p class="small">This uses the highest score you entered and gives you a quick recommended direction.</p>
+            <div class="score-output">
+              <div id="bestIdeaText">No subject picked yet.</div>
+              <div class="score-pill" id="bestIdeaScore">Score: --</div>
+            </div>
+          </div>
+        </section>
+
+        <section class="card">
+          <div class="section-top">
+            <div class="section-heading">
+              <h2>Turn the winning idea into a website plan</h2>
+              <p>Build a cleaner concept with pages, content, features, tone, and a clear action for visitors.</p>
+            </div>
+            <div class="step-tag">Step 3 · Build</div>
+          </div>
+
+          <div class="fields">
+            <div class="field">
+              <label for="websiteName">Website name</label>
+              <input id="websiteName" type="text" placeholder="Example: Digital Start Hub" />
+            </div>
+            <div class="field">
+              <label for="tagline">Tagline</label>
+              <input id="tagline" type="text" placeholder="A short line that explains the website" />
+            </div>
+            <div class="field-full">
+              <label for="chosenSubject">Chosen subject</label>
+              <input id="chosenSubject" type="text" placeholder="Write the subject you want to build the website around" />
+            </div>
+            <div class="field-full">
+              <label for="websitePages">Core pages needed</label>
+              <textarea id="websitePages" placeholder="Example: Home, About, Services, Resources, Contact, FAQs"></textarea>
+            </div>
+            <div class="field-full">
+              <label for="keyContent">Key information the website must include</label>
+              <textarea id="keyContent" placeholder="Example: who you are, what help is offered, who it is for, contact details, testimonials, step-by-step guides."></textarea>
+            </div>
+          </div>
+
+          <div class="field-full" style="margin-top:14px;">
+            <label>Features to include</label>
+            <div class="check-list">
+              <label class="check"><input type="checkbox" class="feature" value="Clear call-to-action" />Clear call-to-action</label>
+              <label class="check"><input type="checkbox" class="feature" value="Contact form" />Contact form</label>
+              <label class="check"><input type="checkbox" class="feature" value="FAQ section" />FAQ section</label>
+              <label class="check"><input type="checkbox" class="feature" value="Resources or downloads" />Resources or downloads</label>
+              <label class="check"><input type="checkbox" class="feature" value="Gallery or images" />Gallery or images</label>
+              <label class="check"><input type="checkbox" class="feature" value="Testimonials" />Testimonials</label>
+              <label class="check"><input type="checkbox" class="feature" value="Mobile-friendly layout" />Mobile-friendly layout</label>
+              <label class="check"><input type="checkbox" class="feature" value="Simple navigation" />Simple navigation</label>
+            </div>
+          </div>
+
+          <div class="mini-grid">
+            <div class="field">
+              <label for="colourMood">Colour mood</label>
+              <input id="colourMood" type="text" placeholder="Example: warm, trustworthy, modern" />
+            </div>
+            <div class="field">
+              <label for="toneStyle">Tone of voice</label>
+              <input id="toneStyle" type="text" placeholder="Example: friendly, clear, professional" />
+            </div>
+            <div class="field">
+              <label for="callToAction">Main call to action</label>
+              <input id="callToAction" type="text" placeholder="Example: Contact us / Start learning" />
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <aside class="stack">
+        <section class="result-shell">
+          <h3>Website concept summary</h3>
+          <p class="small">Press <strong>Create Website Plan</strong> to turn the information you entered into a cleaner, more polished concept brief.</p>
+          <div class="result-card" id="resultBox">Your website concept summary will appear here.
+
+Tip: fill in the brainstorm section, compare a few subject ideas, then complete the build section for the strongest result.</div>
+        </section>
+
+        <section class="support-panel">
+          <h3>What makes a strong website subject?</h3>
+          <div class="support-grid">
+            <div class="muted-box">A strong subject is clear, useful, and aimed at a specific audience. It should solve a problem, support a need, or make something easier to understand or access.</div>
+            <div class="muted-box">Good website ideas often include support services, learning tools, information hubs, campaigns, local groups, step-by-step guidance, or professional services.</div>
+            <div class="muted-box">Before building anything, try to answer three things: who is this for, what does it help with, and what should visitors do next?</div>
+          </div>
+        </section>
+
+        <section class="notice-card">
+          <h3>Save and continue later</h3>
+          <p class="small">This app saves progress on this device only when you choose <strong>Save Progress</strong>. It does not send data anywhere online.</p>
+          <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+            <button class="btn-ghost" id="clearBtn" type="button">Clear Form</button>
+          </div>
+        </section>
+      </aside>
+    </div>
+
+    <section class="footer-note">
+      <div class="footer-grid">
+        <div>
+          <p><strong>Usage Notice:</strong> This is RECONNECT-US property. Do not copy, share, distribute, download, move to another device, or place on another site without prior written permission from RECONNECT-US.</p>
+          <p>This interactive app is intended for guided idea development and website planning within approved RECONNECT-US use only.</p>
+          <p class="copyright">© RECONNECT-US, All rights reserved.</p>
+        </div>
+        <div class="footer-mini">
+          <strong>Professional purpose</strong>
+          This tool is built to make website planning feel organised, worthwhile, and achievable — especially for users who need a clear place to start before building their own site.
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script>
+    const storageKey = 'reconnectus_website_idea_studio';
+
+    const HUB_PROFILE_KEY = 'reconnectus_profile';
+    const HUB_APP_DATA_KEY = 'reconnectus_app_data';
+    const HUB_TRACKING_KEY = 'reconnectus_tracking_data';
+    const HUB_SHARED_KEY = 'reconnectus_shared_current_learner_v1';
+    const WEBSITE_APP_ID = 'website_idea_studio';
+    const WEBSITE_APP_PATH = 'tools/website-idea-studio.html';
+
+    function getHubSharedLearnerName() {
+      try {
+        const shared = JSON.parse(localStorage.getItem(HUB_SHARED_KEY) || 'null');
+        if (shared && shared.name) return String(shared.name).trim();
+      } catch (e) {}
+      try {
+        const profile = JSON.parse(localStorage.getItem(HUB_PROFILE_KEY) || 'null');
+        if (profile && profile.name) return String(profile.name).trim();
+      } catch (e) {}
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get('learner');
+        if (q) return String(q).trim();
+      } catch (e) {}
+      return 'Hub learner';
+    }
+
+    function normaliseKeyPart(value) {
+      return String(value || 'hub')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '') || 'hub';
+    }
+
+    function getLearnerStorageKey() {
+      return storageKey + '__' + normaliseKeyPart(getHubSharedLearnerName());
+    }
+
+    function getHubApps() {
+      try { return JSON.parse(localStorage.getItem(HUB_APP_DATA_KEY) || '{}'); } catch (e) { return {}; }
+    }
+
+    function saveHubApp(appId, data) {
+      const all = getHubApps();
+      all[appId] = { ...(all[appId] || {}), ...data, updatedAt: new Date().toISOString() };
+      localStorage.setItem(HUB_APP_DATA_KEY, JSON.stringify(all));
+      return all[appId];
+    }
+
+    function trackHubEvent(eventType, payload) {
+      let tracking = { events: [], counters: {} };
+      try { tracking = JSON.parse(localStorage.getItem(HUB_TRACKING_KEY) || '{"events":[],"counters":{}}'); } catch (e) {}
+      tracking.events = Array.isArray(tracking.events) ? tracking.events : [];
+      tracking.counters = tracking.counters || {};
+      tracking.events.unshift({ eventType, payload: payload || {}, timestamp: new Date().toISOString() });
+      tracking.events = tracking.events.slice(0, 150);
+      tracking.counters[eventType] = (tracking.counters[eventType] || 0) + 1;
+      localStorage.setItem(HUB_TRACKING_KEY, JSON.stringify(tracking));
+    }
+
+    function getWebsiteProgressSnapshot() {
+      const data = getData();
+      const featureCount = Array.isArray(data.features) ? data.features.length : 0;
+      const completedIdeas = (data.ideas || []).filter(i => (i.topic || '').trim()).length;
+      const filled = [
+        data.creatorName, data.websiteType, data.problemToSolve, data.targetAudience, data.mainGoal,
+        data.websiteName, data.tagline, data.chosenSubject, data.websitePages, data.keyContent,
+        data.colourMood, data.toneStyle, data.callToAction
+      ].filter(v => String(v || '').trim()).length;
+      const progress = Math.min(100, Math.round((filled * 6) + (completedIdeas * 6) + (featureCount * 3)));
+      const bestText = document.getElementById('bestIdeaText') ? document.getElementById('bestIdeaText').textContent.trim() : 'No subject picked yet.';
+      const summaryParts = [];
+      if (data.websiteName) summaryParts.push(data.websiteName);
+      if (data.chosenSubject) summaryParts.push('subject: ' + data.chosenSubject);
+      if (featureCount) summaryParts.push(featureCount + ' features');
+      if (bestText && bestText !== 'No subject picked yet.') summaryParts.push('best idea ready');
+      return {
+        learnerName: getHubSharedLearnerName(),
+        progress: Math.max(progress, 5),
+        summary: summaryParts.join(' • ') || 'Website planning workspace ready',
+        currentSubject: data.chosenSubject || '',
+        websiteName: data.websiteName || '',
+        bestIdea: bestText
+      };
+    }
+
+    function syncWebsiteHubSave(reason) {
+      const snap = getWebsiteProgressSnapshot();
+      saveHubApp(WEBSITE_APP_ID, {
+        title: 'Website Idea Studio',
+        learnerName: snap.learnerName,
+        summary: snap.summary,
+        progress: snap.progress,
+        currentSubject: snap.currentSubject,
+        websiteName: snap.websiteName,
+        bestIdea: snap.bestIdea,
+        path: WEBSITE_APP_PATH
+      });
+      trackHubEvent('app_saved', { appId: WEBSITE_APP_ID, reason: reason || 'save', progress: snap.progress });
+    }
+
+    function goBackHome() {
+      try { syncWebsiteHubSave('back_to_hub'); } catch (e) {}
+      window.location.href = '../index.html';
+    }
+
+
+    function ideaRows() {
+      return [...document.querySelectorAll('#ideasList .idea-row')];
+    }
+
+    function bindIdeaRow(row) {
+      row.querySelector('.remove-idea').addEventListener('click', () => {
+        const rows = ideaRows();
+        if (rows.length > 1) row.remove();
+      });
+    }
+
+    ideaRows().forEach(bindIdeaRow);
+
+    document.getElementById('addIdeaBtn').addEventListener('click', () => {
+      const row = document.createElement('div');
+      row.className = 'idea-row';
+      row.innerHTML = `
+        <input type="text" class="idea-topic" placeholder="Website subject idea" />
+        <input type="text" class="idea-audience" placeholder="Who it helps" />
+        <input type="number" class="idea-score" min="1" max="10" placeholder="Score 1-10" />
+        <button class="btn-ghost remove-idea" type="button">Remove</button>
+      `;
+      document.getElementById('ideasList').appendChild(row);
+      bindIdeaRow(row);
+    });
+
+    function pickBestIdea() {
+      const ideas = ideaRows().map(row => ({
+        topic: row.querySelector('.idea-topic').value.trim(),
+        audience: row.querySelector('.idea-audience').value.trim(),
+        score: Number(row.querySelector('.idea-score').value || 0)
+      })).filter(item => item.topic);
+
+      if (!ideas.length) {
+        document.getElementById('bestIdeaText').textContent = 'No subject picked yet.';
+        document.getElementById('bestIdeaScore').textContent = 'Score: --';
+        return null;
+      }
+
+      ideas.sort((a, b) => b.score - a.score);
+      const best = ideas[0];
+      document.getElementById('bestIdeaText').textContent = `${best.topic}${best.audience ? ' — for ' + best.audience : ''}`;
+      document.getElementById('bestIdeaScore').textContent = `Score: ${best.score || 0}/10`;
+      if (!document.getElementById('chosenSubject').value.trim()) {
+        document.getElementById('chosenSubject').value = best.topic;
+      }
+      return best;
+    }
+
+    document.getElementById('pickBestBtn').addEventListener('click', pickBestIdea);
+
+    function getData() {
+      return {
+        creatorName: document.getElementById('creatorName').value,
+        websiteType: document.getElementById('websiteType').value,
+        problemToSolve: document.getElementById('problemToSolve').value,
+        targetAudience: document.getElementById('targetAudience').value,
+        mainGoal: document.getElementById('mainGoal').value,
+        ideas: ideaRows().map(row => ({
+          topic: row.querySelector('.idea-topic').value,
+          audience: row.querySelector('.idea-audience').value,
+          score: row.querySelector('.idea-score').value
+        })),
+        websiteName: document.getElementById('websiteName').value,
+        tagline: document.getElementById('tagline').value,
+        chosenSubject: document.getElementById('chosenSubject').value,
+        websitePages: document.getElementById('websitePages').value,
+        keyContent: document.getElementById('keyContent').value,
+        features: [...document.querySelectorAll('.feature:checked')].map(cb => cb.value),
+        colourMood: document.getElementById('colourMood').value,
+        toneStyle: document.getElementById('toneStyle').value,
+        callToAction: document.getElementById('callToAction').value
+      };
+    }
+
+    function setData(data) {
+      if (!data) return;
+      document.getElementById('creatorName').value = data.creatorName || '';
+      document.getElementById('websiteType').value = data.websiteType || '';
+      document.getElementById('problemToSolve').value = data.problemToSolve || '';
+      document.getElementById('targetAudience').value = data.targetAudience || '';
+      document.getElementById('mainGoal').value = data.mainGoal || '';
+      document.getElementById('websiteName').value = data.websiteName || '';
+      document.getElementById('tagline').value = data.tagline || '';
+      document.getElementById('chosenSubject').value = data.chosenSubject || '';
+      document.getElementById('websitePages').value = data.websitePages || '';
+      document.getElementById('keyContent').value = data.keyContent || '';
+      document.getElementById('colourMood').value = data.colourMood || '';
+      document.getElementById('toneStyle').value = data.toneStyle || '';
+      document.getElementById('callToAction').value = data.callToAction || '';
+
+      document.querySelectorAll('.feature').forEach(cb => {
+        cb.checked = (data.features || []).includes(cb.value);
+      });
+
+      const list = document.getElementById('ideasList');
+      list.innerHTML = '';
+      const ideas = Array.isArray(data.ideas) && data.ideas.length ? data.ideas : [{}, {}, {}];
+      ideas.forEach(idea => {
+        const row = document.createElement('div');
+        row.className = 'idea-row';
+        row.innerHTML = `
+          <input type="text" class="idea-topic" placeholder="Website subject idea" value="${escapeHtml(idea.topic || '')}" />
+          <input type="text" class="idea-audience" placeholder="Who it helps" value="${escapeHtml(idea.audience || '')}" />
+          <input type="number" class="idea-score" min="1" max="10" placeholder="Score 1-10" value="${escapeHtml(idea.score || '')}" />
+          <button class="btn-ghost remove-idea" type="button">Remove</button>
+        `;
+        list.appendChild(row);
+        bindIdeaRow(row);
+      });
+
+      pickBestIdea();
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    function createSummary() {
+      const best = pickBestIdea();
+      const data = getData();
+      const lines = [];
+
+      lines.push(`Website planning summary`);
+      lines.push(``);
+      lines.push(`Project lead: ${data.creatorName || 'Not entered yet'}`);
+      lines.push(`Website type: ${data.websiteType || 'Not chosen yet'}`);
+      lines.push(`Chosen subject: ${data.chosenSubject || best?.topic || 'Not chosen yet'}`);
+      lines.push(`Website name: ${data.websiteName || 'Not entered yet'}`);
+      lines.push(`Tagline: ${data.tagline || 'Not entered yet'}`);
+      lines.push(``);
+      lines.push(`Purpose`);
+      lines.push(`${data.problemToSolve || 'No problem statement added yet.'}`);
+      lines.push(``);
+      lines.push(`Target audience`);
+      lines.push(`${data.targetAudience || 'No audience entered yet.'}`);
+      lines.push(``);
+      lines.push(`Main goal`);
+      lines.push(`${data.mainGoal || 'No main goal entered yet.'}`);
+      lines.push(``);
+      lines.push(`Recommended pages`);
+      lines.push(`${data.websitePages || 'No pages listed yet.'}`);
+      lines.push(``);
+      lines.push(`Key website content`);
+      lines.push(`${data.keyContent || 'No key content entered yet.'}`);
+      lines.push(``);
+      lines.push(`Features to include`);
+      lines.push(`${data.features.length ? data.features.join(', ') : 'No features selected yet.'}`);
+      lines.push(``);
+      lines.push(`Style direction`);
+      lines.push(`Colour mood: ${data.colourMood || 'Not entered yet'}`);
+      lines.push(`Tone of voice: ${data.toneStyle || 'Not entered yet'}`);
+      lines.push(`Call to action: ${data.callToAction || 'Not entered yet'}`);
+      lines.push(``);
+      lines.push(`Professional recommendation`);
+      lines.push(`Build the website around a clear message, strong navigation, and one main action for visitors. Keep the homepage simple, show who the website is for straight away, and make the next step obvious.`);
+
+      document.getElementById('resultBox').textContent = lines.join('\n');
+      try { syncWebsiteHubSave('summary_created'); } catch (e) {}
+    }
+
+    document.getElementById('summaryBtn').addEventListener('click', createSummary);
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      localStorage.setItem(getLearnerStorageKey(), JSON.stringify(getData()));
+      syncWebsiteHubSave('manual_save');
+      alert('Your progress has been saved on this device.');
+    });
+
+    document.getElementById('loadBtn').addEventListener('click', () => {
+      const raw = localStorage.getItem(getLearnerStorageKey());
+      if (!raw) {
+        alert('No saved progress was found on this device yet.');
+        return;
+      }
+      try {
+        setData(JSON.parse(raw));
+        syncWebsiteHubSave('manual_load');
+        alert('Saved progress loaded.');
+      } catch {
+        alert('The saved data could not be loaded.');
+      }
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      if (!confirm('Clear the form and remove any saved local progress on this device?')) return;
+      localStorage.removeItem(getLearnerStorageKey());
+      location.reload();
+    });
+  
+    
+    
+    
+    
+    
+    
+    const fullscreenBtn = document.getElementById('fullscreenBtn');
+    const enterFullscreenBtn = document.getElementById('enterFullscreenBtn');
+    const helpFullscreenBtn = document.getElementById('helpFullscreenBtn');
+
+    async function goFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        }
+      } catch (e) {
+        console.log('Fullscreen not available', e);
+      }
+    }
+
+    async function toggleFullscreen() {
+      try {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen();
+        } else {
+          await document.exitFullscreen();
+        }
+      } catch (e) {
+        console.log('Fullscreen toggle failed', e);
+      }
+    }
+
+    if (fullscreenBtn) {
+      fullscreenBtn.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        toggleFullscreen();
+      });
+    }
+
+    if (enterFullscreenBtn) {
+      enterFullscreenBtn.addEventListener('click', async function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        await goFullscreen();
+        const toggle = document.getElementById('overlayToggle');
+        if (toggle) toggle.checked = true;
+      });
+    }
+
+    if (helpFullscreenBtn) {
+      helpFullscreenBtn.addEventListener('click', async function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        await goFullscreen();
+        const helpToggle = document.getElementById('helpToggle');
+        if (helpToggle) helpToggle.checked = false;
+      });
+    }
+    
+    const pdfBtn = document.getElementById('pdfBtn');
+    if (pdfBtn) {
+      pdfBtn.addEventListener('click', function () {
+        window.print();
+      });
+    }
+
+    const backHomeBtn = document.getElementById('backHomeBtn');
+    if (backHomeBtn) {
+      backHomeBtn.addEventListener('click', goBackHome);
+    }
+
+    (function bootHubLinkedSave() {
+      const raw = localStorage.getItem(getLearnerStorageKey());
+      if (raw) {
+        try {
+          setData(JSON.parse(raw));
+        } catch (e) {}
+      }
+      try { syncWebsiteHubSave('boot'); } catch (e) {}
+    })();
+
+    window.addEventListener('beforeunload', function () {
+      try {
+        localStorage.setItem(getLearnerStorageKey(), JSON.stringify(getData()));
+        syncWebsiteHubSave('beforeunload');
+      } catch (e) {}
+    });
+
+    </script>
+
+</body>
+</html>

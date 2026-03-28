@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Budgeting Demo</title>
+  <style>
+    :root {
+      --brand: #d97a2b;
+      --brand-dark: #b86117;
+      --brand-soft: #fff1e5;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --line: #e5e7eb;
+      --panel: #ffffff;
+      --page: #f6f7fb;
+      --good: #107c41;
+      --warn: #b45309;
+      --bad: #b91c1c;
+      --shadow: 0 18px 45px rgba(15, 23, 42, 0.10);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(180deg, #fff9f4 0%, var(--page) 28%, #eef2f7 100%);
+      color: var(--ink);
+    }
+
+    .wrap {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, rgba(217,122,43,0.15), rgba(31,41,55,0.06));
+      border: 1px solid rgba(217,122,43,0.18);
+      border-radius: 28px;
+      box-shadow: var(--shadow);
+      overflow: hidden;
+      margin-bottom: 22px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      padding: 24px;
+      align-items: center;
+    }
+
+    .brand-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 18px;
+    }
+
+    .logo-box {
+      width: 82px;
+      height: 82px;
+      border-radius: 22px;
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      font-size: 1rem;
+      box-shadow: 0 14px 28px rgba(217,122,43,0.30);
+      text-align: center;
+      line-height: 1.15;
+      padding: 8px;
+    }
+
+    .brand-copy h1 {
+      margin: 0;
+      font-size: clamp(1.65rem, 2.7vw, 2.55rem);
+      letter-spacing: 0.01em;
+    }
+
+    .brand-copy p {
+      margin: 8px 0 0;
+      color: var(--muted);
+      max-width: 780px;
+      line-height: 1.55;
+      font-size: 1rem;
+    }
+
+    .hero-card {
+      background: rgba(255,255,255,0.92);
+      border: 1px solid rgba(255,255,255,0.85);
+      border-radius: 24px;
+      padding: 18px;
+      box-shadow: 0 12px 24px rgba(31,41,55,0.08);
+    }
+
+    .hero-card h2 {
+      margin: 0 0 10px;
+      font-size: 1.2rem;
+    }
+
+    .hero-list {
+      margin: 0;
+      padding-left: 18px;
+      color: var(--muted);
+      line-height: 1.65;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+    }
+
+    .panel {
+      background: var(--panel);
+      border-radius: var(--radius);
+      border: 1px solid var(--line);
+      box-shadow: var(--shadow);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .panel h3 {
+      margin: 0 0 8px;
+      font-size: 1.2rem;
+    }
+
+    .panel .sub {
+      margin: 0 0 16px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 12px;
+      padding: 11px 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: transform 0.15s ease, opacity 0.15s ease, box-shadow 0.15s ease;
+    }
+
+    button:hover { transform: translateY(-1px); }
+    button:active { transform: translateY(0); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+      color: white;
+      box-shadow: 0 12px 24px rgba(217,122,43,0.22);
+    }
+
+    .btn-secondary {
+      background: #eef2f7;
+      color: var(--ink);
+      border: 1px solid #dbe1e8;
+    }
+
+    .btn-soft {
+      background: var(--brand-soft);
+      color: var(--brand-dark);
+      border: 1px solid rgba(217,122,43,0.18);
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 14px 0 18px;
+    }
+
+    .stat {
+      border-radius: 16px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff 0%, #fafafa 100%);
+    }
+
+    .stat span {
+      display: block;
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+
+    .stat strong {
+      font-size: 1.4rem;
+      line-height: 1.2;
+    }
+
+    .stat.good strong { color: var(--good); }
+    .stat.warn strong { color: var(--warn); }
+    .stat.bad strong { color: var(--bad); }
+
+    .section-title {
+      margin: 20px 0 12px;
+      font-size: 1rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: #374151;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
+
+    .field label {
+      font-weight: 700;
+      font-size: 0.95rem;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border-radius: 12px;
+      border: 1px solid #d7dde5;
+      padding: 12px 13px;
+      font-size: 0.98rem;
+      background: white;
+      color: var(--ink);
+    }
+
+    textarea {
+      min-height: 108px;
+      resize: vertical;
+    }
+
+    .full {
+      grid-column: 1 / -1;
+    }
+
+    .tip-list,
+    .check-list {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.65;
+      color: #374151;
+    }
+
+    .scenario-list {
+      display: grid;
+      gap: 12px;
+    }
+
+    .scenario {
+      border: 1px solid var(--line);
+      background: linear-gradient(180deg, #fff 0%, #fbfbfd 100%);
+      border-radius: 16px;
+      padding: 14px;
+    }
+
+    .scenario h4 {
+      margin: 0 0 6px;
+      font-size: 1rem;
+    }
+
+    .scenario p {
+      margin: 0 0 10px;
+      color: var(--muted);
+      line-height: 1.45;
+      font-size: 0.95rem;
+    }
+
+    .meter {
+      height: 14px;
+      border-radius: 999px;
+      background: #e5e7eb;
+      overflow: hidden;
+      margin: 10px 0 8px;
+    }
+
+    .meter > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--good), #3fbf7f);
+      transition: width 0.25s ease;
+    }
+
+    .summary-box {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: linear-gradient(180deg, #ffffff 0%, #f8fafc 100%);
+      padding: 16px;
+      line-height: 1.6;
+    }
+
+    .summary-box strong { color: #111827; }
+
+    .tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      border-radius: 999px;
+      padding: 7px 10px;
+      font-weight: 700;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .tag.good { background: #e7f7ee; color: var(--good); }
+    .tag.warn { background: #fff5e7; color: var(--warn); }
+    .tag.bad { background: #fdeaea; color: var(--bad); }
+
+    .footer-note {
+      margin-top: 28px;
+      border-top: 1px solid rgba(31,41,55,0.08);
+      padding-top: 18px;
+      color: #4b5563;
+      line-height: 1.6;
+      font-size: 0.95rem;
+    }
+
+    .legal {
+      margin-top: 8px;
+      font-size: 0.92rem;
+      color: #374151;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 1100px) {
+      .hero-inner,
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .stats {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 700px) {
+      .wrap { padding: 14px; }
+      .form-grid,
+      .stats {
+        grid-template-columns: 1fr;
+      }
+
+      .brand-row {
+        align-items: flex-start;
+      }
+
+      .logo-box {
+        width: 68px;
+        height: 68px;
+        border-radius: 18px;
+        font-size: 0.85rem;
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="fullscreenOverlay" style="
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.85);
+color:white;
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+text-align:center;
+font-family:Arial;
+">
+  <div>
+    <h2 style="margin-bottom:10px;">RECONNECT‑US Budgeting Demo</h2>
+    <p style="margin-bottom:20px;">Tap or click anywhere to enter full screen</p>
+    <small>Tap the ? button to bring this screen back</small>
+  </div>
+</div>
+
+<button id="helpOverlayBtn" style="
+position:fixed;
+top:10px;
+right:10px;
+z-index:10000;
+border:none;
+border-radius:50%;
+width:30px;
+height:30px;
+background:#d97a2b;
+color:white;
+font-weight:bold;
+cursor:pointer;
+">?</button>
+
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="brand-row">
+            <div class="logo-box">RECONNECT‑US</div>
+            <div class="brand-copy">
+              <h1>RECONNECT‑US Budgeting Demo</h1>
+              <p>
+                A professional demonstration budgeting tool designed to help people practise planning their money,
+                compare spending choices, and explore realistic ways to manage essentials such as heating, food,
+                travel, debt, and savings.
+              </p>
+            </div>
+          </div>
+          <div class="toolbar">
+            <button class="btn-secondary" id="backHomeBtn" type="button">Back</button>
+            <button class="btn-primary" onclick="loadScenario('singleAdult')">Example: Single Adult</button>
+            <button class="btn-secondary" onclick="loadScenario('familyColdMonth')">Example: Family Cold Month</button>
+            <button class="btn-soft" onclick="loadScenario('tightBudget')">Example: Tight Budget</button>
+          </div>
+          <div class="small">Use a demo example above or enter your own figures below.</div>
+        </div>
+
+        <div class="hero-card">
+          <h2>What this demo includes</h2>
+          <ul class="hero-list">
+            <li>Monthly income and outgoings calculator</li>
+            <li>Heating, food, housing, travel, and debt planning</li>
+            <li>Savings target and emergency buffer tracker</li>
+            <li>Practical money-saving suggestions</li>
+            <li>Save and load demo data on the same device</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <div class="grid">
+      <main>
+        <section class="panel">
+          <h3>Monthly budget planner</h3>
+          <p class="sub">Enter monthly figures to see how much money is left, whether spending looks manageable, and where a person may need support or small savings changes.</p>
+
+          <div class="toolbar">
+            <button class="btn-primary" onclick="calculateBudget()">Calculate budget</button>
+            <button class="btn-secondary" onclick="saveBudget()">Save on this device</button>
+            <button class="btn-secondary" onclick="loadBudget()">Load saved data</button>
+            <button class="btn-soft" onclick="resetForm()">Reset form</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat">
+              <span>Total income</span>
+              <strong id="totalIncome">£0.00</strong>
+            </div>
+            <div class="stat warn">
+              <span>Total spending</span>
+              <strong id="totalSpending">£0.00</strong>
+            </div>
+            <div class="stat good">
+              <span>Money left</span>
+              <strong id="moneyLeft">£0.00</strong>
+            </div>
+            <div class="stat">
+              <span>Savings rate</span>
+              <strong id="savingsRate">0%</strong>
+            </div>
+          </div>
+
+          <div class="section-title">Income</div>
+          <div class="form-grid">
+            <div class="field"><label for="wages">Wages / salary</label><input id="wages" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="benefits">Benefits / support</label><input id="benefits" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="pension">Pension</label><input id="pension" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="otherIncome">Other income</label><input id="otherIncome" type="number" min="0" step="0.01" placeholder="0.00"></div>
+          </div>
+
+          <div class="section-title">Essential spending</div>
+          <div class="form-grid">
+            <div class="field"><label for="rent">Rent / mortgage</label><input id="rent" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="councilTax">Council tax</label><input id="councilTax" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="gasElectric">Gas / electric / heating</label><input id="gasElectric" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="water">Water</label><input id="water" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="food">Food and groceries</label><input id="food" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="travel">Travel</label><input id="travel" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="phoneInternet">Phone / internet</label><input id="phoneInternet" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="childcare">Childcare / dependants</label><input id="childcare" type="number" min="0" step="0.01" placeholder="0.00"></div>
+          </div>
+
+          <div class="section-title">Other commitments</div>
+          <div class="form-grid">
+            <div class="field"><label for="debt">Debt repayments</label><input id="debt" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="subscriptions">Subscriptions / non-essentials</label><input id="subscriptions" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="clothes">Clothing / household extras</label><input id="clothes" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="savings">Planned savings</label><input id="savings" type="number" min="0" step="0.01" placeholder="0.00"></div>
+          </div>
+
+          <div class="section-title">Goals and notes</div>
+          <div class="form-grid">
+            <div class="field"><label for="goalAmount">Savings goal amount</label><input id="goalAmount" type="number" min="0" step="0.01" placeholder="0.00"></div>
+            <div class="field"><label for="goalMonths">Target months to reach goal</label><input id="goalMonths" type="number" min="1" step="1" placeholder="12"></div>
+            <div class="field full"><label for="notes">Support notes / budgeting notes</label><textarea id="notes" placeholder="Example: Need to cut heating costs where possible, compare tariffs, review subscriptions, and build a small emergency buffer."></textarea></div>
+          </div>
+        </section>
+      </main>
+
+      <aside>
+        <section class="panel">
+          <h3>Budget summary</h3>
+          <p class="sub">This area turns the figures into a plain-English summary so the demo feels useful for training, examples, or guided support sessions.</p>
+          <div id="healthTag" class="tag warn">Waiting for calculation</div>
+          <div class="summary-box" id="summaryText">
+            Enter figures and press <strong>Calculate budget</strong> to generate a summary.
+          </div>
+          <div style="margin-top:14px;">
+            <div class="small">Savings goal progress</div>
+            <div class="meter"><div id="goalBar"></div></div>
+            <div class="small" id="goalText">No goal calculated yet.</div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h3>Example money-saving ideas</h3>
+          <p class="sub">Helpful prompts for people facing financial pressure, especially where heating and essentials are a concern.</p>
+          <ul class="tip-list">
+            <li>Check whether there are unused subscriptions or direct debits that can be paused or cancelled.</li>
+            <li>Set a weekly food budget and build meals around lower-cost basics already at home.</li>
+            <li>Review heating usage room by room and focus warmth where it is needed most.</li>
+            <li>Look at travel habits and compare walking, lift-sharing, bus passes, or off-peak options where realistic.</li>
+            <li>Pay priority bills first and be honest early if a payment plan or support conversation is needed.</li>
+            <li>Even a very small emergency saving amount can help stop future borrowing.</li>
+          </ul>
+        </section>
+
+        <section class="panel">
+          <h3>Demo scenarios</h3>
+          <p class="sub">These example profiles can be used to show different budgeting pressures during training or support work.</p>
+          <div class="scenario-list">
+            <div class="scenario">
+              <h4>Single adult on a mixed income</h4>
+              <p>Useful for showing how a modest saving plan can still work when spending is controlled.</p>
+              <button class="btn-secondary" onclick="loadScenario('singleAdult')">Load this example</button>
+            </div>
+            <div class="scenario">
+              <h4>Family during a colder month</h4>
+              <p>Useful for showing how heating, food, and childcare can put pressure on the monthly budget.</p>
+              <button class="btn-secondary" onclick="loadScenario('familyColdMonth')">Load this example</button>
+            </div>
+            <div class="scenario">
+              <h4>Tight budget under strain</h4>
+              <p>Useful for showing when there is a shortfall and support conversations may be needed quickly.</p>
+              <button class="btn-secondary" onclick="loadScenario('tightBudget')">Load this example</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <h3>What this demo can help show</h3>
+          <ul class="check-list">
+            <li>How to separate essential spending from non-essential spending</li>
+            <li>How heating and food costs can affect overall stability</li>
+            <li>Whether a savings plan is realistic at the current level</li>
+            <li>When a budget looks balanced, tight, or at risk</li>
+            <li>How small changes can improve breathing space each month</li>
+          </ul>
+        </section>
+      </aside>
+    </div>
+
+    <section class="footer-note">
+      <div class="legal">
+        This is RECONNECT‑US property and must not be copied, shared, distributed, or moved to another site or device without prior written permission from RECONNECT‑US.
+      </div>
+      <div class="legal">© RECONNECT‑US. All rights reserved.</div>
+    </section>
+  </div>
+
+  <script>
+    const currency = new Intl.NumberFormat('en-GB', { style: 'currency', currency: 'GBP' });
+
+    const HUB_PROFILE_KEY = 'reconnectus_profile';
+    const HUB_APP_DATA_KEY = 'reconnectus_app_data';
+    const HUB_TRACKING_KEY = 'reconnectus_tracking_data';
+    const HUB_SHARED_KEY = 'reconnectus_shared_current_learner_v1';
+    const BUDGET_APP_ID = 'budgeting_demo';
+    const BUDGET_APP_PATH = 'tools/budgeting.html';
+    const BUDGET_STORAGE_KEY = 'reconnectUsBudgetDemo';
+
+    function getHubSharedLearnerName() {
+      try {
+        const shared = JSON.parse(localStorage.getItem(HUB_SHARED_KEY) || 'null');
+        if (shared && shared.name) return String(shared.name).trim();
+      } catch (e) {}
+      try {
+        const profile = JSON.parse(localStorage.getItem(HUB_PROFILE_KEY) || 'null');
+        if (profile && profile.name) return String(profile.name).trim();
+      } catch (e) {}
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const q = params.get('learner');
+        if (q) return String(q).trim();
+      } catch (e) {}
+      return 'Hub learner';
+    }
+
+    function normaliseKeyPart(value) {
+      return String(value || 'hub')
+        .trim()
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '_')
+        .replace(/^_+|_+$/g, '') || 'hub';
+    }
+
+    function getBudgetStorageKey() {
+      return BUDGET_STORAGE_KEY + '__' + normaliseKeyPart(getHubSharedLearnerName());
+    }
+
+    function getHubApps() {
+      try { return JSON.parse(localStorage.getItem(HUB_APP_DATA_KEY) || '{}'); } catch (e) { return {}; }
+    }
+
+    function saveHubApp(appId, data) {
+      const all = getHubApps();
+      all[appId] = { ...(all[appId] || {}), ...data, updatedAt: new Date().toISOString() };
+      localStorage.setItem(HUB_APP_DATA_KEY, JSON.stringify(all));
+      return all[appId];
+    }
+
+    function trackHubEvent(eventType, payload) {
+      let tracking = { events: [], counters: {} };
+      try { tracking = JSON.parse(localStorage.getItem(HUB_TRACKING_KEY) || '{"events":[],"counters":{}}'); } catch (e) {}
+      tracking.events = Array.isArray(tracking.events) ? tracking.events : [];
+      tracking.counters = tracking.counters || {};
+      tracking.events.unshift({ eventType, payload: payload || {}, timestamp: new Date().toISOString() });
+      tracking.events = tracking.events.slice(0, 150);
+      tracking.counters[eventType] = (tracking.counters[eventType] || 0) + 1;
+      localStorage.setItem(HUB_TRACKING_KEY, JSON.stringify(tracking));
+    }
+
+    function getBudgetProgressSnapshot() {
+      const totalIncome = getNumber('wages') + getNumber('benefits') + getNumber('pension') + getNumber('otherIncome');
+      const totalSpending = getNumber('rent') + getNumber('councilTax') + getNumber('gasElectric') + getNumber('water') + getNumber('food') + getNumber('travel') + getNumber('phoneInternet') + getNumber('childcare') + getNumber('debt') + getNumber('subscriptions') + getNumber('clothes') + getNumber('savings');
+      const moneyLeft = totalIncome - totalSpending;
+      const filled = fieldIds.filter(id => String(document.getElementById(id).value || '').trim()).length;
+      const progress = Math.min(100, Math.round((filled / fieldIds.length) * 100));
+      let health = 'Waiting for calculation';
+      try { health = document.getElementById('healthTag').textContent.trim() || health; } catch (e) {}
+      return {
+        learnerName: getHubSharedLearnerName(),
+        progress: Math.max(progress, totalIncome || totalSpending ? 10 : 0),
+        summary: `${health} • left ${formatMoney(moneyLeft)}`,
+        totalIncome,
+        totalSpending,
+        moneyLeft,
+        health
+      };
+    }
+
+    function syncBudgetHubSave(reason) {
+      const snap = getBudgetProgressSnapshot();
+      saveHubApp(BUDGET_APP_ID, {
+        title: 'Budgeting Demo',
+        learnerName: snap.learnerName,
+        summary: snap.summary,
+        progress: snap.progress,
+        totalIncome: snap.totalIncome,
+        totalSpending: snap.totalSpending,
+        moneyLeft: snap.moneyLeft,
+        health: snap.health,
+        path: BUDGET_APP_PATH
+      });
+      trackHubEvent('app_saved', { appId: BUDGET_APP_ID, reason: reason || 'save', progress: snap.progress });
+    }
+
+    function goBackHome() {
+      try { syncBudgetHubSave('back_to_hub'); } catch (e) {}
+      window.location.href = '../index.html';
+    }
+
+
+    const fieldIds = [
+      'wages','benefits','pension','otherIncome',
+      'rent','councilTax','gasElectric','water','food','travel','phoneInternet','childcare',
+      'debt','subscriptions','clothes','savings','goalAmount','goalMonths','notes'
+    ];
+
+    const scenarios = {
+      singleAdult: {
+        wages: 1320, benefits: 250, pension: 0, otherIncome: 0,
+        rent: 650, councilTax: 110, gasElectric: 120, water: 32, food: 210, travel: 70,
+        phoneInternet: 45, childcare: 0, debt: 85, subscriptions: 18, clothes: 30, savings: 75,
+        goalAmount: 500, goalMonths: 8,
+        notes: 'Demo example showing a manageable but careful monthly budget. Good for talking about small savings and staying ahead of priority bills.'
+      },
+      familyColdMonth: {
+        wages: 1980, benefits: 520, pension: 0, otherIncome: 0,
+        rent: 980, councilTax: 145, gasElectric: 240, water: 48, food: 460, travel: 130,
+        phoneInternet: 62, childcare: 280, debt: 120, subscriptions: 28, clothes: 65, savings: 40,
+        goalAmount: 600, goalMonths: 12,
+        notes: 'Demo example showing a colder month where heating and food costs rise. Useful for discussing pressure points and reviewing non-essential spend.'
+      },
+      tightBudget: {
+        wages: 980, benefits: 390, pension: 0, otherIncome: 45,
+        rent: 690, councilTax: 95, gasElectric: 165, water: 38, food: 260, travel: 85,
+        phoneInternet: 40, childcare: 0, debt: 110, subscriptions: 25, clothes: 20, savings: 10,
+        goalAmount: 300, goalMonths: 12,
+        notes: 'Demo example showing a shortfall. Useful for explaining that priority bills come first and that the person may need support, changes, or a payment conversation.'
+      }
+    };
+
+    function getNumber(id) {
+      const value = parseFloat(document.getElementById(id).value);
+      return isNaN(value) ? 0 : value;
+    }
+
+    function setValue(id, value) {
+      document.getElementById(id).value = value ?? '';
+    }
+
+    function formatMoney(value) {
+      return currency.format(value || 0);
+    }
+
+    function loadScenario(key) {
+      const data = scenarios[key];
+      if (!data) return;
+      fieldIds.forEach(id => {
+        if (id === 'notes') {
+          setValue(id, data[id] || '');
+        } else {
+          setValue(id, data[id] ?? '');
+        }
+      });
+      calculateBudget();
+    }
+
+    function calculateBudget() {
+      const totalIncome = getNumber('wages') + getNumber('benefits') + getNumber('pension') + getNumber('otherIncome');
+      const totalSpending = getNumber('rent') + getNumber('councilTax') + getNumber('gasElectric') + getNumber('water') + getNumber('food') + getNumber('travel') + getNumber('phoneInternet') + getNumber('childcare') + getNumber('debt') + getNumber('subscriptions') + getNumber('clothes') + getNumber('savings');
+      const moneyLeft = totalIncome - totalSpending;
+      const savings = getNumber('savings');
+      const savingsRate = totalIncome > 0 ? (savings / totalIncome) * 100 : 0;
+      const goalAmount = getNumber('goalAmount');
+      const goalMonths = Math.max(1, getNumber('goalMonths') || 1);
+      const neededPerMonth = goalAmount > 0 ? goalAmount / goalMonths : 0;
+      const goalPercent = goalAmount > 0 ? Math.min((savings / neededPerMonth) * 100, 100) : 0;
+
+      document.getElementById('totalIncome').textContent = formatMoney(totalIncome);
+      document.getElementById('totalSpending').textContent = formatMoney(totalSpending);
+      document.getElementById('moneyLeft').textContent = formatMoney(moneyLeft);
+      document.getElementById('savingsRate').textContent = `${savingsRate.toFixed(1)}%`;
+      document.getElementById('goalBar').style.width = `${goalPercent}%`;
+
+      let statusClass = 'warn';
+      let statusText = 'Tight budget';
+      let summary = '';
+
+      if (moneyLeft > 100) {
+        statusClass = 'good';
+        statusText = 'Budget looks stable';
+        summary = `This budget currently shows <strong>${formatMoney(moneyLeft)}</strong> left after planned monthly spending. That suggests there is some breathing space. It may be a good time to protect that space by keeping priority bills covered first and continuing with realistic savings.`;
+      } else if (moneyLeft >= 0) {
+        statusClass = 'warn';
+        statusText = 'Budget is balanced but tight';
+        summary = `This budget currently shows <strong>${formatMoney(moneyLeft)}</strong> left after planned monthly spending. The person is not in a shortfall, but there is very little room for unexpected costs. A review of heating use, food planning, travel, and subscriptions may help create a safer buffer.`;
+      } else {
+        statusClass = 'bad';
+        statusText = 'Budget is in shortfall';
+        summary = `This budget currently shows a <strong>${formatMoney(Math.abs(moneyLeft))}</strong> monthly shortfall. That means spending is higher than income. Priority bills should be reviewed first, non-essential spending may need to be reduced, and support or payment-plan conversations may be needed quickly.`;
+      }
+
+      const heating = getNumber('gasElectric');
+      const food = getNumber('food');
+      const subs = getNumber('subscriptions');
+      const debt = getNumber('debt');
+      const notes = document.getElementById('notes').value.trim();
+
+      const observations = [];
+      if (heating > 180) observations.push(`Heating costs look high at <strong>${formatMoney(heating)}</strong> for the month.`);
+      if (food > 350) observations.push(`Food spending is quite high at <strong>${formatMoney(food)}</strong> and may be worth planning week by week.`);
+      if (subs > 20) observations.push(`Subscriptions or non-essentials currently total <strong>${formatMoney(subs)}</strong>.`);
+      if (debt > 100) observations.push(`Debt repayments are significant at <strong>${formatMoney(debt)}</strong>.`);
+      if (neededPerMonth > 0) {
+        if (savings >= neededPerMonth) {
+          observations.push(`The current savings plan of <strong>${formatMoney(savings)}</strong> meets the monthly amount needed to reach the goal.`);
+        } else {
+          observations.push(`To reach the goal on time, around <strong>${formatMoney(neededPerMonth)}</strong> per month would be needed, which is higher than the current planned saving.`);
+        }
+      }
+      if (notes) observations.push(`Notes: ${escapeHtml(notes)}`);
+
+      document.getElementById('healthTag').className = `tag ${statusClass}`;
+      document.getElementById('healthTag').textContent = statusText;
+      document.getElementById('summaryText').innerHTML = `${summary}${observations.length ? '<br><br>' + observations.join('<br>') : ''}`;
+
+      if (goalAmount > 0) {
+        document.getElementById('goalText').textContent = `${formatMoney(savings)} saved per month against a target of ${formatMoney(neededPerMonth)} per month to reach ${formatMoney(goalAmount)} in ${goalMonths} month${goalMonths === 1 ? '' : 's'}.`;
+      } else {
+        document.getElementById('goalText').textContent = 'No savings goal entered.';
+      }
+      try { syncBudgetHubSave('calculated'); } catch (e) {}
+    }
+
+    function saveBudget() {
+      const payload = {};
+      fieldIds.forEach(id => payload[id] = document.getElementById(id).value);
+      localStorage.setItem(getBudgetStorageKey(), JSON.stringify(payload));
+      syncBudgetHubSave('manual_save');
+      alert('Budget demo data saved on this device.');
+    }
+
+    function loadBudget() {
+      const raw = localStorage.getItem(getBudgetStorageKey());
+      if (!raw) {
+        alert('No saved budget demo data was found on this device.');
+        return;
+      }
+      const payload = JSON.parse(raw);
+      fieldIds.forEach(id => setValue(id, payload[id] || ''));
+      calculateBudget();
+      syncBudgetHubSave('manual_load');
+      alert('Saved budget demo data loaded.');
+    }
+
+    function resetForm() {
+      fieldIds.forEach(id => setValue(id, ''));
+      document.getElementById('totalIncome').textContent = '£0.00';
+      document.getElementById('totalSpending').textContent = '£0.00';
+      document.getElementById('moneyLeft').textContent = '£0.00';
+      document.getElementById('savingsRate').textContent = '0%';
+      document.getElementById('goalBar').style.width = '0%';
+      document.getElementById('healthTag').className = 'tag warn';
+      document.getElementById('healthTag').textContent = 'Waiting for calculation';
+      document.getElementById('summaryText').innerHTML = 'Enter figures and press <strong>Calculate budget</strong> to generate a summary.';
+      document.getElementById('goalText').textContent = 'No goal calculated yet.';
+    }
+
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    calculateBudget();
+  
+const backHomeBtn = document.getElementById('backHomeBtn');
+if (backHomeBtn) {
+  backHomeBtn.addEventListener('click', goBackHome);
+}
+
+(function bootBudgetHubSave() {
+  const raw = localStorage.getItem(getBudgetStorageKey());
+  if (raw) {
+    try {
+      const payload = JSON.parse(raw);
+      fieldIds.forEach(id => setValue(id, payload[id] || ''));
+    } catch (e) {}
+  }
+  calculateBudget();
+})();
+
+window.addEventListener('beforeunload', function () {
+  try {
+    const payload = {};
+    fieldIds.forEach(id => payload[id] = document.getElementById(id).value);
+    localStorage.setItem(getBudgetStorageKey(), JSON.stringify(payload));
+    syncBudgetHubSave('beforeunload');
+  } catch (e) {}
+});
+
+  </script>
+
+<script>
+function enterFullscreen(){
+  const el = document.documentElement;
+  if(el.requestFullscreen){
+    el.requestFullscreen();
+  }
+}
+
+function hideOverlay(){
+  document.getElementById("fullscreenOverlay").style.display="none";
+}
+
+function showOverlay(){
+  document.getElementById("fullscreenOverlay").style.display="flex";
+}
+
+document.getElementById("fullscreenOverlay").addEventListener("click",()=>{
+  enterFullscreen();
+  hideOverlay();
+});
+
+document.getElementById("helpOverlayBtn").addEventListener("click",()=>{
+  showOverlay();
+});
+</script>
+
+</body>
+</html>
