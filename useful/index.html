@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US • Useful Information</title>
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+.box{
+  text-align:center;
+  max-width:520px;
+  width:100%;
+}
+h1{ margin-bottom:10px; }
+p{ margin-bottom:18px; color:#cfd8e3; }
+.btn{
+  display:block;
+  width:100%;
+  margin:8px auto;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:bold;
+  cursor:pointer;
+}
+.primary{ background:#22d7c6; color:#042131; }
+.alt{ background:#59a9ff; color:#042131; }
+.back{ background:#444; color:white; margin-top:14px; }
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Useful Information</h1>
+  <p>Select a topic below.</p>
+
+  <button class="btn primary" onclick="go('indeed.html')">Using Indeed</button>
+  <button class="btn primary" onclick="go('nhs.html')">NHS App Guide</button>
+  <button class="btn primary" onclick="go('outlook.html')">Outlook Email Guide</button>
+  <button class="btn primary" onclick="go('gmail.html')">Gmail Guide</button>
+  <button class="btn primary" onclick="go('govuk.html')">GOV.UK Guide</button>
+  <button class="btn primary" onclick="go('homechoice.html')">Homechoice Guide</button>
+
+  <button class="btn alt" onclick="go('banking.html')">Banking Apps</button>
+  <button class="btn alt" onclick="go('emailtips.html')">Email & Text Tips</button>
+  <button class="btn alt" onclick="go('phishing.html')">Phishing Awareness</button>
+  <button class="btn alt" onclick="go('scam.html')">Scam Awareness</button>
+  <button class="btn alt" onclick="go('staysafe.html')">Stay Safe Online</button>
+
+  <button class="btn alt" onclick="go('mobilesetup.html')">Mobile Setup</button>
+  <button class="btn alt" onclick="go('computersetup.html')">Computer Setup</button>
+
+  <button class="btn alt" onclick="go('signup.html')">Sign Up Guidance</button>
+  <button class="btn alt" onclick="go('referral.html')">Referral Guidance</button>
+  <button class="btn alt" onclick="go('volunteer.html')">Volunteer Guidance</button>
+
+  <button class="btn back" onclick="backHome()">Back to Home</button>
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+function backHome(){
+  window.location.href = "../index.html";
+}
+</script>
+</body>
+</html>

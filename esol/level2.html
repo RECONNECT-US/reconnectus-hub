@@ -1,0 +1,2308 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>ESOL English Level 2 Skills - RECONNECT-US</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    :root {
+      --teal: #0b9da5;
+      --orange: #ff8a3d;
+      --dark: #243447;
+      --light: #f5f7fa;
+      --mid: #5f6c7b;
+      --radius-lg: 18px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #0b9da5 0%, #243447 60%, #111827 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: stretch;
+      justify-content: center;
+      color: #fff;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 1100px;
+      margin: 16px;
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 24px;
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid rgba(148, 163, 184, 0.4);
+    }
+
+    header {
+      padding: 16px 20px;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: radial-gradient(circle at top left, rgba(248, 250, 252, 0.08), transparent 55%);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 14px;
+      background: conic-gradient(from 160deg, var(--orange), var(--teal), #38bdf8, var(--orange));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #0b1120;
+      font-weight: 800;
+      font-size: 20px;
+      box-shadow: 0 0 0 2px rgba(15, 23, 42, 0.9);
+    }
+
+    .brand-text-title {
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      font-size: 18px;
+      text-transform: uppercase;
+    }
+
+    .brand-text-sub {
+      font-size: 12px;
+      color: #cbd5f5;
+    }
+
+    .header-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .badge {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      color: #e5e7eb;
+      white-space: nowrap;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      background: rgba(15, 23, 42, 0.9);
+      color: #e5e7eb;
+      border: 1px solid rgba(148, 163, 184, 0.7);
+      transition: background 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn span.icon {
+      font-size: 15px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--orange), #facc15);
+      color: #111827;
+      border-color: transparent;
+      font-weight: 600;
+      box-shadow: 0 10px 18px rgba(0, 0, 0, 0.35);
+    }
+
+    .btn:hover {
+      background: rgba(15, 23, 42, 0.98);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 18px rgba(15, 23, 42, 0.8);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #fed7aa, var(--orange));
+      transform: translateY(-1px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.6);
+    }
+
+    main {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+    }
+
+    nav {
+      width: 230px;
+      border-right: 1px solid rgba(148, 163, 184, 0.4);
+      padding: 14px 10px 16px;
+      background: radial-gradient(circle at top, rgba(15, 118, 110, 0.25), transparent 60%);
+    }
+
+    .nav-title {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: #9ca3af;
+      margin: 0 10px 8px;
+    }
+
+    .nav-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .nav-btn {
+      width: 100%;
+      text-align: left;
+      border-radius: 999px;
+      padding: 9px 12px;
+      border: none;
+      cursor: pointer;
+      font-size: 13px;
+      color: #e5e7eb;
+      background: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: background 0.15s ease, transform 0.08s ease;
+    }
+
+    .nav-dot {
+      width: 9px;
+      height: 9px;
+      border-radius: 999px;
+      border: 2px solid rgba(148, 163, 184, 0.8);
+    }
+
+    .nav-btn span.label {
+      flex: 1;
+    }
+
+    .nav-btn small {
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .nav-btn:hover {
+      background: rgba(15, 23, 42, 0.8);
+      transform: translateX(1px);
+    }
+
+    .nav-btn.active {
+      background: linear-gradient(90deg, rgba(248, 250, 252, 0.1), rgba(14, 165, 233, 0.18));
+      box-shadow: inset 0 0 0 1px rgba(148, 163, 184, 0.8);
+    }
+
+    .nav-btn.active .nav-dot {
+      background: var(--orange);
+      border-color: transparent;
+    }
+
+    .content {
+      flex: 1;
+      padding: 16px 18px 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-width: 0;
+    }
+
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .content-title-wrap {
+      max-width: 65%;
+    }
+
+    .content-title {
+      margin: 0;
+      font-size: 22px;
+      letter-spacing: 0.02em;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .content-title span.emoji {
+      font-size: 22px;
+    }
+
+    .content-subtitle {
+      margin: 2px 0 0;
+      font-size: 13px;
+      color: #e5e7eb;
+      opacity: 0.9;
+    }
+
+    .progress-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      font-size: 11px;
+    }
+
+    .progress-bar {
+      position: relative;
+      height: 5px;
+      width: 80px;
+      border-radius: 999px;
+      background: rgba(31, 41, 55, 0.9);
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      background: linear-gradient(90deg, #f97316, #22c55e);
+      transition: width 0.25s ease-out;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(260px, 2fr);
+      gap: 14px;
+      align-items: flex-start;
+      min-height: 0;
+    }
+
+    .card {
+      background: radial-gradient(circle at top left, rgba(248, 250, 252, 0.05), rgba(15, 23, 42, 0.98));
+      border-radius: var(--radius-lg);
+      padding: 14px 14px 12px;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.6);
+      min-height: 0;
+    }
+
+    .card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+
+    .card-title {
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: #e5e7eb;
+    }
+
+    .card-body {
+      font-size: 14px;
+      color: #e5e7eb;
+    }
+
+    .pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid rgba(148, 163, 184, 0.6);
+      color: #d1d5db;
+      white-space: nowrap;
+    }
+
+    .pill.strong {
+      background: rgba(34, 197, 94, 0.1);
+      border-color: rgba(34, 197, 94, 0.8);
+      color: #bbf7d0;
+    }
+
+    .pill.focus {
+      background: rgba(56, 189, 248, 0.1);
+      border-color: rgba(56, 189, 248, 0.9);
+      color: #e0f2fe;
+    }
+
+    .pill.level {
+      background: rgba(249, 115, 22, 0.1);
+      border-color: rgba(249, 115, 22, 0.85);
+      color: #fed7aa;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      font-size: 13px;
+    }
+
+    .info-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 6px;
+    }
+
+    .info-bullet {
+      font-size: 14px;
+      margin-top: 1px;
+    }
+
+    .support-card-text {
+      font-size: 13px;
+      color: #e5e7eb;
+      margin-bottom: 10px;
+    }
+
+    .support-card-mini {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    .support-pill {
+      font-size: 11px;
+      padding: 5px 7px;
+      border-radius: 12px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .support-pill span.label {
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-size: 10px;
+      color: #9ca3af;
+    }
+
+    .support-pill span.value {
+      font-size: 11px;
+    }
+
+    .support-footnote {
+      margin-top: 8px;
+      font-size: 11px;
+      color: #9ca3af;
+    }
+
+    .question {
+      margin-bottom: 10px;
+      padding: 8px 9px;
+      border-radius: 10px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(55, 65, 81, 0.9);
+    }
+
+    .question-title {
+      font-size: 13px;
+      font-weight: 500;
+      margin-bottom: 6px;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-size: 13px;
+    }
+
+    .options label {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+    }
+
+    .options input {
+      accent-color: #f97316;
+    }
+
+    .question-result {
+      margin-top: 4px;
+      font-size: 12px;
+      min-height: 16px;
+    }
+
+    .question-result.correct {
+      color: #bbf7d0;
+    }
+
+    .question-result.incorrect {
+      color: #fecaca;
+    }
+
+    .module-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .module-score {
+      font-size: 12px;
+      color: #e5e7eb;
+      margin-top: 4px;
+    }
+
+    .reading-text {
+      font-size: 13px;
+      line-height: 1.55;
+      background: rgba(15, 23, 42, 0.96);
+      border-radius: 10px;
+      padding: 10px 11px;
+      border: 1px solid rgba(55, 65, 81, 0.9);
+      margin-bottom: 10px;
+    }
+
+    .reading-text strong {
+      color: #facc15;
+      font-weight: 600;
+    }
+
+    .input-row {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .input-row label {
+      font-size: 12px;
+      color: #e5e7eb;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(75, 85, 99, 0.95);
+      background: rgba(15, 23, 42, 0.96);
+      color: #e5e7eb;
+      font-size: 13px;
+      outline: none;
+    }
+
+    input[type="text"]::placeholder {
+      color: #6b7280;
+    }
+
+    input[type="text"]:focus {
+      border-color: #f97316;
+      box-shadow: 0 0 0 1px rgba(249, 115, 22, 0.6);
+    }
+
+    .spelling-row {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .status-text {
+      font-size: 12px;
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    .status-text.correct {
+      color: #bbf7d0;
+    }
+
+    .status-text.incorrect {
+      color: #fecaca;
+    }
+
+    footer {
+      font-size: 11px;
+      color: #9ca3af;
+      padding: 7px 12px 9px;
+      border-top: 1px solid rgba(148, 163, 184, 0.4);
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    .footer-left small {
+      display: block;
+    }
+
+    .footer-right {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 900px) {
+      main {
+        flex-direction: column;
+      }
+
+      nav {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid rgba(148, 163, 184, 0.4);
+        display: flex;
+        flex-direction: column;
+      }
+
+      .nav-group {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 4px;
+      }
+
+      .nav-btn {
+        flex: 1;
+        min-width: 160px;
+      }
+
+      .content-title-wrap {
+        max-width: 100%;
+      }
+
+      .content-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .header-right {
+        justify-content: flex-start;
+      }
+    }
+
+    
+
+  </style>
+</head>
+<body>
+
+  <div class="app-shell">
+    <header>
+      <div class="brand">
+        <div class="brand-logo">R</div>
+        <div>
+          <div class="brand-text-title">RECONNECT-US</div>
+          <div class="brand-text-sub">ESOL: English Skills</div>
+        </div>
+      </div>
+      <div class="header-right">
+        <div class="badge">Offline | No login needed</div>
+        <div class="badge" id="learnerBadge">Learner: —</div>
+        <button class="btn" type="button" id="backBtn">
+          <span class="icon">←</span>
+          <span>Back</span>
+        </button>
+        <button class="btn" type="button" id="fullscreenBtn">
+          <span class="icon">⛶</span>
+          <span>Full screen</span>
+        </button>
+        <button class="btn btn-primary" type="button" id="quickStartBtn">
+          <span class="icon">⭐</span>
+          <span>Quick Start</span>
+        </button>
+      </div>
+    </header>
+
+    <main>
+      <nav>
+        <div class="nav-title">Modules</div>
+        <div class="nav-group">
+          <button class="nav-btn active" data-section="home">
+            <div class="nav-dot"></div>
+            <span class="label">Home / Overview</span>
+            <small>Start here</small>
+          </button>
+          <button class="nav-btn" data-section="vocabulary">
+            <div class="nav-dot"></div>
+            <span class="label">Vocabulary Practice</span>
+            <small>Everyday English</small>
+          </button>
+          <button class="nav-btn" data-section="grammar">
+            <div class="nav-dot"></div>
+            <span class="label">Grammar Quiz</span>
+            <small>Simple sentences</small>
+          </button>
+          <button class="nav-btn" data-section="reading">
+            <div class="nav-dot"></div>
+            <span class="label">Reading Practice</span>
+            <small>Short text</small>
+          </button>
+          <button class="nav-btn" data-section="spelling">
+            <div class="nav-dot"></div>
+            <span class="label">Spelling Practice</span>
+            <small>Key words</small>
+          </button>
+          <button class="nav-btn" data-section="forms">
+            <div class="nav-dot"></div>
+            <span class="label">Forms & Personal Details</span>
+            <small>Names & addresses</small>
+          </button>
+          <button class="nav-btn" data-section="money">
+            <div class="nav-dot"></div>
+            <span class="label">Money & Numbers</span>
+            <small>Prices & amounts</small>
+          </button>
+          <button class="nav-btn" data-section="signs">
+            <div class="nav-dot"></div>
+            <span class="label">Reading Signs</span>
+            <small>Everyday notices</small>
+          </button>
+          <button class="nav-btn" data-section="health">
+            <div class="nav-dot"></div>
+            <span class="label">GP / Health English</span>
+            <small>Doctor & pharmacy</small>
+          </button>
+          <button class="nav-btn" data-section="jobcentre">
+            <div class="nav-dot"></div>
+            <span class="label">Jobcentre English</span>
+            <small>Work & benefits</small>
+          </button>
+        </div>
+      </nav>
+
+      <section class="content">
+        <div class="content-header">
+          <div class="content-title-wrap">
+            <h1 class="content-title" id="sectionTitle">
+              <span class="emoji">🏠</span>
+              <span>Welcome to ESOL English Level 2</span>
+            </h1>
+            <p class="content-subtitle" id="sectionSubtitle">
+              Practice English vocabulary, grammar, reading and spelling in one simple offline app.
+            </p>
+          </div>
+          <div class="progress-pill">
+            Progress
+            <div class="progress-bar">
+              <div class="progress-fill" id="overallProgress"></div>
+            </div>
+            <span id="overallProgressLabel">0%</span>
+          </div>
+        </div>
+
+        <div class="content-grid">
+          <!-- LEFT: MAIN MODULE AREA -->
+          <div class="card" id="homeSection">
+            <div class="card-header">
+              <div class="card-title">How this app works</div>
+            </div>
+            <div class="card-body">
+              <p style="margin-top:0; margin-bottom:8px;">
+                This ESOL English app is designed for learners who want clear, simple practice in
+                <strong>real-life English</strong>. Everything is offline – just open the file in a browser and start.
+              </p>
+              <div class="pill-row">
+                <div class="pill strong">ESOL Level 2</div>
+                <div class="pill focus">Designed for ReConnect-US sessions</div>
+                <div class="pill level">9 core modules</div>
+              </div>
+              <ul class="info-list">
+                <li>
+                  <span class="info-bullet">➊</span>
+                  <span>
+                    Start with <strong>Vocabulary</strong> to learn common words used in everyday life.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➋</span>
+                  <span>
+                    Move to the <strong>Grammar Quiz</strong> to practise simple present tense sentences.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➌</span>
+                  <span>
+                    Use <strong>Reading Practice</strong> to read a short text and answer questions.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➍</span>
+                  <span>
+                    Use <strong>Spelling Practice</strong> for key everyday words.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➎</span>
+                  <span>
+                    Try <strong>Forms & Personal Details</strong> and <strong>Money & Numbers</strong> for real-life tasks.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">➏</span>
+                  <span>
+                    Use <strong>Reading Signs</strong>, <strong>GP / Health English</strong> and <strong>Jobcentre English</strong> for everyday situations.
+                  </span>
+                </li>
+              </ul>
+              <p style="margin-top:8px; font-size:13px;">
+                When a learner gets enough answers correct in a module, that module is marked as
+                <strong>complete</strong> and the progress bar at the top will update.
+              </p>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" data-go-section="vocabulary">
+                  <span class="icon">▶</span>
+                  <span>Start with Vocabulary</span>
+                </button>
+                <button class="btn" type="button" id="resetAllBtn">
+                  <span class="icon">↺</span>
+                  <span>Reset all scores</span>
+                </button>
+              </div>
+              <p style="margin-top:10px; font-size:11px; color:#9ca3af;">
+                Tip: This app links to the learner logged in on the RECONNECT-US hub and saves progress for that learner on this device.
+              </p>
+            </div>
+          </div>
+
+          <!-- Vocabulary Section -->
+          <div class="card" id="vocabularySection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Vocabulary: Everyday English</div>
+              <span style="font-size:11px; color:#9ca3af;">Choose the correct meaning for each word.</span>
+            </div>
+            <div class="card-body">
+              <div id="vocabQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkVocabBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetVocabBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="vocabScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="vocabStatus"></div>
+            </div>
+          </div>
+
+          <!-- Grammar Section -->
+          <div class="card" id="grammarSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Grammar: Present Simple</div>
+              <span style="font-size:11px; color:#9ca3af;">Choose the correct sentence.</span>
+            </div>
+            <div class="card-body">
+              <div id="grammarQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkGrammarBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetGrammarBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="grammarScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="grammarStatus"></div>
+            </div>
+          </div>
+
+          <!-- Reading Section -->
+          <div class="card" id="readingSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Reading Practice</div>
+              <span style="font-size:11px; color:#9ca3af;">Read the text, then answer the questions.</span>
+            </div>
+            <div class="card-body">
+              <div class="reading-text">
+<strong>Workplace Communication: A Case Study</strong><br /><br />
+Maria works as a support officer at a housing organisation. Her role involves responding to emails, managing complaints, completing digital forms, and speaking with external agencies. Recently, the organisation introduced a new digital reporting system. Although Maria feels confident with most tasks, she is unsure how to use the new system effectively.<br /><br />
+During a team meeting, the manager explains that all staff will receive additional training. Maria asks several questions to ensure she understands the new procedures. Her manager praises her for showing initiative and encourages the team to raise any concerns early.<br /><br />
+Maria wants to progress to a senior role in the future, so improving her professional communication is important for her development.
+</div>
+              <div id="readingQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkReadingBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetReadingBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="readingScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="readingStatus"></div>
+            </div>
+          </div>
+
+          <!-- Spelling Section -->
+          <div class="card" id="spellingSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Spelling Practice</div>
+              <span style="font-size:11px; color:#9ca3af;">Look at the meaning and type the word.</span>
+            </div>
+            <div class="card-body">
+              <div id="spellingItems"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkSpellingBtn">
+                  <span class="icon">✔</span>
+                  <span>Check spelling</span>
+                </button>
+                <button class="btn" type="button" id="resetSpellingBtn">
+                  <span class="icon">↺</span>
+                  <span>Clear answers</span>
+                </button>
+              </div>
+              <div class="module-score" id="spellingScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="spellingStatus"></div>
+            </div>
+          </div>
+
+          <!-- Forms & Personal Details Section -->
+          <div class="card" id="formsSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Forms & Personal Details</div>
+              <span style="font-size:11px; color:#9ca3af;">Choose the best answer for simple form questions.</span>
+            </div>
+            <div class="card-body">
+              <div id="formsQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkFormsBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetFormsBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="formsScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="formsStatus"></div>
+            </div>
+          </div>
+
+          <!-- Money & Numbers Section -->
+          <div class="card" id="moneySection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Money & Numbers</div>
+              <span style="font-size:11px; color:#9ca3af;">Work with prices, amounts and simple bills.</span>
+            </div>
+            <div class="card-body">
+              <div id="moneyQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkMoneyBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetMoneyBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="moneyScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="moneyStatus"></div>
+            </div>
+          </div>
+
+          <!-- Reading Signs Section -->
+          <div class="card" id="signsSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Reading Signs & Notices</div>
+              <span style="font-size:11px; color:#9ca3af;">Match signs to their meanings.</span>
+            </div>
+            <div class="card-body">
+              <div id="signsQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkSignsBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetSignsBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="signsScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="signsStatus"></div>
+            </div>
+          </div>
+
+          <!-- GP / Health English Section -->
+          <div class="card" id="healthSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">GP / Health English</div>
+              <span style="font-size:11px; color:#9ca3af;">Choose the best answer for health situations.</span>
+            </div>
+            <div class="card-body">
+              <div id="healthQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkHealthBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetHealthBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="healthScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="healthStatus"></div>
+            </div>
+          </div>
+
+          <!-- Jobcentre English Section -->
+          <div class="card" id="jobcentreSection" style="display:none;">
+            <div class="card-header">
+              <div class="card-title">Jobcentre English</div>
+              <span style="font-size:11px; color:#9ca3af;">Language for Jobcentre forms and appointments.</span>
+            </div>
+            <div class="card-body">
+              <div id="jobcentreQuestions"></div>
+              <div class="module-actions">
+                <button class="btn btn-primary" type="button" id="checkJobcentreBtn">
+                  <span class="icon">✔</span>
+                  <span>Check answers</span>
+                </button>
+                <button class="btn" type="button" id="resetJobcentreBtn">
+                  <span class="icon">↺</span>
+                  <span>Try again</span>
+                </button>
+              </div>
+              <div class="module-score" id="jobcentreScoreLabel">Score: 0 / 0</div>
+              <div class="status-text" id="jobcentreStatus"></div>
+            </div>
+          </div>
+
+          <!-- RIGHT: SUPPORT / INFO PANEL -->
+          <div class="card">
+            <div class="card-header">
+              <div class="card-title">Session support</div>
+            </div>
+            <div class="card-body">
+              <p class="support-card-text">
+                Use this panel as a quick guide during sessions. It does not change when you move between modules,
+                so trainers always have a simple overview on the right side.
+              </p>
+              <ul class="info-list">
+                <li>
+                  <span class="info-bullet">💡</span>
+                  <span>
+                    <strong>Whole group:</strong> Use the big screen, read questions out loud and let learners answer
+                    together before they choose their option.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">👥</span>
+                  <span>
+                    <strong>1‑to‑1:</strong> Sit with the learner, repeat questions slowly and let them talk through
+                    why they chose an answer.
+                  </span>
+                </li>
+                <li>
+                  <span class="info-bullet">🧱</span>
+                  <span>
+                    Keep language <strong>simple</strong>. You can explain new words in your own words or in the learner’s
+                    first language if that helps.
+                  </span>
+                </li>
+              </ul>
+              <div style="margin:8px 0 6px; font-size:12px; color:#9ca3af;">
+                Recommended order for new learners:
+              </div>
+              <ol style="margin:0 0 8px 18px; padding:0; font-size:12px;">
+                <li>Vocabulary &nbsp;→&nbsp; 6–8 minutes</li>
+                <li>Grammar &nbsp;→&nbsp; 6–8 minutes</li>
+                <li>Reading &nbsp;→&nbsp; 8–10 minutes</li>
+                <li>Spelling &nbsp;→&nbsp; 6–8 minutes</li>
+              </ol>
+              <div class="support-card-mini">
+                <div class="support-pill">
+                  <span class="label">Focus today</span>
+                  <span class="value" id="supportFocus">Overview & confidence</span>
+                </div>
+                <div class="support-pill">
+                  <span class="label">Module status</span>
+                  <span class="value" id="supportStatus">0 / 9 modules complete</span>
+                </div>
+              </div>
+              <div class="support-footnote">
+                This material is the property of <strong>RECONNECT‑US</strong> and may not be copied, shared or used
+                outside authorised sessions without written permission.
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="footer-left">
+        <small>© 2025 RECONNECT‑US. All rights reserved.</small>
+        <small>ESOL English Skills • Offline training resource.</small>
+      </div>
+      <div class="footer-right">
+        <span>Modules complete: <span id="footerCompleteCount">0</span> / 9</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    const PROGRESS_KEY = getAppStorageKey("esol_module_progress");
+
+function saveProgress() {
+      try {
+        window.localStorage.setItem(PROGRESS_KEY, JSON.stringify(moduleCompletion));
+      } catch (e) {
+        // ignore storage errors
+      }
+    }
+
+    function loadProgress() {
+      try {
+        const raw = window.localStorage.getItem(PROGRESS_KEY);
+        if (!raw) return;
+        const parsed = JSON.parse(raw);
+        if (typeof parsed === "object" && parsed) {
+          ["vocabulary", "grammar", "reading", "spelling", "forms", "money", "signs", "health", "jobcentre"].forEach((key) => {
+            if (Object.prototype.hasOwnProperty.call(parsed, key)) {
+              moduleCompletion[key] = !!parsed[key];
+            }
+          });
+        }
+      } catch (e) {
+        // ignore
+      }
+    }
+
+    // ----- Utility: Full screen toggle -----
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) {
+          document.exitFullscreen();
+        }
+      }
+    }
+
+    document.getElementById("fullscreenBtn").addEventListener("click", toggleFullScreen);
+    document.getElementById("backBtn").addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    });
+    document.getElementById("learnerBadge").textContent = "Learner: " + getHubLearner();
+
+    // ----- App State -----
+    const sections = ["home", "vocabulary", "grammar", "reading", "spelling", "forms", "money", "signs", "health", "jobcentre"];
+    const moduleCompletion = {
+      vocabulary: false,
+      grammar: false,
+      reading: false,
+      spelling: false,
+      forms: false,
+      money: false,
+      signs: false,
+      health: false,
+      jobcentre: false,
+    };
+
+    // Load any saved progress from this device
+    loadProgress();
+
+    // Progress thresholds: must reach at least this % correct to mark a module complete
+    const completionThreshold = 0.6; // 60%
+
+    function updateProgressDisplay() {
+      const completed = Object.values(moduleCompletion).filter(Boolean).length;
+      const total = 9;
+      const percent = Math.round((completed / total) * 100);
+      document.getElementById("overallProgress").style.width = percent + "%";
+      document.getElementById("overallProgressLabel").textContent = percent + "%";
+      document.getElementById("supportStatus").textContent = completed + " / " + total + " modules complete";
+      document.getElementById("footerCompleteCount").textContent = completed;
+      saveProgress();
+    }
+
+    // ----- Navigation between sections -----
+    const navButtons = document.querySelectorAll(".nav-btn");
+    const sectionTitle = document.getElementById("sectionTitle");
+    const sectionSubtitle = document.getElementById("sectionSubtitle");
+    const supportFocus = document.getElementById("supportFocus");
+
+    const sectionMeta = {
+      home: {
+        icon: "🏠",
+        title: "Welcome to ESOL English Level 2",
+        subtitle: "Level 2: practise advanced English for work, study and everyday life in one secure offline app.",
+        focus: "Overview & confidence",
+      },
+      vocabulary: {
+        icon: "🧾",
+        title: "Vocabulary: Everyday English",
+        subtitle: "Learn and check common words used in daily life.",
+        focus: "Key daily vocabulary",
+      },
+      grammar: {
+        icon: "⚙️",
+        title: "Grammar Quiz: Present Simple",
+        subtitle: "Practise forming clear, simple present tense sentences.",
+        focus: "Short, clear sentences",
+      },
+      reading: {
+        icon: "📖",
+        title: "Reading Practice: Short Text",
+        subtitle: "Read a short story, then answer questions.",
+        focus: "Reading & understanding",
+      },
+      spelling: {
+        icon: "✏️",
+        title: "Spelling Practice: Everyday Words",
+        subtitle: "Look at the meaning and type the correct word.",
+        focus: "Accurate spelling",
+      },
+      forms: {
+        icon: "📝",
+        title: "Forms & Personal Details",
+        subtitle: "Practise key words used on simple forms.",
+        focus: "Names, addresses & contact details",
+      },
+      money: {
+        icon: "💷",
+        title: "Money & Numbers",
+        subtitle: "Work with prices, amounts and simple bills.",
+        focus: "Prices & everyday costs",
+      },
+      signs: {
+        icon: "🚏",
+        title: "Reading Signs & Notices",
+        subtitle: "Understand common signs in the community.",
+        focus: "Important information & safety",
+      },
+      health: {
+        icon: "🩺",
+        title: "GP / Health English",
+        subtitle: "Key words for the doctor, pharmacy and health forms.",
+        focus: "Health vocabulary & safety",
+      },
+      jobcentre: {
+        icon: "🏢",
+        title: "Jobcentre English",
+        subtitle: "Language for appointments, forms and job search.",
+        focus: "Work & benefits language",
+      },
+    };
+
+    function showSection(sectionId) {
+      sections.forEach((id) => {
+        const navBtn = document.querySelector('.nav-btn[data-section="' + id + '"]');
+        if (navBtn) {
+          navBtn.classList.toggle("active", id === sectionId);
+        }
+      });
+
+      document.getElementById("homeSection").style.display = sectionId === "home" ? "block" : "none";
+      document.getElementById("vocabularySection").style.display = sectionId === "vocabulary" ? "block" : "none";
+      document.getElementById("grammarSection").style.display = sectionId === "grammar" ? "block" : "none";
+      document.getElementById("readingSection").style.display = sectionId === "reading" ? "block" : "none";
+      document.getElementById("spellingSection").style.display = sectionId === "spelling" ? "block" : "none";
+      document.getElementById("formsSection").style.display = sectionId === "forms" ? "block" : "none";
+      document.getElementById("moneySection").style.display = sectionId === "money" ? "block" : "none";
+      document.getElementById("signsSection").style.display = sectionId === "signs" ? "block" : "none";
+      document.getElementById("healthSection").style.display = sectionId === "health" ? "block" : "none";
+      document.getElementById("jobcentreSection").style.display = sectionId === "jobcentre" ? "block" : "none";
+
+      const meta = sectionMeta[sectionId];
+      if (meta) {
+        sectionTitle.innerHTML = '<span class="emoji">' + meta.icon + '</span><span>' + meta.title + "</span>";
+        sectionSubtitle.textContent = meta.subtitle;
+        supportFocus.textContent = meta.focus;
+      } else {
+        supportFocus.textContent = "Overview & confidence";
+      }
+    }
+
+    navButtons.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sectionId = btn.getAttribute("data-section");
+        showSection(sectionId);
+      });
+    });
+
+    document.querySelectorAll("[data-go-section]").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const sectionId = btn.getAttribute("data-go-section");
+        showSection(sectionId);
+      });
+    });
+
+    document.getElementById("quickStartBtn").addEventListener("click", () => {
+      showSection("vocabulary");
+    });
+
+    // ----- Vocabulary Module -----
+    const vocabQuestionsData = [
+  { text: "‘Contractual obligation’", options: ["A responsibility you must follow under a contract", "A suggestion your employer gives you", "A voluntary task at work"], correctIndex: 0 },
+  { text: "‘Disciplinary procedure’", options: ["A formal process for dealing with workplace problems", "A timetable for staff holidays", "A method of training new employees"], correctIndex: 0 },
+  { text: "‘Compliance’", options: ["Following rules, laws, or required procedures", "Helping new employees settle in", "Applying for a new job"], correctIndex: 0 },
+  { text: "‘Escalate’", options: ["To raise an issue to a higher level of authority", "To cancel an appointment", "To rewrite a document"], correctIndex: 0 },
+  { text: "‘Mitigation’", options: ["Actions taken to reduce a risk or problem", "A request for time off", "A type of meeting"], correctIndex: 0 },
+  { text: "‘Safeguarding’", options: ["Protecting people’s health, wellbeing and human rights", "Keeping financial receipts", "Completing annual leave forms"], correctIndex: 0 },
+  { text: "‘Induction’", options: ["Initial training for new employees", "A type of formal complaint", "A break during the working day"], correctIndex: 0 },
+  { text: "‘Delegation’", options: ["Giving tasks or authority to someone else", "Asking for more training", "Checking someone’s ID"], correctIndex: 0 },
+  { text: "‘Transparent process’", options: ["A process that is clear, open and easy to understand", "A process only managers know about", "A process that changes daily"], correctIndex: 0 },
+  { text: "‘Confidentiality breach’", options: ["When private information is shared without permission", "When someone forgets their password", "When a meeting starts late"], correctIndex: 0 }
+];
+
+    function renderVocabQuestions() {
+      const container = document.getElementById("vocabQuestions");
+      container.innerHTML = "";
+      vocabQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. What does <strong>${q.text}</strong> mean?</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="vocab-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="vocab-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("vocabScoreLabel").textContent = "Score: 0 / " + vocabQuestionsData.length;
+      document.getElementById("vocabStatus").textContent = "";
+    }
+
+    function checkVocabulary() {
+      let correctCount = 0;
+      vocabQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="vocab-' + index + '"]:checked');
+        const resultDiv = document.getElementById("vocab-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("vocabScoreLabel").textContent =
+        "Score: " + correctCount + " / " + vocabQuestionsData.length;
+      const percent = correctCount / vocabQuestionsData.length;
+      const status = document.getElementById("vocabStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Well done! This is enough to mark the Vocabulary module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.vocabulary = true;
+      } else {
+        status.textContent =
+          "Keep going. Try again to improve your score. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.vocabulary = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetVocabulary() {
+      renderVocabQuestions();
+      moduleCompletion.vocabulary = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkVocabBtn").addEventListener("click", checkVocabulary);
+    document.getElementById("resetVocabBtn").addEventListener("click", resetVocabulary);
+
+    // ----- Grammar Module -----
+    const grammarQuestionsData = [
+  { text: "Choose the correct sentence.", options: ["Had I known about the delay, I would leave earlier.", "Had I known about the delay, I would have left earlier.", "Had I know about the delay, I would left earlier."], correctIndex: 1 },
+  { text: "Choose the correct passive form.", options: ["The report was submitted by the team.", "The report submitted by the team.", "The report was submitting by the team."], correctIndex: 0 },
+  { text: "Choose the sentence with correct modal meaning.", options: ["Employees must to follow safety rules.", "Employees must follow safety rules.", "Employees must following safety rules."], correctIndex: 1 },
+  { text: "Choose the clearest formal sentence.", options: ["Could you please clarify what information is required?", "What info u need?", "What you want?"], correctIndex: 0 },
+  { text: "Choose the correct future form.", options: ["The manager will be reviewing applications tomorrow.", "The manager is reviewing applications tomorrow at 6am last week.", "The manager will reviewed applications tomorrow."], correctIndex: 0 },
+  { text: "Choose the correct relative clause.", options: ["The candidate which we interviewed yesterday was experienced.", "The candidate whom we interviewed yesterday was experienced.", "The candidate who we interviewed yesterday he was experienced."], correctIndex: 1 },
+  { text: "Choose the correct conditional.", options: ["If the system fails, we will lose all unsaved work.", "If the system will fail, we lose all unsaved work.", "If the system fails, we lost all unsaved work."], correctIndex: 0 },
+  { text: "Choose the formal structure.", options: ["I would appreciate it if you could send the documents.", "Send me documents now.", "I want documents."], correctIndex: 0 },
+  { text: "Choose the correct tense.", options: ["She has been managing the project since April.", "She is managing the project since April.", "She has managed the project since April every day."], correctIndex: 0 },
+  { text: "Choose the correct modal for advice.", options: ["You should consider updating your CV.", "You must consider updating your CV now!", "You can consider updating your CV if you want but not needed at all."], correctIndex: 0 }
+];
+
+    function renderGrammarQuestions() {
+      const container = document.getElementById("grammarQuestions");
+      container.innerHTML = "";
+      grammarQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="grammar-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="grammar-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("grammarScoreLabel").textContent = "Score: 0 / " + grammarQuestionsData.length;
+      document.getElementById("grammarStatus").textContent = "";
+    }
+
+    function checkGrammar() {
+      let correctCount = 0;
+      grammarQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="grammar-' + index + '"]:checked');
+        const resultDiv = document.getElementById("grammar-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("grammarScoreLabel").textContent =
+        "Score: " + correctCount + " / " + grammarQuestionsData.length;
+      const percent = correctCount / grammarQuestionsData.length;
+      const status = document.getElementById("grammarStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Great job! This is enough to mark the Grammar module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.grammar = true;
+      } else {
+        status.textContent =
+          "Keep practising. Try again to improve your score. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.grammar = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetGrammar() {
+      renderGrammarQuestions();
+      moduleCompletion.grammar = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkGrammarBtn").addEventListener("click", checkGrammar);
+    document.getElementById("resetGrammarBtn").addEventListener("click", resetGrammar);
+
+    // ----- Reading Module -----
+    const readingQuestionsData = [
+  { text: "1. What is Maria's main challenge in her job?", options: ["Using the new digital reporting system", "Speaking with external agencies", "Managing her team"], correctIndex: 0 },
+  { text: "2. Why does the organisation introduce extra training?", options: ["To help staff learn the new system", "To prepare for an inspection", "To reduce staff workload"], correctIndex: 0 },
+  { text: "3. What does Maria do during the meeting?", options: ["She asks questions to understand the changes", "She stays silent", "She refuses to use the new system"], correctIndex: 0 },
+  { text: "4. How does the manager respond to Maria's questions?", options: ["Praises her for initiative", "Ignores her concerns", "Tells her to wait"], correctIndex: 0 },
+  { text: "5. What is Maria's long-term goal?", options: ["Progress to a senior role", "Move to a different company immediately", "Leave the organisation"], correctIndex: 0 },
+  { text: "6. What skill does Maria want to improve?", options: ["Professional communication", "Driving skills", "Mathematics"], correctIndex: 0 }
+];
+
+    function renderReadingQuestions() {
+      const container = document.getElementById("readingQuestions");
+      container.innerHTML = "";
+      readingQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="reading-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="reading-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("readingScoreLabel").textContent = "Score: 0 / " + readingQuestionsData.length;
+      document.getElementById("readingStatus").textContent = "";
+    }
+
+    function checkReading() {
+      let correctCount = 0;
+      readingQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="reading-' + index + '"]:checked');
+        const resultDiv = document.getElementById("reading-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("readingScoreLabel").textContent =
+        "Score: " + correctCount + " / " + readingQuestionsData.length;
+      const percent = correctCount / readingQuestionsData.length;
+      const status = document.getElementById("readingStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Excellent! This is enough to mark the Reading module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.reading = true;
+      } else {
+        status.textContent =
+          "Try again. Read the text slowly and look for key words in the questions. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.reading = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetReading() {
+      renderReadingQuestions();
+      moduleCompletion.reading = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkReadingBtn").addEventListener("click", checkReading);
+    document.getElementById("resetReadingBtn").addEventListener("click", resetReading);
+
+    // ----- Spelling Module -----
+    const spellingItemsData = [
+  { clue: "Formal written communication in a workplace.", answer: "correspondence" },
+  { clue: "A detailed written record of a meeting.", answer: "minutes" },
+  { clue: "The process of checking something carefully.", answer: "verification" },
+  { clue: "Information that must be kept private.", answer: "confidentiality" },
+  { clue: "Ability to do something well, especially job-related.", answer: "competence" },
+  { clue: "Official request or application for something.", answer: "submission" },
+  { clue: "A document outlining rules and expectations.", answer: "policy" },
+  { clue: "An improvement or positive development.", answer: "progression" },
+  { clue: "A mistake that causes problems.", answer: "error" },
+  { clue: "A formal request for information.", answer: "enquiry" }
+];
+
+    function renderSpellingItems() {
+      const container = document.getElementById("spellingItems");
+      container.innerHTML = "";
+      spellingItemsData.forEach((item, index) => {
+        const row = document.createElement("div");
+        row.className = "spelling-row";
+        row.innerHTML = `
+          <div class="input-row">
+            <label>${index + 1}. ${item.clue}</label>
+            <input type="text" id="spelling-input-${index}" placeholder="Type the word here" autocomplete="off" />
+          </div>
+          <div class="status-text" id="spelling-result-${index}"></div>
+        `;
+        container.appendChild(row);
+      });
+      document.getElementById("spellingScoreLabel").textContent = "Score: 0 / " + spellingItemsData.length;
+      document.getElementById("spellingStatus").textContent = "";
+    }
+
+    function checkSpelling() {
+      let correctCount = 0;
+      spellingItemsData.forEach((item, index) => {
+        const input = document.getElementById("spelling-input-" + index);
+        const resultDiv = document.getElementById("spelling-result-" + index);
+        const value = (input.value || "").trim().toLowerCase();
+        const correct = item.answer.toLowerCase();
+        if (!value) {
+          resultDiv.textContent = "Type a word.";
+          resultDiv.className = "status-text";
+          return;
+        }
+        if (value === correct) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "status-text correct";
+        } else {
+          resultDiv.textContent = "Check the spelling. Correct word: " + item.answer;
+          resultDiv.className = "status-text incorrect";
+        }
+      });
+      document.getElementById("spellingScoreLabel").textContent =
+        "Score: " + correctCount + " / " + spellingItemsData.length;
+      const percent = correctCount / spellingItemsData.length;
+      const status = document.getElementById("spellingStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Nice work! This is enough to mark the Spelling module as complete.";
+        status.className = "status-text correct";
+        moduleCompletion.spelling = true;
+      } else {
+        status.textContent =
+          "Keep practising. You can press Clear answers and try again. At least 60% is needed to complete this module.";
+        status.className = "status-text incorrect";
+        moduleCompletion.spelling = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetSpelling() {
+      renderSpellingItems();
+      moduleCompletion.spelling = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkSpellingBtn").addEventListener("click", checkSpelling);
+    document.getElementById("resetSpellingBtn").addEventListener("click", resetSpelling);
+
+    // ----- Forms & Personal Details Module -----
+    const formsQuestionsData = [
+  {
+    text: "On a housing application form, the question says ‘Have you had any previous addresses in the last 5 years?’. Why is this important?",
+    options: [
+      "To check your housing history and references",
+      "To see how many holidays you have taken",
+      "To decide which GP you must register with"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A form asks for ‘preferred method of contact’. Which answer is the most appropriate?",
+    options: [
+      "Email, because I check it every day",
+      "Any way you like",
+      "Please don’t contact me"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "The form section says ‘consent to share information with partner agencies’. What does this mean?",
+    options: [
+      "You agree that they can share your details with other organisations that support you",
+      "You agree to pay extra money every month",
+      "You agree to work for the organisation as a volunteer"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A college enrolment form asks for ‘evidence of identity’. Which document is most suitable?",
+    options: [
+      "Passport or biometric residence permit",
+      "A shopping receipt from yesterday",
+      "A note from a neighbour"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "The form says ‘Please explain briefly why you are applying for this course’. Which answer is most suitable?",
+    options: [
+      "I want to improve my English for work and gain a qualification.",
+      "Because my friend told me to.",
+      "I don’t know, just put me on something."
+    ],
+    correctIndex: 0,
+  },
+];
+
+    function renderFormsQuestions() {
+      const container = document.getElementById("formsQuestions");
+      container.innerHTML = "";
+      formsQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="forms-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="forms-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("formsScoreLabel").textContent = "Score: 0 / " + formsQuestionsData.length;
+      document.getElementById("formsStatus").textContent = "";
+    }
+
+    function checkForms() {
+      let correctCount = 0;
+      formsQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="forms-' + index + '"]:checked');
+        const resultDiv = document.getElementById("forms-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("formsScoreLabel").textContent =
+        "Score: " + correctCount + " / " + formsQuestionsData.length;
+      const percent = correctCount / formsQuestionsData.length;
+      const status = document.getElementById("formsStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Good work! This is enough to mark the Forms module as complete.";
+        status.className = "question-result correct";
+        moduleCompletion.forms = true;
+      } else {
+        status.textContent =
+          "Keep practising. At least 60% is needed to complete this module.";
+        status.className = "question-result incorrect";
+        moduleCompletion.forms = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetForms() {
+      renderFormsQuestions();
+      moduleCompletion.forms = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkFormsBtn").addEventListener("click", checkForms);
+    document.getElementById("resetFormsBtn").addEventListener("click", resetForms);
+
+    // ----- Money & Numbers Module -----
+    const moneyQuestionsData = [
+  {
+    text: "Your gas bill shows: ‘Previous balance: £86.40, Payment received: £50.00, New charges: £32.10’. How much do you still owe?",
+    options: [
+      "£68.50",
+      "£36.40",
+      "£54.30"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "You see a payslip: ‘Gross pay: £980.00, Deductions: £210.50, Net pay: ?’. What is the net pay?",
+    options: [
+      "£769.50",
+      "£790.50",
+      "£770.00"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A shop advert says: ‘Was £120, now 25% off’. What is the new price?",
+    options: [
+      "£90.00",
+      "£95.00",
+      "£85.00"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "Your rent is £525 per calendar month. How much is this for 6 months?",
+    options: [
+      "£3,150",
+      "£2,650",
+      "£3,050"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "Your bank statement shows: ‘Balance: £240.00, Card purchase: £37.80, Direct debit: £25.00’. What is your new balance?",
+    options: [
+      "£177.20",
+      "£202.20",
+      "£215.00"
+    ],
+    correctIndex: 0,
+  },
+];
+
+    function renderMoneyQuestions() {
+      const container = document.getElementById("moneyQuestions");
+      container.innerHTML = "";
+      moneyQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="money-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="money-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("moneyScoreLabel").textContent = "Score: 0 / " + moneyQuestionsData.length;
+      document.getElementById("moneyStatus").textContent = "";
+    }
+
+    function checkMoney() {
+      let correctCount = 0;
+      moneyQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="money-' + index + '"]:checked');
+        const resultDiv = document.getElementById("money-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("moneyScoreLabel").textContent =
+        "Score: " + correctCount + " / " + moneyQuestionsData.length;
+      const percent = correctCount / moneyQuestionsData.length;
+      const status = document.getElementById("moneyStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Well done! This is enough to mark the Money module as complete.";
+        status.className = "question-result correct";
+        moduleCompletion.money = true;
+      } else {
+        status.textContent =
+          "Try again. Use the prices carefully. At least 60% is needed to complete this module.";
+        status.className = "question-result incorrect";
+        moduleCompletion.money = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetMoney() {
+      renderMoneyQuestions();
+      moduleCompletion.money = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkMoneyBtn").addEventListener("click", checkMoney);
+    document.getElementById("resetMoneyBtn").addEventListener("click", resetMoney);
+
+    // ----- Reading Signs Module -----
+    const signsQuestionsData = [
+  {
+    text: "You see a sign at a workplace entrance: ‘All visitors must report to reception and sign in’. What is the main purpose of this sign?",
+    options: [
+      "To monitor who is in the building for safety and security",
+      "To check if visitors have enough money",
+      "To tell visitors not to speak to staff"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A notice on a staffroom door reads: ‘Authorised personnel only’. Which statement is most accurate?",
+    options: [
+      "Only staff with permission should enter this area",
+      "Anyone can enter if the door is open",
+      "This is the main entrance for all visitors"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "You see a notice: ‘CCTV in operation – images may be used for crime prevention and staff training’. What does this tell you?",
+    options: [
+      "You are being recorded and the footage can be used officially",
+      "You are not allowed to work in this area",
+      "The cameras are for decoration only"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A poster in a corridor says: ‘Report all accidents, near misses and hazards to your line manager immediately’. What does ‘near misses’ mean?",
+    options: [
+      "Incidents that almost caused harm but did not",
+      "Funny stories about work",
+      "Staff who arrive a few minutes late"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "On a fire safety sign you read: ‘Assembly point B – car park, far corner’. What should you do during a fire drill?",
+    options: [
+      "Go directly to the far corner of the car park and wait there",
+      "Stay at your desk and wait for instructions",
+      "Go home as quickly as possible"
+    ],
+    correctIndex: 0,
+  },
+];
+
+    function renderSignsQuestions() {
+      const container = document.getElementById("signsQuestions");
+      container.innerHTML = "";
+      signsQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="signs-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="signs-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("signsScoreLabel").textContent = "Score: 0 / " + signsQuestionsData.length;
+      document.getElementById("signsStatus").textContent = "";
+    }
+
+    function checkSigns() {
+      let correctCount = 0;
+      signsQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="signs-' + index + '"]:checked');
+        const resultDiv = document.getElementById("signs-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("signsScoreLabel").textContent =
+        "Score: " + correctCount + " / " + signsQuestionsData.length;
+      const percent = correctCount / signsQuestionsData.length;
+      const status = document.getElementById("signsStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Great! This is enough to mark the Signs module as complete.";
+        status.className = "question-result correct";
+        moduleCompletion.signs = true;
+      } else {
+        status.textContent =
+          "Try again and think about the meaning of each sign. At least 60% is needed to complete this module.";
+        status.className = "question-result incorrect";
+        moduleCompletion.signs = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetSigns() {
+      renderSignsQuestions();
+      moduleCompletion.signs = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkSignsBtn").addEventListener("click", checkSigns);
+    document.getElementById("resetSignsBtn").addEventListener("click", resetSigns);
+
+    // ----- GP / Health English Module -----
+    const healthQuestionsData = [
+  {
+    text: "A medicine label says: ‘Take one tablet three times a day after food. Do not exceed the stated dose.’ What should you do?",
+    options: [
+      "Take one tablet after breakfast, lunch and evening meal, and never take more than three in 24 hours",
+      "Take three tablets whenever you feel unwell",
+      "Take as many as you like if the pain is strong"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A hospital letter says: ‘This appointment is mandatory. If you cannot attend, contact us at least 48 hours in advance.’ What does ‘mandatory’ mean?",
+    options: [
+      "You must attend unless you cancel properly",
+      "You can ignore the appointment",
+      "You only attend if you feel like it"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A consent form states: ‘I understand the potential risks and side effects of this treatment.’ What are you confirming when you sign?",
+    options: [
+      "That the doctor has explained possible problems and you still agree to continue",
+      "That there are no risks at all",
+      "That you will not ask any more questions"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "The prescription says: ‘Repeat prescription: 3 remaining. Review with GP in 6 months.’ What does this mean?",
+    options: [
+      "You can get the medicine three more times before you must see the doctor again",
+      "You can never get this medicine again",
+      "You can only use the medicine for three days"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A notice at the surgery reads: ‘Please inform reception immediately if your contact details change.’ Why is this important?",
+    options: [
+      "So the surgery can contact you about test results and appointments",
+      "So they can send you adverts",
+      "So they can charge you extra fees"
+    ],
+    correctIndex: 0,
+  },
+];
+
+    function renderHealthQuestions() {
+      const container = document.getElementById("healthQuestions");
+      container.innerHTML = "";
+      healthQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="health-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="health-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("healthScoreLabel").textContent = "Score: 0 / " + healthQuestionsData.length;
+      document.getElementById("healthStatus").textContent = "";
+    }
+
+    function checkHealth() {
+      let correctCount = 0;
+      healthQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="health-' + index + '"]:checked');
+        const resultDiv = document.getElementById("health-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("healthScoreLabel").textContent =
+        "Score: " + correctCount + " / " + healthQuestionsData.length;
+      const percent = correctCount / healthQuestionsData.length;
+      const status = document.getElementById("healthStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Excellent! This is enough to mark the Health module as complete.";
+        status.className = "question-result correct";
+        moduleCompletion.health = true;
+      } else {
+        status.textContent =
+          "Try again. Read each health message carefully. At least 60% is needed to complete this module.";
+        status.className = "question-result incorrect";
+        moduleCompletion.health = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetHealth() {
+      renderHealthQuestions();
+      moduleCompletion.health = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkHealthBtn").addEventListener("click", checkHealth);
+    document.getElementById("resetHealthBtn").addEventListener("click", resetHealth);
+
+    // ----- Jobcentre English Module -----
+    const jobcentreQuestionsData = [
+  {
+    text: "Your Jobcentre letter states: ‘Failure to attend this appointment without good reason may result in a sanction.’ What is a ‘sanction’ in this context?",
+    options: [
+      "A reduction or stop in your benefit payment",
+      "An invitation to extra training",
+      "A bonus payment for good attendance"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "The Jobcentre agreement says: ‘You must provide evidence of job search activity every week.’ Which action best meets this requirement?",
+    options: [
+      "Keeping a record of applications, emails and interviews to show your advisor",
+      "Waiting for employers to call you without applying",
+      "Telling your advisor you are too busy to look for work"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "A letter says: ‘Your benefit entitlement will be reviewed if your circumstances change.’ Which example is most likely to trigger a review?",
+    options: [
+      "Starting a new job or changing your working hours",
+      "Buying new clothes",
+      "Visiting a friend for the weekend"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "The Jobcentre text message reads: ‘This is a mandatory appointment. Please bring your ID and CV.’ What should you do?",
+    options: [
+      "Attend on time and take suitable identification and an up-to-date CV",
+      "Ignore the message if you are busy",
+      "Attend without any documents"
+    ],
+    correctIndex: 0,
+  },
+  {
+    text: "Your claimant commitment says: ‘You are expected to apply for at least 10 suitable jobs each week.’ Which behaviour follows this commitment?",
+    options: [
+      "Applying for a range of jobs that match your skills and recording them",
+      "Only applying for one job every month",
+      "Waiting until the Jobcentre finds a job for you"
+    ],
+    correctIndex: 0,
+  },
+];
+
+    function renderJobcentreQuestions() {
+      const container = document.getElementById("jobcentreQuestions");
+      container.innerHTML = "";
+      jobcentreQuestionsData.forEach((q, index) => {
+        const qDiv = document.createElement("div");
+        qDiv.className = "question";
+        qDiv.innerHTML = `
+          <div class="question-title">${index + 1}. ${q.text}</div>
+          <div class="options">
+            ${q.options
+              .map(
+                (opt, i) => `
+              <label>
+                <input type="radio" name="jobcentre-${index}" value="${i}" />
+                <span>${opt}</span>
+              </label>
+            `
+              )
+              .join("")}
+          </div>
+          <div class="question-result" id="jobcentre-result-${index}"></div>
+        `;
+        container.appendChild(qDiv);
+      });
+      document.getElementById("jobcentreScoreLabel").textContent = "Score: 0 / " + jobcentreQuestionsData.length;
+      document.getElementById("jobcentreStatus").textContent = "";
+    }
+
+    function checkJobcentre() {
+      let correctCount = 0;
+      jobcentreQuestionsData.forEach((q, index) => {
+        const selected = document.querySelector('input[name="jobcentre-' + index + '"]:checked');
+        const resultDiv = document.getElementById("jobcentre-result-" + index);
+        if (!selected) {
+          resultDiv.textContent = "Choose an answer.";
+          resultDiv.className = "question-result";
+          return;
+        }
+        const answer = parseInt(selected.value, 10);
+        if (answer === q.correctIndex) {
+          correctCount++;
+          resultDiv.textContent = "Correct ✔";
+          resultDiv.className = "question-result correct";
+        } else {
+          resultDiv.textContent = "Not quite. Correct answer: " + q.options[q.correctIndex];
+          resultDiv.className = "question-result incorrect";
+        }
+      });
+      document.getElementById("jobcentreScoreLabel").textContent =
+        "Score: " + correctCount + " / " + jobcentreQuestionsData.length;
+      const percent = correctCount / jobcentreQuestionsData.length;
+      const status = document.getElementById("jobcentreStatus");
+      if (percent >= completionThreshold) {
+        status.textContent =
+          "Well done! This is enough to mark the Jobcentre module as complete.";
+        status.className = "question-result correct";
+        moduleCompletion.jobcentre = true;
+      } else {
+        status.textContent =
+          "Keep practising. At least 60% is needed to complete this module.";
+        status.className = "question-result incorrect";
+        moduleCompletion.jobcentre = false;
+      }
+      updateProgressDisplay();
+    }
+
+    function resetJobcentre() {
+      renderJobcentreQuestions();
+      moduleCompletion.jobcentre = false;
+      updateProgressDisplay();
+    }
+
+    document.getElementById("checkJobcentreBtn").addEventListener("click", checkJobcentre);
+    document.getElementById("resetJobcentreBtn").addEventListener("click", resetJobcentre);
+
+    // ----- Global Reset -----
+    document.getElementById("resetAllBtn").addEventListener("click", () => {
+      resetVocabulary();
+      resetGrammar();
+      resetReading();
+      resetSpelling();
+      resetForms();
+      resetMoney();
+      resetSigns();
+      resetHealth();
+      resetJobcentre();
+      Object.keys(moduleCompletion).forEach((k) => (moduleCompletion[k] = false));
+      updateProgressDisplay();
+    });
+
+    // ----- Initial render -----
+    renderVocabQuestions();
+    renderGrammarQuestions();
+    renderReadingQuestions();
+    renderSpellingItems();
+    renderFormsQuestions();
+    renderMoneyQuestions();
+    renderSignsQuestions();
+    renderHealthQuestions();
+    renderJobcentreQuestions();
+    updateProgressDisplay();
+    
+  </script>
+<script>
+const SHARED_HUB_KEY = "reconnectus_shared_current_learner_v1";
+
+function getHubLearner() {
+  try {
+    const shared = JSON.parse(localStorage.getItem(SHARED_HUB_KEY) || "null");
+    if (shared && typeof shared.name === "string" && shared.name.trim()) {
+      return shared.name.trim();
+    }
+  } catch (e) {}
+
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const learner = params.get("learner");
+    if (learner && learner.trim()) return learner.trim();
+  } catch (e) {}
+
+  return "Learner";
+}
+
+function applyLearnerBadge() {
+  const badge = document.getElementById("learnerBadge");
+  if (!badge) return;
+  badge.textContent = "Learner: " + getHubLearner();
+}
+
+document.addEventListener("DOMContentLoaded", applyLearnerBadge);
+window.addEventListener("load", applyLearnerBadge);
+setTimeout(applyLearnerBadge, 250);
+</script>
+</body>
+</html>

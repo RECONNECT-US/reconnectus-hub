@@ -1,0 +1,2871 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>RECONNECT-US Learning – Offline Trainer</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: #f2f7f8;
+      margin: 0;
+      padding: 0;
+      color: #003f5f;
+    }
+    header {
+      background: linear-gradient(90deg, #0097a7, #005f73);
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    header img {
+      width: 120px;
+      display: block;
+      margin: 0 auto 10px auto;
+    }
+    nav {
+      background: #e0f4f6;
+      padding: 12px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 18px;
+      border-bottom: 3px solid #0097a7;
+    }
+    nav a {
+      text-decoration: none;
+      font-weight: bold;
+      color: #005f73;
+      font-size: 0.95rem;
+    }
+    .container {
+      max-width: 1100px;
+      margin: 20px auto;
+      padding: 20px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    h1, h2, h3 {
+      margin-top: 0;
+    }
+    .module-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+    }
+    .module {
+      padding: 16px 18px;
+      background: #e8f8fa;
+      border-radius: 10px;
+      border: 2px solid #0097a7;
+    }
+    .module h3 {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 0;
+      color: #005f73;
+      font-size: 1.05rem;
+    }
+    .module h3 span:first-child {
+      font-size: 1.4rem;
+    }
+    .open-module {
+      margin-top: 6px;
+      padding: 6px 10px;
+      border-radius: 6px;
+      border: none;
+      background: #0097a7;
+      color: #fff;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    .open-module:hover {
+      background: #007a86;
+    }
+    
+    .close-module {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      border: none;
+      background: #b00020;
+      color: #ffffff;
+      cursor: pointer;
+    }
+    .close-module:hover {
+      background: #7c0016;
+    }
+
+    .module-panel.fullscreen {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: #ffffff;
+      z-index: 9999;
+      overflow-y: auto;
+      padding: 20px;
+      box-sizing: border-box;
+    }
+
+    .module-panel {
+      margin-top: 10px;
+      padding-top: 6px;
+      border-top: 1px solid #b3dde3;
+      display: none;
+    }
+    .module-panel ol {
+      padding-left: 18px;
+    }
+    .module-panel li {
+      margin-bottom: 10px;
+    }
+    .task-button {
+      margin-left: 6px;
+      padding: 4px 8px;
+      font-size: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid #005f73;
+      background: #ffffff;
+      cursor: pointer;
+    }
+    .task-button.completed {
+      background: #2e7d32;
+      color: #fff;
+      border-color: #2e7d32;
+    }
+    .activity {
+      margin-top: 8px;
+      padding: 10px;
+      border-radius: 8px;
+      background: #ffffff;
+      border: 1px solid #b3dde3;
+      font-size: 0.9rem;
+    }
+    .activity h4 {
+      margin-top: 0;
+      font-size: 0.95rem;
+    }
+    .activity-options label {
+      display: block;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+    .check-button {
+      margin-top: 6px;
+      padding: 4px 8px;
+      font-size: 0.85rem;
+      border-radius: 5px;
+      border: none;
+      background: #005f73;
+      color: #fff;
+      cursor: pointer;
+    }
+    .check-button:hover {
+      background: #004155;
+    }
+    .activity-feedback {
+      margin-top: 4px;
+      font-size: 0.9rem;
+    }
+    .progress-wrap {
+      margin-top: 12px;
+    }
+    .progress-bar {
+      width: 100%;
+      height: 10px;
+      background: #cde9ee;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%;
+      width: 0%;
+      background: #00b894;
+      transition: width 0.3s ease;
+    }
+    .progress-text {
+      margin-top: 6px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.85rem;
+    }
+    .progress-tick {
+      display: none;
+      font-weight: bold;
+      color: #2e7d32;
+    }
+    .reset-button {
+      margin-left: auto;
+      padding: 3px 8px;
+      font-size: 0.8rem;
+      border-radius: 5px;
+      border: 1px solid #b00020;
+      background: #ffffff;
+      color: #b00020;
+      cursor: pointer;
+    }
+    .reset-button:hover {
+      background: #ffe5e9;
+    }
+.fullscreen-button {
+      margin-top: 10px;
+      padding: 6px 12px;
+      font-size: 0.9rem;
+      border-radius: 6px;
+      border: none;
+      background: #ffffff;
+      color: #005f73;
+      cursor: pointer;
+    }
+    .fullscreen-button:hover {
+      background: #cde9ee;
+    }
+
+
+    /* Module certificate overlay (compact module certificate) */
+    #module-certificate-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 63, 95, 0.85);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+    }
+    .module-cert-card {
+      width: min(520px, 90%);
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+      border-top: 5px solid #0097a7;
+      border-bottom: 5px solid #00b894;
+      padding: 24px 28px;
+      text-align: center;
+      font-family: Arial, sans-serif;
+      color: #003f5f;
+    }
+    .module-cert-header {
+      font-size: 1.2rem;
+      font-weight: bold;
+      letter-spacing: 0.04em;
+      margin-bottom: 4px;
+      color: #005f73;
+      text-transform: uppercase;
+    }
+    .module-cert-subtitle {
+      font-size: 1rem;
+      font-weight: bold;
+      color: #0097a7;
+      margin-bottom: 16px;
+    }
+    .module-cert-body p {
+      margin: 4px 0;
+      font-size: 0.95rem;
+    }
+    .module-cert-name {
+      font-size: 1.15rem;
+      font-weight: bold;
+      margin: 6px 0 2px 0;
+      color: #002b3a;
+    }
+    .module-cert-module {
+      font-size: 1rem;
+      font-weight: bold;
+      margin: 4px 0 10px 0;
+      color: #005f73;
+    }
+    .module-cert-date-line {
+      margin-top: 10px;
+      font-style: italic;
+      font-size: 0.9rem;
+    }
+    .module-cert-footer {
+      margin-top: 16px;
+      font-size: 0.75rem;
+      line-height: 1.3;
+      color: #33596a;
+    }
+    .module-cert-buttons {
+      margin-top: 18px;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .module-cert-buttons button {
+      padding: 6px 14px;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.9rem;
+      cursor: pointer;
+    }
+    #module-cert-close-btn {
+      background: #e0f4f6;
+      color: #005f73;
+    }
+    #module-cert-close-btn:hover {
+      background: #cde9ee;
+    }
+    #module-cert-print-btn {
+      background: #0097a7;
+      color: #ffffff;
+    }
+    #module-cert-print-btn:hover {
+      background: #007a86;
+    }
+    footer {
+      margin-top: 40px;
+      text-align: center;
+      padding: 20px;
+      background: #004d5a;
+      color: white;
+      font-size: 0.9rem;
+    }
+
+    /* Full-screen start overlay */
+    #fullscreen-start-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 45, 60, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      box-sizing: border-box;
+      z-index: 20000;
+    }
+    .fullscreen-start-card {
+      width: min(700px, 96%);
+      background: #ffffff;
+      border-radius: 18px;
+      box-shadow: 0 18px 50px rgba(0,0,0,0.35);
+      border-top: 6px solid #0097a7;
+      border-bottom: 6px solid #00b894;
+      padding: 28px 24px;
+      text-align: center;
+      color: #003f5f;
+    }
+    .fullscreen-start-card h2 {
+      margin: 0 0 10px 0;
+      color: #005f73;
+      font-size: 1.7rem;
+    }
+    .fullscreen-start-card p {
+      margin: 10px 0;
+      line-height: 1.5;
+    }
+    .fullscreen-start-note {
+      margin-top: 16px;
+      padding: 12px 14px;
+      background: #e8f8fa;
+      border: 1px solid #b3dde3;
+      border-radius: 10px;
+      font-size: 0.95rem;
+    }
+    .fullscreen-start-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 18px;
+    }
+    .fullscreen-start-btn,
+    .fullscreen-skip-btn,
+    .fullscreen-help-button {
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+    }
+    .fullscreen-start-btn {
+      background: #0097a7;
+      color: #ffffff;
+      padding: 10px 18px;
+    }
+    .fullscreen-start-btn:hover {
+      background: #007a86;
+    }
+    .fullscreen-skip-btn {
+      background: #e0f4f6;
+      color: #005f73;
+      padding: 10px 18px;
+    }
+    .fullscreen-skip-btn:hover {
+      background: #cde9ee;
+    }
+    .fullscreen-help-button {
+      position: fixed;
+      right: 14px;
+      bottom: 14px;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background: #005f73;
+      color: #ffffff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 15000;
+      font-weight: bold;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .fullscreen-help-button:hover {
+      background: #004155;
+    }
+
+  </style>
+</head>
+
+<body>
+
+  <div id="fullscreen-start-overlay" role="dialog" aria-modal="true" aria-label="Enter full screen">
+    <div class="fullscreen-start-card">
+      <h2>RECONNECT-US Learning</h2>
+      <p>Tap anywhere or use the button below to enter full screen for the best view.</p>
+      <p>This keeps the learning space cleaner and easier to use on shared devices.</p>
+      <div class="fullscreen-start-note">
+        <strong>Important:</strong> This RECONNECT-US material cannot be copied, shared, or moved to another computer or device without prior permission from <strong>RECONNECT-US</strong>. Please ask RECONNECT-US for permission first.
+      </div>
+      <div class="fullscreen-start-actions">
+        <button type="button" class="fullscreen-start-btn" id="enter-fullscreen-btn">Enter full screen</button>
+        <button type="button" class="fullscreen-skip-btn" id="continue-without-fullscreen-btn">Continue without full screen</button>
+      </div>
+    </div>
+  </div>
+  <button type="button" class="fullscreen-help-button" id="fullscreen-help-button" aria-label="Show full screen help">?</button>
+
+  <div id="app" style="display:block;">
+  <div id="app-main" style="display:block;">
+</div>
+
+
+<header>
+  <h1>RECONNECT-US Learning</h1>
+  <p>Offline digital skills practice – safe, step-by-step and hands-on</p>
+  <div id="current-learner-label" style="margin:6px 0 10px 0;font-size:0.85rem;color:#003f5f;">
+    No learner selected
+  </div>
+</header>
+
+<nav>
+  <a href="#modules">Modules</a>
+  <a href="#about">About</a>
+  
+</nav>
+
+<div class="container" id="modules">
+  <h2>Start Learning</h2>
+  <p>Choose a topic and work through each small activity. Your progress is saved on this device under the shared learner from the hub.</p>
+
+  <div class="module-grid">
+
+    <!-- Smartphone module -->
+    <div class="module" id="module-smartphone">
+      <h3><span>📱</span><span>Using a Smartphone</span></h3>
+      <p>Basics like turning on the phone, calls, texts, apps, safety and updates.</p>
+      <button type="button" class="open-module" onclick="toggleModule('smartphone')">Open module</button>
+
+      <div id="panel-smartphone" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Turning the phone on/off
+            <button id="task-smartphone-1" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-1')">Start activity</button>
+            <div id="activity-smartphone-1" class="activity" style="display:none;">
+              <h4>Practice: Turning the phone on/off</h4>
+              <p>On your real phone:</p>
+              <p>1. Find the power button on the side or top.<br>
+                 2. Hold it down to turn the phone on or off.<br>
+                 3. Notice any restart / shutdown options.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is the safest way to turn a phone off?</p>
+                <label><input type="radio" name="smartphone-1" id="smartphone-1-a"> Pull the battery out while it is running.</label>
+                <label><input type="radio" name="smartphone-1" id="smartphone-1-b"> Use the power button and on-screen options.</label>
+                <label><input type="radio" name="smartphone-1" id="smartphone-1-c"> Smash the screen.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-1','smartphone-1-b','task-smartphone-1')">Check answer</button>
+              <div id="feedback-smartphone-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Unlocking safely
+            <button id="task-smartphone-2" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-2')">Start activity</button>
+            <div id="activity-smartphone-2" class="activity" style="display:none;">
+              <h4>Practice: Unlock methods</h4>
+              <p>On your phone:</p>
+              <p>1. Open <strong>Settings → Security</strong> (name may differ).<br>
+                 2. Check what lock you use: PIN, pattern, fingerprint, etc.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which unlock method is usually safest?</p>
+                <label><input type="radio" name="smartphone-2" id="smartphone-2-a"> No lock at all.</label>
+                <label><input type="radio" name="smartphone-2" id="smartphone-2-b"> A simple PIN like 0000.</label>
+                <label><input type="radio" name="smartphone-2" id="smartphone-2-c"> A PIN or pattern that others cannot easily guess.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-2','smartphone-2-c','task-smartphone-2')">Check answer</button>
+              <div id="feedback-smartphone-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Making and receiving calls
+            <button id="task-smartphone-3" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-3')">Start activity</button>
+            <div id="activity-smartphone-3" class="activity" style="display:none;">
+              <h4>Practice: Phone calls</h4>
+              <p>On your phone:</p>
+              <p>1. Open the Phone app.<br>
+                 2. Call a trusted person (or worker) and practise answering.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which call should you be most careful about?</p>
+                <label><input type="radio" name="smartphone-3" id="smartphone-3-a"> A call from a trusted contact in your phone.</label>
+                <label><input type="radio" name="smartphone-3" id="smartphone-3-b"> A call from a number you do not know asking for bank details.</label>
+                <label><input type="radio" name="smartphone-3" id="smartphone-3-c"> A routine appointment reminder from your GP.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-3','smartphone-3-b','task-smartphone-3')">Check answer</button>
+              <div id="feedback-smartphone-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Sending and receiving texts
+            <button id="task-smartphone-4" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-4')">Start activity</button>
+            <div id="activity-smartphone-4" class="activity" style="display:none;">
+              <h4>Practice: Text messages</h4>
+              <p>On your phone:</p>
+              <p>1. Open Messages / SMS / WhatsApp.<br>
+                 2. Send a test message to a trusted person.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which text is safest to open?</p>
+                <label><input type="radio" name="smartphone-4" id="smartphone-4-a"> A text from unknown number with a link to \"track a parcel\" you never ordered.</label>
+                <label><input type="radio" name="smartphone-4" id="smartphone-4-b"> A normal chat from a friend that you recognise.</label>
+                <label><input type="radio" name="smartphone-4" id="smartphone-4-c"> A message saying you have won a prize and must click a link.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-4','smartphone-4-b','task-smartphone-4')">Check answer</button>
+              <div id="feedback-smartphone-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Installing apps safely
+            <button id="task-smartphone-5" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-5')">Start activity</button>
+            <div id="activity-smartphone-5" class="activity" style="display:none;">
+              <h4>Practice: Installing apps</h4>
+              <p>On your phone (with support if needed):</p>
+              <p>1. Open the official app store (Play Store or App Store).<br>
+                 2. Search for a trusted app.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Where is the safest place to install apps from?</p>
+                <label><input type="radio" name="smartphone-5" id="smartphone-5-a"> Random websites found in text message links.</label>
+                <label><input type="radio" name="smartphone-5" id="smartphone-5-b"> The official app store for your phone.</label>
+                <label><input type="radio" name="smartphone-5" id="smartphone-5-c"> Pop-up adverts.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-5','smartphone-5-b','task-smartphone-5')">Check answer</button>
+              <div id="feedback-smartphone-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Uninstalling unwanted apps
+            <button id="task-smartphone-6" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-6')">Start activity</button>
+            <div id="activity-smartphone-6" class="activity" style="display:none;">
+              <h4>Practice: Removing apps</h4>
+              <p>On your phone:</p>
+              <p>1. Find an app you do not use.<br>
+                 2. Press and hold it, then choose Uninstall / Remove.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why might you uninstall an app?</p>
+                <label><input type="radio" name="smartphone-6" id="smartphone-6-a"> To free space and remove apps you do not trust or need.</label>
+                <label><input type="radio" name="smartphone-6" id="smartphone-6-b"> To break your phone.</label>
+                <label><input type="radio" name="smartphone-6" id="smartphone-6-c"> For no reason at all.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-6','smartphone-6-a','task-smartphone-6')">Check answer</button>
+              <div id="feedback-smartphone-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Managing storage
+            <button id="task-smartphone-7" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-7')">Start activity</button>
+            <div id="activity-smartphone-7" class="activity" style="display:none;">
+              <h4>Practice: Storage</h4>
+              <p>On your phone:</p>
+              <p>1. Open <strong>Settings → Storage</strong> (name may differ).<br>
+                 2. See which apps or photos use the most space.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is one way to free up storage?</p>
+                <label><input type="radio" name="smartphone-7" id="smartphone-7-a"> Delete photos and apps you no longer need.</label>
+                <label><input type="radio" name="smartphone-7" id="smartphone-7-b"> Smash the phone.</label>
+                <label><input type="radio" name="smartphone-7" id="smartphone-7-c"> Ignore all warnings.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-7','smartphone-7-a','task-smartphone-7')">Check answer</button>
+              <div id="feedback-smartphone-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using accessibility tools
+            <button id="task-smartphone-8" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-8')">Start activity</button>
+            <div id="activity-smartphone-8" class="activity" style="display:none;">
+              <h4>Practice: Accessibility</h4>
+              <p>On your phone:</p>
+              <p>1. Open <strong>Settings → Accessibility</strong>.<br>
+                 2. Explore options like larger text, screen reader or magnification.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why use accessibility settings?</p>
+                <label><input type="radio" name="smartphone-8" id="smartphone-8-a"> To make the phone harder to see.</label>
+                <label><input type="radio" name="smartphone-8" id="smartphone-8-b"> To make the phone easier to use if you have sight, hearing or movement difficulties.</label>
+                <label><input type="radio" name="smartphone-8" id="smartphone-8-c"> For no reason.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-8','smartphone-8-b','task-smartphone-8')">Check answer</button>
+              <div id="feedback-smartphone-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Taking photos and sharing safely
+            <button id="task-smartphone-9" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-9')">Start activity</button>
+            <div id="activity-smartphone-9" class="activity" style="display:none;">
+              <h4>Practice: Photos</h4>
+              <p>On your phone:</p>
+              <p>1. Open the Camera app and take a photo.<br>
+                 2. Practise sharing it with a trusted person only.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is safest?</p>
+                <label><input type="radio" name="smartphone-9" id="smartphone-9-a"> Posting private photos publicly with your address.</label>
+                <label><input type="radio" name="smartphone-9" id="smartphone-9-b"> Sharing photos only with people you trust.</label>
+                <label><input type="radio" name="smartphone-9" id="smartphone-9-c"> Sending photos to any number that asks.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-9','smartphone-9-b','task-smartphone-9')">Check answer</button>
+              <div id="feedback-smartphone-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Keeping your phone updated
+            <button id="task-smartphone-10" data-group="smartphone" class="task-button" type="button" onclick="startActivity('smartphone-10')">Start activity</button>
+            <div id="activity-smartphone-10" class="activity" style="display:none;">
+              <h4>Practice: Updates</h4>
+              <p>On your phone:</p>
+              <p>1. Open <strong>Settings → Software update</strong> (or similar).<br>
+                 2. Check if updates are available.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why are updates important?</p>
+                <label><input type="radio" name="smartphone-10" id="smartphone-10-a"> They only change colours.</label>
+                <label><input type="radio" name="smartphone-10" id="smartphone-10-b"> They can fix security problems and bugs.</label>
+                <label><input type="radio" name="smartphone-10" id="smartphone-10-c"> They always break the phone.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('smartphone-10','smartphone-10-b','task-smartphone-10')">Check answer</button>
+              <div id="feedback-smartphone-10" class="activity-feedback"></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-smartphone"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-smartphone">0% complete</span>
+          <span id="tick-smartphone" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('smartphone')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Getting Online module -->
+    <div class="module" id="module-online">
+      <h3><span>🌐</span><span>Getting Online</span></h3>
+      <p>Wi‑Fi, mobile data, browsers, passwords and getting connected safely.</p>
+      <button type="button" class="open-module" onclick="toggleModule('online')">Open module</button>
+
+      <div id="panel-online" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Connecting to Wi‑Fi
+            <button id="task-online-1" data-group="online" class="task-button" type="button" onclick="startActivity('online-1')">Start activity</button>
+            <div id="activity-online-1" class="activity" style="display:none;">
+              <h4>Practice: Connecting to Wi‑Fi</h4>
+              <p>On your device:</p>
+              <p>1. Open <strong>Settings → Wi‑Fi</strong>.<br>
+                 2. Choose a trusted network and enter the password.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which Wi‑Fi is safest?</p>
+                <label><input type="radio" name="online-1" id="online-1-a"> Any open \"Free Wi‑Fi\" with no password.</label>
+                <label><input type="radio" name="online-1" id="online-1-b"> A trusted, password‑protected network you recognise.</label>
+                <label><input type="radio" name="online-1" id="online-1-c"> A random network with strongest signal.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-1','online-1-b','task-online-1')">Check answer</button>
+              <div id="feedback-online-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Understanding mobile data
+            <button id="task-online-2" data-group="online" class="task-button" type="button" onclick="startActivity('online-2')">Start activity</button>
+            <div id="activity-online-2" class="activity" style="display:none;">
+              <h4>Practice: Mobile data</h4>
+              <p>On your phone:</p>
+              <p>1. Open <strong>Settings → Mobile data / Connections</strong>.<br>
+                 2. Turn data on/off and see the data icon.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> When is mobile data a good choice?</p>
+                <label><input type="radio" name="online-2" id="online-2-a"> When doing banking or private tasks instead of public Wi‑Fi.</label>
+                <label><input type="radio" name="online-2" id="online-2-b"> Never – it is always unsafe.</label>
+                <label><input type="radio" name="online-2" id="online-2-c"> Only when clicking random links.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-2','online-2-a','task-online-2')">Check answer</button>
+              <div id="feedback-online-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using a web browser
+            <button id="task-online-3" data-group="online" class="task-button" type="button" onclick="startActivity('online-3')">Start activity</button>
+            <div id="activity-online-3" class="activity" style="display:none;">
+              <h4>Practice: Browser basics</h4>
+              <p>On your device:</p>
+              <p>1. Open Chrome, Edge, Safari or Firefox.<br>
+                 2. Type a website address in the address bar.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Where do you type the website address?</p>
+                <label><input type="radio" name="online-3" id="online-3-a"> In a random pop‑up message.</label>
+                <label><input type="radio" name="online-3" id="online-3-b"> In the address bar at the top of the browser.</label>
+                <label><input type="radio" name="online-3" id="online-3-c"> In any advert.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-3','online-3-b','task-online-3')">Check answer</button>
+              <div id="feedback-online-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Bookmarking websites
+            <button id="task-online-4" data-group="online" class="task-button" type="button" onclick="startActivity('online-4')">Start activity</button>
+            <div id="activity-online-4" class="activity" style="display:none;">
+              <h4>Practice: Bookmarks</h4>
+              <p>On your browser:</p>
+              <p>1. Visit a website you trust.<br>
+                 2. Tap the ⭐ or menu → <strong>Add bookmark</strong>.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why use bookmarks?</p>
+                <label><input type="radio" name="online-4" id="online-4-a"> To quickly open trusted sites without searching each time.</label>
+                <label><input type="radio" name="online-4" id="online-4-b"> To slow the internet down.</label>
+                <label><input type="radio" name="online-4" id="online-4-c"> To install more adverts.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-4','online-4-a','task-online-4')">Check answer</button>
+              <div id="feedback-online-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Creating secure passwords
+            <button id="task-online-5" data-group="online" class="task-button" type="button" onclick="startActivity('online-5')">Start activity</button>
+            <div id="activity-online-5" class="activity" style="display:none;">
+              <h4>Practice: Password strength</h4>
+              <p>Think of example passwords:</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is strongest?</p>
+                <label><input type="radio" name="online-5" id="online-5-a"> zoe123</label>
+                <label><input type="radio" name="online-5" id="online-5-b"> BettyLovesChicken2024!</label>
+                <label><input type="radio" name="online-5" id="online-5-c"> 0000</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-5','online-5-b','task-online-5')">Check answer</button>
+              <div id="feedback-online-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using password managers
+            <button id="task-online-6" data-group="online" class="task-button" type="button" onclick="startActivity('online-6')">Start activity</button>
+            <div id="activity-online-6" class="activity" style="display:none;">
+              <h4>Practice: Password managers</h4>
+              <p>In your browser settings, look for <strong>Passwords</strong>.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is the main benefit?</p>
+                <label><input type="radio" name="online-6" id="online-6-a"> It remembers and auto‑fills long passwords.</label>
+                <label><input type="radio" name="online-6" id="online-6-b"> It shares your passwords publicly.</label>
+                <label><input type="radio" name="online-6" id="online-6-c"> It makes sites slower.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-6','online-6-a','task-online-6')">Check answer</button>
+              <div id="feedback-online-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Clearing browser history
+            <button id="task-online-7" data-group="online" class="task-button" type="button" onclick="startActivity('online-7')">Start activity</button>
+            <div id="activity-online-7" class="activity" style="display:none;">
+              <h4>Practice: History</h4>
+              <p>On your browser, find <strong>History</strong> and the option to clear browsing data.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What can clearing history help with?</p>
+                <label><input type="radio" name="online-7" id="online-7-a"> Removing all your apps.</label>
+                <label><input type="radio" name="online-7" id="online-7-b"> Reducing what others can see about sites you visited.</label>
+                <label><input type="radio" name="online-7" id="online-7-c"> Breaking the internet.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-7','online-7-b','task-online-7')">Check answer</button>
+              <div id="feedback-online-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Private browsing mode
+            <button id="task-online-8" data-group="online" class="task-button" type="button" onclick="startActivity('online-8')">Start activity</button>
+            <div id="activity-online-8" class="activity" style="display:none;">
+              <h4>Practice: Private browsing</h4>
+              <p>Look for <strong>Incognito</strong> or <strong>Private</strong> tabs in your browser.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What does private browsing do?</p>
+                <label><input type="radio" name="online-8" id="online-8-a"> Makes you invisible to everyone including your internet provider.</label>
+                <label><input type="radio" name="online-8" id="online-8-b"> Stops pages you visit being saved in local history on that device.</label>
+                <label><input type="radio" name="online-8" id="online-8-c"> Installs random apps.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-8','online-8-b','task-online-8')">Check answer</button>
+              <div id="feedback-online-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Downloading files safely
+            <button id="task-online-9" data-group="online" class="task-button" type="button" onclick="startActivity('online-9')">Start activity</button>
+            <div id="activity-online-9" class="activity" style="display:none;">
+              <h4>Practice: Downloads</h4>
+              <p>Talk through examples of safe and unsafe downloads.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which file is safest to download?</p>
+                <label><input type="radio" name="online-9" id="online-9-a"> A file from an email you were not expecting from a stranger.</label>
+                <label><input type="radio" name="online-9" id="online-9-b"> A file from a trusted organisation that you were expecting.</label>
+                <label><input type="radio" name="online-9" id="online-9-c"> Any file with \"prize\" in the name.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-9','online-9-b','task-online-9')">Check answer</button>
+              <div id="feedback-online-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Recognising secure websites
+            <button id="task-online-10" data-group="online" class="task-button" type="button" onclick="startActivity('online-10')">Start activity</button>
+            <div id="activity-online-10" class="activity" style="display:none;">
+              <h4>Practice: Secure sites</h4>
+              <p>Look at the address bar on example sites.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which looks safest for banking?</p>
+                <label><input type="radio" name="online-10" id="online-10-a"> http://mybank-login-free.biz</label>
+                <label><input type="radio" name="online-10" id="online-10-b"> https://www.mybank.co.uk</label>
+                <label><input type="radio" name="online-10" id="online-10-c"> http://win-prizes-mybank.net</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('online-10','online-10-b','task-online-10')">Check answer</button>
+              <div id="feedback-online-10" class="activity-feedback"></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-online"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-online">0% complete</span>
+          <span id="tick-online" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('online')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Online Safety module -->
+    <div class="module" id="module-safety">
+      <h3><span>🛡️</span><span>Online Safety</span></h3>
+      <p>Scams, phishing, fake websites, remote‑access apps and privacy tools.</p>
+      <button type="button" class="open-module" onclick="toggleModule('safety')">Open module</button>
+
+      <div id="panel-safety" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Spotting scams
+            <button id="task-safety-1" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-1')">Start activity</button>
+            <div id="activity-safety-1" class="activity" style="display:none;">
+              <h4>Practice: Spotting scams</h4>
+              <p>Discuss common scam signs: pressure, threats, requests for money or details.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which message is likely a scam?</p>
+                <label><input type="radio" name="safety-1" id="safety-1-a"> A normal message from a friend with no links.</label>
+                <label><input type="radio" name="safety-1" id="safety-1-b"> \"Your bank account is blocked – click here and enter your PIN now.\"</label>
+                <label><input type="radio" name="safety-1" id="safety-1-c"> A GP reminder that matches your appointment.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-1','safety-1-b','task-safety-1')">Check answer</button>
+              <div id="feedback-safety-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Recognising phishing emails
+            <button id="task-safety-2" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-2')">Start activity</button>
+            <div id="activity-safety-2" class="activity" style="display:none;">
+              <h4>Practice: Phishing emails</h4>
+              <p>Look at example emails (real or training material) and check the sender and links.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What should you do with a suspicious email?</p>
+                <label><input type="radio" name="safety-2" id="safety-2-a"> Click the link to see what happens.</label>
+                <label><input type="radio" name="safety-2" id="safety-2-b"> Delete it or report as spam and do not click any links.</label>
+                <label><input type="radio" name="safety-2" id="safety-2-c"> Reply with your bank details.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-2','safety-2-b','task-safety-2')">Check answer</button>
+              <div id="feedback-safety-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Identifying fake websites
+            <button id="task-safety-3" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-3')">Start activity</button>
+            <div id="activity-safety-3" class="activity" style="display:none;">
+              <h4>Practice: Fake vs real sites</h4>
+              <p>Compare website addresses and look for small spelling changes and strange domains.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which looks most genuine for online banking?</p>
+                <label><input type="radio" name="safety-3" id="safety-3-a"> http://bank-login-prize.net</label>
+                <label><input type="radio" name="safety-3" id="safety-3-b"> https://www.yourbank.co.uk</label>
+                <label><input type="radio" name="safety-3" id="safety-3-c"> http://secure-yourbank-login.freeoffers.com</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-3','safety-3-b','task-safety-3')">Check answer</button>
+              <div id="feedback-safety-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Remote‑access scam apps
+            <button id="task-safety-4" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-4')">Start activity</button>
+            <div id="activity-safety-4" class="activity" style="display:none;">
+              <h4>Practice: Remote access</h4>
+              <p>Talk about AnyDesk and similar apps and how scammers misuse them.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> When is it safer to use a remote‑access app?</p>
+                <label><input type="radio" name="safety-4" id="safety-4-a"> When a stranger phones you and says you have a virus.</label>
+                <label><input type="radio" name="safety-4" id="safety-4-b"> Only when <em>you</em> contact a trusted support service and you are sure it is them.</label>
+                <label><input type="radio" name="safety-4" id="safety-4-c"> Whenever a pop‑up appears.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-4','safety-4-b','task-safety-4')">Check answer</button>
+              <div id="feedback-safety-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Two‑factor authentication (2FA)
+            <button id="task-safety-5" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-5')">Start activity</button>
+            <div id="activity-safety-5" class="activity" style="display:none;">
+              <h4>Practice: 2FA</h4>
+              <p>Open security settings on a real account and look for 2‑step verification.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What does 2FA do?</p>
+                <label><input type="radio" name="safety-5" id="safety-5-a"> Adds an extra code so criminals find it harder to log in.</label>
+                <label><input type="radio" name="safety-5" id="safety-5-b"> Shares your details with scammers.</label>
+                <label><input type="radio" name="safety-5" id="safety-5-c"> Deletes your account.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-5','safety-5-a','task-safety-5')">Check answer</button>
+              <div id="feedback-safety-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Reporting scams
+            <button id="task-safety-6" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-6')">Start activity</button>
+            <div id="activity-safety-6" class="activity" style="display:none;">
+              <h4>Practice: Reporting</h4>
+              <p>Discuss how to report texts, emails and websites.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> In the UK, how can you report a scam text?</p>
+                <label><input type="radio" name="safety-6" id="safety-6-a"> Reply with your bank details.</label>
+                <label><input type="radio" name="safety-6" id="safety-6-b"> Forward it to 7726 (SPAM) and then delete it.</label>
+                <label><input type="radio" name="safety-6" id="safety-6-c"> Do nothing.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-6','safety-6-b','task-safety-6')">Check answer</button>
+              <div id="feedback-safety-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Blocking numbers and contacts
+            <button id="task-safety-7" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-7')">Start activity</button>
+            <div id="activity-safety-7" class="activity" style="display:none;">
+              <h4>Practice: Blocking</h4>
+              <p>On your phone, find an unwanted caller and practise the block option (using a safe example).</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What happens when you block a number?</p>
+                <label><input type="radio" name="safety-7" id="safety-7-a"> They cannot ring or text you from that number.</label>
+                <label><input type="radio" name="safety-7" id="safety-7-b"> They see all your contacts.</label>
+                <label><input type="radio" name="safety-7" id="safety-7-c"> Your phone turns off.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-7','safety-7-a','task-safety-7')">Check answer</button>
+              <div id="feedback-safety-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Managing privacy settings
+            <button id="task-safety-8" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-8')">Start activity</button>
+            <div id="activity-safety-8" class="activity" style="display:none;">
+              <h4>Practice: Privacy</h4>
+              <p>On a social or app account, explore privacy options and who can see posts.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is usually safest?</p>
+                <label><input type="radio" name="safety-8" id="safety-8-a"> Public – everyone can see everything.</label>
+                <label><input type="radio" name="safety-8" id="safety-8-b"> Friends / people you choose.</label>
+                <label><input type="radio" name="safety-8" id="safety-8-c"> Anyone who finds you.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-8','safety-8-b','task-safety-8')">Check answer</button>
+              <div id="feedback-safety-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Cookies and consent banners
+            <button id="task-safety-9" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-9')">Start activity</button>
+            <div id="activity-safety-9" class="activity" style="display:none;">
+              <h4>Practice: Cookies</h4>
+              <p>On a website with a cookie banner, read the options together.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is a good basic rule?</p>
+                <label><input type="radio" name="safety-9" id="safety-9-a"> Always accept every cookie.</label>
+                <label><input type="radio" name="safety-9" id="safety-9-b"> Accept only what is needed and reduce tracking where possible.</label>
+                <label><input type="radio" name="safety-9" id="safety-9-c"> Never read anything, just click the biggest button.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-9','safety-9-b','task-safety-9')">Check answer</button>
+              <div id="feedback-safety-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Strong password habits
+            <button id="task-safety-10" data-group="safety" class="task-button" type="button" onclick="startActivity('safety-10')">Start activity</button>
+            <div id="activity-safety-10" class="activity" style="display:none;">
+              <h4>Practice: Habits</h4>
+              <p>Discuss how many sites share the same password and where to improve.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which habit is safest?</p>
+                <label><input type="radio" name="safety-10" id="safety-10-a"> Using the same short password everywhere.</label>
+                <label><input type="radio" name="safety-10" id="safety-10-b"> Using longer, different passwords and 2FA on important accounts.</label>
+                <label><input type="radio" name="safety-10" id="safety-10-c"> Writing passwords on a public noticeboard.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('safety-10','safety-10-b','task-safety-10')">Check answer</button>
+              <div id="feedback-safety-10" class="activity-feedback"></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-safety"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-safety">0% complete</span>
+          <span id="tick-safety" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('safety')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Emails & Messaging module -->
+    <div class="module" id="module-email">
+      <h3><span>✉️</span><span>Emails &amp; Messaging</span></h3>
+      <p>Gmail, Outlook, attachments, spam, video calling and safe chats.</p>
+      <button type="button" class="open-module" onclick="toggleModule('email')">Open module</button>
+
+      <div id="panel-email" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Setting up an email account
+            <button id="task-email-1" data-group="email" class="task-button" type="button" onclick="startActivity('email-1')">Start activity</button>
+            <div id="activity-email-1" class="activity" style="display:none;">
+              <h4>Practice: New email account</h4>
+              <p>On Outlook, Gmail or similar, look at the sign‑up page.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which email address looks most sensible?</p>
+                <label><input type="radio" name="email-1" id="email-1-a"> crazy-prizes-999@random.biz</label>
+                <label><input type="radio" name="email-1" id="email-1-b"> firstname.lastname123@example.com</label>
+                <label><input type="radio" name="email-1" id="email-1-c"> password123@example.com</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-1','email-1-b','task-email-1')">Check answer</button>
+              <div id="feedback-email-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Sending emails
+            <button id="task-email-2" data-group="email" class="task-button" type="button" onclick="startActivity('email-2')">Start activity</button>
+            <div id="activity-email-2" class="activity" style="display:none;">
+              <h4>Practice: Send an email</h4>
+              <p>In your email account, practise sending a short message to a trusted person.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Where do you type the recipient's address?</p>
+                <label><input type="radio" name="email-2" id="email-2-a"> In the subject line.</label>
+                <label><input type="radio" name="email-2" id="email-2-b"> In the <strong>To:</strong> box.</label>
+                <label><input type="radio" name="email-2" id="email-2-c"> Only in the message body.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-2','email-2-b','task-email-2')">Check answer</button>
+              <div id="feedback-email-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Adding attachments
+            <button id="task-email-3" data-group="email" class="task-button" type="button" onclick="startActivity('email-3')">Start activity</button>
+            <div id="activity-email-3" class="activity" style="display:none;">
+              <h4>Practice: Attach a file</h4>
+              <p>Use the paperclip icon to add a simple file to an email.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which attachment is safest to open?</p>
+                <label><input type="radio" name="email-3" id="email-3-a"> A .exe file from a stranger.</label>
+                <label><input type="radio" name="email-3" id="email-3-b"> A document from someone you know that you were expecting.</label>
+                <label><input type="radio" name="email-3" id="email-3-c"> Any file that says \"urgent\".</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-3','email-3-b','task-email-3')">Check answer</button>
+              <div id="feedback-email-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Organising inbox folders
+            <button id="task-email-4" data-group="email" class="task-button" type="button" onclick="startActivity('email-4')">Start activity</button>
+            <div id="activity-email-4" class="activity" style="display:none;">
+              <h4>Practice: Folders and labels</h4>
+              <p>Create a folder (e.g. Jobs or Bills) and move an email into it.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why organise your inbox?</p>
+                <label><input type="radio" name="email-4" id="email-4-a"> To make important emails easier to find.</label>
+                <label><input type="radio" name="email-4" id="email-4-b"> To delete all emails.</label>
+                <label><input type="radio" name="email-4" id="email-4-c"> To stop new emails arriving.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-4','email-4-a','task-email-4')">Check answer</button>
+              <div id="feedback-email-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Deleting spam safely
+            <button id="task-email-5" data-group="email" class="task-button" type="button" onclick="startActivity('email-5')">Start activity</button>
+            <div id="activity-email-5" class="activity" style="display:none;">
+              <h4>Practice: Spam and junk</h4>
+              <p>Look at your spam/junk folder and notice typical scam messages.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What should you avoid doing with spam emails?</p>
+                <label><input type="radio" name="email-5" id="email-5-a"> Clicking links or opening attachments.</label>
+                <label><input type="radio" name="email-5" id="email-5-b"> Deleting or reporting them.</label>
+                <label><input type="radio" name="email-5" id="email-5-c"> Moving them to your main inbox.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-5','email-5-a','task-email-5')">Check answer</button>
+              <div id="feedback-email-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Blocking senders
+            <button id="task-email-6" data-group="email" class="task-button" type="button" onclick="startActivity('email-6')">Start activity</button>
+            <div id="activity-email-6" class="activity" style="display:none;">
+              <h4>Practice: Block an email sender</h4>
+              <p>Open an unwanted email and find the block or report option.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What does blocking a sender do?</p>
+                <label><input type="radio" name="email-6" id="email-6-a"> Sends them your phone number.</label>
+                <label><input type="radio" name="email-6" id="email-6-b"> Treats future emails from them as spam or blocks them.</label>
+                <label><input type="radio" name="email-6" id="email-6-c"> Deletes your account.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-6','email-6-b','task-email-6')">Check answer</button>
+              <div id="feedback-email-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using Gmail
+            <button id="task-email-7" data-group="email" class="task-button" type="button" onclick="startActivity('email-7')">Start activity</button>
+            <div id="activity-email-7" class="activity" style="display:none;">
+              <h4>Practice: Gmail</h4>
+              <p>Look at tabs, search bar and settings in Gmail.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> How can you find a specific email in Gmail?</p>
+                <label><input type="radio" name="email-7" id="email-7-a"> You cannot search, you must scroll forever.</label>
+                <label><input type="radio" name="email-7" id="email-7-b"> Use the search box at the top of Gmail.</label>
+                <label><input type="radio" name="email-7" id="email-7-c"> Ask a stranger to look.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-7','email-7-b','task-email-7')">Check answer</button>
+              <div id="feedback-email-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using Outlook
+            <button id="task-email-8" data-group="email" class="task-button" type="button" onclick="startActivity('email-8')">Start activity</button>
+            <div id="activity-email-8" class="activity" style="display:none;">
+              <h4>Practice: Outlook</h4>
+              <p>Explore Inbox, Sent and Junk folders and send a test email.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Where would you look for a copy of an email you sent?</p>
+                <label><input type="radio" name="email-8" id="email-8-a"> Junk folder.</label>
+                <label><input type="radio" name="email-8" id="email-8-b"> Sent folder.</label>
+                <label><input type="radio" name="email-8" id="email-8-c"> Someone else’s account.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-8','email-8-b','task-email-8')">Check answer</button>
+              <div id="feedback-email-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Trying a video calling app
+            <button id="task-email-9" data-group="email" class="task-button" type="button" onclick="startActivity('email-9')">Start activity</button>
+            <div id="activity-email-9" class="activity" style="display:none;">
+              <h4>Practice: Video calling</h4>
+              <p>Use WhatsApp, Zoom, Teams or similar to make a test call with a trusted person.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is safest?</p>
+                <label><input type="radio" name="email-9" id="email-9-a"> Accept every video call from strangers.</label>
+                <label><input type="radio" name="email-9" id="email-9-b"> Only answer calls from people you know or expect.</label>
+                <label><input type="radio" name="email-9" id="email-9-c"> Share card details on video if asked.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-9','email-9-b','task-email-9')">Check answer</button>
+              <div id="feedback-email-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Safe messaging tips
+            <button id="task-email-10" data-group="email" class="task-button" type="button" onclick="startActivity('email-10')">Start activity</button>
+            <div id="activity-email-10" class="activity" style="display:none;">
+              <h4>Practice: Safer messaging</h4>
+              <p>Discuss which messages are safe and which are risky.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which message is safest to respond to?</p>
+                <label><input type="radio" name="email-10" id="email-10-a"> Unknown number asking for urgent money via link.</label>
+                <label><input type="radio" name="email-10" id="email-10-b"> A chat from a friend with no strange links.</label>
+                <label><input type="radio" name="email-10" id="email-10-c"> \"You have won a prize, send bank details now.\"</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('email-10','email-10-b','task-email-10')">Check answer</button>
+              <div id="feedback-email-10" class="activity-feedback"></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-email"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-email">0% complete</span>
+          <span id="tick-email" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('email')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Using Apps module -->
+    <div class="module" id="module-apps">
+      <h3><span>📱</span><span>Using Apps</span></h3>
+      <p>NHS App, GOV.UK, benefits, banking, maps, shopping and forms.</p>
+      <button type="button" class="open-module" onclick="toggleModule('apps')">Open module</button>
+
+      <div id="panel-apps" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Exploring the NHS App
+            <button id="task-apps-1" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-1')">Start activity</button>
+            <div id="activity-apps-1" class="activity" style="display:none;">
+              <h4>Practice: NHS App basics</h4>
+              <p>Open the NHS App (if installed) and look at repeat prescriptions and appointments.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Where should you download the NHS App from?</p>
+                <label><input type="radio" name="apps-1" id="apps-1-a"> A random link in a text.</label>
+                <label><input type="radio" name="apps-1" id="apps-1-b"> The official Google Play Store or Apple App Store.</label>
+                <label><input type="radio" name="apps-1" id="apps-1-c"> Any website that says \"free NHS\".</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-1','apps-1-b','task-apps-1')">Check answer</button>
+              <div id="feedback-apps-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Visiting GOV.UK
+            <button id="task-apps-2" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-2')">Start activity</button>
+            <div id="activity-apps-2" class="activity" style="display:none;">
+              <h4>Practice: GOV.UK</h4>
+              <p>In a browser, go directly to <strong>www.gov.uk</strong> and search for a topic.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which address is the real UK government site?</p>
+                <label><input type="radio" name="apps-2" id="apps-2-a"> www.gov-uk-help.com</label>
+                <label><input type="radio" name="apps-2" id="apps-2-b"> www.gov.uk</label>
+                <label><input type="radio" name="apps-2" id="apps-2-c"> www.gov-free-prize.net</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-2','apps-2-b','task-apps-2')">Check answer</button>
+              <div id="feedback-apps-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Checking Universal Credit online
+            <button id="task-apps-3" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-3')">Start activity</button>
+            <div id="activity-apps-3" class="activity" style="display:none;">
+              <h4>Practice: Universal Credit</h4>
+              <p>From GOV.UK, navigate to the Universal Credit sign‑in page – do not use random links.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is the safest way to reach your UC account?</p>
+                <label><input type="radio" name="apps-3" id="apps-3-a"> Click a link in an unexpected text.</label>
+                <label><input type="radio" name="apps-3" id="apps-3-b"> Go to GOV.UK and follow links to Universal Credit.</label>
+                <label><input type="radio" name="apps-3" id="apps-3-c"> Search for \"Universal Credit prize\".</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-3','apps-3-b','task-apps-3')">Check answer</button>
+              <div id="feedback-apps-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Logging in to online banking
+            <button id="task-apps-4" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-4')">Start activity</button>
+            <div id="activity-apps-4" class="activity" style="display:none;">
+              <h4>Practice: Banking safely</h4>
+              <p>Use your bank's official app or website (with support if needed).</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which option is safest?</p>
+                <label><input type="radio" name="apps-4" id="apps-4-a"> Banking on public café Wi‑Fi.</label>
+                <label><input type="radio" name="apps-4" id="apps-4-b"> Banking on your home Wi‑Fi or mobile data.</label>
+                <label><input type="radio" name="apps-4" id="apps-4-c"> Sharing your password on the phone.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-4','apps-4-b','task-apps-4')">Check answer</button>
+              <div id="feedback-apps-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using maps and GPS
+            <button id="task-apps-5" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-5')">Start activity</button>
+            <div id="activity-apps-5" class="activity" style="display:none;">
+              <h4>Practice: Maps</h4>
+              <p>Use Google Maps or similar to search for a local place and view directions.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a safe way to use maps?</p>
+                <label><input type="radio" name="apps-5" id="apps-5-a"> Leave your phone unlocked showing your address in public.</label>
+                <label><input type="radio" name="apps-5" id="apps-5-b"> Check directions when needed and lock your phone when not using it.</label>
+                <label><input type="radio" name="apps-5" id="apps-5-c"> Post your full route live online.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-5','apps-5-b','task-apps-5')">Check answer</button>
+              <div id="feedback-apps-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Trying a shopping app
+            <button id="task-apps-6" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-6')">Start activity</button>
+            <div id="activity-apps-6" class="activity" style="display:none;">
+              <h4>Practice: Shopping app</h4>
+              <p>Open a trusted retailer or supermarket app and add an item to the basket (no need to buy).</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a good safety tip?</p>
+                <label><input type="radio" name="apps-6" id="apps-6-a"> Save your card on every site you visit.</label>
+                <label><input type="radio" name="apps-6" id="apps-6-b"> Shop only on trusted apps/sites and use secure payment methods.</label>
+                <label><input type="radio" name="apps-6" id="apps-6-c"> Send card details by text if asked.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-6','apps-6-b','task-apps-6')">Check answer</button>
+              <div id="feedback-apps-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using a travel app
+            <button id="task-apps-7" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-7')">Start activity</button>
+            <div id="activity-apps-7" class="activity" style="display:none;">
+              <h4>Practice: Travel apps</h4>
+              <p>Search for a journey using an official bus or train app/website.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is safest?</p>
+                <label><input type="radio" name="apps-7" id="apps-7-a"> Use apps recommended in scam emails.</label>
+                <label><input type="radio" name="apps-7" id="apps-7-b"> Use official travel apps or websites and avoid unknown payment links.</label>
+                <label><input type="radio" name="apps-7" id="apps-7-c"> Post your ticket details publicly.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-7','apps-7-b','task-apps-7')">Check answer</button>
+              <div id="feedback-apps-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using a library or reading app
+            <button id="task-apps-8" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-8')">Start activity</button>
+            <div id="activity-apps-8" class="activity" style="display:none;">
+              <h4>Practice: Library apps</h4>
+              <p>Explore Libby, BorrowBox or local library app if available.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is one benefit?</p>
+                <label><input type="radio" name="apps-8" id="apps-8-a"> You must buy every book at full price.</label>
+                <label><input type="radio" name="apps-8" id="apps-8-b"> You can often borrow books for free with a library card.</label>
+                <label><input type="radio" name="apps-8" id="apps-8-c"> Everyone can see what you read.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-8','apps-8-b','task-apps-8')">Check answer</button>
+              <div id="feedback-apps-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Filling in an online form
+            <button id="task-apps-9" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-9')">Start activity</button>
+            <div id="activity-apps-9" class="activity" style="display:none;">
+              <h4>Practice: Online forms</h4>
+              <p>Look at a simple form and talk through required fields and checking security.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Before sending personal details, what should you do?</p>
+                <label><input type="radio" name="apps-9" id="apps-9-a"> Check the site is secure (https and padlock) and that you trust it.</label>
+                <label><input type="radio" name="apps-9" id="apps-9-b"> Type anything and submit quickly.</label>
+                <label><input type="radio" name="apps-9" id="apps-9-c"> Share details on any form you see.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-9','apps-9-a','task-apps-9')">Check answer</button>
+              <div id="feedback-apps-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Reviewing app permissions
+            <button id="task-apps-10" data-group="apps" class="task-button" type="button" onclick="startActivity('apps-10')">Start activity</button>
+            <div id="activity-apps-10" class="activity" style="display:none;">
+              <h4>Practice: Permissions</h4>
+              <p>On your phone, look at permissions for one app (camera, location, etc.).</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is a good habit?</p>
+                <label><input type="radio" name="apps-10" id="apps-10-a"> Give every app access to everything.</label>
+                <label><input type="radio" name="apps-10" id="apps-10-b"> Only give apps the permissions they really need.</label>
+                <label><input type="radio" name="apps-10" id="apps-10-c"> Never look at permissions.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('apps-10','apps-10-b','task-apps-10')">Check answer</button>
+              <div id="feedback-apps-10" class="activity-feedback"></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-apps"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-apps">0% complete</span>
+          <span id="tick-apps" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('apps')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Job Searching module -->
+    <div class="module" id="module-jobs">
+      <h3><span>💼</span><span>Job Searching</span></h3>
+      <p>Finding work online, protecting yourself from scams and staying organised.</p>
+      <button type="button" class="open-module" onclick="toggleModule('jobs')">Open module</button>
+
+      <div id="panel-jobs" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Finding job sites
+            <button id="task-jobs-1" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-1')">Start activity</button>
+            <div id="activity-jobs-1" class="activity" style="display:none;">
+              <h4>Practice: Finding job sites</h4>
+              <p>In a browser, search for Indeed, Reed or GOV.UK Find a Job.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which website looks safest?</p>
+                <label><input type="radio" name="jobs-1" id="jobs-1-a"> www.jobs-winner-prizes-free.biz</label>
+                <label><input type="radio" name="jobs-1" id="jobs-1-b"> www.indeed.co.uk</label>
+                <label><input type="radio" name="jobs-1" id="jobs-1-c"> A link from an unknown text.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-1','jobs-1-b','task-jobs-1')">Check answer</button>
+              <div id="feedback-jobs-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Creating an Indeed account
+            <button id="task-jobs-2" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-2')">Start activity</button>
+            <div id="activity-jobs-2" class="activity" style="display:none;">
+              <h4>Practice: Indeed account</h4>
+              <p>Open Indeed and look at the sign‑in / create account options.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which password is best?</p>
+                <label><input type="radio" name="jobs-2" id="jobs-2-a"> job123</label>
+                <label><input type="radio" name="jobs-2" id="jobs-2-b"> ReconnectJobs!2024</label>
+                <label><input type="radio" name="jobs-2" id="jobs-2-c"> password</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-2','jobs-2-b','task-jobs-2')">Check answer</button>
+              <div id="feedback-jobs-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Uploading a CV
+            <button id="task-jobs-3" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-3')">Start activity</button>
+            <div id="activity-jobs-3" class="activity" style="display:none;">
+              <h4>Practice: Upload a CV</h4>
+              <p>On a job site, find the upload CV button and choose a file.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which file type is best for CVs?</p>
+                <label><input type="radio" name="jobs-3" id="jobs-3-a"> CV.exe</label>
+                <label><input type="radio" name="jobs-3" id="jobs-3-b"> CV_Reconnect_Zoe.pdf</label>
+                <label><input type="radio" name="jobs-3" id="jobs-3-c"> CV.bat</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-3','jobs-3-b','task-jobs-3')">Check answer</button>
+              <div id="feedback-jobs-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Spotting fake job adverts
+            <button id="task-jobs-4" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-4')">Start activity</button>
+            <div id="activity-jobs-4" class="activity" style="display:none;">
+              <h4>Practice: Fake job ads</h4>
+              <p>Discuss warning signs: paying money, no company details, huge pay for little work.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is most likely a scam?</p>
+                <label><input type="radio" name="jobs-4" id="jobs-4-a"> \"Pay £50 to register and we guarantee a £70,000 job from home.\"</label>
+                <label><input type="radio" name="jobs-4" id="jobs-4-b"> A local job with normal pay and clear employer.</label>
+                <label><input type="radio" name="jobs-4" id="jobs-4-c"> A council job on the official council website.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-4','jobs-4-a','task-jobs-4')">Check answer</button>
+              <div id="feedback-jobs-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Creating job alerts
+            <button id="task-jobs-5" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-5')">Start activity</button>
+            <div id="activity-jobs-5" class="activity" style="display:none;">
+              <h4>Practice: Job alerts</h4>
+              <p>On a job site, search for a role and look for the \"Create alert\" option.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What do job alerts do?</p>
+                <label><input type="radio" name="jobs-5" id="jobs-5-a"> Apply for jobs without you knowing.</label>
+                <label><input type="radio" name="jobs-5" id="jobs-5-b"> Email you new jobs that match your search.</label>
+                <label><input type="radio" name="jobs-5" id="jobs-5-c"> Delete your CV.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-5','jobs-5-b','task-jobs-5')">Check answer</button>
+              <div id="feedback-jobs-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Writing or updating an online profile
+            <button id="task-jobs-6" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-6')">Start activity</button>
+            <div id="activity-jobs-6" class="activity" style="display:none;">
+              <h4>Practice: Profile</h4>
+              <p>On a job site or LinkedIn, look at the summary/about section.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which profile text sounds best?</p>
+                <label><input type="radio" name="jobs-6" id="jobs-6-a"> \"I am desperate for any job, please help.\"</label>
+                <label><input type="radio" name="jobs-6" id="jobs-6-b"> \"Reliable and friendly worker with experience in customer service and retail.\"</label>
+                <label><input type="radio" name="jobs-6" id="jobs-6-c"> \"I hate working with people.\"</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-6','jobs-6-b','task-jobs-6')">Check answer</button>
+              <div id="feedback-jobs-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Safe communication with employers
+            <button id="task-jobs-7" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-7')">Start activity</button>
+            <div id="activity-jobs-7" class="activity" style="display:none;">
+              <h4>Practice: Communication</h4>
+              <p>Talk through examples of emails and messages from employers.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which message is safest to trust?</p>
+                <label><input type="radio" name="jobs-7" id="jobs-7-a"> \"Send £100 now to secure your interview.\"</label>
+                <label><input type="radio" name="jobs-7" id="jobs-7-b"> An email from a company you applied to, inviting you to interview with clear details.</label>
+                <label><input type="radio" name="jobs-7" id="jobs-7-c"> A WhatsApp from an unknown number promising cash work if you send ID photos.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-7','jobs-7-b','task-jobs-7')">Check answer</button>
+              <div id="feedback-jobs-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Exploring LinkedIn
+            <button id="task-jobs-8" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-8')">Start activity</button>
+            <div id="activity-jobs-8" class="activity" style="display:none;">
+              <h4>Practice: LinkedIn</h4>
+              <p>Look at LinkedIn profile sections and job search options.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is LinkedIn mainly for?</p>
+                <label><input type="radio" name="jobs-8" id="jobs-8-a"> Sharing memes only.</label>
+                <label><input type="radio" name="jobs-8" id="jobs-8-b"> Professional networking, job searching and showing skills.</label>
+                <label><input type="radio" name="jobs-8" id="jobs-8-c"> Online shopping.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-8','jobs-8-b','task-jobs-8')">Check answer</button>
+              <div id="feedback-jobs-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using online tools to practise interviews
+            <button id="task-jobs-9" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-9')">Start activity</button>
+            <div id="activity-jobs-9" class="activity" style="display:none;">
+              <h4>Practice: Interview tools</h4>
+              <p>Search for common interview questions and practise answering out loud.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a sensible way to prepare?</p>
+                <label><input type="radio" name="jobs-9" id="jobs-9-a"> Do no preparation at all.</label>
+                <label><input type="radio" name="jobs-9" id="jobs-9-b"> Practise common questions and think of examples from your experience.</label>
+                <label><input type="radio" name="jobs-9" id="jobs-9-c"> Ask a stranger to go instead of you.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-9','jobs-9-b','task-jobs-9')">Check answer</button>
+              <div id="feedback-jobs-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Tracking your applications
+            <button id="task-jobs-10" data-group="jobs" class="task-button" type="button" onclick="startActivity('jobs-10')">Start activity</button>
+            <div id="activity-jobs-10" class="activity" style="display:none;">
+              <h4>Practice: Tracking applications</h4>
+              <p>Use paper, notes app or spreadsheet to record jobs you apply for.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why track applications?</p>
+                <label><input type="radio" name="jobs-10" id="jobs-10-a"> So you can accidentally apply to the same job again and again.</label>
+                <label><input type="radio" name="jobs-10" id="jobs-10-b"> So you know who you applied to, when, and can follow up.</label>
+                <label><input type="radio" name="jobs-10" id="jobs-10-c"> It is never helpful.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('jobs-10','jobs-10-b','task-jobs-10')">Check answer</button>
+              <div id="feedback-jobs-10" class="activity-feedback"></div>
+            </div>
+          </li>
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-jobs"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-jobs">0% complete</span>
+          <span id="tick-jobs" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('jobs')">Reset module</button>
+        </div>
+      </div>
+    </div>
+    <!-- Browsers &amp; Search Engines module -->
+    <div class="module" id="module-browsers">
+      <h3><span>🔍</span><span>Browsers &amp; Search Engines</span></h3>
+      <p>Chrome, Edge, Firefox, Safari, search engines and avoiding risky results.</p>
+      <button type="button" class="open-module" onclick="toggleModule('browsers')">Open module</button>
+
+      <div id="panel-browsers" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            What is a web browser?
+            <button id="task-browsers-1" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-1')">Start activity</button>
+            <div id="activity-browsers-1" class="activity" style="display:none;">
+              <h4>Practice: Spot the browser</h4>
+              <p>Look at icons such as Chrome, Edge, Firefox or Safari on your device.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What does a web browser do?</p>
+                <label><input type="radio" name="browsers-1" id="browsers-1-a"> It lets you open and view websites on the internet.</label>
+                <label><input type="radio" name="browsers-1" id="browsers-1-b"> It sends text messages.</label>
+                <label><input type="radio" name="browsers-1" id="browsers-1-c"> It is only for listening to music.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-1','browsers-1-a','task-browsers-1')">Check answer</button>
+              <div id="feedback-browsers-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Address bar vs search box
+            <button id="task-browsers-2" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-2')">Start activity</button>
+            <div id="activity-browsers-2" class="activity" style="display:none;">
+              <h4>Practice: Address or search?</h4>
+              <p>Open a browser and find the address bar at the top and the search box on the page.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Where is the best place to type a full website such as www.gov.uk?</p>
+                <label><input type="radio" name="browsers-2" id="browsers-2-a"> In the address bar at the top of the browser.</label>
+                <label><input type="radio" name="browsers-2" id="browsers-2-b"> In a random advert banner.</label>
+                <label><input type="radio" name="browsers-2" id="browsers-2-c"> In a pop-up window.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-2','browsers-2-a','task-browsers-2')">Check answer</button>
+              <div id="feedback-browsers-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            What is a search engine?
+            <button id="task-browsers-3" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-3')">Start activity</button>
+            <div id="activity-browsers-3" class="activity" style="display:none;">
+              <h4>Practice: Search engines</h4>
+              <p>Talk about Google, Bing or DuckDuckGo and how they show results.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a search engine mainly for?</p>
+                <label><input type="radio" name="browsers-3" id="browsers-3-a"> Finding websites and information by typing key words.</label>
+                <label><input type="radio" name="browsers-3" id="browsers-3-b"> Sending money to strangers.</label>
+                <label><input type="radio" name="browsers-3" id="browsers-3-c"> Changing your phone's brightness.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-3','browsers-3-a','task-browsers-3')">Check answer</button>
+              <div id="feedback-browsers-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Adverts in search results
+            <button id="task-browsers-4" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-4')">Start activity</button>
+            <div id="activity-browsers-4" class="activity" style="display:none;">
+              <h4>Practice: Ad or real result?</h4>
+              <p>Look at example search results and notice labels like "Ad" or "Sponsored".</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which result should you be most careful about?</p>
+                <label><input type="radio" name="browsers-4" id="browsers-4-a"> A sponsored advert from a company you do not recognise.</label>
+                <label><input type="radio" name="browsers-4" id="browsers-4-b"> A result from an official site you already know.</label>
+                <label><input type="radio" name="browsers-4" id="browsers-4-c"> A bookmark you saved yourself.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-4','browsers-4-a','task-browsers-4')">Check answer</button>
+              <div id="feedback-browsers-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Fake support websites
+            <button id="task-browsers-5" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-5')">Start activity</button>
+            <div id="activity-browsers-5" class="activity" style="display:none;">
+              <h4>Practice: Fake vs real support</h4>
+              <p>Compare search results for banks, Universal Credit or broadband providers.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which link is most likely to be safe for online banking?</p>
+                <label><input type="radio" name="browsers-5" id="browsers-5-a"> Any site that mentions 'fast refund'.</label>
+                <label><input type="radio" name="browsers-5" id="browsers-5-b"> The bank's official website address that matches your card or paperwork.</label>
+                <label><input type="radio" name="browsers-5" id="browsers-5-c"> A result with a strange spelling of the bank name.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-5','browsers-5-b','task-browsers-5')">Check answer</button>
+              <div id="feedback-browsers-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Using bookmarks safely
+            <button id="task-browsers-6" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-6')">Start activity</button>
+            <div id="activity-browsers-6" class="activity" style="display:none;">
+              <h4>Practice: Bookmarks</h4>
+              <p>Bookmark important sites such as your bank or GOV.UK instead of searching every time.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why are bookmarks safer for important sites?</p>
+                <label><input type="radio" name="browsers-6" id="browsers-6-a"> They stop you from using the internet.</label>
+                <label><input type="radio" name="browsers-6" id="browsers-6-b"> They help you avoid fake search results by using the saved link.</label>
+                <label><input type="radio" name="browsers-6" id="browsers-6-c"> They share your history with strangers.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-6','browsers-6-b','task-browsers-6')">Check answer</button>
+              <div id="feedback-browsers-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Secure connections (https)
+            <button id="task-browsers-7" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-7')">Start activity</button>
+            <div id="activity-browsers-7" class="activity" style="display:none;">
+              <h4>Practice: Padlock and https</h4>
+              <p>Look at the padlock icon and https:// in the browser address bar.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What does https and a padlock usually mean?</p>
+                <label><input type="radio" name="browsers-7" id="browsers-7-a"> The site uses a secure connection, but you still need to check it is the right site.</label>
+                <label><input type="radio" name="browsers-7" id="browsers-7-b"> The site is always safe no matter what.</label>
+                <label><input type="radio" name="browsers-7" id="browsers-7-c"> The site will install apps automatically.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-7','browsers-7-a','task-browsers-7')">Check answer</button>
+              <div id="feedback-browsers-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Private or incognito tabs
+            <button id="task-browsers-8" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-8')">Start activity</button>
+            <div id="activity-browsers-8" class="activity" style="display:none;">
+              <h4>Practice: Private browsing</h4>
+              <p>Open a private/incognito tab and read what it does and does not hide.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What does private browsing mainly stop?</p>
+                <label><input type="radio" name="browsers-8" id="browsers-8-a"> Your history being saved on that device.</label>
+                <label><input type="radio" name="browsers-8" id="browsers-8-b"> Your broadband company from seeing anything.</label>
+                <label><input type="radio" name="browsers-8" id="browsers-8-c"> All scams forever.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-8','browsers-8-a','task-browsers-8')">Check answer</button>
+              <div id="feedback-browsers-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Closing tabs and windows
+            <button id="task-browsers-9" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-9')">Start activity</button>
+            <div id="activity-browsers-9" class="activity" style="display:none;">
+              <h4>Practice: Close tabs</h4>
+              <p>Practise closing tabs and windows you no longer need.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why is it good to close tabs you are finished with?</p>
+                <label><input type="radio" name="browsers-9" id="browsers-9-a"> To reduce confusion and keep things tidy.</label>
+                <label><input type="radio" name="browsers-9" id="browsers-9-b"> To delete all apps on the device.</label>
+                <label><input type="radio" name="browsers-9" id="browsers-9-c"> To stop the device turning on.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-9','browsers-9-a','task-browsers-9')">Check answer</button>
+              <div id="feedback-browsers-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Knowing when to stop and get help
+            <button id="task-browsers-10" data-group="browsers" class="task-button" type="button" onclick="startActivity('browsers-10')">Start activity</button>
+            <div id="activity-browsers-10" class="activity" style="display:none;">
+              <h4>Practice: Stop and check</h4>
+              <p>Discuss signs that a page or result does not feel right.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a good rule if something online does not feel right?</p>
+                <label><input type="radio" name="browsers-10" id="browsers-10-a"> Carry on and enter your details quickly.</label>
+                <label><input type="radio" name="browsers-10" id="browsers-10-b"> Stop, close the page and ask a trusted person or worker for help.</label>
+                <label><input type="radio" name="browsers-10" id="browsers-10-c"> Share the link with as many people as possible.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('browsers-10','browsers-10-b','task-browsers-10')">Check answer</button>
+              <div id="feedback-browsers-10" class="activity-feedback"></div>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-browsers"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-browsers">0% complete</span>
+          <span id="tick-browsers" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('browsers')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Zoom &amp; Teams module -->
+    <div class="module" id="module-meetings">
+      <h3><span>🎥</span><span>Zoom &amp; Teams</span></h3>
+      <p>Joining meetings, using audio/video, and staying safe in online calls.</p>
+      <button type="button" class="open-module" onclick="toggleModule('meetings')">Open module</button>
+
+      <div id="panel-meetings" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Joining meetings safely
+            <button id="task-meetings-1" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-1')">Start activity</button>
+            <div id="activity-meetings-1" class="activity" style="display:none;">
+              <h4>Practice: Meeting links</h4>
+              <p>Look at example Zoom or Teams invitations from trusted organisations.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which meeting link is safest to join?</p>
+                <label><input type="radio" name="meetings-1" id="meetings-1-a"> A link sent by a trusted worker or organisation you recognise.</label>
+                <label><input type="radio" name="meetings-1" id="meetings-1-b"> A random link sent by a stranger on social media.</label>
+                <label><input type="radio" name="meetings-1" id="meetings-1-c"> A link in a prize or lottery message.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-1','meetings-1-a','task-meetings-1')">Check answer</button>
+              <div id="feedback-meetings-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Checking who invited you
+            <button id="task-meetings-2" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-2')">Start activity</button>
+            <div id="activity-meetings-2" class="activity" style="display:none;">
+              <h4>Practice: Check the host</h4>
+              <p>Look at the name of the host in a meeting invitation.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What should you do if you do not recognise the person or organisation inviting you?</p>
+                <label><input type="radio" name="meetings-2" id="meetings-2-a"> Join anyway and see what happens.</label>
+                <label><input type="radio" name="meetings-2" id="meetings-2-b"> Ignore it or check with someone you trust before joining.</label>
+                <label><input type="radio" name="meetings-2" id="meetings-2-c"> Share the link with everyone.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-2','meetings-2-b','task-meetings-2')">Check answer</button>
+              <div id="feedback-meetings-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Audio and video controls
+            <button id="task-meetings-3" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-3')">Start activity</button>
+            <div id="activity-meetings-3" class="activity" style="display:none;">
+              <h4>Practice: Mute and camera</h4>
+              <p>Open Zoom or Teams and find the mute and camera buttons.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which is a good safe habit in new meetings?</p>
+                <label><input type="radio" name="meetings-3" id="meetings-3-a"> Join with your microphone on full volume in a busy place.</label>
+                <label><input type="radio" name="meetings-3" id="meetings-3-b"> Join with your camera and microphone off until you feel comfortable.</label>
+                <label><input type="radio" name="meetings-3" id="meetings-3-c"> Shout loudly so people can hear you.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-3','meetings-3-b','task-meetings-3')">Check answer</button>
+              <div id="feedback-meetings-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Background and privacy
+            <button id="task-meetings-4" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-4')">Start activity</button>
+            <div id="activity-meetings-4" class="activity" style="display:none;">
+              <h4>Practice: Backgrounds</h4>
+              <p>Look at how to blur your background or use a virtual background.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why might you use a blurred or virtual background?</p>
+                <label><input type="radio" name="meetings-4" id="meetings-4-a"> To hide personal items or location behind you.</label>
+                <label><input type="radio" name="meetings-4" id="meetings-4-b"> To make your internet faster.</label>
+                <label><input type="radio" name="meetings-4" id="meetings-4-c"> So strangers can see more of your home.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-4','meetings-4-a','task-meetings-4')">Check answer</button>
+              <div id="feedback-meetings-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Waiting rooms and passwords
+            <button id="task-meetings-5" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-5')">Start activity</button>
+            <div id="activity-meetings-5" class="activity" style="display:none;">
+              <h4>Practice: Meeting security</h4>
+              <p>Talk about waiting rooms, passwords and how hosts let people in.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is the purpose of a waiting room or password in meetings?</p>
+                <label><input type="radio" name="meetings-5" id="meetings-5-a"> To control who is allowed into the meeting.</label>
+                <label><input type="radio" name="meetings-5" id="meetings-5-b"> To slow everyone down for no reason.</label>
+                <label><input type="radio" name="meetings-5" id="meetings-5-c"> To share your password with strangers.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-5','meetings-5-a','task-meetings-5')">Check answer</button>
+              <div id="feedback-meetings-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Sharing your screen safely
+            <button id="task-meetings-6" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-6')">Start activity</button>
+            <div id="activity-meetings-6" class="activity" style="display:none;">
+              <h4>Practice: Screen share</h4>
+              <p>Look at how screen sharing works and when it is safe to use.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> When is it safest to share your screen?</p>
+                <label><input type="radio" name="meetings-6" id="meetings-6-a"> Only with trusted people, and never when private information is visible.</label>
+                <label><input type="radio" name="meetings-6" id="meetings-6-b"> With anyone who asks, even if you do not know them.</label>
+                <label><input type="radio" name="meetings-6" id="meetings-6-c"> Whenever a pop-up tells you to share it.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-6','meetings-6-a','task-meetings-6')">Check answer</button>
+              <div id="feedback-meetings-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Chat messages in meetings
+            <button id="task-meetings-7" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-7')">Start activity</button>
+            <div id="activity-meetings-7" class="activity" style="display:none;">
+              <h4>Practice: Chat safely</h4>
+              <p>Open the chat feature and talk about what is okay to share.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What should you avoid typing into meeting chat?</p>
+                <label><input type="radio" name="meetings-7" id="meetings-7-a"> Bank details, passwords or very personal information.</label>
+                <label><input type="radio" name="meetings-7" id="meetings-7-b"> General questions about the session.</label>
+                <label><input type="radio" name="meetings-7" id="meetings-7-c"> Thanks to the host.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-7','meetings-7-a','task-meetings-7')">Check answer</button>
+              <div id="feedback-meetings-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Leaving the meeting
+            <button id="task-meetings-8" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-8')">Start activity</button>
+            <div id="activity-meetings-8" class="activity" style="display:none;">
+              <h4>Practice: Leave button</h4>
+              <p>Practise finding and using the Leave/End button.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What should you do if you feel unsafe or uncomfortable in a meeting?</p>
+                <label><input type="radio" name="meetings-8" id="meetings-8-a"> Stay in the meeting and stay silent.</label>
+                <label><input type="radio" name="meetings-8" id="meetings-8-b"> Leave the meeting and speak to a trusted person or worker.</label>
+                <label><input type="radio" name="meetings-8" id="meetings-8-c"> Turn the volume up.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-8','meetings-8-b','task-meetings-8')">Check answer</button>
+              <div id="feedback-meetings-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Meeting recordings
+            <button id="task-meetings-9" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-9')">Start activity</button>
+            <div id="activity-meetings-9" class="activity" style="display:none;">
+              <h4>Practice: Recording notices</h4>
+              <p>Notice when a meeting says it is being recorded.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a good rule about recordings?</p>
+                <label><input type="radio" name="meetings-9" id="meetings-9-a"> Assume anything you say might be saved and be careful what you share.</label>
+                <label><input type="radio" name="meetings-9" id="meetings-9-b"> Say private information because only friends can see it.</label>
+                <label><input type="radio" name="meetings-9" id="meetings-9-c"> Ignore all messages about recording.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-9','meetings-9-a','task-meetings-9')">Check answer</button>
+              <div id="feedback-meetings-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Follow-up messages after meetings
+            <button id="task-meetings-10" data-group="meetings" class="task-button" type="button" onclick="startActivity('meetings-10')">Start activity</button>
+            <div id="activity-meetings-10" class="activity" style="display:none;">
+              <h4>Practice: After the call</h4>
+              <p>Look at example follow-up emails or messages after meetings.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which follow-up message is most suspicious?</p>
+                <label><input type="radio" name="meetings-10" id="meetings-10-a"> A message asking you to log in and pay money through an unknown link.</label>
+                <label><input type="radio" name="meetings-10" id="meetings-10-b"> A simple summary email from the same worker who ran the session.</label>
+                <label><input type="radio" name="meetings-10" id="meetings-10-c"> A thank-you message with no links.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('meetings-10','meetings-10-a','task-meetings-10')">Check answer</button>
+              <div id="feedback-meetings-10" class="activity-feedback"></div>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-meetings"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-meetings">0% complete</span>
+          <span id="tick-meetings" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('meetings')">Reset module</button>
+        </div>
+      </div>
+    </div>
+    <!-- Social Media Dangers module -->
+    <div class="module" id="module-social">
+      <h3><span>👥</span><span>Social Media Dangers</span></h3>
+      <p>Using social media more safely and spotting risks such as scams, bullying and oversharing.</p>
+      <button type="button" class="open-module" onclick="toggleModule('social')">Open module</button>
+
+      <div id="panel-social" class="module-panel">
+        <button type="button" class="close-module" onclick="closeModule()">Close module</button>
+        <ol>
+          <li>
+            Public vs private profiles
+            <button id="task-social-1" data-group="social" class="task-button" type="button" onclick="startActivity('social-1')">Start activity</button>
+            <div id="activity-social-1" class="activity" style="display:none;">
+              <h4>Practice: Who can see this?</h4>
+              <p>Look at the privacy settings on a social media profile (for example public, friends, private).</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why might you choose a private or 'friends only' profile?</p>
+                <label><input type="radio" name="social-1" id="social-1-a"> So only people you approve can see your posts.</label>
+                <label><input type="radio" name="social-1" id="social-1-b"> So strangers can always see everything you post.</label>
+                <label><input type="radio" name="social-1" id="social-1-c"> So companies can share your details freely.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-1','social-1-a','task-social-1')">Check answer</button>
+              <div id="feedback-social-1" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Accepting friend or follow requests
+            <button id="task-social-2" data-group="social" class="task-button" type="button" onclick="startActivity('social-2')">Start activity</button>
+            <div id="activity-social-2" class="activity" style="display:none;">
+              <h4>Practice: Real or fake account?</h4>
+              <p>Open a list of friend/follow requests and look at names, photos and mutual friends.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is the safest rule for new friend or follow requests?</p>
+                <label><input type="radio" name="social-2" id="social-2-a"> Only accept people you actually know and trust in real life or through proper support.</label>
+                <label><input type="radio" name="social-2" id="social-2-b"> Accept everyone to get more followers.</label>
+                <label><input type="radio" name="social-2" id="social-2-c"> Accept anyone who has a nice profile picture.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-2','social-2-a','task-social-2')">Check answer</button>
+              <div id="feedback-social-2" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Sharing personal information
+            <button id="task-social-3" data-group="social" class="task-button" type="button" onclick="startActivity('social-3')">Start activity</button>
+            <div id="activity-social-3" class="activity" style="display:none;">
+              <h4>Practice: Too much information</h4>
+              <p>Think about posts that show addresses, phone numbers, documents or bank cards.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which post is the most risky to share on social media?</p>
+                <label><input type="radio" name="social-3" id="social-3-a"> A photo clearly showing your bank card or ID.</label>
+                <label><input type="radio" name="social-3" id="social-3-b"> A picture of your dinner.</label>
+                <label><input type="radio" name="social-3" id="social-3-c"> A photo of a public building in town.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-3','social-3-a','task-social-3')">Check answer</button>
+              <div id="feedback-social-3" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Location sharing and check-ins
+            <button id="task-social-4" data-group="social" class="task-button" type="button" onclick="startActivity('social-4')">Start activity</button>
+            <div id="activity-social-4" class="activity" style="display:none;">
+              <h4>Practice: Where are you?</h4>
+              <p>Look at how apps can share your location or 'check in' to places.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Why might it be risky to share your live location publicly?</p>
+                <label><input type="radio" name="social-4" id="social-4-a"> Because it can show strangers exactly where you are in real life.</label>
+                <label><input type="radio" name="social-4" id="social-4-b"> Because it makes the app crash.</label>
+                <label><input type="radio" name="social-4" id="social-4-c"> Because it stops your phone from ringing.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-4','social-4-a','task-social-4')">Check answer</button>
+              <div id="feedback-social-4" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Links in messages and comments
+            <button id="task-social-5" data-group="social" class="task-button" type="button" onclick="startActivity('social-5')">Start activity</button>
+            <div id="activity-social-5" class="activity" style="display:none;">
+              <h4>Practice: Dodgy links</h4>
+              <p>Look at examples of links sent in direct messages or comments.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Which link should you avoid clicking?</p>
+                <label><input type="radio" name="social-5" id="social-5-a"> A link from a stranger that promises prizes or quick money.</label>
+                <label><input type="radio" name="social-5" id="social-5-b"> A link to an official site you typed in yourself.</label>
+                <label><input type="radio" name="social-5" id="social-5-c"> A link your support worker has already checked with you.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-5','social-5-a','task-social-5')">Check answer</button>
+              <div id="feedback-social-5" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Romance and 'too good to be true' messages
+            <button id="task-social-6" data-group="social" class="task-button" type="button" onclick="startActivity('social-6')">Start activity</button>
+            <div id="activity-social-6" class="activity" style="display:none;">
+              <h4>Practice: Romance scams</h4>
+              <p>Talk about people who quickly claim to love you or need money through social media.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a warning sign of a romance or friendship scam?</p>
+                <label><input type="radio" name="social-6" id="social-6-a"> Someone you just met online asks for money or gift cards.</label>
+                <label><input type="radio" name="social-6" id="social-6-b"> Someone says hello and talks about shared interests.</label>
+                <label><input type="radio" name="social-6" id="social-6-c"> A worker sends you information about a support group.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-6','social-6-a','task-social-6')">Check answer</button>
+              <div id="feedback-social-6" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Bullying, abuse and blocking tools
+            <button id="task-social-7" data-group="social" class="task-button" type="button" onclick="startActivity('social-7')">Start activity</button>
+            <div id="activity-social-7" class="activity" style="display:none;">
+              <h4>Practice: Block and report</h4>
+              <p>Look at how to block, mute or report someone on a social app.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What can you do if someone is bullying or abusing you online?</p>
+                <label><input type="radio" name="social-7" id="social-7-a"> Block or mute them, report the behaviour and tell a trusted person or worker.</label>
+                <label><input type="radio" name="social-7" id="social-7-b"> Keep replying so they do not get bored.</label>
+                <label><input type="radio" name="social-7" id="social-7-c"> Share your address so you can argue in person.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-7','social-7-a','task-social-7')">Check answer</button>
+              <div id="feedback-social-7" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Fake news and shocking posts
+            <button id="task-social-8" data-group="social" class="task-button" type="button" onclick="startActivity('social-8')">Start activity</button>
+            <div id="activity-social-8" class="activity" style="display:none;">
+              <h4>Practice: Check before you share</h4>
+              <p>Look at examples of very shocking or angry posts that might not be true.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a good step before sharing a shocking story?</p>
+                <label><input type="radio" name="social-8" id="social-8-a"> Check it on a trusted news site or ask a trusted person first.</label>
+                <label><input type="radio" name="social-8" id="social-8-b"> Share it straight away so everyone sees it.</label>
+                <label><input type="radio" name="social-8" id="social-8-c"> Add your bank details to prove it is true.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-8','social-8-a','task-social-8')">Check answer</button>
+              <div id="feedback-social-8" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Screenshots and forwards
+            <button id="task-social-9" data-group="social" class="task-button" type="button" onclick="startActivity('social-9')">Start activity</button>
+            <div id="activity-social-9" class="activity" style="display:none;">
+              <h4>Practice: Once shared, always shared</h4>
+              <p>Talk about how people can screenshot and forward messages and photos.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> What is a safe rule about messages and photos you send?</p>
+                <label><input type="radio" name="social-9" id="social-9-a"> Only send things you would be comfortable seeing shared more widely.</label>
+                <label><input type="radio" name="social-9" id="social-9-b"> Send whatever you like because it can always be deleted forever.</label>
+                <label><input type="radio" name="social-9" id="social-9-c"> Trust that nobody will ever share anything you send.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-9','social-9-a','task-social-9')">Check answer</button>
+              <div id="feedback-social-9" class="activity-feedback"></div>
+            </div>
+          </li>
+
+          <li>
+            Getting help with social media problems
+            <button id="task-social-10" data-group="social" class="task-button" type="button" onclick="startActivity('social-10')">Start activity</button>
+            <div id="activity-social-10" class="activity" style="display:none;">
+              <h4>Practice: Ask for support</h4>
+              <p>Think about who you could talk to if something on social media worries you.</p>
+              <div class="activity-options">
+                <p><strong>Question:</strong> Who is the best person to speak to if you feel unsafe or unsure about something online?</p>
+                <label><input type="radio" name="social-10" id="social-10-a"> A trusted worker, friend, family member or support service.</label>
+                <label><input type="radio" name="social-10" id="social-10-b"> The person who sent the worrying message.</label>
+                <label><input type="radio" name="social-10" id="social-10-c"> A random person from a comment thread.</label>
+              </div>
+              <button class="check-button" type="button" onclick="checkAnswer('social-10','social-10-a','task-social-10')">Check answer</button>
+              <div id="feedback-social-10" class="activity-feedback"></div>
+            </div>
+          </li>
+
+        </ol>
+      </div>
+
+      <div class="progress-wrap">
+        <div class="progress-bar">
+          <div class="progress-fill" id="bar-social"></div>
+        </div>
+        <div class="progress-text">
+          <span id="label-social">0% complete</span>
+          <span id="tick-social" class="progress-tick">✓ Completed</span>
+          <button type="button" class="reset-button" onclick="resetModule('social')">Reset module</button>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+<div class="container" id="about">
+  <h2>About RECONNECT-US Learning</h2>
+  <p>This offline tool is part of <strong>RECONNECT-US</strong>. It is designed so people can practise real digital skills
+     in a safe, supported way – even with no internet connection during the session. Trainers can guide learners through
+     each activity and use the questions to check understanding and build confidence.</p>
+</div>
+
+<footer><p>Support contact email: reconnectus@outlook.com</p></footer>
+
+<footer><p>© 2025 RECONNECT-US — All rights reserved</p></footer>
+
+<script>
+
+function openFullscreenOverlay() {
+  var overlay = document.getElementById('fullscreen-start-overlay');
+  var helpBtn = document.getElementById('fullscreen-help-button');
+  if (overlay) overlay.style.display = 'flex';
+  if (helpBtn) helpBtn.style.display = 'none';
+}
+
+function closeFullscreenOverlay() {
+  var overlay = document.getElementById('fullscreen-start-overlay');
+  var helpBtn = document.getElementById('fullscreen-help-button');
+  if (overlay) overlay.style.display = 'none';
+  if (helpBtn) helpBtn.style.display = 'flex';
+}
+
+function enterFullscreenFromOverlay() {
+  requestAppFullscreen();
+  closeFullscreenOverlay();
+}
+
+function requestAppFullscreen() {
+  const el = document.documentElement;
+  if (el.requestFullscreen) {
+    el.requestFullscreen();
+  } else if (el.webkitRequestFullscreen) {
+    el.webkitRequestFullscreen();
+  } else if (el.msRequestFullscreen) {
+    el.msRequestFullscreen();
+  }
+}
+
+
+
+
+function toggleFullscreen() {
+  if (!document.fullscreenElement) {
+    if (document.documentElement.requestFullscreen) {
+      document.documentElement.requestFullscreen();
+    }
+  } else {
+    if (document.exitFullscreen) {
+      document.exitFullscreen();
+    }
+  }
+}
+
+function closeModule() {
+  document.querySelectorAll('.module-panel').forEach(p => {
+    p.style.display = 'none';
+    p.classList.remove('fullscreen');
+  });
+}
+
+function toggleModule(group) {
+  const panel = document.getElementById('panel-' + group);
+  if (!panel) return;
+
+  const isOpen = panel.classList.contains('fullscreen');
+
+  // Close all panels
+  document.querySelectorAll('.module-panel').forEach(p => {
+    p.style.display = 'none';
+    p.classList.remove('fullscreen');
+  });
+
+  // Open the selected panel in fullscreen style
+  if (!isOpen) {
+    panel.style.display = 'block';
+    panel.classList.add('fullscreen');
+    window.scrollTo(0, 0);
+  }
+}
+
+
+(function initialiseFullscreenOverlay() {
+  var overlay = document.getElementById('fullscreen-start-overlay');
+  var enterBtn = document.getElementById('enter-fullscreen-btn');
+  var skipBtn = document.getElementById('continue-without-fullscreen-btn');
+  var helpBtn = document.getElementById('fullscreen-help-button');
+
+  if (overlay) {
+    overlay.addEventListener('click', function(e) {
+      if (e.target === overlay) {
+        enterFullscreenFromOverlay();
+      }
+    });
+  }
+
+  if (enterBtn) {
+    enterBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      enterFullscreenFromOverlay();
+    });
+  }
+
+  if (skipBtn) {
+    skipBtn.addEventListener('click', function(e) {
+      e.stopPropagation();
+      closeFullscreenOverlay();
+    });
+  }
+
+  if (helpBtn) {
+    helpBtn.addEventListener('click', function() {
+      openFullscreenOverlay();
+    });
+  }
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !document.fullscreenElement) {
+      var help = document.getElementById('fullscreen-help-button');
+      if (help) help.style.display = 'flex';
+    }
+  });
+})();
+
+// RECONNECT-US learner profiles and per-learner progress
+let currentLearnerId = null;
+let currentLearnerName = '';
+const SHARED_HUB_KEY = "reconnectus_shared_current_learner_v1";
+const LEARNER_STORAGE_KEY = "reconnect_us_learners";
+const CURRENT_LEARNER_KEY = "reconnect_us_current_learner";
+const PROGRESS_GROUPS = ['smartphone', 'online', 'safety', 'email', 'apps', 'jobs', 'browsers', 'meetings', 'social'];
+
+function getLearnerList() {
+  try {
+    const raw = window.localStorage.getItem(LEARNER_STORAGE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (Array.isArray(parsed)) return parsed;
+    return [];
+  } catch (e) {
+    return [];
+  }
+}
+
+function saveLearnerList(list) {
+  try {
+    window.localStorage.setItem(LEARNER_STORAGE_KEY, JSON.stringify(list));
+  } catch (e) {
+    // ignore storage errors
+  }
+}
+
+
+function normaliseHubLearnerName(raw) {
+  return String(raw || '').replace(/\s+/g, ' ').trim();
+}
+function getSharedHubLearnerProfile() {
+  try {
+    const shared = JSON.parse(window.localStorage.getItem(SHARED_HUB_KEY) || 'null');
+    if (shared && shared.name) {
+      return {
+        id: normaliseHubLearnerName(shared.id || shared.name),
+        name: normaliseHubLearnerName(shared.name)
+      };
+    }
+  } catch (e) {}
+
+  try {
+    const profile = JSON.parse(window.localStorage.getItem('reconnectus_profile') || 'null');
+    if (profile && profile.name) {
+      return {
+        id: normaliseHubLearnerName(profile.id || profile.name),
+        name: normaliseHubLearnerName(profile.name)
+      };
+    }
+  } catch (e) {}
+
+  const params = new URLSearchParams(window.location.search);
+  const learnerFromUrl = normaliseHubLearnerName(params.get('learner') || '');
+  if (learnerFromUrl) {
+    return { id: learnerFromUrl, name: learnerFromUrl };
+  }
+  return null;
+}
+
+function updateCurrentLearnerLabel() {
+  const label = document.getElementById("current-learner-label");
+  if (!label) return;
+  if (!currentLearnerId && !currentLearnerName) {
+    label.textContent = "User's name not found";
+    return;
+  }
+  label.textContent = "Learner: " + (currentLearnerName || currentLearnerId);
+}
+
+function renderLearnerList() {
+  const listEl = document.getElementById("learner-list");
+  const emptyEl = document.getElementById("no-learners");
+  const errorEl = document.getElementById("learner-error");
+  if (!listEl) return;
+  if (errorEl) {
+    errorEl.textContent = "";
+  }
+  const learners = getLearnerList();
+  listEl.innerHTML = "";
+  if (!learners.length) {
+    if (emptyEl) emptyEl.style.display = "block";
+    return;
+  }
+  if (emptyEl) emptyEl.style.display = "none";
+
+  learners.forEach(function(learner) {
+    const row = document.createElement("div");
+    row.style.display = "flex";
+    row.style.alignItems = "center";
+    row.style.marginBottom = "6px";
+    row.style.gap = "6px";
+
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.textContent = learner.name + (learner.pin ? " (PIN)" : "");
+    btn.style.flex = "1";
+    btn.style.padding = "8px 10px";
+    btn.style.borderRadius = "6px";
+    btn.style.border = "1px solid #b3dde3";
+    btn.style.background = "#f2f7f8";
+    btn.style.cursor = "pointer";
+    btn.style.textAlign = "left";
+    btn.onclick = function() {
+      selectLearner(learner.id);
+    };
+
+    const del = document.createElement("button");
+    del.type = "button";
+    del.textContent = "Delete";
+    del.style.padding = "6px 8px";
+    del.style.borderRadius = "6px";
+    del.style.border = "1px solid #e57373";
+    del.style.background = "#ffebee";
+    del.style.cursor = "pointer";
+    del.style.fontSize = "0.8rem";
+    del.onclick = function() {
+      deleteLearner(learner.id);
+    };
+
+    row.appendChild(btn);
+    row.appendChild(del);
+    listEl.appendChild(row);
+  });
+}
+
+function addLearner() {
+  const input = document.getElementById("new-learner-name");
+  const pinInput = document.getElementById("new-learner-pin");
+  const errorEl = document.getElementById("learner-error");
+  if (!input) return;
+  const name = (input.value || "").trim();
+  const pinRaw = pinInput ? (pinInput.value || "").trim() : "";
+  if (!name) {
+    if (errorEl) errorEl.textContent = "Please enter a learner name.";
+    return;
+  }
+  if (pinRaw && pinRaw.length < 4) {
+    if (errorEl) errorEl.textContent = "PIN should be at least 4 characters, or leave it blank.";
+    return;
+  }
+  let learners = getLearnerList();
+  const id = "learner_" + Date.now() + "_" + Math.floor(Math.random() * 10000);
+  const learner = { id: id, name: name };
+  if (pinRaw) {
+    learner.pin = pinRaw;
+  }
+  learners.push(learner);
+  saveLearnerList(learners);
+  input.value = "";
+  if (pinInput) pinInput.value = "";
+  renderLearnerList();
+  selectLearner(id);
+}
+
+function deleteLearner(id) {
+  const learners = getLearnerList();
+  const remaining = learners.filter(l => l.id !== id);
+  if (remaining.length === learners.length) return;
+  if (!window.confirm("Delete this learner and all their saved progress?")) {
+    return;
+  }
+  // Remove any stored task progress for this learner
+  try {
+    const prefix = id + "::";
+    const toRemove = [];
+    for (let i = 0; i < window.localStorage.length; i++) {
+      const key = window.localStorage.key(i);
+      if (key && key.indexOf(prefix) === 0) {
+        toRemove.push(key);
+      }
+    }
+    toRemove.forEach(k => window.localStorage.removeItem(k));
+  } catch (e) {}
+
+  saveLearnerList(remaining);
+  if (currentLearnerId === id) {
+    currentLearnerId = null;
+    try {
+      window.localStorage.removeItem(CURRENT_LEARNER_KEY);
+    } catch (e) {}
+  }
+  renderLearnerList();
+  updateCurrentLearnerLabel();
+}
+
+function selectLearner(id) {
+  const learners = getLearnerList();
+  const learner = learners.find(l => l.id === id);
+  const errorEl = document.getElementById("learner-error");
+
+  if (learner && learner.pin) {
+    const entered = window.prompt("Enter PIN for " + learner.name + ":");
+    if (entered === null) {
+      // user cancelled
+      return;
+    }
+    if (entered !== learner.pin) {
+      if (errorEl) errorEl.textContent = "PIN not recognised. Please try again.";
+      return;
+    }
+  }
+  if (errorEl) errorEl.textContent = "";
+
+  currentLearnerId = id;
+  try {
+    window.localStorage.setItem(CURRENT_LEARNER_KEY, id);
+  } catch (e) {}
+  const learnerScreen = document.getElementById("learner-screen");
+  const main = document.getElementById("app-main");
+  if (learnerScreen) learnerScreen.style.display = "none";
+  if (main) main.style.display = "block";
+  initProgressForCurrentLearner();
+  updateCurrentLearnerLabel();
+}
+
+function logoutLearner() {
+  currentLearnerId = null;
+  try {
+    window.localStorage.removeItem(CURRENT_LEARNER_KEY);
+  } catch (e) {}
+  const learnerScreen = document.getElementById("learner-screen");
+  const main = document.getElementById("app-main");
+  if (learnerScreen) learnerScreen.style.display = "flex";
+  if (main) main.style.display = "none";
+  renderLearnerList();
+  updateCurrentLearnerLabel();
+}
+
+function showLearnerScreen() {
+  const learnerScreen = document.getElementById("learner-screen");
+  const main = document.getElementById("app-main");
+  if (learnerScreen) learnerScreen.style.display = "flex";
+  if (main) main.style.display = "none";
+  renderLearnerList();
+}
+
+function getTaskKey(taskId) {
+  if (!currentLearnerId) return taskId;
+  return currentLearnerId + "::" + taskId;
+}
+
+function initProgressForCurrentLearner() {
+  PROGRESS_GROUPS.forEach(updateProgress);
+}
+
+function initLearnerSystem() {
+  try {
+    const sharedLearner = getSharedHubLearnerProfile();
+    currentLearnerId = sharedLearner && sharedLearner.id ? sharedLearner.id : null;
+    currentLearnerName = sharedLearner && sharedLearner.name ? sharedLearner.name : '';
+  } catch (e) {
+    currentLearnerId = null;
+    currentLearnerName = '';
+  }
+  updateCurrentLearnerLabel();
+}
+
+window.addEventListener("load", function() { initLearnerSystem(); });
+
+function startActivity(activityId) {
+  const panel = document.getElementById('activity-' + activityId);
+  if (!panel) return;
+  panel.style.display = (panel.style.display === 'none' || panel.style.display === '') ? 'block' : 'none';
+}
+
+function checkAnswer(activityId, correctId, taskId) {
+  const chosen = document.querySelector('input[name=\"' + activityId + '\"]:checked');
+  const feedback = document.getElementById('feedback-' + activityId);
+  if (!feedback) return;
+
+  if (!chosen) {
+    feedback.textContent = 'Please choose an answer.';
+    feedback.style.color = '#b00020';
+    return;
+  }
+
+  if (chosen.id === correctId) {
+    feedback.textContent = 'Correct – well done. This task is now marked complete.';
+    feedback.style.color = '#2e7d32';
+    markComplete(taskId);
+  } else {
+    feedback.textContent = 'Not quite – have another look and try again.';
+    feedback.style.color = '#b00020';
+  }
+}
+
+function markComplete(taskId) {
+  localStorage.setItem(getTaskKey(taskId), 'done');
+  const btn = document.getElementById(taskId);
+  if (btn) {
+    btn.innerText = '✓ Completed';
+    btn.classList.add('completed');
+  }
+  const group = btn ? btn.getAttribute('data-group') : null;
+  if (group) {
+    updateProgress(group);
+  }
+}
+
+function resetModule(group) {
+  const tasks = document.querySelectorAll('[data-group=\"' + group + '\"]');
+  tasks.forEach(btn => {
+    localStorage.removeItem(getTaskKey(btn.id));
+    btn.innerText = 'Start activity';
+    btn.classList.remove('completed');
+  });
+  updateProgress(group);
+}
+
+function updateProgress(group) {
+  const tasks = document.querySelectorAll('[data-group="' + group + '"]');
+  if (!tasks.length) return;
+
+  let done = 0;
+  tasks.forEach(btn => {
+    if (localStorage.getItem(getTaskKey(btn.id)) === 'done') {
+      done++;
+      if (btn.innerText !== '✓ Completed') {
+        btn.innerText = '✓ Completed';
+        btn.classList.add('completed');
+      }
+    } else {
+      if (btn.innerText === '✓ Completed') {
+        btn.innerText = 'Start activity';
+        btn.classList.remove('completed');
+      }
+    }
+  });
+
+  const pct = Math.round((done / tasks.length) * 100);
+  const bar = document.getElementById('bar-' + group);
+  const label = document.getElementById('label-' + group);
+  const tick = document.getElementById('tick-' + group);
+
+  if (bar) bar.style.width = pct + '%';
+  if (label) label.textContent = pct + '% complete';
+  if (tick) tick.style.display = pct === 100 ? 'inline-block' : 'none';
+
+  // Compact module certificate – only when a learner is selected
+  if (!currentLearnerId) {
+    return;
+  }
+
+  function getCertKey(g) {
+    return currentLearnerId + '::modulecert::' + g;
+  }
+
+  const certKey = getCertKey(group);
+
+  if (pct === 100) {
+    if (!localStorage.getItem(certKey)) {
+      try {
+        localStorage.setItem(certKey, 'shown');
+      } catch (e) {}
+      showModuleCertificate(group);
+    }
+  } else {
+    // If progress drops below 100%, allow certificate to be earned again
+    try {
+      localStorage.removeItem(certKey);
+    } catch (e) {}
+  }
+
+  function showModuleCertificate(groupCode) {
+    // Map internal group code to human-friendly module title
+    var moduleTitles = {
+      smartphone: 'Using a Smartphone',
+      online: 'Getting Online',
+      safety: 'Online Safety',
+      email: 'Emails & Messaging',
+      apps: 'Using Apps',
+      jobs: 'Jobs & Online Forms',
+      browsers: 'Browsers & Searching',
+      meetings: 'Video Calls & Meetings',
+      social: 'Social Media & Community'
+    };
+    var moduleTitle = moduleTitles[groupCode] || groupCode;
+
+    // Find current learner name
+    var learnerName = currentLearnerName || currentLearnerId || 'This learner';
+    try {
+      var learners = getLearnerList();
+      if (Array.isArray(learners)) {
+        for (var i = 0; i < learners.length; i++) {
+          if (learners[i].id === currentLearnerId && learners[i].name) {
+            learnerName = learners[i].name;
+            break;
+          }
+        }
+      }
+    } catch (e) {}
+
+    // Create overlay on first use
+    var overlay = document.getElementById('module-certificate-overlay');
+    if (!overlay) {
+      overlay = document.createElement('div');
+      overlay.id = 'module-certificate-overlay';
+      overlay.innerHTML =
+        '<div class="module-cert-card">' +
+        '  <div class="module-cert-inner">' +
+        '    <div class="module-cert-header">RECONNECT-US Learning</div>' +
+        '    <div class="module-cert-subtitle">Module Certificate</div>' +
+        '    <div class="module-cert-body">' +
+        '      <p>This confirms that</p>' +
+        '      <p class="module-cert-name" id="module-cert-name"></p>' +
+        '      <p>has successfully completed the module</p>' +
+        '      <p class="module-cert-module" id="module-cert-module"></p>' +
+        '      <p class="module-cert-date-line">Completed on <span id="module-cert-date"></span></p>' +
+        '    </div>' +
+        '    <div class="module-cert-footer">This material is the property of RECONNECT-US and may not be copied, shared or used outside authorised sessions without written permission.</div>' +
+        '    <div class="module-cert-buttons">' +
+        '      <button type="button" id="module-cert-close-btn">Close</button>' +
+        '      <button type="button" id="module-cert-print-btn">Print</button>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+      document.body.appendChild(overlay);
+
+      var closeBtn = document.getElementById('module-cert-close-btn');
+      var printBtn = document.getElementById('module-cert-print-btn');
+      if (closeBtn) {
+        closeBtn.onclick = function() {
+          var ov = document.getElementById('module-certificate-overlay');
+          if (ov) ov.style.display = 'none';
+        };
+      }
+      if (printBtn) {
+        printBtn.onclick = function() {
+          try {
+            window.print();
+          } catch (e) {}
+        };
+      }
+    }
+
+    // Fill certificate content
+    var nameEl = document.getElementById('module-cert-name');
+    var moduleEl = document.getElementById('module-cert-module');
+    var dateEl = document.getElementById('module-cert-date');
+    if (nameEl) nameEl.textContent = learnerName;
+    if (moduleEl) moduleEl.textContent = moduleTitle;
+    if (dateEl) {
+      var d = new Date();
+      try {
+        dateEl.textContent = d.toLocaleDateString('en-GB');
+      } catch (e) {
+        dateEl.textContent = d.toDateString();
+      }
+    }
+
+    overlay.style.display = 'flex';
+  }
+}
+
+
+// Progress is initialised after a learner is selected.
+// Progress is initialised after a learner is selected.
+window.onload = function () {
+  // no-op; see initProgressForCurrentLearner and learner selection.
+};
+</script>
+
+
+  </div>
+
+  </div>
+
+  <script>
+    (function() {
+      function bootHubVersion() {
+        var app = document.getElementById("app");
+        var appMain = document.getElementById("app-main");
+        if (app) app.style.display = "block";
+        if (appMain) appMain.style.display = "block";
+        initLearnerSystem();
+        updateCurrentLearnerLabel();
+        if (typeof initProgressForCurrentLearner === "function") {
+          initProgressForCurrentLearner();
+        }
+        if (typeof loadSavedProgress === "function") {
+          loadSavedProgress();
+        }
+        var backBtn = document.getElementById("backBtn");
+        if (backBtn) {
+          backBtn.addEventListener("click", function() {
+            if (document.referrer && history.length > 1) {
+              history.back();
+            } else {
+              window.location.href = "index.html";
+            }
+          });
+        }
+      }
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", bootHubVersion);
+      } else {
+        bootHubVersion();
+      }
+    })();
+  </script>
+</body>
+
+</html>

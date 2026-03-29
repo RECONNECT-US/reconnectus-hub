@@ -1,0 +1,529 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Digital Footprint &amp; Reputation | RECONNECT-US</title>
+<style>
+    :root{
+      --navy:#0f3d56;
+      --teal:#1f7a8c;
+      --sky:#7bdff2;
+      --ice:#f4fbfd;
+      --white:#ffffff;
+      --shadow:0 18px 40px rgba(0,0,0,.18);
+      --radius:22px;
+    }
+
+    *{box-sizing:border-box}
+    html,body{
+      margin:0;
+      padding:0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 55%, #3bb3c3 100%);
+      color: var(--white);
+      min-height:100%;
+    }
+
+    body{ overflow:hidden; }
+
+    .deck{
+      position:relative;
+      width:100%;
+      height:100vh;
+    }
+
+    .slide{
+      display:none;
+      width:100%;
+      height:100vh;
+      padding:34px 26px 100px;
+    }
+
+    .slide.active{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .panel{
+      width:min(1100px, 100%);
+      min-height:min(700px, calc(100vh - 140px));
+      background: rgba(255,255,255,.10);
+      border:1px solid rgba(255,255,255,.18);
+      backdrop-filter: blur(8px);
+      border-radius: 30px;
+      box-shadow: var(--shadow);
+      overflow:hidden;
+      display:grid;
+      grid-template-rows:auto 1fr auto;
+    }
+
+    .header{
+      padding:26px 30px 18px;
+      background: linear-gradient(90deg, rgba(255,255,255,.18), rgba(255,255,255,.08));
+      border-bottom:1px solid rgba(255,255,255,.16);
+    }
+
+    .eyebrow{
+      font-size:.92rem;
+      letter-spacing:.12em;
+      text-transform:uppercase;
+      color:#d7f8ff;
+      margin-bottom:10px;
+      font-weight:700;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(2rem, 3.8vw, 3.15rem);
+      line-height:1.08;
+      letter-spacing:.01em;
+    }
+
+    .body{
+      padding:28px 30px;
+      display:grid;
+      gap:18px;
+      align-content:start;
+    }
+
+    .lead{
+      background: rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius: var(--radius);
+      padding:20px 22px;
+      font-size: clamp(1.02rem, 1.7vw, 1.2rem);
+      line-height:1.6;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .box{
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius: var(--radius);
+      padding:18px 18px;
+      min-height:120px;
+    }
+
+    .box h2{
+      margin:0 0 10px;
+      font-size:1rem;
+      letter-spacing:.04em;
+      text-transform:uppercase;
+      color:#d7f8ff;
+    }
+
+    .box ul, .single-list ul{
+      margin:0;
+      padding-left:20px;
+      line-height:1.7;
+      font-size:1rem;
+    }
+
+    .box li + li, .single-list li + li{
+      margin-top:8px;
+    }
+
+    .single-list{
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius: var(--radius);
+      padding:18px 20px 18px 24px;
+    }
+
+    .resource-grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0,1fr));
+      gap:16px;
+    }
+
+    .resource{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background: rgba(255,255,255,.14);
+      border:1px solid rgba(255,255,255,.20);
+      border-radius:18px;
+      padding:16px 18px;
+      font-size:1.02rem;
+      line-height:1.55;
+      min-height:108px;
+    }
+
+    .dot{
+      width:12px;
+      height:12px;
+      border-radius:999px;
+      background: var(--sky);
+      margin-top:6px;
+      flex:0 0 auto;
+      box-shadow:0 0 0 5px rgba(123,223,242,.18);
+    }
+
+    a{
+      color:#ffffff;
+      font-weight:700;
+      text-decoration:underline;
+    }
+
+    .footer{
+      padding:16px 30px 22px;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:12px;
+      color:#effdff;
+      font-size:.96rem;
+      border-top:1px solid rgba(255,255,255,.12);
+    }
+
+    .brand{
+      font-weight:700;
+      letter-spacing:.03em;
+    }
+
+    .nav{
+      position:fixed;
+      right:18px;
+      bottom:18px;
+      display:flex;
+      gap:10px;
+      z-index:20;
+    }
+
+    button{
+      border:none;
+      border-radius:999px;
+      padding:12px 18px;
+      font-size:0.98rem;
+      font-weight:700;
+      cursor:pointer;
+      background: var(--ice);
+      color: var(--navy);
+      box-shadow: var(--shadow);
+    }
+
+    .counter{
+      position:fixed;
+      left:18px;
+      bottom:20px;
+      z-index:20;
+      background: rgba(255,255,255,.16);
+      border:1px solid rgba(255,255,255,.18);
+      color:white;
+      padding:11px 16px;
+      border-radius:999px;
+      font-weight:700;
+      backdrop-filter: blur(6px);
+    }
+
+    @media (max-width: 820px){
+      .slide{ padding:18px 14px 92px; }
+      .panel{ min-height: calc(100vh - 110px); }
+      .header, .body, .footer{ padding-left:18px; padding-right:18px; }
+      .grid, .resource-grid{ grid-template-columns:1fr; }
+      .footer{ flex-direction:column; align-items:flex-start; }
+    }
+  
+
+
+</style>
+</head>
+<body>
+<div class="deck">
+<section class="slide active">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Online Safety Training</div>
+<h1>Digital Footprint &amp; Reputation</h1>
+</div>
+<div class="body">
+<div class="lead">
+            A practical RECONNECT-US training module on understanding your digital footprint,
+            managing online reputation, and making safer choices about what you share online.
+          </div>
+<div class="grid">
+<div class="box">
+<h2>Module Focus</h2>
+<ul>
+<li>Understanding your digital footprint</li>
+<li>Managing online reputation</li>
+<li>Building safer sharing habits</li>
+</ul>
+</div>
+<div class="box">
+<h2>Training Outcome</h2>
+<ul>
+<li>Build a more positive online presence</li>
+<li>Reduce risks from past or harmful posts</li>
+<li>Improve awareness of long-term online impact</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 1 of 7</div>
+</div>
+</div>
+</section>
+<section class="slide">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Slide 2</div>
+<h1>What is a Digital Footprint</h1>
+</div>
+<div class="body">
+<div class="lead">
+            Your digital footprint is the trail of information you leave behind online.
+            It becomes part of how other people and organisations see you.
+          </div>
+<div class="grid">
+<div class="box">
+<h2>What It Includes</h2>
+<ul>
+<li>Social media posts</li>
+<li>Photos and videos</li>
+<li>Comments and messages</li>
+</ul>
+</div>
+<div class="box">
+<h2>Why It Matters</h2>
+<ul>
+<li>Browsing history can be part of it too</li>
+<li>It forms your online identity</li>
+<li>It shapes your reputation over time</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 2 of 7</div>
+</div>
+</div>
+</section>
+<section class="slide">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Slide 3</div>
+<h1>Why It Matters</h1>
+</div>
+<div class="body">
+<div class="lead">
+            What is online about you can affect how people judge you, trust you, and
+            decide whether to offer you opportunities.
+          </div>
+<div class="grid">
+<div class="box">
+<h2>Possible Risks</h2>
+<ul>
+<li>Employers, schools, and others may check your online presence</li>
+<li>Harmful content can damage opportunities</li>
+</ul>
+</div>
+<div class="box">
+<h2>Possible Benefits</h2>
+<ul>
+<li>Positive content can strengthen trust</li>
+<li>Good posts can improve credibility and reputation</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 3 of 7</div>
+</div>
+</div>
+</section>
+<section class="slide">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Slide 4</div>
+<h1>How to Manage It</h1>
+</div>
+<div class="body">
+<div class="lead">
+            The best way to manage your digital footprint is to be deliberate:
+            pause before posting, review what is public, and keep private details protected.
+          </div>
+<div class="grid">
+<div class="box">
+<h2>Before You Post</h2>
+<ul>
+<li>Think before you post or share</li>
+<li>Keep personal information private</li>
+<li>Share positive, respectful content</li>
+</ul>
+</div>
+<div class="box">
+<h2>Ongoing Checks</h2>
+<ul>
+<li>Review privacy settings on all accounts</li>
+<li>Delete old or harmful content</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 4 of 7</div>
+</div>
+</div>
+</section>
+<section class="slide">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Slide 5</div>
+<h1>Examples of Impact</h1>
+</div>
+<div class="body">
+<div class="lead">
+            These examples are split clearly so the negative effects and positive outcomes
+            are easier to compare.
+          </div>
+<div class="grid">
+<div class="box">
+<h2>Negative Examples</h2>
+<ul>
+<li>Embarrassing photos resurfacing during a job search</li>
+<li>Offensive comments harming reputation</li>
+</ul>
+</div>
+<div class="box">
+<h2>Positive Examples</h2>
+<ul>
+<li>A professional LinkedIn profile impressing employers</li>
+<li>Positive community posts building trust</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 5 of 7</div>
+</div>
+</div>
+</section>
+<section class="slide">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Slide 6</div>
+<h1>Key Takeaways</h1>
+</div>
+<div class="body">
+<div class="lead">
+            Your online reputation is not just about avoiding problems. It is also about
+            building a digital presence that reflects you well.
+          </div>
+<div class="grid">
+<div class="box">
+<h2>What to Remember</h2>
+<ul>
+<li>Your digital footprint can feel permanent</li>
+<li>Employers and organisations may check it</li>
+</ul>
+</div>
+<div class="box">
+<h2>What to Do</h2>
+<ul>
+<li>Be mindful of what you share online</li>
+<li>Aim to build a positive reputation</li>
+</ul>
+</div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 6 of 7</div>
+</div>
+</div>
+</section>
+<section class="slide">
+<div class="panel">
+<div class="header">
+<div class="eyebrow">Slide 7</div>
+<h1>Support &amp; Resources</h1>
+</div>
+<div class="body">
+<div class="lead">
+            Use trusted guidance and support to review privacy settings, improve your online presence,
+            and understand how to manage what others can see.
+          </div>
+<div class="resource-grid">
+<div class="resource"><span class="dot"></span><div><strong>RECONNECT-US IT Safety</strong> — use your training materials and local digital support for extra help.</div></div>
+<div class="resource"><span class="dot"></span><div><strong>Get Safe Online</strong> — <a href="https://www.getsafeonline.org" rel="noopener noreferrer" target="_blank">www.getsafeonline.org</a></div></div>
+<div class="resource"><span class="dot"></span><div><strong>Thinkuknow</strong> — <a href="https://www.thinkuknow.co.uk" rel="noopener noreferrer" target="_blank">www.thinkuknow.co.uk</a></div></div>
+<div class="resource"><span class="dot"></span><div><strong>Social media privacy guides</strong> — review privacy and account safety guidance on the platforms you use most.</div></div>
+</div>
+</div>
+<div class="footer">
+<div class="brand">RECONNECT-US</div>
+<div>Slide 7 of 7</div>
+</div>
+</div>
+</section>
+<div class="counter" id="counter">1 / 7</div>
+<div class="nav" style="position:fixed; bottom:18px; left:0; width:100%; display:flex; justify-content:center; gap:20px; z-index:20;">
+<button onclick="prevSlide()">Back</button><button onclick="toggleFullScreen()">Full Screen</button>
+<button onclick="nextSlide()">Next</button>
+</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    const counter = document.getElementById('counter');
+    let current = 0;
+
+    function showSlide(index){
+      slides[current].classList.remove('active');
+      current = (index + slides.length) % slides.length;
+      slides[current].classList.add('active');
+      counter.textContent = `${current + 1} / ${slides.length}`;
+    }
+
+    function nextSlide(){ showSlide(current + 1); }
+    function prevSlide(){ showSlide(current - 1); }
+
+function toggleFullScreen(){
+  if (!document.fullscreenElement) {
+    document.documentElement.requestFullscreen().catch(()=>{});
+  } else {
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+
+function goToMenu(){
+  if(history.length > 1){
+    history.back();
+  } else {
+    window.location.href = "index.html";
+  }
+}
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === 'PageDown') nextSlide();
+      if (e.key === 'ArrowLeft' || e.key === 'PageUp') prevSlide();
+    });
+  </script>
+<script>
+const HUB_KEY = "reconnectus_shared_current_learner_v1";
+function getLearnerFromHub(){
+ try{
+  const data = JSON.parse(localStorage.getItem(HUB_KEY));
+  if(data && data.name) return data.name;
+ }catch(e){}
+ return "Learner";
+}
+window.reconnectUsHubLearner = getLearnerFromHub();
+</script>
+</div></body>
+</html>

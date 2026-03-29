@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RECONNECT-US • English Learning</title>
+  <meta name="theme-color" content="#0b1220" />
+  <style>
+    :root{
+      --bg1:#03111b; --bg2:#0b2331; --bg3:#12384b;
+      --panel:rgba(7,23,34,.82); --line:rgba(157,234,255,.16);
+      --text:#eef9ff; --muted:#b9d4df; --teal:#22d7c6; --blue:#59a9ff; --shadow:0 24px 60px rgba(0,0,0,.34);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh; font-family:"Segoe UI",Arial,sans-serif; color:var(--text);
+      background:
+        radial-gradient(circle at 15% 18%, rgba(34,215,198,.16), transparent 0 24%),
+        radial-gradient(circle at 84% 12%, rgba(89,169,255,.20), transparent 0 22%),
+        radial-gradient(circle at 78% 85%, rgba(34,215,198,.10), transparent 0 24%),
+        linear-gradient(140deg, var(--bg1), var(--bg2) 50%, var(--bg3));
+      padding:18px;
+    }
+    .shell{max-width:1100px; margin:0 auto; border:1px solid var(--line); border-radius:30px; overflow:hidden; background:rgba(4,14,22,.55); box-shadow:var(--shadow); backdrop-filter:blur(18px)}
+    .topbar{display:flex; justify-content:space-between; align-items:center; gap:12px; padding:18px 22px; border-bottom:1px solid var(--line)}
+    .brand{display:flex; align-items:center; gap:14px}
+    .logo{width:56px; height:56px; border-radius:18px; display:grid; place-items:center; font-weight:800; color:#062433; background:linear-gradient(135deg, var(--teal), var(--blue))}
+    .title h1{margin:0; font-size:1.5rem}
+    .title p{margin:4px 0 0; color:var(--muted)}
+    .btn{border:none; border-radius:16px; padding:12px 16px; font:inherit; font-weight:700; cursor:pointer}
+    .btn.primary{background:linear-gradient(135deg, var(--teal), var(--blue)); color:#042131}
+    .btn.secondary{background:rgba(255,255,255,.05); color:var(--text); border:1px solid rgba(255,255,255,.09)}
+    .hero{padding:24px 22px 12px}
+    .hero h2{margin:0 0 10px; font-size:2rem}
+    .hero p{margin:0; color:var(--muted); line-height:1.7; max-width:60ch}
+    .grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:18px; padding:22px}
+    .card{border:1px solid var(--line); border-radius:26px; background:var(--panel); padding:22px; box-shadow:0 16px 34px rgba(0,0,0,.20)}
+    .card h3{margin:0 0 8px; font-size:1.2rem}
+    .card p{margin:0 0 18px; color:var(--muted); line-height:1.6}
+    .tag{display:inline-flex; padding:8px 12px; border-radius:999px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08); font-size:.9rem; margin-bottom:14px}
+    .footer{padding:0 22px 22px; color:var(--muted); font-size:.92rem}
+    @media (max-width:760px){ .grid{grid-template-columns:1fr} .topbar{flex-direction:column; align-items:flex-start} }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <div class="topbar">
+      <div class="brand">
+        <div class="logo">RU</div>
+        <div class="title">
+          <h1>RECONNECT-US English Learning</h1>
+          <p id="learnerLabel">Choose your learning pack</p>
+        </div>
+      </div>
+      <div style="display:flex; gap:10px; flex-wrap:wrap;">
+        <button class="btn secondary" id="fullscreenBtn" type="button">Full screen</button>
+        <button class="btn secondary" id="backBtn" type="button">Back to home</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <h2>Choose your English section</h2>
+      <p>Both packs save into the same RECONNECT-US home screen system, so learners can leave and come back later from the Continue panel.</p>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <div class="tag">Standard pack</div>
+        <h3>English Learning — Easy</h3>
+        <p>English, maths and grammar practice with the original difficulty settings and a simpler step-up for learners building confidence.</p>
+        <button class="btn primary" id="openEasy" type="button">Open Easy</button>
+      </article>
+
+      <article class="card">
+        <div class="tag">More challenge</div>
+        <h3>English Learning — Harder</h3>
+        <p>A harder pack with tougher vocabulary, stronger grammar questions and more demanding maths practice.</p>
+        <button class="btn primary" id="openHarder" type="button">Open Harder</button>
+      </article>
+    </section>
+
+    <div class="footer">© RECONNECT-US — All rights reserved</div>
+  </div>
+
+  <script>
+    function getHubProfile(){
+      try { return JSON.parse(localStorage.getItem('reconnectus_profile') || 'null'); }
+      catch(e) { return null; }
+    }
+    const profile = getHubProfile();
+    if (profile && profile.name) {
+      document.getElementById('learnerLabel').textContent = 'Signed in learner: ' + profile.name;
+    }
+    document.getElementById('backBtn').addEventListener('click', function () {
+      window.location.href = '../index-b-wired.html';
+    });
+    document.getElementById('openEasy').addEventListener('click', function () {
+      window.location.href = 'english-easy.html';
+    });
+    document.getElementById('openHarder').addEventListener('click', function () {
+      window.location.href = 'english-harder.html';
+    });
+    document.getElementById('fullscreenBtn').addEventListener('click', function () {
+      if (document.fullscreenElement) {
+        document.exitFullscreen?.();
+      } else {
+        document.documentElement.requestFullscreen?.();
+      }
+    });
+  </script>
+</body>
+</html>
