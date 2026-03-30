@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>RECONNECT-US | 111 Signposting</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<style>
+:root{
+  --teal:#007c89;
+  --teal2:#00a6b6;
+  --orange:#ff7a00;
+  --grey:#f4f6f7;
+  --ink:#003b44;
+  --danger:#c62828;
+  --card:#ffffff;
+  --shadow:0 6px 16px rgba(0,0,0,.08);
+}
+
+body{
+  margin:0;
+  font-family:system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  background:var(--grey);
+  color:var(--ink);
+}
+
+header{
+  background:var(--teal);
+  color:#fff;
+  padding:12px 14px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  min-width:0;
+}
+
+.brand .title{
+  font-weight:900;
+  letter-spacing:.8px;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+
+.logo{
+  width:38px;height:38px;
+  flex:0 0 auto;
+  border-radius:10px;
+  background:#fff;
+  display:grid;
+  place-items:center;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
+}
+.logo svg{width:28px;height:28px}
+
+.header-controls{
+  display:flex;
+  gap:8px;
+  align-items:center;
+  flex:0 0 auto
+}
+.header-controls button{
+  width:auto;
+  padding:8px 10px;
+  font-size:14px;
+  background:rgba(255,255,255,.14);
+  border-radius:10px;
+}
+
+.container{
+  max-width:920px;
+  margin:auto;
+  padding:18px;
+}
+
+.card{
+  background:var(--card);
+  border-radius:14px;
+  padding:18px;
+  margin:14px 0;
+  box-shadow:var(--shadow);
+}
+
+h1,h2{margin:0 0 10px 0;color:var(--teal)}
+p{margin:8px 0;line-height:1.35}
+
+button{
+  width:100%;
+  padding:12px;
+  margin:6px 0;
+  border:none;
+  border-radius:12px;
+  background:var(--teal);
+  color:#fff;
+  font-size:16px;
+  cursor:pointer;
+}
+button.secondary{background:var(--teal2)}
+button.orange{background:var(--orange)}
+button.red{background:var(--danger)}
+button.audio{background:var(--teal2);font-size:14px}
+button:active{transform:translateY(1px)}
+.hidden{display:none}
+
+input[type=password]{
+  width:100%;
+  padding:12px;
+  margin:8px 0;
+  border-radius:12px;
+  border:1px solid #d7dfe1;
+  font-size:16px;
+}
+
+.flow{
+  background:#f0fbfd;
+  padding:12px;
+  border-left:6px solid var(--teal);
+  border-radius:12px;
+  white-space:pre-line;
+}
+
+.small{font-size:13px;color:#355}
+
+#statusBar{
+  background:#eafcff;
+  border-left:6px solid var(--teal2);
+  padding:10px 12px;
+  border-radius:12px;
+  margin:12px 0;
+  font-size:13px;
+  white-space:pre-line;
+}
+
+.notice{
+  margin-top:10px;
+  padding:10px 12px;
+  border-radius:12px;
+  background:#fff7e6;
+  border-left:6px solid var(--orange);
+  font-size:12px;
+  color:#554;
+}
+
+.footer{
+  text-align:center;
+  font-size:12px;
+  color:#566;
+  margin:18px 0 6px 0;
+}
+.footer .line{ margin:4px 0; }
+.footer .copyline{
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  gap:8px;
+  flex-wrap:wrap;
+}
+.copyicon{ width:16px;height:16px; vertical-align:middle; }
+.watermark{
+  text-align:center;
+  font-size:11px;
+  color:#778;
+  margin-top:6px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" title="RECONNECT-US">
+      <!-- RECONNECT-US logo mark -->
+      <svg viewBox="0 0 64 64" aria-hidden="true">
+        <path fill="#007c89" d="M32 6c14.36 0 26 11.64 26 26S46.36 58 32 58 6 46.36 6 32 17.64 6 32 6z"/>
+        <path fill="#ff7a00" d="M18 33c0-7.73 6.27-14 14-14 3.2 0 6.14 1.08 8.5 2.9l-3.2 3.2A10.4 10.4 0 0 0 32 22.6c-5.74 0-10.4 4.66-10.4 10.4S26.26 43.4 32 43.4c2.9 0 5.52-1.2 7.4-3.1l3.2 3.2A14 14 0 0 1 18 33z"/>
+        <path fill="#ffffff" d="M44.5 29.2l-2.9 2.9 2.9 2.9c.6.6.6 1.6 0 2.2l-2.3 2.3c-.6.6-1.6.6-2.2 0l-2.9-2.9-2.9 2.9c-.6.6-1.6.6-2.2 0l-2.3-2.3c-.6-.6-.6-1.6 0-2.2l2.9-2.9-2.9-2.9c-.6-.6-.6-1.6 0-2.2l2.3-2.3c.6-.6 1.6-.6 2.2 0l2.9 2.9 2.9-2.9c.6-.6 1.6-.6 2.2 0l2.3 2.3c.6.6.6 1.6 0 2.2z"/>
+      </svg>
+    </div>
+    <div class="title">RECONNECT-US - 111 SIGNPOSTING</div>
+  </div>
+
+  <div class="header-controls">
+    <button onclick="toggleFullScreen()">Full Screen</button>
+  </div>
+</header>
+
+<div class="container">
+  <div id="statusBar">Status: Ready.</div>
+
+  <div id="welcome" class="card hidden">
+    <h1>I need health help</h1>
+    <p>This tool helps you decide a sensible next step. It is educational signposting only.</p>
+    <button class="orange" onclick="show('symptoms')">Start</button>
+    <button class="secondary" onclick="show('admin')">Admin</button>
+    <div class="notice">
+      <strong>Important:</strong> This tool gives general guidance only. It is not a substitute for a GP, pharmacist, NHS 111, A&amp;E, diagnosis, or treatment. If you are worried, symptoms get worse, or it feels urgent, seek professional help. In an emergency, call 999 or go to A&amp;E.
+    </div>
+    <div class="notice">
+      RECONNECT-US property. This app may not be copied, moved, shared, or used on another device without prior written permission.
+    </div>
+  </div>
+
+  <div id="admin" class="card hidden">
+    <h2>Admin Access</h2>
+    <input type="password" id="adminCode" placeholder="Admin code" />
+    <button class="secondary" onclick="checkAdmin()">Unlock</button>
+    <p class="small">Admin is for editing symptoms.</p>
+  </div>
+
+  <div id="adminPanel" class="card hidden">
+    <h2>Admin Panel</h2>
+    <button onclick="editSymptoms()">Add Symptom</button>
+    <p class="small">Tip: Add local options like walk-in, urgent treatment centre, minor injuries, etc.</p>
+    <button onclick="show('welcome')">Exit Admin</button>
+  </div>
+
+  <div id="symptoms" class="card hidden">
+    <h2>Select symptoms</h2>
+    <div id="symptomList"></div>
+    <button onclick="buildJourney()">Continue</button>
+    <button class="secondary" onclick="show('welcome')">Back</button>
+  </div>
+
+  <div id="journey" class="card hidden">
+    <h2>Your journey</h2>
+    <div id="flow" class="flow"></div>
+    <button class="audio" onclick="speak(flow.innerText)">Listen</button>
+    <button onclick="show('next')">Next</button>
+    <button onclick="saveJourney()">Save</button>
+    <button onclick="window.print()">Print</button>
+    <button class="secondary" onclick="show('symptoms')">Back</button>
+  </div>
+
+  <div id="next" class="card hidden">
+    <h2>Next steps</h2>
+    <p id="nextText"></p>
+
+    <button class="audio" onclick="speak(nextText.innerText)">Listen</button>
+
+    <!-- 111 App only -->
+    <button onclick="open111App()">111 App</button>
+
+    <button onclick="restart()">Finish</button>
+    <button class="secondary" onclick="show('journey')">Back</button>
+
+    <p class="small">If you feel unsafe or symptoms are severe, call 999.</p>
+  </div>
+
+  <div class="footer">
+    <div class="line copyline">
+      <!-- SVG circled-C (won't become triangles) -->
+      <svg class="copyicon" viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="12" cy="12" r="10" fill="none" stroke="#566" stroke-width="2"></circle>
+        <path d="M14.8 8.8c-.6-.6-1.4-.9-2.4-.9-2 0-3.6 1.6-3.6 4.1 0 2.5 1.6 4.1 3.6 4.1 1 0 1.8-.3 2.4-.9"
+              fill="none" stroke="#566" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      <span>RECONNECT-US / ALL RIGHTS RESERVED</span>
+    </div>
+
+    <div class="line">EDUCATIONAL SIGNPOSTING ONLY / IN DANGER? CALL 999</div>
+
+    <div class="watermark">
+      RECONNECT-US property. This app may not be copied, moved, shared, removed, or redistributed without prior written permission.
+    </div>
+  </div>
+</div>
+
+<script>
+/* ADMIN CODE */
+const ADMIN_CODE = "Wl0375";
+
+/* Full symptom list */
+const symptomDefs = [
+  { key:"pain", lvl:1, label:"Pain" },
+  { key:"fever", lvl:1, label:"Fever" },
+  { key:"coldflu", lvl:1, label:"Cold / flu symptoms" },
+  { key:"cough", lvl:1, label:"Cough" },
+  { key:"sorethroat", lvl:1, label:"Sore throat" },
+  { key:"earache", lvl:1, label:"Earache" },
+  { key:"tooth", lvl:1, label:"Tooth pain / dental problem" },
+  { key:"rash", lvl:2, label:"Rash" },
+  { key:"infection", lvl:2, label:"Infection" },
+  { key:"uti", lvl:2, label:"Urine infection symptoms" },
+  { key:"vomit", lvl:2, label:"Vomiting" },
+  { key:"diarrhoea", lvl:2, label:"Diarrhoea" },
+  { key:"stomach", lvl:2, label:"Stomach pain" },
+  { key:"headache", lvl:2, label:"Headache / migraine" },
+  { key:"dizzy", lvl:2, label:"Dizziness / faint feeling" },
+  { key:"allergy", lvl:2, label:"Allergic reaction (mild)" },
+  { key:"medicine", lvl:1, label:"Medicine issue" },
+  { key:"wound", lvl:2, label:"Wound that may need advice" },
+  { key:"sprain", lvl:2, label:"Sprain / strain" },
+  { key:"injury", lvl:3, label:"Serious injury" },
+  { key:"bleeding", lvl:3, label:"Heavy bleeding" },
+  { key:"breathing", lvl:3, label:"Breathing problem / chest pain" },
+  { key:"stroke", lvl:3, label:"Signs of stroke (face/arm/speech)" },
+  { key:"unconscious", lvl:3, label:"Collapse / unconscious" },
+  { key:"seizure", lvl:3, label:"Seizure / fit" },
+  { key:"burn", lvl:2, label:"Burn / scald" },
+  { key:"burnsevere", lvl:3, label:"Severe burn" },
+  { key:"preg", lvl:2, label:"Pregnancy concern" },
+  { key:"child", lvl:2, label:"Child health concern" },
+  { key:"mh", lvl:2, label:"Mental health (low mood, anxiety, stress)" },
+  { key:"mhcrisis", lvl:3, label:"Mental health crisis (unsafe right now)" }
+];
+
+function setStatus(msg){
+  document.getElementById("statusBar").innerText = "Status: " + msg;
+}
+
+function show(id){
+  document.querySelectorAll(".card").forEach(c => c.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+
+  const adminInput = document.getElementById("adminCode");
+  if(adminInput && id !== "admin") adminInput.value = "";
+}
+
+function toggleFullScreen(){
+  try{
+    if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+    else document.exitFullscreen?.();
+  }catch(e){
+    setStatus("Full screen not supported here.");
+  }
+}
+
+/* Admin lock */
+function checkAdmin(){
+  if((adminCode.value || "").trim() === ADMIN_CODE){
+    adminCode.value = "";
+    show("adminPanel");
+  } else {
+    adminCode.value = "";
+    alert("Wrong admin code");
+  }
+}
+
+function editSymptoms(){
+  const name = prompt("New symptom name:");
+  if(!name) return;
+  const level = prompt("Risk level? 1 (self-care), 2 (advice), 3 (urgent).", "1");
+  const lvlNum = Math.min(3, Math.max(1, parseInt(level || "1", 10)));
+  symptomDefs.push({ key:"custom_"+Date.now(), lvl:lvlNum, label:name });
+  loadSymptoms();
+  setStatus("Symptom added.");
+}
+
+/* Symptoms list */
+function loadSymptoms(){
+  const list = document.getElementById("symptomList");
+  list.innerHTML = "";
+  symptomDefs.forEach((s, idx) => {
+    list.innerHTML += `
+      <label style="display:block;padding:6px 0;">
+        <input type="checkbox" data-idx="${idx}"> ${s.label}
+      </label>`;
+  });
+}
+
+/* Journey */
+function buildJourney(){
+  const checked = [...document.querySelectorAll("#symptomList input[type=checkbox]:checked")];
+  if(!checked.length){
+    alert("Please select at least one symptom.");
+    return;
+  }
+
+  const chosen = checked.map(cb => symptomDefs[parseInt(cb.dataset.idx, 10)]);
+  const names = chosen.map(s => s.label);
+  const maxLvl = Math.max(...chosen.map(s => s.lvl));
+
+  let recommendation = "";
+  let reason = "";
+
+  if(maxLvl === 3){
+    recommendation = "Use 111 App now. If severe or life-threatening, call 999.";
+    reason = "One or more symptoms could be serious. 111 can advise you quickly and safely.";
+  } else if(maxLvl === 2){
+    recommendation = "Use 111 App for advice.";
+    reason = "These symptoms usually need guidance, but are not always an emergency.";
+  } else {
+    recommendation = "Use 111 App for advice if you are unsure.";
+    reason = "Many common problems can be managed with self-care or advice. 111 can direct you.";
+  }
+
+  const reassurance =
+    "Feeling worried is normal.\n" +
+    "This tool helps you choose a sensible next step.\n" +
+    "If symptoms get worse or you feel unsafe, call 999.";
+
+  const flowText =
+    "Symptoms selected: " + names.join(", ") + "\n\n" +
+    "Recommended next step: " + recommendation + "\n" +
+    "Why: " + reason + "\n\n" + reassurance;
+
+  document.getElementById("flow").innerText = flowText;
+
+  document.getElementById("nextText").innerText =
+    "Next step: " + recommendation + "\n\n" +
+    "Tap 111 App to get official advice.\n" +
+    "If you feel unsafe or symptoms are severe, call 999.";
+
+  setStatus("Journey built.");
+  show("journey");
+}
+
+function saveJourney(){
+  trackHealthUsage("health_help_save_clicked", { source: "health_111" });
+  alert("This website version does not save symptom selections or health details.");
+}
+
+function restart(){
+  document.querySelectorAll("#symptomList input[type=checkbox]").forEach(i => i.checked = false);
+  setStatus("Ready.");
+  show("welcome");
+}
+
+/* Speech: English only */
+function speak(text){
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = "en-GB";
+  u.rate = 0.9;
+  speechSynthesis.speak(u);
+}
+
+/* 111 App button (web entry point) */
+function open111App(){
+  window.open("https://111.nhs.uk", "_blank");
+  setStatus("Opened 111 App page.");
+}
+
+/* Shared hub tracking: count opens only, not symptoms */
+const TRACKING_KEY = "reconnectus_tracking_data";
+
+function getTrackingData(){
+  try{
+    const data = JSON.parse(localStorage.getItem(TRACKING_KEY) || '{"events":[],"counters":{}}');
+    data.events = Array.isArray(data.events) ? data.events : [];
+    data.counters = data.counters || {};
+    return data;
+  }catch(e){
+    return { events: [], counters: {} };
+  }
+}
+
+function trackHealthUsage(eventType, payload = {}){
+  const tracking = getTrackingData();
+  tracking.events.unshift({ eventType, payload, timestamp: new Date().toISOString() });
+  tracking.events = tracking.events.slice(0, 150);
+  tracking.counters[eventType] = (tracking.counters[eventType] || 0) + 1;
+  tracking.counters.health_help_opened = tracking.counters.health_help_opened || 0;
+  localStorage.setItem(TRACKING_KEY, JSON.stringify(tracking));
+}
+
+/* INIT */
+(function init(){
+  loadSymptoms();
+  show("welcome");
+  trackHealthUsage("app_opened", { appId: "health_help", source: "homepage_tile" });
+  trackHealthUsage("health_help_opened", { source: "homepage_tile" });
+  setStatus("Ready.");
+})();
+</script>
+
+</body>
+</html>
