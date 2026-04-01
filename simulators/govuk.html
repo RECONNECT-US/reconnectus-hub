@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RECONNECT-US GOV.UK Training Simulator</title>
+<style>
+  :root{
+    --rc-teal:#10b3a6;
+    --rc-orange:#ff8a3d;
+    --rc-dark:#0b0c0c;
+    --rc-blue:#1d70b8;
+    --rc-bg:#eef2f3;
+    --card:#ffffff;
+    --muted:#6b7280;
+    --line:#d8dde0;
+    --soft:#f3f2f1;
+    --danger:#d4351c;
+    --ok:#00703c;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Arial,Helvetica,sans-serif;background:var(--rc-bg);color:#0b0c0c}
+  header{
+    background:linear-gradient(90deg,var(--rc-dark),#111827);
+    color:#fff;
+    padding:10px 14px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+    flex-wrap:wrap;
+    position:sticky;top:0;z-index:10;
+  }
+  .brand{display:flex;align-items:center;gap:10px}
+  .brand .logo{
+    width:34px;height:34px;border-radius:10px;
+    background:conic-gradient(from 180deg,var(--rc-teal),var(--rc-blue),var(--rc-orange),var(--rc-teal));
+    box-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+  .brand .title{font-weight:800;letter-spacing:.4px}
+  .brand .subtitle{font-size:12px;opacity:.85;margin-top:1px}
+  .hdr-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .hdr-btn{
+    background:var(--rc-blue);
+    color:#fff;border:none;border-radius:10px;
+    padding:7px 10px;cursor:pointer;font-size:12px;
+  }
+  .hdr-btn.secondary{background:#111827;border:1px solid rgba(255,255,255,.2)}
+  .wrap{max-width:1100px;margin:0 auto;padding:16px}
+  .screen{display:none}
+  .screen.active{display:block}
+
+  .card{
+    background:var(--card);
+    border-radius:16px;
+    padding:16px;
+    box-shadow:0 2px 10px rgba(0,0,0,.12);
+    margin-bottom:16px;
+  }
+  h1,h2,h3{margin:0 0 10px 0}
+  p{margin:8px 0;line-height:1.4}
+  .muted{color:var(--muted);font-size:13px}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .row > *{flex:1}
+  .input{
+    width:100%;padding:10px 12px;border-radius:12px;border:1px solid #cbd5e1;
+    font-size:14px;outline:none;
+  }
+  .input:focus{border-color:var(--rc-blue);box-shadow:0 0 0 3px rgba(29,112,184,.18)}
+  .btn{
+    background:var(--rc-blue);
+    color:#fff;border:none;border-radius:12px;
+    padding:10px 12px;cursor:pointer;font-size:14px;
+  }
+  .btn.secondary{background:#e5e7eb;color:#111827}
+  .btn.danger{background:var(--danger)}
+  .btn.small{padding:7px 10px;font-size:12px;border-radius:10px}
+  .btn.full{width:100%;text-align:left}
+  .pill{
+    display:inline-block;padding:4px 10px;border-radius:999px;
+    font-size:12px;background:rgba(16,179,166,.12);color:#0b0c0c;border:1px solid rgba(16,179,166,.35)
+  }
+  .pill.ok{background:rgba(0,112,60,.12);border-color:rgba(0,112,60,.35)}
+  .pill.warn{background:rgba(212,53,28,.10);border-color:rgba(212,53,28,.25)}
+
+  /* Menu list */
+  .menu-btn{display:flex;justify-content:space-between;align-items:center;gap:10px}
+  .tick{
+    width:22px;height:22px;border-radius:7px;border:1px solid var(--line);
+    display:flex;align-items:center;justify-content:center;
+    font-size:14px;color:#fff;background:#fff;
+  }
+  .tick.done{background:var(--ok);border-color:var(--ok)}
+  .tick span{transform:translateY(-1px)}
+  .menu-meta{font-size:12px;color:var(--muted);margin-top:3px}
+
+  /* Centered illustration boxes (hybrid web + mobile feel) */
+  .illusWrap{display:flex;justify-content:center;margin-top:12px}
+  .illus{
+    width:min(720px, 96%);
+    border:1px solid var(--line);
+    border-radius:18px;
+    overflow:hidden;
+    background:#fff;
+    box-shadow:0 2px 10px rgba(0,0,0,.10);
+  }
+  .mockBar{
+    background:var(--rc-dark);color:#fff;
+    padding:10px 12px;display:flex;justify-content:space-between;align-items:center;gap:10px;
+    font-size:12px
+  }
+  .mockBrand{font-weight:800;letter-spacing:.2px}
+  .mockBadge{font-size:11px;background:var(--rc-blue);padding:4px 9px;border-radius:999px}
+  .mockBody{padding:14px;background:#fff}
+  .mockBack{color:var(--rc-blue);text-decoration:underline;font-size:12px;margin-bottom:8px;display:inline-block}
+  .mockH1{font-size:18px;font-weight:800;margin:0 0 8px 0}
+  .mockH2{font-size:14px;font-weight:800;margin:12px 0 6px 0}
+  .mockP{font-size:13px;line-height:1.35;margin:6px 0}
+  .mockPanel{
+    border-left:6px solid var(--rc-blue);
+    background:#eef6ff;border-radius:12px;padding:10px;margin:10px 0;font-size:12px
+  }
+  .mockWarn{
+    border-left:6px solid var(--danger);
+    background:#fff1f1;border-radius:12px;padding:10px;margin:10px 0;font-size:12px
+  }
+  .mockCards{display:grid;grid-template-columns:repeat(2, minmax(0,1fr));gap:10px;margin-top:10px}
+  @media (max-width:650px){.mockCards{grid-template-columns:1fr}}
+  .mockCard{
+    border:1px solid var(--line);
+    border-radius:14px;padding:10px;background:#fff
+  }
+  .mockCardTitle{font-size:13px;font-weight:800;margin-bottom:6px}
+  .line{height:10px;background:#e6e6e6;border-radius:999px;margin:8px 0}
+  .line.short{width:55%}
+  .line.med{width:76%}
+  .line.long{width:92%}
+
+  .mockBtns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+  .mockBtn{
+    font-size:12px;padding:8px 12px;border-radius:12px;border:1px solid #cbd5e1;background:#f8fafc;color:#0b0c0c
+  }
+  .mockBtn.primary{background:var(--rc-blue);border-color:var(--rc-blue);color:#fff}
+  .mockBtn.dark{background:var(--rc-dark);border-color:var(--rc-dark);color:#fff}
+  .mockFoot{
+    padding:10px 12px;background:var(--soft);border-top:1px solid var(--line);
+    font-size:11px;color:#374151
+  }
+
+  /* UC journal style */
+  .thread{border:1px solid var(--line);border-radius:16px;overflow:hidden;background:#fff;margin-top:10px}
+  .threadTop{background:var(--soft);padding:10px 12px;border-bottom:1px solid var(--line);font-size:12px}
+  .msg{padding:10px 12px;border-bottom:1px solid #eef0f1}
+  .msg:last-child{border-bottom:none}
+  .msgTitle{font-size:12px;font-weight:800;margin-bottom:4px}
+  .tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+  .tab{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid #b1b4b6;background:#fff}
+  .tab.active{background:var(--rc-blue);border-color:var(--rc-blue);color:#fff}
+
+  /* Stepper */
+  .stepper{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0}
+  .stepDot{width:10px;height:10px;border-radius:99px;background:#d1d5db}
+  .stepDot.on{background:var(--rc-blue)}
+  .stepMeta{font-size:12px;color:var(--muted)}
+
+  /* Modal (no alert() so fullscreen stays) */
+  .modalOverlay{
+    position:fixed;inset:0;background:rgba(0,0,0,.55);
+    display:none;align-items:center;justify-content:center;padding:16px;z-index:9999;
+  }
+  .modalOverlay.on{display:flex}
+  .modal{
+    background:#fff;border-radius:18px;max-width:520px;width:100%;
+    box-shadow:0 10px 30px rgba(0,0,0,.35);padding:16px;
+  }
+  .modal h3{margin:0 0 6px 0}
+  .modal .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px}
+  .confirmActions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:12px}
+  .legal{
+    font-size:11px;color:#334155;line-height:1.35;background:#fff;border:1px dashed rgba(16,179,166,.5);
+    padding:10px;border-radius:14px;margin-top:10px
+  }
+  .legal strong{color:#0b0c0c}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo" aria-hidden="true"></div>
+    <div>
+      <div class="title">RECONNECT-US • GOV.UK TRAINING SIMULATOR</div>
+      <div class="subtitle">Offline training mock • Hybrid web+mobile illustrations • No real data</div>
+    </div>
+  </div>
+  <div class="hdr-actions">
+    <button class="hdr-btn" onclick="toggleFullScreen()">Full screen</button>
+    <button class="hdr-btn secondary" onclick="openLegal()">Property notice</button>
+    <button class="hdr-btn secondary" onclick="confirmResetProgress()">Reset progress</button>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- Activation -->
+  <!-- Welcome -->
+  <!-- Trainer -->
+  <!-- Learner select -->
+  <!-- Menu -->
+  <section id="screen-menu" class="screen active">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div>
+          <h2>Main menu</h2>
+          <div class="muted">Using hub learner: <strong id="who"></strong></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <span class="pill" id="savePill">Progress saves through the RECONNECT-US hub</span>
+          <button class="btn secondary small" type="button">Using hub login</button>
+          <button class="btn danger small" type="button" onclick="confirmResetProgress()">Reset progress</button>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;display:grid;grid-template-columns:1fr;gap:10px">
+        <!-- 14 modules + UC = 14 total here (as per your menu) -->
+        <button class="btn full secondary menu-btn" onclick="openModule('UC')">
+          <div>
+            <div><strong>1. Universal Credit</strong></div>
+            <div class="menu-meta">Journey-style training (journal / to-dos / report a change)</div>
+          </div>
+          <div class="tick" id="tick-UC"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('BF')">
+          <div>
+            <div><strong>2. Benefits & finance overview</strong></div>
+            <div class="menu-meta">Safe searching • categories • budgeting basics • scam awareness</div>
+          </div>
+          <div class="tick" id="tick-BF"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('PIP')">
+          <div>
+            <div><strong>3. PIP guidance</strong></div>
+            <div class="menu-meta">Find PIP guidance • stages • evidence • privacy boundaries</div>
+          </div>
+          <div class="tick" id="tick-PIP"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('COL')">
+          <div>
+            <div><strong>4. Cost of living help</strong></div>
+            <div class="menu-meta">Official support routes • council links • scam protection</div>
+          </div>
+          <div class="tick" id="tick-COL"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('GOV')">
+          <div>
+            <div><strong>5. GOV.UK account</strong></div>
+            <div class="menu-meta">Find sign-in • recognition • verification steps</div>
+          </div>
+          <div class="tick" id="tick-GOV"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('GW')">
+          <div>
+            <div><strong>6. Government Gateway / HMRC sign-in</strong></div>
+            <div class="menu-meta">User ID • password • recovery links • security codes</div>
+          </div>
+          <div class="tick" id="tick-GW"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('PTA')">
+          <div>
+            <div><strong>7. HMRC Personal Tax Account</strong></div>
+            <div class="menu-meta">Dashboard cards • tabs • what to check • stop-and-ask</div>
+          </div>
+          <div class="tick" id="tick-PTA"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('TAX')">
+          <div>
+            <div><strong>8. Tax basics</strong></div>
+            <div class="menu-meta">PAYE • NI • tax codes • refund scams</div>
+          </div>
+          <div class="tick" id="tick-TAX"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('DVLA')">
+          <div>
+            <div><strong>9. DVLA driving licence</strong></div>
+            <div class="menu-meta">Step-by-step renew journey • confirmation • scam warnings</div>
+          </div>
+          <div class="tick" id="tick-DVLA"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('VT')">
+          <div>
+            <div><strong>10. Vehicle tax</strong></div>
+            <div class="menu-meta">Start now • reference layout • payment choice • confirm</div>
+          </div>
+          <div class="tick" id="tick-VT"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('PASS')">
+          <div>
+            <div><strong>11. Passports & travel</strong></div>
+            <div class="menu-meta">Official routes • tasks • photos • tracking • safety</div>
+          </div>
+          <div class="tick" id="tick-PASS"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('REN')">
+          <div>
+            <div><strong>12. Renew passport</strong></div>
+            <div class="menu-meta">Eligibility • form journey • payment • next steps</div>
+          </div>
+          <div class="tick" id="tick-REN"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('HOUSE')">
+          <div>
+            <div><strong>13. Housing & council</strong></div>
+            <div class="menu-meta">Find local council • common tasks • council tax • privacy</div>
+          </div>
+          <div class="tick" id="tick-HOUSE"><span>✓</span></div>
+        </button>
+
+        <button class="btn full secondary menu-btn" onclick="openModule('LIFE')">
+          <div>
+            <div><strong>14. Change of address & life events</strong></div>
+            <div class="menu-meta">Checklist • reporting changes • staying safe</div>
+          </div>
+          <div class="tick" id="tick-LIFE"><span>✓</span></div>
+        </button>
+      </div>
+
+      <div class="legal">
+        <strong>RECONNECT-US Property Notice:</strong> This simulator is the property of RECONNECT-US and may not be copied, shared, modified,
+        or removed without written permission. Use only on authorised devices/sessions.
+      </div>
+    </div>
+  </section>
+
+  <!-- Module Player -->
+  <section id="screen-module" class="screen">
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:10px;flex-wrap:wrap">
+        <div>
+          <h2 id="modTitle">Module</h2>
+          <div class="stepMeta" id="stepMeta">Step</div>
+          <div class="stepper" id="stepper"></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <span class="pill" id="donePill">Not completed</span>
+          <button class="btn small danger" onclick="confirmResetProgress()">Reset progress</button>
+          <button class="btn small secondary" onclick="goMenu()">Back to menu</button>
+        </div>
+      </div>
+
+      <div id="modText" class="muted" style="margin-top:6px"></div>
+
+      <div class="illusWrap">
+        <div class="illus" id="illus"></div>
+      </div>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:space-between;margin-top:12px">
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn secondary" onclick="prevStep()">Previous</button>
+          <button class="btn secondary" onclick="nextStep()">Next</button>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end">
+          <button class="btn" onclick="markComplete()">Mark module complete</button>
+        </div>
+      </div>
+
+      <div class="legal">
+        <strong>RECONNECT-US Property Notice:</strong> This material is the property of RECONNECT-US and may not be copied, shared, modified,
+        or removed without written permission.
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- Confirm Modal -->
+<div id="confirmOverlay" class="modalOverlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3 id="confirmTitle">Please confirm</h3>
+    <div id="confirmBody" class="muted"></div>
+    <div class="confirmActions">
+      <button class="btn secondary" type="button" onclick="closeConfirm()">Cancel</button>
+      <button class="btn danger" type="button" onclick="runConfirmAction()">Reset progress</button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<div id="modalOverlay" class="modalOverlay" role="dialog" aria-modal="true">
+  <div class="modal">
+    <h3 id="modalTitle">Message</h3>
+    <div id="modalBody" class="muted"></div>
+    <div class="actions">
+      <button class="btn secondary" onclick="closeModal()">OK</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =========================
+   Settings / Storage
+========================= */
+const ACTIVATION_CODE = "A5435AEr51031"; // as used previously
+const TRAINER_OVERRIDE_CODE = "51031";   // kept hidden (never displayed)
+
+const KEY_ACT = "reconnect_govuk_activated_v8";
+const KEY_LEARNERS = "reconnect_govuk_learners_v8";
+const KEY_PROGRESS = "reconnect_govuk_progress_v8";
+const KEY_CURRENT = "reconnect_govuk_current_v8";
+const SHARED_HUB_KEY = "reconnectus_shared_current_learner_v1";
+function normaliseHubLearnerName(raw){
+  return (raw || "").toUpperCase().replace(/[^A-Z0-9 ]/g,"").trim().slice(0, 24);
+}
+function getSharedHubLearnerName(){
+  try{
+    const shared = JSON.parse(localStorage.getItem(SHARED_HUB_KEY) || "null");
+    if(shared && shared.name) return normaliseHubLearnerName(shared.name);
+  }catch(e){}
+  try{
+    const params = new URLSearchParams(window.location.search);
+    return normaliseHubLearnerName(params.get("learner") || "");
+  }catch(e){}
+  return "";
+}
+
+
+/* =========================
+   App state
+========================= */
+let currentLearner = null;
+let pendingLearner = null;
+let currentModuleKey = null;
+let currentStepIndex = 0;
+
+/* =========================
+   Modules (step-by-step)
+   Each step has: title, text, template, cards/buttons/tabs etc.
+========================= */
+const modules = {
+  UC: {
+    name: "Universal Credit",
+    steps: [
+      { title:"Start safely", text:"Start on GOV.UK. Search for Universal Credit using the official GOV.UK search (avoid adverts).", template:"GUIDE",
+        panel:"Tip: Always check the website address. If you're unsure, pause and ask for help." },
+      { title:"Universal Credit service page", text:"This is the service information page. Learners look for the 'Start now' / 'Sign in' area.", template:"START_NOW",
+        primary:"Start now", secondary:["Eligibility","What you need"] },
+      { title:"Sign in layout (training)", text:"This trainer shows where sign-in fields typically appear. Do not enter real details.", template:"LOGIN" },
+      { title:"UC home (journey view)", text:"After signing in, learners usually see a home screen with key areas like Journal, To-dos, Payments, Report a change.", template:"UC_HOME" },
+      { title:"Journal (messages)", text:"The Journal is where messages and updates appear. Encourage learners to read carefully and respond only when needed.", template:"UC_JOURNAL" },
+      { title:"To-dos", text:"To-dos show tasks the learner needs to complete (upload evidence, confirm details, etc.). Training shows layout only.", template:"CHECKLIST",
+        items:["Check your to-dos","Open the correct task","Read instructions slowly","Complete one step at a time"] },
+      { title:"Report a change", text:"Reporting changes is usually a guided form journey. Training shows the step-by-step flow.", template:"WIZARD",
+        stepLabel:"Change details", fields:["What changed?","When did it change?","Anything else to add?"] },
+      { title:"Confirmation", text:"A confirmation screen explains what happens next. In real life, learners may get a reference.", template:"CONFIRM" }
+    ]
+  },
+
+  BF: {
+    name:"Benefits & finance overview",
+    steps:[
+      { title:"Safe searching", text:"Use GOV.UK first. Avoid unofficial 'help' websites charging fees.", template:"GUIDE",
+        warn:"If a site asks for fees or urgent action, stop and verify the official route." },
+      { title:"Common categories", text:"Learners often need: benefits, housing support, disability support, carers, pensions.", template:"MENU_CARDS",
+        cards:["Benefits","Housing","Disability","Carers"] },
+      { title:"Budget basics", text:"Budgeting is money in vs money out. Prioritise essentials first.", template:"DASHBOARD_CARDS",
+        cards:["Income","Essentials","Bills","Other spending"] },
+      { title:"Priority bills", text:"Priority bills usually include rent, council tax, energy, court fines. Get advice early.", template:"GUIDE",
+        panel:"Tip: Make a list of priority bills first, then work down." },
+      { title:"Scam awareness", text:"Never share passwords, one-time codes, or bank PINs. Verify official sources.", template:"GUIDE",
+        warn:"Common scams: 'rebate' texts, refund links, urgency tactics." }
+    ]
+  },
+
+  PIP: {
+    name:"PIP guidance",
+    steps:[
+      { title:"Find PIP guidance", text:"Start on GOV.UK and search 'Personal Independence Payment (PIP)'.", template:"GUIDE" },
+      { title:"Stages", text:"Typical stages: start claim → forms → assessment (if needed) → decision → challenge.", template:"FLOW",
+        flow:["Start","Forms","Assessment","Decision","Challenge"] },
+      { title:"Evidence & support", text:"Support is often needed. In training, never enter real health details.", template:"GUIDE",
+        panel:"Tip: In real life, keep copies of letters and dates." },
+      { title:"Privacy boundaries", text:"PIP can involve sensitive information. Training uses dummy examples only.", template:"GUIDE",
+        warn:"Do not store real health information in the trainer." }
+    ]
+  },
+
+  COL: {
+    name:"Cost of living help",
+    steps:[
+      { title:"Official guidance", text:"Support changes. Start at GOV.UK for the latest official guidance.", template:"GUIDE" },
+      { title:"Support areas", text:"Learners often look for help with energy, housing, food, council support.", template:"MENU_CARDS",
+        cards:["Energy","Housing","Food support","Council support"] },
+      { title:"Local council", text:"Some support is local. Use GOV.UK to find the correct council website.", template:"FIND_COUNCIL" },
+      { title:"Scam warnings", text:"Beware fake rebate links. Verify the site before entering any details.", template:"GUIDE",
+        warn:"If it feels urgent or asks for private info, stop and check." }
+    ]
+  },
+
+  GOV: {
+    name:"GOV.UK account",
+    steps:[
+      { title:"Find sign in", text:"Many services show a sign in / continue button. Training shows typical placement.", template:"START_NOW",
+        primary:"Sign in", secondary:["Help","Contact"] },
+      { title:"Login layout", text:"Training shows the sign in layout. Do not enter real logins.", template:"LOGIN" },
+      { title:"Verification", text:"Some services use one-time security codes. Never share them.", template:"WIZARD",
+        stepLabel:"Security check", fields:["Enter one-time code","Continue"] }
+    ]
+  },
+
+  GW: {
+    name:"Government Gateway / HMRC sign-in",
+    steps:[
+      { title:"Gateway sign-in layout", text:"Government Gateway often uses a user ID and password.", template:"LOGIN",
+        hint:"Training layout — no real credentials." },
+      { title:"Forgotten details", text:"Recovery links are usually on the sign-in page.", template:"MENU_CARDS",
+        cards:["Forgotten user ID","Forgotten password","Help"] },
+      { title:"Security code", text:"You may be asked for an extra security check.", template:"WIZARD",
+        stepLabel:"Extra security", fields:["Enter code","Continue"] }
+    ]
+  },
+
+  PTA: {
+    name:"HMRC Personal Tax Account",
+    steps:[
+      { title:"Dashboard", text:"Learners see cards like tax code, PAYE, NI, messages.", template:"DASHBOARD_CARDS",
+        cards:["Tax code","PAYE","National Insurance","Messages"] },
+      { title:"Tabs", text:"Some account areas use tabs to switch sections.", template:"TABS",
+        tabs:["Overview","Details","Messages","Help"], active:0 },
+      { title:"What to check", text:"Read dates carefully. If unsure, pause and ask for help.", template:"GUIDE",
+        panel:"Tip: Check employment dates and tax code before taking action." }
+    ]
+  },
+
+  TAX: {
+    name:"Tax basics",
+    steps:[
+      { title:"Payslip basics", text:"Payslips show gross pay, tax, NI and net pay.", template:"DASHBOARD_CARDS",
+        cards:["Gross pay","Tax","NI","Net pay"] },
+      { title:"Tax codes", text:"Tax codes affect how much tax is taken. Training shows where it appears.", template:"GUIDE",
+        panel:"Example: 1257L (example only)" },
+      { title:"Refund scams", text:"Refund messages can be scams. Use only official GOV.UK/HMRC routes.", template:"GUIDE",
+        warn:"Never click random refund links." }
+    ]
+  },
+
+  DVLA: {
+    name:"DVLA driving licence (renew journey)",
+    steps:[
+      { title:"Choose a DVLA task", text:"Learners choose the right DVLA task. Training shows a realistic menu layout.", template:"DVLA_MENU",
+        cards:["Renew driving licence","Change address","Replace licence","View details"] },
+      { title:"Service page", text:"Learners find the 'Start now' button on the official service page.", template:"START_NOW",
+        primary:"Start now", secondary:["Eligibility","What you need"] },
+      { title:"Step 1 of renewal", text:"The renew journey asks step-by-step questions. Training shows one step at a time.", template:"WIZARD",
+        stepLabel:"Renew licence", fields:["Confirm details","Continue"] },
+      { title:"Step 2 of renewal", text:"Next, learners may be guided through photo/identity steps. Training shows layout only.", template:"WIZARD",
+        stepLabel:"Identity check", fields:["Photo route","Continue"] },
+      { title:"Select options", text:"Some journeys include selecting options before confirmation.", template:"MENU_CARDS",
+        cards:["Option A","Option B","Option C"] },
+      { title:"Confirmation", text:"Final screen explains what happens next (timescales / reference).", template:"CONFIRM" },
+      { title:"Scam warning", text:"DVLA scam texts are common. Only use GOV.UK. Verify before paying or sharing details.", template:"GUIDE",
+        warn:"If it’s not GOV.UK, stop and check." }
+    ]
+  },
+
+  VT: {
+    name:"Vehicle tax",
+    steps:[
+      { title:"Service page", text:"Vehicle tax usually starts with a service page and 'Start now'.", template:"START_NOW",
+        primary:"Start now", secondary:["What you need","Help"] },
+      { title:"Reference layout", text:"The service normally asks for a reference number (training shows layout only).", template:"WIZARD",
+        stepLabel:"Reference", fields:["Enter reference","Continue"] },
+      { title:"Choose period", text:"Learners choose 6 or 12 months (options can vary).", template:"MENU_CARDS",
+        cards:["6 months","12 months","Payment method"] },
+      { title:"Confirmation", text:"Confirmation screen shows completion.", template:"CONFIRM" }
+    ]
+  },
+
+  PASS: {
+    name:"Passports & travel",
+    steps:[
+      { title:"Choose a passport task", text:"Learners choose the correct task (renew, lost/stolen, track).", template:"MENU_CARDS",
+        cards:["Renew passport","Lost or stolen","Track application","Travel advice"] },
+      { title:"Photo rules", text:"Follow official photo guidance to avoid delays.", template:"GUIDE",
+        panel:"Tip: Use the official photo rules and examples." },
+      { title:"Tracking", text:"Tracking pages show the status (training layout only).", template:"DASHBOARD_CARDS",
+        cards:["Status","Messages","Next steps","Help"] }
+    ]
+  },
+
+  REN: {
+    name:"Renew passport",
+    steps:[
+      { title:"Eligibility questions", text:"Renewal often starts with a few eligibility questions.", template:"WIZARD",
+        stepLabel:"Eligibility", fields:["Answer questions","Continue"] },
+      { title:"Form journey", text:"Learners go through a short form journey page-by-page.", template:"WIZARD",
+        stepLabel:"Application", fields:["Personal details","Upload photo","Continue"] },
+      { title:"Payment & confirm", text:"Payment is followed by confirmation. Training shows layout only.", template:"CONFIRM" }
+    ]
+  },
+
+  HOUSE: {
+    name:"Housing & council",
+    steps:[
+      { title:"Find your local council", text:"Use GOV.UK to find the correct council site (postcode box shown, disabled).", template:"FIND_COUNCIL" },
+      { title:"Common tasks", text:"Apply for housing, report repairs, homelessness support.", template:"MENU_CARDS",
+        cards:["Apply for housing","Repairs","Homelessness support","Local help"] },
+      { title:"Council tax", text:"Council tax pages often include view bill, pay, discounts.", template:"MENU_CARDS",
+        cards:["View bill","Pay","Discounts","Help"] },
+      { title:"Privacy", text:"Check you’re on the real council site and log out when finished.", template:"GUIDE",
+        panel:"Tip: Verify the URL and avoid public/shared logins." }
+    ]
+  },
+
+  LIFE: {
+    name:"Change of address & life events",
+    steps:[
+      { title:"Checklist", text:"Moves can affect benefits, council, NHS/GP, DVLA, HMRC and more.", template:"CHECKLIST",
+        items:["Make a list of services to update","Use official routes","Update one service at a time","Keep notes of dates"] },
+      { title:"Report changes", text:"Some services have a 'report a change' journey. Training shows the layout.", template:"WIZARD",
+        stepLabel:"Report a change", fields:["What changed?","Continue"] },
+      { title:"Scam protection", text:"After moves, scams increase (fake bills, urgent payment links). Verify first.", template:"GUIDE",
+        warn:"If it feels urgent, pause and verify." }
+    ]
+  }
+};
+
+/* =========================
+   Utilities: safe storage
+========================= */
+function lsGet(key, fallback){
+  try{ const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; }catch(e){ return fallback; }
+}
+function lsSet(key, value){
+  try{ localStorage.setItem(key, JSON.stringify(value)); }catch(e){}
+}
+function text(s){ return (s ?? "").toString(); }
+
+/* =========================
+   Modal (fullscreen-safe)
+========================= */
+function showModal(title, body){
+  document.getElementById("modalTitle").textContent = title;
+  document.getElementById("modalBody").textContent = body;
+  document.getElementById("modalOverlay").classList.add("on");
+}
+function closeModal(){
+  document.getElementById("modalOverlay").classList.remove("on");
+}
+
+let pendingConfirmAction = null;
+function showConfirm(title, body, action){
+  document.getElementById("confirmTitle").textContent = title;
+  document.getElementById("confirmBody").textContent = body;
+  pendingConfirmAction = action;
+  document.getElementById("confirmOverlay").classList.add("on");
+}
+function closeConfirm(){
+  document.getElementById("confirmOverlay").classList.remove("on");
+  pendingConfirmAction = null;
+}
+function runConfirmAction(){
+  const action = pendingConfirmAction;
+  closeConfirm();
+  if(typeof action === "function"){
+    action();
+  }
+}
+
+/* =========================
+   Navigation / fullscreen
+========================= */
+function showScreen(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+function toggleFullScreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }else{
+    document.exitFullscreen().catch(()=>{});
+  }
+}
+function openLegal(){
+  showModal("RECONNECT-US Property Notice",
+    "This simulator is the property of RECONNECT-US. You may not copy, share, modify, or remove it from authorised devices without written permission. Training simulation only — no real data.");
+}
+
+/* =========================
+   Hub learner session
+========================= */
+function activate(){ showScreen("screen-menu"); }
+function getLearners(){ return {}; }
+function setLearners(x){ return; }
+function renderLearners(){ return; }
+function trainerSaveLearner(){ return; }
+function trainerDeleteLearner(){ return; }
+function renderLearnerButtons(){ return; }
+function chooseLearner(){ return; }
+function cancelLearner(){ return; }
+function learnerLogin(){ return; }
+
+/* Restore current learner from hub or use a local device fallback */
+(function initCurrentLearner(){
+  currentLearner = getSharedHubLearnerName() || "DEVICE";
+  lsSet(KEY_CURRENT, currentLearner);
+})();
+
+/* =========================
+   Progress (per learner)
+========================= */
+
+function getProgress(){
+  return lsGet(KEY_PROGRESS, {});
+}
+function setProgress(p){
+  lsSet(KEY_PROGRESS, p);
+}
+function isDone(learner, moduleKey){
+  const p = getProgress();
+  return !!(p[learner] && p[learner][moduleKey] && p[learner][moduleKey].done);
+}
+function setDone(learner, moduleKey, done){
+  const p = getProgress();
+  if(!p[learner]) p[learner] = {};
+  p[learner][moduleKey] = { done: !!done, at: Date.now() };
+  setProgress(p);
+}
+
+function confirmResetProgress(){
+  currentLearner = getSharedHubLearnerName() || currentLearner || "DEVICE";
+  const learnerLabel = currentLearner || "this learner";
+  showConfirm(
+    "Reset progress?",
+    "Reset all saved progress for " + learnerLabel + " in this GOV.UK trainer? This cannot be undone.",
+    resetLearnerProgress
+  );
+}
+
+function resetLearnerProgress(){
+  currentLearner = getSharedHubLearnerName() || currentLearner || "DEVICE";
+  const p = getProgress();
+  if(p[currentLearner]) delete p[currentLearner];
+  setProgress(p);
+  refreshMenuTicks();
+  if(currentModuleKey){
+    updateDonePill();
+    currentStepIndex = 0;
+    renderStep();
+  }
+  document.getElementById("who").textContent = currentLearner || "";
+  showModal("Progress reset", "All saved progress for " + currentLearner + " has been cleared in this GOV.UK trainer.");
+}
+
+/* =========================
+   Menu ticks
+========================= */
+function refreshMenuTicks(){
+  currentLearner = getSharedHubLearnerName() || currentLearner || "DEVICE";
+  const keys = Object.keys(modules);
+  keys.forEach(k=>{
+    const el = document.getElementById("tick-"+k);
+    if(!el) return;
+    if(isDone(currentLearner, k)) el.classList.add("done");
+    else el.classList.remove("done");
+  });
+}
+/* =========================
+   Module player
+========================= */
+function openModule(key){
+  currentLearner = getSharedHubLearnerName() || currentLearner || "DEVICE";
+  currentModuleKey = key;
+  currentStepIndex = 0;
+
+  const mod = modules[key];
+  document.getElementById("modTitle").textContent = mod.name;
+
+  // done pill
+  updateDonePill();
+
+  renderStep();
+  showScreen("screen-module");
+}
+
+function goMenu(){
+  refreshMenuTicks();
+  document.getElementById("who").textContent = currentLearner || "";
+  showScreen("screen-menu");
+}
+
+function updateDonePill(){
+  const pill = document.getElementById("donePill");
+  const done = isDone(currentLearner, currentModuleKey);
+  if(done){
+    pill.textContent = "Completed";
+    pill.className = "pill ok";
+  }else{
+    pill.textContent = "Not completed";
+    pill.className = "pill";
+  }
+}
+
+function renderStepper(total, index){
+  const wrap = document.getElementById("stepper");
+  wrap.innerHTML = "";
+  for(let i=0;i<total;i++){
+    const d = document.createElement("div");
+    d.className = "stepDot"+(i===index?" on":"");
+    wrap.appendChild(d);
+  }
+}
+
+function prevStep(){
+  const mod = modules[currentModuleKey];
+  if(currentStepIndex>0){
+    currentStepIndex--;
+    renderStep();
+  }else{
+    showModal("Start of module","You are already on the first step.");
+  }
+}
+
+function nextStep(){
+  const mod = modules[currentModuleKey];
+  if(currentStepIndex < mod.steps.length-1){
+    currentStepIndex++;
+    renderStep();
+  }else{
+    showModal("End of module","You are on the final step. You can mark the module complete.");
+  }
+}
+
+function markComplete(){
+  setDone(currentLearner, currentModuleKey, true);
+  updateDonePill();
+  refreshMenuTicks();
+  showModal("Completed", modules[currentModuleKey].name + " marked complete.");
+}
+
+function renderStep(){
+  const mod = modules[currentModuleKey];
+  const step = mod.steps[currentStepIndex];
+  const total = mod.steps.length;
+
+  document.getElementById("stepMeta").textContent =
+    "Step "+(currentStepIndex+1)+" of "+total+" • "+step.title;
+
+  renderStepper(total, currentStepIndex);
+
+  document.getElementById("modText").textContent = step.text;
+
+  // Build illustration
+  const illus = document.getElementById("illus");
+  illus.innerHTML = renderIllustration(mod.name, step);
+
+  updateDonePill();
+}
+
+function renderIllustration(moduleName, step){
+  const header = `
+    <div class="mockBar">
+      <div class="mockBrand">GOV.UK <span style="opacity:.8;font-weight:normal">(Training)</span></div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <span class="mockBadge">TRAINING MOCK</span>
+        <span style="opacity:.85">Help</span>
+      </div>
+    </div>
+  `;
+
+  const foot = `
+    <div class="mockFoot">
+      RECONNECT-US property • Training simulation only • Do not enter real data • © 2025 RECONNECT-US
+    </div>
+  `;
+
+  const back = `<div class="mockBack">Back</div>`;
+
+  const safePanel = step.panel ? `<div class="mockPanel">${escapeHtml(step.panel)}</div>` : "";
+  const warnPanel = step.warn ? `<div class="mockWarn"><strong>Warning:</strong> ${escapeHtml(step.warn)}</div>` : "";
+  const hint = step.hint ? `<div class="mockPanel">${escapeHtml(step.hint)}</div>` : "";
+
+  function cards(list){
+    const c = (list||[]).map(x=>`
+      <div class="mockCard">
+        <div class="mockCardTitle">${escapeHtml(x)}</div>
+        <div class="line long"></div>
+        <div class="line med"></div>
+        <div class="line short"></div>
+      </div>
+    `).join("");
+    return `<div class="mockCards">${c}</div>`;
+  }
+
+  function buttons(primary, secondary){
+    const secs = (secondary||[]).map(t=>`<span class="mockBtn">${escapeHtml(t)}</span>`).join("");
+    return `<div class="mockBtns">
+      <span class="mockBtn primary">${escapeHtml(primary||"Continue")}</span>
+      ${secs}
+      <span class="mockBtn">${escapeHtml("Back")}</span>
+    </div>`;
+  }
+
+  function wizard(stepLabel, fields){
+    const fs = (fields||[]).map(f=>`
+      <div class="mockCard" style="margin-top:10px">
+        <div class="mockCardTitle">${escapeHtml(f)}</div>
+        <div class="line long"></div>
+      </div>
+    `).join("");
+    return `
+      ${back}
+      <div class="mockH1">${escapeHtml(stepLabel||"Step-by-step")}</div>
+      <div class="mockP">This is a training layout showing how a guided form journey looks.</div>
+      ${hint}
+      ${fs}
+      <div class="mockBtns">
+        <span class="mockBtn primary">Continue</span>
+        <span class="mockBtn">Save and come back</span>
+      </div>
+    `;
+  }
+
+  function tabs(tabs, active){
+    const t = (tabs||[]).map((x,i)=>`<span class="tab ${i===active?'active':''}">${escapeHtml(x)}</span>`).join("");
+    return `
+      ${back}
+      <div class="mockH1">${escapeHtml(moduleName)}</div>
+      <div class="tabs">${t}</div>
+      <div class="mockCard">
+        <div class="mockCardTitle">Summary</div>
+        <div class="line long"></div>
+        <div class="line med"></div>
+        <div class="line short"></div>
+      </div>
+      ${buttons("Continue",["Change tab"])}
+    `;
+  }
+
+  function flow(items){
+    const dots = (items||[]).map((x,i)=>`
+      <div class="mockCard" style="display:flex;align-items:center;gap:10px">
+        <div style="width:10px;height:10px;border-radius:99px;background:${i===0?'var(--rc-blue)':'#d1d5db'}"></div>
+        <div>
+          <div class="mockCardTitle">${escapeHtml(x)}</div>
+          <div class="muted" style="font-size:12px">Example stage</div>
+        </div>
+      </div>
+    `).join("");
+    return `
+      ${back}
+      <div class="mockH1">${escapeHtml(moduleName)}</div>
+      <div class="mockP">A simple stage flow (training illustration).</div>
+      <div style="display:grid;gap:10px;margin-top:10px">${dots}</div>
+      ${buttons("Continue",["Back"])}
+    `;
+  }
+
+  function checklist(items){
+    const li = (items||[]).map(x=>`<li>${escapeHtml(x)}</li>`).join("");
+    return `
+      ${back}
+      <div class="mockH1>${escapeHtml(moduleName)}</div>
+      <div class="mockH1">${escapeHtml(step.title)}</div>
+      <div class="mockP">Checklist layout (training). Tick off one task at a time.</div>
+      <div class="mockCard">
+        <div class="mockCardTitle">Tasks</div>
+        <ul style="margin:8px 0 0 18px;font-size:13px;line-height:1.4">${li}</ul>
+      </div>
+      ${buttons("Continue",["Back"])}
+    `;
+  }
+
+  function ucHome(){
+    return `
+      ${back}
+      <div class="mockH1">Universal Credit account home</div>
+      <div class="mockP">Learners recognise these main areas (training illustration).</div>
+      <div class="mockCards">
+        <div class="mockCard"><div class="mockCardTitle">Journal</div><div class="line long"></div></div>
+        <div class="mockCard"><div class="mockCardTitle">To-dos</div><div class="line long"></div></div>
+        <div class="mockCard"><div class="mockCardTitle">Payments</div><div class="line long"></div></div>
+        <div class="mockCard"><div class="mockCardTitle">Report a change</div><div class="line long"></div></div>
+      </div>
+      <div class="mockBtns">
+        <span class="mockBtn primary">Open Journal</span>
+        <span class="mockBtn">Open To-dos</span>
+        <span class="mockBtn">Back</span>
+      </div>
+    `;
+  }
+
+  function ucJournal(){
+    return `
+      ${back}
+      <div class="mockH1">Journal</div>
+      <div class="mockP">Training view of a journal/message thread layout.</div>
+      <div class="thread">
+        <div class="threadTop">Latest updates</div>
+        <div class="msg">
+          <div class="msgTitle">Message from your work coach</div>
+          <div class="line med"></div>
+          <div class="line short"></div>
+        </div>
+        <div class="msg">
+          <div class="msgTitle">To-do reminder</div>
+          <div class="line long"></div>
+          <div class="line short"></div>
+        </div>
+        <div class="msg">
+          <div class="msgTitle">Payment update</div>
+          <div class="line med"></div>
+          <div class="line short"></div>
+        </div>
+      </div>
+      <div class="mockBtns">
+        <span class="mockBtn primary">Reply / Continue</span>
+        <span class="mockBtn">Back</span>
+      </div>
+    `;
+  }
+
+  function confirm(){
+    return `
+      <div class="mockH1">Confirmation</div>
+      <div class="mockPanel"><strong>Done.</strong> This is a training confirmation example.</div>
+      <div class="mockP">In real life you may see a reference number and next steps.</div>
+      <div class="mockCards">
+        <div class="mockCard"><div class="mockCardTitle">Reference (example)</div><div class="line med"></div></div>
+        <div class="mockCard"><div class="mockCardTitle">Next steps</div><div class="line long"></div></div>
+      </div>
+      <div class="mockBtns">
+        <span class="mockBtn dark">Return to service</span>
+        <span class="mockBtn">Print / Save</span>
+      </div>
+    `;
+  }
+
+  function findCouncil(){
+    return `
+      ${back}
+      <div class="mockH1">Find your local council</div>
+      <div class="mockP">Training layout showing where a postcode box normally appears.</div>
+      <div class="mockCard">
+        <div class="mockCardTitle">Postcode</div>
+        <div class="line long"></div>
+      </div>
+      <div class="mockBtns">
+        <span class="mockBtn primary">Find</span>
+        <span class="mockBtn">Help</span>
+      </div>
+    `;
+  }
+
+  function dvlaMenu(){
+    return `
+      ${back}
+      <div class="mockH1">DVLA services</div>
+      <div class="mockP">Choose the correct DVLA task (training illustration).</div>
+      ${cards(step.cards)}
+      ${buttons("Renew driving licence",["Change address","Replace licence"])}
+    `;
+  }
+
+  function guide(){
+    return `
+      ${back}
+      <div class="mockH1">${escapeHtml(step.title)}</div>
+      <div class="mockP">${escapeHtml(step.text)}</div>
+      ${safePanel}
+      ${warnPanel}
+      ${buttons("Continue",["Help"])}
+    `;
+  }
+
+  function startNow(){
+    return `
+      ${back}
+      <div class="mockH1">${escapeHtml(step.title)}</div>
+      <div class="mockP">Service information page layout (training illustration).</div>
+      ${safePanel}
+      ${warnPanel}
+      <div class="mockBtns">
+        <span class="mockBtn primary">${escapeHtml(step.primary||"Start now")}</span>
+        ${(step.secondary||[]).map(t=>`<span class="mockBtn">${escapeHtml(t)}</span>`).join("")}
+      </div>
+    `;
+  }
+
+  function login(){
+    return `
+      ${back}
+      <div class="mockH1">Sign in (training layout)</div>
+      <div class="mockP">This shows where sign-in fields normally appear. Do not enter real details.</div>
+      ${hint}
+      <div class="mockCards">
+        <div class="mockCard">
+          <div class="mockCardTitle">User ID / Email</div>
+          <div class="line long"></div>
+        </div>
+        <div class="mockCard">
+          <div class="mockCardTitle">Password</div>
+          <div class="line long"></div>
+        </div>
+      </div>
+      <div class="mockBtns">
+        <span class="mockBtn primary">Sign in</span>
+        <span class="mockBtn">Forgotten details</span>
+      </div>
+    `;
+  }
+
+  let body = "";
+  switch(step.template){
+    case "GUIDE": body = guide(); break;
+    case "START_NOW": body = startNow(); break;
+    case "LOGIN": body = login(); break;
+    case "MENU_CARDS": body = `${back}<div class="mockH1">${escapeHtml(step.title)}</div><div class="mockP">${escapeHtml(step.text)}</div>${cards(step.cards)}${warnPanel}${buttons("Continue",["Back"])}`; break;
+    case "DASHBOARD_CARDS": body = `${back}<div class="mockH1">${escapeHtml(step.title)}</div><div class="mockP">${escapeHtml(step.text)}</div>${cards(step.cards)}${buttons("Continue",["Back"])}`; break;
+    case "TABS": body = tabs(step.tabs, step.active||0); break;
+    case "FLOW": body = flow(step.flow||[]); break;
+    case "CHECKLIST": body = checklist(step.items||[]); break;
+    case "WIZARD": body = wizard(step.stepLabel||step.title, step.fields||[]); break;
+    case "CONFIRM": body = confirm(); break;
+    case "FIND_COUNCIL": body = findCouncil(); break;
+    case "DVLA_MENU": body = dvlaMenu(); break;
+    case "UC_HOME": body = ucHome(); break;
+    case "UC_JOURNAL": body = ucJournal(); break;
+    default: body = guide();
+  }
+
+  return header + `<div class="mockBody">${body}</div>` + foot;
+}
+
+function escapeHtml(s){
+  return text(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+/* =========================
+   Hook screen renders
+========================= */
+// Keep the menu synced with the shared hub learner
+const _showScreen = showScreen;
+showScreen = function(id){
+  _showScreen(id);
+  currentLearner = getSharedHubLearnerName() || currentLearner || "DEVICE";
+  if(id==="screen-menu"){
+    document.getElementById("who").textContent = currentLearner;
+    refreshMenuTicks();
+  }
+};
+
+document.getElementById("who").textContent = currentLearner || "DEVICE";
+refreshMenuTicks();
+
+
+// Ensure learner label updates from hub on load
+function __reconnectusApplyHubLearnerLabel(){
+  let name = '';
+  try {
+    const profile = JSON.parse(localStorage.getItem('reconnectus_profile') || 'null');
+    if (profile && profile.name) name = String(profile.name).trim();
+  } catch (e) {}
+  if (!name) {
+    try {
+      const shared = JSON.parse(localStorage.getItem('reconnectus_shared_current_learner_v1') || 'null');
+      if (shared && shared.name) name = String(shared.name).trim();
+    } catch (e) {}
+  }
+  if (!name) {
+    try {
+      const params = new URLSearchParams(window.location.search);
+      const learner = params.get('learner');
+      if (learner) name = learner.trim();
+    } catch (e) {}
+  }
+  const finalName = name || 'Learner';
+
+  try {
+    var el = document.querySelector('#who');
+    if (el) el.textContent = finalName;
+  } catch (e) {}
+
+}
+window.addEventListener('load', __reconnectusApplyHubLearnerLabel);
+document.addEventListener('DOMContentLoaded', __reconnectusApplyHubLearnerLabel);
+setTimeout(__reconnectusApplyHubLearnerLabel, 200);
+</script>
+</body>
+</html>
