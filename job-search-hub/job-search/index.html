@@ -1,0 +1,1210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Job Search Hub</title>
+  <style>
+    :root{
+      --bg1:#0f2f57;
+      --bg2:#15497d;
+      --panel:#ffffff;
+      --panel-soft:#eef5ff;
+      --panel-softer:#f7fbff;
+      --ink:#17324a;
+      --muted:#5b6f83;
+      --line:#d8e5f2;
+      --accent:#1b75d0;
+      --accent-2:#f0b429;
+      --good:#0d8b4d;
+      --warn:#9a6a00;
+      --shadow:0 18px 40px rgba(8,31,57,.14);
+      --radius:22px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.11), transparent 28%),
+        linear-gradient(145deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+    }
+    button,input,select,textarea{font-family:inherit}
+    .shell{
+      min-height:100%;
+      padding:18px;
+      display:flex;
+      align-items:stretch;
+      justify-content:center;
+    }
+    .app{
+      width:min(1500px,100%);
+      display:grid;
+      grid-template-columns: 390px 1fr;
+      gap:18px;
+    }
+    .card{
+      background:var(--panel);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .left{
+      display:flex;
+      flex-direction:column;
+      min-height:calc(100vh - 36px);
+    }
+    .brand{
+      background:linear-gradient(135deg,#0c2748,#1d68b5);
+      color:#fff;
+      padding:24px 24px 20px;
+      position:relative;
+    }
+    .brand-row{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:flex-start;
+    }
+    .logo-badge{
+      min-width:74px;
+      height:74px;
+      border-radius:18px;
+      background:rgba(255,255,255,.14);
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      letter-spacing:.08em;
+      border:1px solid rgba(255,255,255,.18);
+    }
+    .brand h1{
+      margin:0 0 8px;
+      font-size:1.85rem;
+      line-height:1.05;
+    }
+    .brand p{
+      margin:0;
+      color:rgba(255,255,255,.88);
+      line-height:1.45;
+      font-size:.98rem;
+    }
+    .learner-banner{
+      margin-top:16px;
+      padding:12px 14px;
+      background:rgba(255,255,255,.12);
+      border:1px solid rgba(255,255,255,.18);
+      border-radius:16px;
+      display:grid;
+      gap:8px;
+    }
+    .learner-top{
+      display:flex;
+      justify-content:space-between;
+      gap:10px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .learner-banner strong{font-size:.98rem}
+    .learner-banner span{color:rgba(255,255,255,.9); font-size:.92rem}
+    .trust{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:10px;
+      margin-top:18px;
+    }
+    .trust div{
+      background:rgba(255,255,255,.11);
+      border:1px solid rgba(255,255,255,.16);
+      padding:10px 12px;
+      border-radius:14px;
+      font-size:.9rem;
+      text-align:center;
+    }
+    .form-wrap{padding:20px; overflow:auto}
+    .section-title{
+      font-size:1rem;
+      font-weight:700;
+      margin:0 0 12px;
+    }
+    .hint{
+      color:var(--muted);
+      font-size:.92rem;
+      line-height:1.45;
+      margin:0 0 16px;
+    }
+    .field-grid{display:grid; gap:14px}
+    label{
+      display:block;
+      font-size:.92rem;
+      font-weight:700;
+      margin:0 0 6px;
+    }
+    input, select, textarea{
+      width:100%;
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:13px 14px;
+      font-size:1rem;
+      color:var(--ink);
+      background:#fff;
+    }
+    input:focus, select:focus, textarea:focus{
+      outline:none;
+      border-color:var(--accent);
+      box-shadow:0 0 0 4px rgba(27,117,208,.12);
+    }
+    .row-2{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .checks{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+    .check{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:14px;
+      background:var(--panel-soft);
+      font-weight:600;
+      font-size:.95rem;
+    }
+    .check input{width:auto; margin:0}
+    .action-stack{display:grid; gap:10px; margin-top:18px}
+    .mini-stack{display:grid; gap:10px; margin-top:14px}
+    .saved-box{
+      margin-top:18px;
+      padding:14px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:var(--panel-softer);
+      display:grid;
+      gap:12px;
+    }
+    .saved-row{
+      display:flex;
+      gap:10px;
+      align-items:end;
+    }
+    .saved-row input{flex:1}
+    .saved-list{display:grid; gap:10px; max-height:240px; overflow:auto}
+    .saved-item{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:12px;
+      display:grid;
+      gap:8px;
+    }
+    .saved-item strong{font-size:.96rem}
+    .saved-item small{color:var(--muted); line-height:1.35}
+    .saved-actions{display:flex; gap:8px; flex-wrap:wrap}
+
+    button{
+      border:none;
+      border-radius:14px;
+      padding:14px 16px;
+      font-size:1rem;
+      font-weight:700;
+      cursor:pointer;
+      transition:transform .14s ease, box-shadow .14s ease, opacity .14s ease;
+    }
+    button:hover{transform:translateY(-1px)}
+    .primary{background:linear-gradient(135deg,var(--accent),#3a8be1); color:#fff; box-shadow:0 14px 24px rgba(27,117,208,.24)}
+    .secondary{background:#eff5fb; color:var(--ink); border:1px solid var(--line)}
+    .ghost{background:#fff; color:var(--ink); border:1px dashed var(--line)}
+    .warn{background:#fff8e6; color:#7a5600; border:1px solid #ead497}
+    .micro{padding:10px 12px; font-size:.92rem; border-radius:12px}
+
+    .right{
+      padding:18px;
+      display:grid;
+      gap:18px;
+      min-height:calc(100vh - 36px);
+      grid-template-rows:auto auto auto 1fr auto auto;
+    }
+    .hero{
+      background:linear-gradient(140deg,#eff7ff,#ffffff);
+      border:1px solid var(--line);
+      border-radius:22px;
+      padding:18px;
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      align-items:center;
+      flex-wrap:wrap;
+    }
+    .hero h2{margin:0 0 8px; font-size:1.55rem}
+    .hero p{margin:0; color:var(--muted); line-height:1.45}
+    .hero-tools{display:flex; gap:10px; flex-wrap:wrap}
+    .pill{
+      padding:10px 14px;
+      border-radius:999px;
+      background:#fff;
+      border:1px solid var(--line);
+      font-weight:700;
+      font-size:.92rem;
+    }
+    .summary{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+    }
+    .metric{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:16px;
+    }
+    .metric small{display:block; color:var(--muted); margin-bottom:6px; font-weight:700}
+    .metric strong{font-size:1.15rem; line-height:1.25; display:block}
+    .utility-grid{
+      display:grid;
+      grid-template-columns:1.2fr .8fr;
+      gap:14px;
+    }
+    .panel{
+      background:#fff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px;
+      display:grid;
+      gap:12px;
+    }
+    .panel h3{margin:0; font-size:1.05rem}
+    .panel p{margin:0; color:var(--muted); line-height:1.45}
+    .tip-list{display:grid; gap:8px}
+    .tip{
+      border:1px solid var(--line);
+      background:var(--panel-softer);
+      border-radius:14px;
+      padding:10px 12px;
+      font-size:.94rem;
+      line-height:1.4;
+    }
+    .results{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:14px;
+      align-content:start;
+    }
+    .site{
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:18px;
+      background:#fff;
+      display:grid;
+      gap:10px;
+    }
+    .site-head{display:flex; justify-content:space-between; gap:12px; align-items:start}
+    .site h3{margin:0; font-size:1.1rem}
+    .tag{
+      border-radius:999px;
+      background:#edf5ff;
+      color:#20548a;
+      padding:6px 10px;
+      font-size:.8rem;
+      font-weight:700;
+      white-space:nowrap;
+    }
+    .site p{margin:0; color:var(--muted); line-height:1.45; font-size:.95rem}
+    .site .site-actions{display:flex; flex-wrap:wrap; gap:10px; margin-top:4px}
+    .site .site-actions button{flex:1}
+    .site-url{
+      word-break:break-all;
+      font-size:.82rem;
+      color:#486177;
+      background:#f7fbff;
+      border:1px dashed var(--line);
+      border-radius:12px;
+      padding:9px 10px;
+    }
+    .notes{
+      background:#f8fbff;
+      border:1px solid var(--line);
+      border-radius:20px;
+      padding:16px 18px;
+      color:#4f6477;
+      line-height:1.5;
+      font-size:.93rem;
+    }
+    .footer{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      align-items:center;
+      flex-wrap:wrap;
+      padding-top:4px;
+      color:#dfeaf7;
+      font-size:.9rem;
+    }
+    .footer .foot-card{
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.12);
+      padding:10px 14px;
+      border-radius:14px;
+    }
+    .notice{
+      display:none;
+      padding:12px 14px;
+      border-radius:14px;
+      background:#e9f8ef;
+      color:#0c6a39;
+      border:1px solid #bde6ce;
+      font-weight:700;
+    }
+    .notice.show{display:block}
+
+    .help-fab{
+      position:fixed;
+      top:18px;
+      right:18px;
+      z-index:70;
+      width:50px;
+      height:50px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      font-size:1.2rem;
+      font-weight:900;
+      padding:0;
+      background:linear-gradient(135deg,#ffffff,#eff7ff);
+      color:#103660;
+      border:1px solid rgba(16,54,96,.12);
+      box-shadow:0 16px 30px rgba(6,23,45,.22);
+    }
+    .help-panel,
+    .overlay{
+      position:fixed;
+      inset:0;
+      z-index:60;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding:20px;
+    }
+    .help-panel.show,
+    .overlay.show{display:flex}
+    .help-panel::before,
+    .overlay::before{
+      content:'';
+      position:absolute;
+      inset:0;
+      background:rgba(6,21,40,.62);
+      backdrop-filter:blur(3px);
+    }
+    .dialog{
+      position:relative;
+      width:min(760px,100%);
+      background:#fff;
+      border-radius:24px;
+      box-shadow:0 30px 60px rgba(2,16,34,.28);
+      overflow:hidden;
+    }
+    .dialog-head{
+      background:linear-gradient(135deg,#0c2748,#1d68b5);
+      color:#fff;
+      padding:22px 24px 18px;
+    }
+    .dialog-head h2{margin:0 0 6px; font-size:1.6rem}
+    .dialog-head p{margin:0; color:rgba(255,255,255,.9); line-height:1.45}
+    .dialog-body{padding:20px 24px; display:grid; gap:14px}
+    .dialog-grid{display:grid; grid-template-columns:1fr 1fr; gap:12px}
+    .dialog-tip{
+      border:1px solid var(--line);
+      background:var(--panel-softer);
+      border-radius:16px;
+      padding:14px;
+      line-height:1.45;
+      color:var(--ink);
+      font-size:.95rem;
+    }
+    .dialog-actions{
+      padding:0 24px 24px;
+      display:flex;
+      justify-content:flex-end;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .overlay .dialog{width:min(820px,100%)}
+    .overlay .dialog-body{gap:16px}
+    .overlay-big{
+      display:grid;
+      gap:14px;
+      color:var(--ink);
+      line-height:1.5;
+    }
+    .overlay-pills{display:flex; gap:10px; flex-wrap:wrap}
+    .overlay-pills div{
+      padding:10px 14px;
+      border-radius:999px;
+      background:var(--panel-softer);
+      border:1px solid var(--line);
+      font-weight:700;
+      font-size:.92rem;
+    }
+
+    @media (max-width: 1220px){
+      .utility-grid{grid-template-columns:1fr}
+    }
+    @media (max-width: 1100px){
+      .app{grid-template-columns:1fr}
+      .left,.right{min-height:auto}
+      .summary{grid-template-columns:repeat(2,1fr)}
+    }
+    @media (max-width: 760px){
+      .shell{padding:12px}
+      .results{grid-template-columns:1fr}
+      .summary{grid-template-columns:1fr 1fr}
+      .row-2,.checks,.dialog-grid,.saved-row{grid-template-columns:1fr; display:grid}
+      .brand h1{font-size:1.55rem}
+      .saved-row{align-items:stretch}
+      .site .site-actions{flex-direction:column}
+    }
+    @media (max-width: 520px){
+      .summary{grid-template-columns:1fr}
+      .trust{grid-template-columns:1fr}
+      .hero h2{font-size:1.28rem}
+      .help-fab{top:12px; right:12px}
+    }
+  </style>
+</head>
+<body>
+  <button class="help-fab" id="helpFab" title="Help">?</button>
+
+  <div class="overlay show" id="overlay">
+    <div class="dialog">
+      <div class="dialog-head">
+        <h2>RECONNECT-US Job Search Hub</h2>
+        <p>Best used in full screen. Fill in the learner details once, build the search, then launch matching results across major UK job websites.</p>
+      </div>
+      <div class="dialog-body overlay-big">
+        <div class="overlay-pills">
+          <div>Save learner name</div>
+          <div>Save job profiles</div>
+          <div>CV and interview help</div>
+          <div>Open 5 job sites</div>
+        </div>
+        <div>This hub does not pull jobs into the app itself. It creates quick links to job websites based on the preferences entered here.</div>
+        <div>Tap or click <strong>Enter full screen</strong> for a cleaner view. You can still continue without it if needed.</div>
+      </div>
+      <div class="dialog-actions">
+        <button class="secondary" id="overlayClose">Continue without full screen</button>
+        <button class="primary" id="overlayGo">Enter full screen and continue</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="help-panel" id="helpPanel">
+    <div class="dialog">
+      <div class="dialog-head">
+        <h2>How to use this hub</h2>
+        <p>Simple steps for learners, staff, or volunteers supporting job searches.</p>
+      </div>
+      <div class="dialog-body">
+        <div class="dialog-grid">
+          <div class="dialog-tip"><strong>1. Add learner details.</strong><br>Put the learner name in at the top so the hub feels personal and easier to manage.</div>
+          <div class="dialog-tip"><strong>2. Fill in preferences.</strong><br>Add the job title, area, distance, salary, and whether the person wants full-time, part-time, permanent, or remote work.</div>
+          <div class="dialog-tip"><strong>3. Save a profile.</strong><br>Use a profile name such as “Admin jobs Kent” or “Part-time care roles” so it can be loaded again later.</div>
+          <div class="dialog-tip"><strong>4. Build and open results.</strong><br>The hub creates search links for five UK job sites and opens them in separate tabs.</div>
+        </div>
+        <div class="dialog-tip"><strong>CV and interview help:</strong><br>On the right-hand side you will see quick support prompts to help the learner prepare before applying.</div>
+      </div>
+      <div class="dialog-actions">
+        <button class="primary" id="helpClose">Close help</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="shell">
+    <div class="app">
+      <aside class="card left">
+        <div class="brand">
+          <div class="brand-row">
+            <div>
+              <h1>RECONNECT-US<br>Job Search Hub</h1>
+              <p>One place to set job preferences once, then open matching searches across major UK job websites.</p>
+            </div>
+            <div class="logo-badge">RU</div>
+          </div>
+
+          <div class="learner-banner">
+            <div class="learner-top">
+              <strong>Learner details</strong>
+              <span id="learnerDisplay">Learner: Not set</span>
+            </div>
+            <div>
+              <label for="learnerName" style="color:#fff; margin-bottom:6px;">Learner name</label>
+              <input id="learnerName" type="text" placeholder="Type learner name here" />
+            </div>
+          </div>
+
+          <div class="trust">
+            <div>Saved locally</div>
+            <div>Simple to use</div>
+            <div>UK job sites</div>
+          </div>
+        </div>
+
+        <div class="form-wrap">
+          <p class="section-title">Search preferences</p>
+          <p class="hint">Fill this in once. The hub will build matching job-search links for each website below.</p>
+
+          <div id="notice" class="notice">Saved.</div>
+
+          <div class="field-grid">
+            <div>
+              <label for="jobTitle">Job title or keywords</label>
+              <input id="jobTitle" type="text" placeholder="Example: support worker, admin, cleaner" />
+            </div>
+
+            <div>
+              <label for="location">Location</label>
+              <input id="location" type="text" placeholder="Example: Sittingbourne, Kent, London" />
+            </div>
+
+            <div class="row-2">
+              <div>
+                <label for="distance">Distance</label>
+                <select id="distance">
+                  <option value="5">Up to 5 miles</option>
+                  <option value="10" selected>Up to 10 miles</option>
+                  <option value="15">Up to 15 miles</option>
+                  <option value="20">Up to 20 miles</option>
+                  <option value="25">Up to 25 miles</option>
+                  <option value="35">Up to 35 miles</option>
+                  <option value="50">Up to 50 miles</option>
+                </select>
+              </div>
+              <div>
+                <label for="salary">Minimum salary</label>
+                <input id="salary" type="number" min="0" step="1000" placeholder="Example: 25000" />
+              </div>
+            </div>
+
+            <div class="checks">
+              <label class="check"><input type="checkbox" id="fullTime"> Full-time</label>
+              <label class="check"><input type="checkbox" id="partTime"> Part-time</label>
+              <label class="check"><input type="checkbox" id="permanent"> Permanent</label>
+              <label class="check"><input type="checkbox" id="remote"> Remote / hybrid</label>
+            </div>
+
+            <div>
+              <label for="notes">Extra notes</label>
+              <textarea id="notes" rows="4" placeholder="Optional notes for the learner, such as preferred days, experience, or support needs."></textarea>
+            </div>
+          </div>
+
+          <div class="action-stack">
+            <button class="primary" id="buildBtn">Build my searches</button>
+            <button class="secondary" id="openAllBtn">Open all job websites</button>
+            <button class="secondary" id="saveBtn">Save current preferences</button>
+            <button class="ghost" id="clearBtn">Clear current form</button>
+          </div>
+
+          <div class="saved-box">
+            <div>
+              <p class="section-title" style="margin-bottom:6px;">Saved search profiles</p>
+              <p class="hint" style="margin:0;">Create named profiles for different job searches and load them again later.</p>
+            </div>
+            <div class="saved-row">
+              <div>
+                <label for="profileName">Profile name</label>
+                <input id="profileName" type="text" placeholder="Example: Admin jobs Kent" />
+              </div>
+              <button class="primary" id="saveProfileBtn">Save profile</button>
+            </div>
+            <div class="saved-list" id="savedProfiles"></div>
+            <div class="mini-stack">
+              <button class="warn micro" id="clearProfilesBtn">Delete all saved profiles</button>
+            </div>
+          </div>
+        </div>
+      </aside>
+
+      <main class="card right">
+        <section class="hero">
+          <div>
+            <h2>Search once. Launch everywhere.</h2>
+            <p>This hub does not scrape jobs into the app. It creates quick search links that open each job website using the learner’s preferences.</p>
+          </div>
+          <div class="hero-tools">
+            <button class="pill" id="copySummaryBtn" type="button">Copy search summary</button>
+            <button class="pill" id="fullscreenBtn" type="button">Full screen</button>
+          </div>
+        </section>
+
+        <section class="summary">
+          <div class="metric"><small>Learner</small><strong id="sumLearner">Not set</strong></div>
+          <div class="metric"><small>Job keywords</small><strong id="sumKeywords">Not set</strong></div>
+          <div class="metric"><small>Location</small><strong id="sumLocation">Not set</strong></div>
+          <div class="metric"><small>Distance</small><strong id="sumDistance">10 miles</strong></div>
+        </section>
+
+        <section class="utility-grid">
+          <div class="panel">
+            <h3>Quick CV and application support</h3>
+            <p>Use these prompts to support the learner before they apply.</p>
+            <div class="tip-list" id="cvTips"></div>
+            <div class="saved-actions">
+              <button class="secondary micro" id="copyCvTipsBtn">Copy CV help</button>
+              <button class="secondary micro" id="copyInterviewTipsBtn">Copy interview tips</button>
+            </div>
+          </div>
+          <div class="panel">
+            <h3>Support reminders</h3>
+            <div class="tip"><strong>Good match check:</strong> make sure the job title, travel distance, and salary are realistic for the learner.</div>
+            <div class="tip"><strong>Before applying:</strong> check spelling, contact details, work history, and whether the learner needs help with online forms.</div>
+            <div class="tip"><strong>After applying:</strong> note where the application was sent and whether follow-up support is needed.</div>
+          </div>
+        </section>
+
+        <section class="results" id="results"></section>
+
+        <section class="notes">
+          <strong>Important:</strong> each website has its own filters and may not honour every option exactly the same way. This hub aims to send people to the nearest matching search page quickly and simply.
+        </section>
+
+        <div class="footer">
+          <div class="foot-card">For authorised use only by RECONNECT-US.</div>
+          <div class="foot-card">© RECONNECT-US, all rights reserved.</div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+<script>
+(() => {
+  const storageKey = 'reconnectus_job_hub_v2';
+  const profilesKey = 'reconnectus_job_hub_profiles_v2';
+  const overlayKey = 'reconnectus_job_hub_overlay_seen_v2';
+  const PROFILE_KEY = 'reconnectus_profile';
+  const SESSION_KEY = 'reconnectus_session';
+  const SHARED_HUB_KEY = 'reconnectus_shared_current_learner_v1';
+  const $ = (id) => document.getElementById(id);
+
+  const els = {
+    learnerName: $('learnerName'),
+    learnerDisplay: $('learnerDisplay'),
+    profileName: $('profileName'),
+    savedProfiles: $('savedProfiles'),
+    jobTitle: $('jobTitle'),
+    location: $('location'),
+    distance: $('distance'),
+    salary: $('salary'),
+    fullTime: $('fullTime'),
+    partTime: $('partTime'),
+    permanent: $('permanent'),
+    remote: $('remote'),
+    notes: $('notes'),
+    results: $('results'),
+    notice: $('notice'),
+    sumLearner: $('sumLearner'),
+    sumKeywords: $('sumKeywords'),
+    sumLocation: $('sumLocation'),
+    sumDistance: $('sumDistance'),
+    cvTips: $('cvTips'),
+    overlay: $('overlay'),
+    helpPanel: $('helpPanel')
+  };
+
+
+  function getLearnerFromHub(){
+    try{
+      const params = new URLSearchParams(window.location.search);
+      const learnerFromUrl = (params.get('learner') || '').trim();
+      const sessionProfile = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null');
+      const localProfile = JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null');
+      const sharedLearner = JSON.parse(localStorage.getItem(SHARED_HUB_KEY) || 'null');
+      return learnerFromUrl || (sessionProfile && sessionProfile.name) || (localProfile && localProfile.name) || (sharedLearner && sharedLearner.name) || '';
+    }catch(err){
+      return '';
+    }
+  }
+
+  function saveLearnerToHub(name){
+    if(!name) return;
+    const profile = { name, role: 'User', signedInAt: new Date().toISOString() };
+    try{
+      localStorage.setItem(PROFILE_KEY, JSON.stringify(profile));
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(profile));
+      localStorage.setItem(SHARED_HUB_KEY, JSON.stringify(profile));
+    }catch(err){}
+  }
+
+  function syncLearnerIntoJobHub(){
+    const learnerName = getLearnerFromHub();
+    if(!learnerName) return;
+    saveLearnerToHub(learnerName);
+    if(!els.learnerName.value.trim()) els.learnerName.value = learnerName;
+    if(!els.profileName.value.trim()) els.profileName.value = learnerName + ' job search';
+  }
+
+  function slugify(value){
+    return (value || '')
+      .toString()
+      .trim()
+      .toLowerCase()
+      .replace(/&/g, ' and ')
+      .replace(/[^a-z0-9]+/g, '-')
+      .replace(/^-+|-+$/g, '')
+      .replace(/-{2,}/g, '-');
+  }
+
+  function enc(value){
+    return encodeURIComponent((value || '').trim());
+  }
+
+  function getData(){
+    return {
+      learnerName: els.learnerName.value.trim(),
+      jobTitle: els.jobTitle.value.trim(),
+      location: els.location.value.trim(),
+      distance: els.distance.value,
+      salary: els.salary.value.trim(),
+      fullTime: els.fullTime.checked,
+      partTime: els.partTime.checked,
+      permanent: els.permanent.checked,
+      remote: els.remote.checked,
+      notes: els.notes.value.trim()
+    };
+  }
+
+  function applyData(data){
+    const d = data || {};
+    els.learnerName.value = d.learnerName || '';
+    els.jobTitle.value = d.jobTitle || '';
+    els.location.value = d.location || '';
+    els.distance.value = d.distance || '10';
+    els.salary.value = d.salary || '';
+    els.fullTime.checked = !!d.fullTime;
+    els.partTime.checked = !!d.partTime;
+    els.permanent.checked = !!d.permanent;
+    els.remote.checked = !!d.remote;
+    els.notes.value = d.notes || '';
+  }
+
+  function saveData(show = true){
+    const data = getData();
+    if(data.learnerName) saveLearnerToHub(data.learnerName);
+    localStorage.setItem(storageKey, JSON.stringify(data));
+    if(show) flash('Current preferences saved');
+  }
+
+  function loadData(){
+    const raw = localStorage.getItem(storageKey);
+    if(!raw) return;
+    try{
+      applyData(JSON.parse(raw));
+    }catch(err){
+      console.warn('Could not load saved data', err);
+    }
+  }
+
+  function getProfiles(){
+    try{
+      return JSON.parse(localStorage.getItem(profilesKey) || '[]');
+    }catch(err){
+      return [];
+    }
+  }
+
+  function saveProfiles(list){
+    localStorage.setItem(profilesKey, JSON.stringify(list));
+  }
+
+  function flash(text){
+    els.notice.textContent = text;
+    els.notice.classList.add('show');
+    clearTimeout(flash._timer);
+    flash._timer = setTimeout(() => els.notice.classList.remove('show'), 2000);
+  }
+
+  function buildKeywords(data){
+    const bits = [];
+    if(data.jobTitle) bits.push(data.jobTitle);
+    if(data.remote) bits.push('remote OR hybrid');
+    if(data.fullTime && !data.partTime) bits.push('full time');
+    if(data.partTime && !data.fullTime) bits.push('part time');
+    if(data.permanent) bits.push('permanent');
+    return bits.join(' ');
+  }
+
+  function currencyText(value){
+    return value ? '£' + Number(value).toLocaleString('en-GB') : 'Not set';
+  }
+
+  function buildSummaryText(data){
+    const lines = [
+      `Learner: ${data.learnerName || 'Not set'}`,
+      `Job keywords: ${data.jobTitle || 'Not set'}`,
+      `Location: ${data.location || 'Not set'}`,
+      `Distance: ${data.distance || '10'} miles`,
+      `Minimum salary: ${currencyText(data.salary)}`,
+      `Full-time: ${data.fullTime ? 'Yes' : 'No'}`,
+      `Part-time: ${data.partTime ? 'Yes' : 'No'}`,
+      `Permanent: ${data.permanent ? 'Yes' : 'No'}`,
+      `Remote / hybrid: ${data.remote ? 'Yes' : 'No'}`
+    ];
+    if(data.notes) lines.push(`Extra notes: ${data.notes}`);
+    return lines.join('\n');
+  }
+
+  function buildCvTips(data){
+    const title = data.jobTitle || 'the chosen role';
+    const location = data.location || 'the chosen area';
+    return [
+      `Tailor the CV to ${title} roles and place the most relevant experience near the top.`,
+      `Check that the learner's phone number and email address are correct before applying.`,
+      `Mention practical strengths that suit jobs in ${location}, such as reliability, teamwork, timekeeping, cleaning, care, admin, or customer service.`,
+      `Keep the CV simple and easy to read, with no spelling mistakes and no long paragraphs.`,
+      `Prepare a short interview answer for: “Why do you want this job?” and “What are your strengths?”`
+    ];
+  }
+
+  function buildInterviewTips(data){
+    const title = data.jobTitle || 'the role';
+    const learner = data.learnerName || 'the learner';
+    return [
+      `Interview tips for ${learner}:`,
+      `- Read the job title and advert properly before the interview for ${title}.`,
+      `- Prepare one example of being reliable, one example of working with others, and one example of solving a problem.`,
+      `- Check travel plans, interview time, and what clothes will be worn.`,
+      `- Practise speaking clearly about skills, experience, and availability.`,
+      `- Prepare one sensible question to ask the employer at the end.`
+    ].join('\n');
+  }
+
+  function buildSites(data){
+    const keywords = buildKeywords(data) || data.jobTitle || '';
+    const kSlug = slugify(data.jobTitle || keywords || 'jobs');
+    const lSlug = slugify(data.location || 'uk');
+    const salaryVal = data.salary ? Number(data.salary) : '';
+
+    const indeedParams = new URLSearchParams();
+    indeedParams.set('q', keywords || 'jobs');
+    if(data.location) indeedParams.set('l', data.location);
+    indeedParams.set('radius', data.distance || '10');
+
+    const cvParams = new URLSearchParams();
+    cvParams.set('keywords', keywords || 'jobs');
+    if(data.location) cvParams.set('location', data.location);
+    if(data.distance) cvParams.set('distance', data.distance);
+    if(salaryVal) cvParams.set('salarymin', String(salaryVal));
+    if(data.fullTime && !data.partTime) cvParams.set('job_type', 'permanent');
+
+    const reedBase = data.location
+      ? `https://www.reed.co.uk/jobs/jobs-in-${lSlug}`
+      : `https://www.reed.co.uk/jobs`;
+    const reedParams = new URLSearchParams();
+    if(keywords) reedParams.set('keywords', keywords);
+    if(salaryVal) reedParams.set('salaryfrom', String(salaryVal));
+
+    let totaljobsUrl = `https://www.totaljobs.com/jobs/${kSlug}`;
+    if(data.location) totaljobsUrl += `/in-${lSlug}`;
+    const tjParams = new URLSearchParams();
+    if(salaryVal) tjParams.set('salary', String(salaryVal));
+    if(data.fullTime && !data.partTime) tjParams.set('jobtype', 'full-time');
+    if(data.partTime && !data.fullTime) tjParams.set('jobtype', 'part-time');
+
+    const fajParams = new URLSearchParams();
+    fajParams.set('keywords', keywords || 'jobs');
+    fajParams.set('lang_code', 'en');
+    if(data.location) fajParams.set('w', data.location);
+    if(data.distance) fajParams.set('f', data.distance);
+    if(data.fullTime && !data.partTime) fajParams.set('cti', 'full_time');
+    if(data.partTime && !data.fullTime) fajParams.set('cti', 'part_time');
+    if(data.permanent) fajParams.set('cty', 'permanent');
+    if(data.remote) fajParams.set('remote', 'hybrid');
+
+    return [
+      {
+        name: 'Indeed',
+        tag: 'Quick search',
+        desc: 'Best for broad searches and lots of local results.',
+        url: `https://uk.indeed.com/jobs?${indeedParams.toString()}`
+      },
+      {
+        name: 'Reed',
+        tag: 'Popular UK site',
+        desc: 'Good for office, support, care, admin, and general vacancies.',
+        url: `${reedBase}${reedParams.toString() ? '?' + reedParams.toString() : ''}`
+      },
+      {
+        name: 'CV-Library',
+        tag: 'Detailed filters',
+        desc: 'Useful when someone wants more search options and lots of categories.',
+        url: `https://www.cv-library.co.uk/search-jobs?${cvParams.toString()}`
+      },
+      {
+        name: 'Totaljobs',
+        tag: 'Fast launch',
+        desc: 'Strong for UK-wide roles and location-based searches.',
+        url: `${totaljobsUrl}${tjParams.toString() ? '?' + tjParams.toString() : ''}`
+      },
+      {
+        name: 'Find a Job',
+        tag: 'Government service',
+        desc: 'Useful for direct job searches on the government-backed service.',
+        url: `https://findajob.dwp.gov.uk/search?${fajParams.toString()}`
+      }
+    ];
+  }
+
+  function renderProfiles(){
+    const profiles = getProfiles();
+    els.savedProfiles.innerHTML = '';
+
+    if(!profiles.length){
+      els.savedProfiles.innerHTML = '<div class="tip">No saved profiles yet.</div>';
+      return;
+    }
+
+    profiles.forEach((profile, index) => {
+      const item = document.createElement('div');
+      item.className = 'saved-item';
+      item.innerHTML = `
+        <strong>${profile.name}</strong>
+        <small>${profile.data.jobTitle || 'No keywords'} · ${profile.data.location || 'No location'} · ${profile.data.distance || '10'} miles</small>
+        <div class="saved-actions">
+          <button class="secondary micro" data-load="${index}">Load</button>
+          <button class="secondary micro" data-copy-profile="${index}">Copy summary</button>
+          <button class="warn micro" data-delete="${index}">Delete</button>
+        </div>
+      `;
+      els.savedProfiles.appendChild(item);
+    });
+
+    els.savedProfiles.querySelectorAll('[data-load]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const profile = getProfiles()[Number(btn.dataset.load)];
+        if(!profile) return;
+        applyData(profile.data);
+        saveData(false);
+        render();
+        flash(`Loaded profile: ${profile.name}`);
+      });
+    });
+
+    els.savedProfiles.querySelectorAll('[data-copy-profile]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const profile = getProfiles()[Number(btn.dataset.copyProfile)];
+        if(!profile) return;
+        try{
+          await navigator.clipboard.writeText(buildSummaryText(profile.data));
+          flash(`Copied profile: ${profile.name}`);
+        }catch{
+          flash('Could not copy profile summary');
+        }
+      });
+    });
+
+    els.savedProfiles.querySelectorAll('[data-delete]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const profiles = getProfiles();
+        const profile = profiles[Number(btn.dataset.delete)];
+        profiles.splice(Number(btn.dataset.delete), 1);
+        saveProfiles(profiles);
+        renderProfiles();
+        flash(profile ? `Deleted profile: ${profile.name}` : 'Deleted profile');
+      });
+    });
+  }
+
+  function renderTips(data){
+    const tips = buildCvTips(data);
+    els.cvTips.innerHTML = '';
+    tips.forEach(text => {
+      const div = document.createElement('div');
+      div.className = 'tip';
+      div.textContent = text;
+      els.cvTips.appendChild(div);
+    });
+  }
+
+  function render(){
+    const data = getData();
+    els.learnerDisplay.textContent = `Learner: ${data.learnerName || 'Not set'}`;
+    els.sumLearner.textContent = data.learnerName || 'Not set';
+    els.sumKeywords.textContent = data.jobTitle || 'Not set';
+    els.sumLocation.textContent = data.location || 'Not set';
+    els.sumDistance.textContent = `${data.distance || '10'} miles`;
+
+    renderTips(data);
+
+    const sites = buildSites(data);
+    els.results.innerHTML = '';
+
+    sites.forEach((site, index) => {
+      const card = document.createElement('article');
+      card.className = 'site';
+      card.innerHTML = `
+        <div class="site-head">
+          <div>
+            <h3>${site.name}</h3>
+          </div>
+          <div class="tag">${site.tag}</div>
+        </div>
+        <p>${site.desc}</p>
+        <div class="site-url">${site.url}</div>
+        <div class="site-actions">
+          <button class="primary" data-open="${index}">Open ${site.name}</button>
+          <button class="secondary" data-copy="${index}">Copy link</button>
+        </div>
+      `;
+      els.results.appendChild(card);
+    });
+
+    els.results.querySelectorAll('[data-open]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const site = sites[Number(btn.dataset.open)];
+        window.open(site.url, '_blank', 'noopener');
+      });
+    });
+
+    els.results.querySelectorAll('[data-copy]').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const site = sites[Number(btn.dataset.copy)];
+        try {
+          await navigator.clipboard.writeText(site.url);
+          flash(`${site.name} link copied`);
+        } catch {
+          flash('Could not copy link');
+        }
+      });
+    });
+
+    renderProfiles();
+    return sites;
+  }
+
+  async function toggleFullscreen(){
+    try {
+      if (!document.fullscreenElement) {
+        await document.documentElement.requestFullscreen();
+      } else {
+        await document.exitFullscreen();
+      }
+    } catch(err) {
+      flash('Fullscreen not available here');
+    }
+  }
+
+  $('buildBtn').addEventListener('click', () => {
+    saveData(false);
+    render();
+    flash('Searches built');
+  });
+
+  $('saveBtn').addEventListener('click', () => saveData(true));
+
+  $('clearBtn').addEventListener('click', () => {
+    localStorage.removeItem(storageKey);
+    applyData({distance:'10', learnerName:getLearnerFromHub()});
+    render();
+    flash('Current form cleared');
+  });
+
+  $('openAllBtn').addEventListener('click', () => {
+    const sites = render();
+    sites.forEach((site, i) => {
+      setTimeout(() => window.open(site.url, '_blank', 'noopener'), i * 180);
+    });
+    flash('Opening job websites');
+  });
+
+  $('copySummaryBtn').addEventListener('click', async () => {
+    try {
+      await navigator.clipboard.writeText(buildSummaryText(getData()));
+      flash('Summary copied');
+    } catch {
+      flash('Could not copy summary');
+    }
+  });
+
+  $('copyCvTipsBtn').addEventListener('click', async () => {
+    try{
+      await navigator.clipboard.writeText(buildCvTips(getData()).join('\n'));
+      flash('CV help copied');
+    }catch{
+      flash('Could not copy CV help');
+    }
+  });
+
+  $('copyInterviewTipsBtn').addEventListener('click', async () => {
+    try{
+      await navigator.clipboard.writeText(buildInterviewTips(getData()));
+      flash('Interview tips copied');
+    }catch{
+      flash('Could not copy interview tips');
+    }
+  });
+
+  $('saveProfileBtn').addEventListener('click', () => {
+    const name = els.profileName.value.trim();
+    if(!name){
+      flash('Please add a profile name first');
+      return;
+    }
+    const profiles = getProfiles();
+    const existingIndex = profiles.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+    const entry = { name, data: getData(), savedAt: new Date().toISOString() };
+    if(existingIndex >= 0){
+      profiles[existingIndex] = entry;
+    }else{
+      profiles.unshift(entry);
+    }
+    saveProfiles(profiles);
+    renderProfiles();
+    els.profileName.value = '';
+    flash('Profile saved');
+  });
+
+  $('clearProfilesBtn').addEventListener('click', () => {
+    localStorage.removeItem(profilesKey);
+    renderProfiles();
+    flash('All profiles deleted');
+  });
+
+  $('fullscreenBtn').addEventListener('click', toggleFullscreen);
+
+  $('helpFab').addEventListener('click', () => els.helpPanel.classList.add('show'));
+  $('helpClose').addEventListener('click', () => els.helpPanel.classList.remove('show'));
+  $('helpPanel').addEventListener('click', (e) => {
+    if(e.target === els.helpPanel) els.helpPanel.classList.remove('show');
+  });
+
+  $('overlayClose').addEventListener('click', () => {
+    els.overlay.classList.remove('show');
+    localStorage.setItem(overlayKey, 'yes');
+  });
+
+  $('overlayGo').addEventListener('click', async () => {
+    await toggleFullscreen();
+    els.overlay.classList.remove('show');
+    localStorage.setItem(overlayKey, 'yes');
+  });
+
+  ['learnerName','jobTitle','location','distance','salary','notes','fullTime','partTime','permanent','remote'].forEach(id => {
+    $(id).addEventListener('input', () => {
+      saveData(false);
+      render();
+    });
+    $(id).addEventListener('change', () => {
+      saveData(false);
+      render();
+    });
+  });
+
+  loadData();
+  syncLearnerIntoJobHub();
+  saveData(false);
+  render();
+
+  if(localStorage.getItem(overlayKey) === 'yes'){
+    els.overlay.classList.remove('show');
+  }
+})();
+</script>
+</body>
+</html>
