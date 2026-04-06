@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RECONNECT-US | Free Courses Hub</title>
+<style>
+:root{
+  --primary:#0b3d91;
+  --secondary:#1e5ed8;
+  --bg:#0a1f44;
+  --card:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.15);
+  --text:#ffffff;
+  --muted:#cfe0ff;
+  --shadow:0 14px 34px rgba(0,0,0,0.22);
+}
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,#071a3a,#0b3d91);
+  color:var(--text);
+  min-height:100vh;
+}
+.topbar{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:14px;
+  padding:16px 20px;
+  background:rgba(0,0,0,0.25);
+  flex-wrap:wrap;
+}
+.header{
+  font-size:1.4rem;
+  font-weight:700;
+  letter-spacing:1px;
+}
+.pill{
+  padding:10px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,0.12);
+  background:rgba(255,255,255,0.08);
+  color:#ffffff;
+  font-size:0.92rem;
+  white-space:nowrap;
+}
+.wrap{
+  width:min(1220px,94vw);
+  margin:auto;
+  padding:20px 0 40px;
+}
+.hero{
+  text-align:center;
+  margin-bottom:20px;
+}
+.hero h1{
+  margin:0 0 10px;
+  font-size:clamp(1.8rem,4vw,2.8rem);
+}
+.hero p{
+  max-width:760px;
+  margin:auto;
+  color:var(--muted);
+}
+.learner-panel{
+  margin:18px auto 0;
+  max-width:860px;
+  padding:14px 16px;
+  border-radius:16px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid var(--border);
+  color:var(--muted);
+  font-size:0.95rem;
+  line-height:1.5;
+}
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:18px;
+  margin-top:25px;
+}
+.card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:22px;
+  padding:20px;
+  backdrop-filter:blur(8px);
+  display:flex;
+  flex-direction:column;
+  box-shadow:var(--shadow);
+  min-height:340px;
+}
+.card-top{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:10px;
+}
+.icon{
+  width:58px;
+  height:58px;
+  border-radius:16px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.16);
+  font-size:1.7rem;
+  flex:0 0 auto;
+}
+.tag{
+  background:rgba(255,255,255,0.15);
+  padding:6px 10px;
+  border-radius:999px;
+  font-size:0.8rem;
+  margin-bottom:8px;
+  display:inline-block;
+}
+.card h2{
+  margin:0 0 8px;
+  font-size:1.18rem;
+}
+.card p{
+  color:var(--muted);
+  font-size:0.95rem;
+  line-height:1.5;
+  margin:0 0 10px;
+}
+.meta{
+  margin-top:auto;
+  margin-bottom:12px;
+  font-size:0.85rem;
+  color:#9cc3ff;
+}
+
+.cert-badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  margin:0 0 12px;
+  padding:8px 10px;
+  border-radius:12px;
+  background:rgba(255,191,71,0.18);
+  border:1px solid rgba(255,191,71,0.38);
+  color:#ffe2a8;
+  font-size:0.82rem;
+  font-weight:700;
+  line-height:1.35;
+}
+.btn-row{
+  display:grid;
+  grid-template-columns:1fr;
+  gap:10px;
+}
+.btn{
+  background:#ffffff;
+  color:#0b3d91;
+  text-decoration:none;
+  padding:11px 12px;
+  border-radius:12px;
+  text-align:center;
+  font-weight:700;
+  transition:transform 0.15s ease, box-shadow 0.15s ease;
+}
+.btn:hover{transform:translateY(-1px); box-shadow:0 8px 20px rgba(0,0,0,0.18);}
+.btn.secondary{
+  background:rgba(255,255,255,0.13);
+  color:#ffffff;
+  border:1px solid rgba(255,255,255,0.18);
+}
+.footer{
+  margin-top:25px;
+  padding:15px;
+  border-radius:15px;
+  background:rgba(255,255,255,0.08);
+  font-size:0.9rem;
+  color:var(--muted);
+  text-align:center;
+}
+@media (max-width:640px){
+  .card{min-height:auto;}
+  .icon{width:52px;height:52px;font-size:1.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="header">RECONNECT-US</div>
+  <div class="pill" id="statusPill">No learner signed in</div>
+</div>
+
+<div class="wrap">
+
+<section class="hero">
+<h1>Free Online Courses Hub</h1>
+<p>Access a range of free courses to build skills for work, life, and personal development.</p>
+<div class="learner-panel" id="learnerMessage">No learner is linked yet. Open this page from your RECONNECT-US hub so the learner name carries through.</div>
+</section>
+
+<section class="grid">
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">💻</div><div><span class="tag">Category 1</span><h2>IT &amp; Digital Skills</h2></div></div>
+  <p>Computers, troubleshooting, digital basics, and support skills.</p>
+  <div class="meta">Good for tech support and office-based job routes</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/courses/it" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-information-technology-support" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">📋</div><div><span class="tag">Category 2</span><h2>Business &amp; Office Skills</h2></div></div>
+  <p>Admin, workplace communication, reports, and day-to-day office skills.</p>
+  <div class="meta">Useful for admin, reception, and support roles</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/courses/business" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-business-communication-skills-revised" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🦺</div><div><span class="tag">Category 3</span><h2>Health &amp; Safety</h2></div></div>
+  <p>Learn safer working practices, risk awareness, and workplace responsibilities.</p>
+  <div class="meta">Helpful for warehouse, site, cleaning, and care settings</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/health-and-safety" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-workplace-safety-and-health-revised-2017" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🏗️</div><div><span class="tag">Category 4</span><h2>Construction &amp; Trades</h2></div></div>
+  <p>Construction basics, site knowledge, and trade-related practical learning.</p>
+  <div class="meta">A strong route for site work and hands-on trade jobs</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/construction" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/introduction-to-building-construction" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🧹</div><div><span class="tag">Category 5</span><h2>Cleaning &amp; Hospitality</h2></div></div>
+  <p>Cleaning, hygiene, service standards, and hospitality job skills.</p>
+  <div class="meta">Good for hotel, venue, cleaning, and catering pathways</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/hospitality" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/fundamentals-of-professional-cleaning" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🌿</div><div><span class="tag">Category 6</span><h2>Gardening &amp; Landscaping</h2></div></div>
+  <p>Gardens, green spaces, plant care, and outdoor maintenance skills.</p>
+  <div class="meta">Useful for gardening, grounds, and landscaping routes</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/gardening" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-garden-design-and-maintenance" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">⭐</div><div><span class="tag">Category 7</span><h2>Personal Development</h2></div></div>
+  <p>Confidence, communication, motivation, and skills for moving forward.</p>
+  <div class="meta">Great for employability, confidence, and interview readiness</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/courses/personal-development" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-personal-development-skills" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🩺</div><div><span class="tag">Category 8</span><h2>Healthcare &amp; Care Work</h2></div></div>
+  <p>Care work, health support, and essential knowledge for healthcare roles.</p>
+  <div class="meta">Useful for support worker and care assistant pathways</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/healthcare" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-health-and-social-care" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🛍️</div><div><span class="tag">Category 9</span><h2>Retail &amp; Customer Service</h2></div></div>
+  <p>Customer-facing work, shop floor confidence, sales, and service standards.</p>
+  <div class="meta">Ideal for retail, front desk, and customer service jobs</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/retail" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/customer-service-skills" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-top"><div class="icon" aria-hidden="true">🚚</div><div><span class="tag">Category 10</span><h2>Driving &amp; Logistics</h2></div></div>
+  <p>Warehousing, stock handling, transport planning, and logistics knowledge.</p>
+  <div class="meta">Strong fit for warehouse and delivery-related pathways</div>
+  <div class="cert-badge">⚠️ Free course - certificate may require payment</div>
+  <div class="btn-row">
+    <a class="btn course-link" href="https://alison.com/tag/logistics-management" target="_blank" rel="noopener noreferrer">Open Courses</a>
+    <a class="btn secondary popular-course-link" href="https://alison.com/course/diploma-in-warehouse-management" target="_blank" rel="noopener noreferrer">Popular Course</a>
+  </div>
+</div>
+
+</section>
+
+<div class="footer">
+© RECONNECT-US, all rights reserved
+</div>
+
+</div>
+
+<button id="fullscreenBtn" style="
+position:fixed;
+bottom:20px;
+right:20px;
+z-index:9999;
+padding:12px 16px;
+border:none;
+border-radius:10px;
+background:#ffffff;
+color:#0b3d91;
+font-weight:700;
+cursor:pointer;
+">Fullscreen</button>
+
+<script>
+const PROFILE_KEY = 'reconnectus_profile';
+const APP_DATA_KEY = 'reconnectus_app_data';
+const TRACKING_KEY = 'reconnectus_tracking_data';
+const SESSION_KEY = 'reconnectus_session';
+const SHARED_HUB_KEY = 'reconnectus_shared_current_learner_v1';
+
+const SaveStore = {
+  getProfile() {
+    try { return JSON.parse(localStorage.getItem(PROFILE_KEY) || 'null'); } catch { return null; }
+  },
+  getSessionProfile() {
+    try { return JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch { return null; }
+  },
+  getSharedLearner() {
+    try { return JSON.parse(localStorage.getItem(SHARED_HUB_KEY) || 'null'); } catch { return null; }
+  },
+  getAllApps() {
+    try { return JSON.parse(localStorage.getItem(APP_DATA_KEY) || '{}'); } catch { return {}; }
+  },
+  saveApp(appId, data) {
+    const all = this.getAllApps();
+    all[appId] = { ...(all[appId] || {}), ...data, path: data.path || (all[appId] || {}).path || '', updatedAt: new Date().toISOString() };
+    localStorage.setItem(APP_DATA_KEY, JSON.stringify(all));
+    return all[appId];
+  },
+  getTracking() {
+    try { return JSON.parse(localStorage.getItem(TRACKING_KEY) || '{"events":[],"counters":{}}'); } catch { return { events: [], counters: {} }; }
+  },
+  track(eventType, payload = {}) {
+    const tracking = this.getTracking();
+    tracking.events = Array.isArray(tracking.events) ? tracking.events : [];
+    tracking.counters = tracking.counters || {};
+    tracking.events.unshift({ eventType, payload, timestamp: new Date().toISOString() });
+    tracking.events = tracking.events.slice(0, 180);
+    tracking.counters[eventType] = (tracking.counters[eventType] || 0) + 1;
+    localStorage.setItem(TRACKING_KEY, JSON.stringify(tracking));
+  }
+};
+
+function getProfile() {
+  return SaveStore.getSessionProfile() || SaveStore.getProfile() || SaveStore.getSharedLearner();
+}
+
+function updateLearnerUi() {
+  const profile = getProfile();
+  const statusPill = document.getElementById('statusPill');
+  const learnerMessage = document.getElementById('learnerMessage');
+
+  if (profile && profile.name) {
+    statusPill.textContent = 'Signed in: ' + profile.name;
+    learnerMessage.textContent = profile.name + ' is linked to this page from the shared RECONNECT-US hub.';
+  } else {
+    statusPill.textContent = 'No learner signed in';
+    learnerMessage.textContent = 'No learner is linked yet. Open this page from your RECONNECT-US hub so the learner name carries through.';
+  }
+}
+
+function saveLaunch(appId, title, summary) {
+  const profile = getProfile();
+  const learnerName = profile?.name || 'Unknown learner';
+  const finalPath = new URL('./free-courses-updated.html', window.location.href).href;
+  SaveStore.saveApp(appId, {
+    title,
+    learnerName,
+    summary,
+    path: finalPath
+  });
+  SaveStore.track('app_saved', { appId, source: 'job_search_learning_pages' });
+  SaveStore.track('app_opened', { appId, source: 'job_search_learning_pages', page: finalPath });
+}
+
+function wireCourseLinks(appId) {
+  document.querySelectorAll('.course-link, .popular-course-link').forEach(link => {
+    link.addEventListener('click', () => {
+      SaveStore.track('external_course_opened', {
+        appId,
+        href: link.getAttribute('href') || '',
+        label: link.textContent.trim()
+      });
+    });
+  });
+}
+
+const fullscreenBtn = document.getElementById('fullscreenBtn');
+function toggleFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen();
+    fullscreenBtn.textContent = 'Exit Fullscreen';
+  } else {
+    document.exitFullscreen();
+    fullscreenBtn.textContent = 'Fullscreen';
+  }
+}
+fullscreenBtn.addEventListener('click', toggleFullscreen);
+
+document.body.addEventListener('click', function autoFS(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().catch(()=>{});
+  }
+  document.body.removeEventListener('click', autoFS);
+});
+
+document.addEventListener('fullscreenchange', () => {
+  fullscreenBtn.textContent = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+});
+
+updateLearnerUi();
+saveLaunch('free_courses', 'Free Training Courses', 'Opened from the Job Search Hub.');
+wireCourseLinks('free_courses');
+</script>
+</body>
+</html>
