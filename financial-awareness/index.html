@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>RECONNECT-US Financial Awareness</title>
+
+<style>
+:root{
+  --bg1:#0c2a52;
+  --bg2:#1d4f8f;
+  --bg3:#2f6fba;
+  --panel:#ffffff;
+  --text:#15304f;
+  --muted:#5c7188;
+  --accent:#2f7de1;
+  --border:#d5e1ef;
+  --shadow:0 14px 36px rgba(6,24,49,.18);
+  --radius:24px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(145deg,var(--bg1),var(--bg2) 55%,var(--bg3));
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+  padding:20px;
+}
+
+.container{
+  width:95%;
+  max-width:980px;
+}
+
+.header{
+  text-align:center;
+  margin-bottom:24px;
+}
+
+.header h1{
+  margin:0;
+  font-size:2rem;
+}
+
+.header p{
+  margin-top:10px;
+  color:#d8e8ff;
+  font-size:1rem;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:18px;
+}
+
+.tile{
+  background:var(--panel);
+  color:var(--text);
+  border-radius:var(--radius);
+  border:1px solid var(--border);
+  box-shadow:var(--shadow);
+  padding:24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-height:240px;
+}
+
+.tile h2{
+  margin:0 0 12px;
+  font-size:1.45rem;
+}
+
+.tile p{
+  margin:0;
+  color:var(--muted);
+  line-height:1.5;
+  font-size:0.98rem;
+}
+
+.btn{
+  margin-top:20px;
+  padding:14px;
+  border:none;
+  border-radius:16px;
+  background:var(--accent);
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  text-align:center;
+  font-size:1rem;
+}
+
+.btn:hover{
+  opacity:0.92;
+}
+
+.footer{
+  margin-top:20px;
+  text-align:center;
+  color:#d8e8ff;
+  font-size:0.9rem;
+}
+
+@media(max-width:760px){
+  .grid{
+    grid-template-columns:1fr;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+  <div class="header">
+    <h1>RECONNECT-US Financial Awareness</h1>
+    <p>Choose a financial awareness training program to continue.</p>
+  </div>
+
+  <div class="grid">
+
+    <div class="tile">
+      <div>
+        <h2>💷 Financial Awareness Training</h2>
+        <p>Learn about credit, debt, Buy Now Pay Later services, hidden spending, safer money habits and recognising financial pressure before it becomes overwhelming.</p>
+      </div>
+
+      <button class="btn" onclick="window.location.href='./financial-awareness-training/index.html'">
+        Open
+      </button>
+    </div>
+
+    <div class="tile">
+      <div>
+        <h2>➕ Add More Programs</h2>
+        <p>This space is ready for additional budgeting tools, debt awareness training, banking safety learning, savings apps and future financial support programs.</p>
+      </div>
+
+      <button class="btn" onclick="alert('Add another financial awareness program here later.')">
+        Future Space
+      </button>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    © RECONNECT-US — All rights reserved
+  </div>
+
+</div>
+
+</body>
+</html>
