@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RECONNECT-US | Training Policy & Verification</title>
+<style>
+:root{
+  --bg1:#071a3a;
+  --bg2:#0b3d91;
+  --card:rgba(255,255,255,0.08);
+  --border:rgba(255,255,255,0.16);
+  --text:#ffffff;
+  --muted:#cfe0ff;
+  --accent:#00e0a4;
+  --warn:#ffd166;
+  --danger:#ff7b7b;
+  --soft:#9cc3ff;
+}
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:linear-gradient(135deg,var(--bg1),var(--bg2));
+  color:var(--text);
+}
+.wrap{width:min(1260px,94vw);margin:auto;padding:24px 0 40px}
+.topbar{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.header{font-size:clamp(1.5rem,3vw,2rem);font-weight:700}
+.sub{color:var(--muted);font-size:.96rem}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.section{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:18px;
+  margin-bottom:18px;
+  backdrop-filter:blur(8px);
+}
+.section h2{margin:0 0 10px}
+.section p{line-height:1.5}
+.notice{
+  background:rgba(0,224,164,.15);
+  border:1px solid var(--accent);
+  padding:12px 14px;
+  border-radius:12px;
+  margin-top:12px;
+  font-size:.92rem;
+}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+.field label{display:block;margin:0 0 6px;font-size:.9rem;color:var(--muted)}
+.field input,.field select,.field textarea{
+  width:100%;padding:12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+  background:rgba(255,255,255,.96);color:#10264f;font-size:.96rem;outline:none
+}
+.field textarea{min-height:92px;resize:vertical}
+.span-2{grid-column:1/-1}
+.actions,.inline-filter{display:flex;gap:10px;flex-wrap:wrap;align-items:end}
+.actions{margin-top:14px}
+button{
+  padding:12px 16px;border:none;border-radius:12px;font-weight:700;cursor:pointer
+}
+.primary{background:#fff;color:#0b3d91}
+.secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid var(--border)}
+.danger{background:var(--danger);color:#1f0b0b}
+.status-line{margin-top:12px;color:var(--muted);font-size:.92rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px}
+.mini-card{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:16px;padding:14px}
+.mini-card h3{margin:0 0 8px;font-size:1rem}
+.mini-card p{margin:0;color:var(--muted);font-size:.9rem}
+.kpi{font-size:1.8rem;font-weight:700;margin:4px 0 6px}
+.kpi.green{color:var(--accent)} .kpi.gold{color:var(--warn)} .kpi.red{color:var(--danger)} .kpi.blue{color:var(--soft)}
+.table-wrap{overflow:auto;border-radius:14px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;min-width:1360px;background:rgba(0,0,0,.1)}
+th,td{padding:12px 10px;text-align:left;border-bottom:1px solid var(--border);vertical-align:top;font-size:.92rem}
+th{background:rgba(255,255,255,.08)}
+.badge{display:inline-block;padding:6px 9px;border-radius:999px;font-size:.78rem;font-weight:700}
+.verified{background:var(--accent);color:#05291f}
+.pending{background:var(--warn);color:#3f2b00}
+.rejected{background:var(--danger);color:#3f1010}
+.renew-ok{background:rgba(0,224,164,.18);color:#dffff4;border:1px solid rgba(0,224,164,.35)}
+.renew-soon{background:rgba(255,209,102,.18);color:#fff1c4;border:1px solid rgba(255,209,102,.35)}
+.renew-overdue{background:rgba(255,123,123,.18);color:#ffe1e1;border:1px solid rgba(255,123,123,.35)}
+.renew-na{background:rgba(156,195,255,.15);color:#d9e7ff;border:1px solid rgba(156,195,255,.25)}
+.small-btn{padding:8px 10px;border-radius:10px;font-size:.82rem;margin-right:6px;margin-bottom:6px}
+.empty{color:var(--muted);padding:18px 8px 2px}
+.footer{text-align:center;margin-top:20px;font-size:.85rem;color:var(--muted)}
+.print-note{color:var(--muted);font-size:.88rem;margin-top:10px}
+.floating-fullscreen{position:fixed;right:18px;bottom:18px;z-index:9999;box-shadow:0 10px 24px rgba(0,0,0,.28)}
+.linkish{color:#fff;text-decoration:underline;cursor:pointer}
+.file-meta{font-size:.82rem;color:var(--muted);margin-top:6px}
+@media (max-width:800px){.grid{grid-template-columns:1fr}.span-2{grid-column:auto}}
+@media print{
+  body{background:#fff;color:#000}
+  .section{background:#fff;border:1px solid #bbb;backdrop-filter:none}
+  .actions,.status-line,.print-hide,.floating-fullscreen{display:none!important}
+  .field input,.field select,.field textarea{border:1px solid #999}
+  .footer,.sub,.notice,.print-note,.mini-card p,.file-meta{color:#000}
+  th,td{border-color:#ccc}
+}
+</style>
+</head>
+<body>
+
+<div id="passwordOverlay" style="
+position:fixed;top:0;left:0;width:100%;height:100%;
+background:linear-gradient(135deg,#071a3a,#0b3d91);
+display:flex;align-items:center;justify-content:center;
+z-index:99999;flex-direction:column;text-align:center;padding:20px;">
+  <h2>RECONNECT-US Secure Access</h2>
+
+  <input id="passwordInput" type="password" placeholder="Enter password"
+    style="padding:12px;border-radius:10px;border:none;width:220px;margin:10px 0;" />
+
+  <button id="unlockBtn" style="padding:10px 16px;border-radius:10px;border:none;font-weight:bold;">
+    Unlock
+  </button>
+
+  <button onclick="openChangePassword('login')" 
+    style="margin-top:10px;background:none;border:none;color:#9cc3ff;cursor:pointer;">
+    Change Password
+  </button>
+
+  <p id="errorMsg" style="color:#ff7b7b;display:none;">Incorrect password</p>
+</div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div>
+      <div class="header">RECONNECT-US | Training Policy & Verification</div>
+      <div class="sub"></div>
+    </div>
+    <div class="toolbar print-hide">
+      <button class="secondary" id="topFullscreenBtn" type="button">Fullscreen</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Policy Overview</h2>
+    <p>All staff and volunteers should complete relevant training before carrying out their role. RECONNECT-US keeps an internal record of evidence reviewed, verification status, renewal timing, and any follow-up needed.</p>
+    
+  </div>
+
+  <div class="section">
+    <h2>Renewal Dashboard</h2>
+    <div class="cards">
+      <div class="mini-card"><h3>Overdue Renewals</h3><div class="kpi red" id="kpiOverdue">0</div><p>Already past renewal date.</p></div>
+      <div class="mini-card"><h3>Due Soon</h3><div class="kpi gold" id="kpiSoon">0</div><p>Due within the reminder window.</p></div>
+      <div class="mini-card"><h3>Up to Date</h3><div class="kpi green" id="kpiOk">0</div><p>Renewal date is still ahead.</p></div>
+      <div class="mini-card"><h3>No Renewal Set</h3><div class="kpi blue" id="kpiNa">0</div><p>No renewal required.</p></div>
+    </div>
+
+    <div class="inline-filter print-hide" style="margin-top:12px">
+      <div class="field" style="min-width:180px;flex:1">
+        <label for="renewalFilter">Show</label>
+        <select id="renewalFilter">
+          <option value="all">All Records</option>
+          <option value="overdue">Overdue Only</option>
+          <option value="soon">Due Soon Only</option>
+          <option value="action">Needs Action</option>
+          <option value="ok">Up to Date Only</option>
+          <option value="na">No Renewal Set</option>
+        </select>
+      </div>
+      <div class="field" style="min-width:160px;flex:1">
+        <label for="soonDays">Reminder Window</label>
+        <select id="soonDays">
+          <option value="30">30 days</option>
+          <option value="60">60 days</option>
+          <option value="90" selected>90 days</option>
+          <option value="120">120 days</option>
+          <option value="180">180 days</option>
+        </select>
+      </div>
+      <div class="field" style="min-width:220px;flex:1">
+        <label for="searchText">Search</label>
+        <input id="searchText" type="text" placeholder="Search name, course, role or provider" />
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>Add or Update Training Record</h2>
+    <div class="grid">
+      <div class="field"><label for="personName">Name</label><input id="personName" type="text" placeholder="Enter volunteer or staff name" /></div>
+      <div class="field"><label for="role">Role</label><input id="role" type="text" placeholder="Volunteer, staff, mentor, etc." /></div>
+      <div class="field"><label for="courseName">Course</label><input id="courseName" type="text" placeholder="Adult Safeguarding, First Aid, GDPR, etc." /></div>
+      <div class="field"><label for="provider">Provider</label><input id="provider" type="text" placeholder="Alison, OpenLearn, local provider, in-house, etc." /></div>
+      <div class="field"><label for="completionDate">Completion Date</label><input id="completionDate" type="date" /></div>
+      <div class="field"><label for="status">Status</label>
+        <select id="status">
+          <option value="Verified">Verified</option>
+          <option value="Pending Review">Pending Review</option>
+          <option value="Not Accepted">Not Accepted</option>
+        </select>
+      </div>
+      <div class="field"><label for="evidenceType">Evidence Type</label>
+        <select id="evidenceType">
+          <option value="Certificate">Certificate</option>
+          <option value="Completion Screenshot">Completion Screenshot</option>
+          <option value="Provider Completion Record">Provider Completion Record</option>
+          <option value="Other">Other</option>
+        </select>
+      </div>
+      <div class="field"><label for="reviewedBy">Reviewed By</label><input id="reviewedBy" type="text" placeholder="Your name or manager name" /></div>
+      <div class="field"><label for="renewalYears">Renewal Period</label>
+        <select id="renewalYears">
+          <option value="0">No renewal required</option>
+          <option value="1">Renew every 1 year</option>
+          <option value="2" selected>Renew every 2 years</option>
+          <option value="3">Renew every 3 years</option>
+          <option value="4">Renew every 4 years</option>
+          <option value="5">Renew every 5 years</option>
+        </select>
+      </div>
+      <div class="field"><label for="manualRenewalDate">Manual Renewal Date (optional)</label><input id="manualRenewalDate" type="date" /></div>
+      <div class="field span-2">
+        <label for="certificateFile">Attach Certificate / Evidence File (optional)</label>
+        <input id="certificateFile" type="file" accept=".pdf,.jpg,.jpeg,.png,.webp,.doc,.docx" />
+        <div class="file-meta" id="fileMeta">No file attached.</div>
+      </div>
+      <div class="field span-2"><label for="notes">Notes</label><textarea id="notes" placeholder="Add any notes, such as whether a certificate is still pending, whether a screenshot was accepted temporarily, or whether refresher training is needed."></textarea></div>
+    </div>
+
+    <div class="actions print-hide">
+      <button class="primary" id="saveBtn" type="button">Add Training Record</button>
+      <button class="secondary" id="clearBtn" type="button">Clear Form</button>
+      <button class="secondary" id="exportBtn" type="button">Export Log as CSV</button>
+      <button class="secondary" id="printBtn" type="button">Print / Save as PDF</button>
+      <button class="danger" id="wipeBtn" type="button">Delete All Records</button>
+<button class="secondary" onclick="openChangePassword('delete')">Change Delete Password</button>
+    </div>
+    <div class="status-line" id="statusLine">Ready.</div>
+    <div class="print-note">The attached file name is stored in the record for reference. Browsers do not allow a local HTML page to permanently keep a real file attached after refresh, so this tracks the file name and size only unless you later move to a cloud system.</div>
+  </div>
+
+  <div class="section">
+    <h2>Training Log</h2>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Role</th>
+            <th>Course</th>
+            <th>Provider</th>
+            <th>Completed</th>
+            <th>Evidence</th>
+            <th>Status</th>
+            <th>Renewal</th>
+            <th>Next Renewal Date</th>
+            <th>Flag</th>
+            <th>Reviewed By</th>
+            <th>File</th>
+            <th>Notes</th>
+            <th class="print-hide">Actions</th>
+          </tr>
+        </thead>
+        <tbody id="recordsBody"></tbody>
+      </table>
+    </div>
+    <div class="empty" id="emptyMessage">No training records saved yet.</div>
+  </div>
+
+  <div class="footer">© RECONNECT-US, all rights reserved</div>
+</div>
+
+<button class="secondary floating-fullscreen print-hide" id="floatingFullscreenBtn" type="button">Fullscreen</button>
+
+<script>
+const STORAGE_KEY = 'reconnectus_training_records_v5';
+let editId = null;
+let attachedFileMeta = null;
+
+function byId(id){ return document.getElementById(id); }
+
+function getRecords(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? parsed : [];
+  }catch(e){ return []; }
+}
+
+function saveRecords(records){
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(records));
+}
+
+function escapeHtml(value){
+  return String(value ?? '')
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+function sortByName(records){
+  return records.slice().sort((a,b)=>{
+    const key = (r)=>{
+      const name = (r.personName||'').trim();
+      const parts = name.split(/\s+/).filter(Boolean);
+      const surname = parts.length > 1 ? parts[parts.length - 1] : (parts[0] || '');
+      const first = parts[0] || '';
+      return (surname + ' ' + first).toLowerCase();
+    };
+    return key(a).localeCompare(key(b));
+  });
+}
+
+function badgeClass(status){
+  if(status === 'Verified') return 'verified';
+  if(status === 'Pending Review') return 'pending';
+  return 'rejected';
+}
+
+function setStatus(message){ byId('statusLine').textContent = message; }
+
+function addYearsToDate(iso, years){
+  if(!iso || !years) return '';
+  const d = new Date(iso + 'T00:00:00');
+  if(Number.isNaN(d.getTime())) return '';
+  d.setFullYear(d.getFullYear() + Number(years));
+  return d.toISOString().slice(0,10);
+}
+
+function displayDate(iso){
+  if(!iso) return '—';
+  const d = new Date(iso + 'T00:00:00');
+  if(Number.isNaN(d.getTime())) return iso;
+  return d.toLocaleDateString('en-GB');
+}
+
+function getSoonDays(){ return Number(byId('soonDays').value || 90); }
+
+function getRenewalDate(record){
+  if(record.manualRenewalDate) return record.manualRenewalDate;
+  if(Number(record.renewalYears || 0) > 0 && record.completionDate){
+    return addYearsToDate(record.completionDate, Number(record.renewalYears));
+  }
+  return '';
+}
+
+function renewalSummary(record){
+  const years = Number(record.renewalYears || 0);
+  const renewalDate = getRenewalDate(record);
+  if(!renewalDate){
+    return {
+      label: years > 0 ? 'Renewal date missing' : 'No renewal required',
+      className: years > 0 ? 'renew-soon' : 'renew-na',
+      code: years > 0 ? 'soon' : 'na'
+    };
+  }
+  const today = new Date(); today.setHours(0,0,0,0);
+  const due = new Date(renewalDate + 'T00:00:00');
+  const diffDays = Math.ceil((due - today) / 86400000);
+
+  if(diffDays < 0) return { label:'Overdue by ' + Math.abs(diffDays) + ' day' + (Math.abs(diffDays)===1?'':'s'), className:'renew-overdue', code:'overdue' };
+  if(diffDays <= getSoonDays()) return { label:'Due in ' + diffDays + ' day' + (diffDays===1?'':'s'), className:'renew-soon', code:'soon' };
+  return { label:'Up to date', className:'renew-ok', code:'ok' };
+}
+
+function renderDashboard(records){
+  let overdue=0, soon=0, ok=0, na=0;
+  records.forEach(record=>{
+    const code = renewalSummary(record).code;
+    if(code==='overdue') overdue++;
+    else if(code==='soon') soon++;
+    else if(code==='ok') ok++;
+    else na++;
+  });
+  byId('kpiOverdue').textContent = overdue;
+  byId('kpiSoon').textContent = soon;
+  byId('kpiOk').textContent = ok;
+  byId('kpiNa').textContent = na;
+}
+
+function matchesFilter(record){
+  const filter = byId('renewalFilter').value;
+  const search = byId('searchText').value.trim().toLowerCase();
+  const flag = renewalSummary(record).code;
+
+  if(filter==='overdue' && flag!=='overdue') return false;
+  if(filter==='soon' && flag!=='soon') return false;
+  if(filter==='action' && !['overdue','soon'].includes(flag)) return false;
+  if(filter==='ok' && flag!=='ok') return false;
+  if(filter==='na' && flag!=='na') return false;
+
+  if(search){
+    const hay = [
+      record.personName, record.role, record.courseName, record.provider,
+      record.reviewedBy, record.notes, record.fileName
+    ].join(' ').toLowerCase();
+    if(!hay.includes(search)) return false;
+  }
+  return true;
+}
+
+function renderTable(){
+  const allRecords = sortByName(getRecords());
+  renderDashboard(allRecords);
+
+  const records = allRecords.filter(matchesFilter);
+  const body = byId('recordsBody');
+  const empty = byId('emptyMessage');
+  body.innerHTML = '';
+
+  if(!records.length){
+    empty.style.display = 'block';
+    empty.textContent = allRecords.length ? 'No records match the current filter.' : 'No training records saved yet.';
+    return;
+  }
+  empty.style.display = 'none';
+
+  records.forEach(record=>{
+    const renewalDate = getRenewalDate(record);
+    const flag = renewalSummary(record);
+    const renewalText = Number(record.renewalYears || 0) > 0 ? ('Every ' + record.renewalYears + ' year' + (Number(record.renewalYears)===1?'':'s')) : 'Not required';
+    const fileText = record.fileName ? (record.fileName + (record.fileSize ? ' (' + record.fileSize + ')' : '')) : '—';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${escapeHtml(record.personName)}</td>
+      <td>${escapeHtml(record.role)}</td>
+      <td>${escapeHtml(record.courseName)}</td>
+      <td>${escapeHtml(record.provider)}</td>
+      <td>${escapeHtml(displayDate(record.completionDate))}</td>
+      <td>${escapeHtml(record.evidenceType)}</td>
+      <td><span class="badge ${badgeClass(record.status)}">${escapeHtml(record.status)}</span></td>
+      <td>${escapeHtml(renewalText)}</td>
+      <td>${escapeHtml(displayDate(renewalDate))}</td>
+      <td><span class="badge ${flag.className}">${escapeHtml(flag.label)}</span></td>
+      <td>${escapeHtml(record.reviewedBy)}</td>
+      <td>${escapeHtml(fileText)}</td>
+      <td>${escapeHtml(record.notes)}</td>
+      <td class="print-hide">
+        <button type="button" class="small-btn secondary" onclick="editRecord('${record.id}')">Edit</button>
+        <button type="button" class="small-btn danger" onclick="deleteRecord('${record.id}')">Delete</button>
+      </td>
+    `;
+    body.appendChild(tr);
+  });
+}
+
+function fileSizeLabel(bytes){
+  if(!bytes && bytes !== 0) return '';
+  if(bytes < 1024) return bytes + ' B';
+  if(bytes < 1024*1024) return (bytes/1024).toFixed(1) + ' KB';
+  return (bytes/(1024*1024)).toFixed(2) + ' MB';
+}
+
+function syncFileMeta(){
+  byId('fileMeta').textContent = attachedFileMeta
+    ? ('Attached: ' + attachedFileMeta.name + (attachedFileMeta.size ? ' (' + attachedFileMeta.size + ')' : ''))
+    : 'No file attached.';
+}
+
+function clearForm(){
+  ['personName','role','courseName','provider','completionDate','reviewedBy','manualRenewalDate','notes'].forEach(id => byId(id).value = '');
+  byId('status').value = 'Verified';
+  byId('evidenceType').value = 'Certificate';
+  byId('renewalYears').value = '2';
+  byId('certificateFile').value = '';
+  attachedFileMeta = null;
+  syncFileMeta();
+  editId = null;
+  byId('saveBtn').textContent = 'Add Training Record';
+}
+
+function getFormData(){
+  return {
+    personName: byId('personName').value.trim(),
+    role: byId('role').value.trim(),
+    courseName: byId('courseName').value.trim(),
+    provider: byId('provider').value.trim(),
+    completionDate: byId('completionDate').value,
+    status: byId('status').value,
+    evidenceType: byId('evidenceType').value,
+    reviewedBy: byId('reviewedBy').value.trim(),
+    renewalYears: Number(byId('renewalYears').value || 0),
+    manualRenewalDate: byId('manualRenewalDate').value,
+    notes: byId('notes').value.trim(),
+    fileName: attachedFileMeta ? attachedFileMeta.name : '',
+    fileSize: attachedFileMeta ? attachedFileMeta.size : ''
+  };
+}
+
+function validate(data){
+  if(!data.personName) return 'Please enter a name.';
+  if(!data.courseName) return 'Please enter a course name.';
+  if(data.renewalYears > 0 && !data.completionDate && !data.manualRenewalDate){
+    return 'Add a completion date or a manual renewal date so renewals can be tracked.';
+  }
+  return '';
+}
+
+function addOrUpdateRecord(){
+  const data = getFormData();
+  const problem = validate(data);
+  if(problem){ setStatus(problem); return; }
+
+  const records = getRecords();
+  if(editId){
+    const index = records.findIndex(r => r.id === editId);
+    if(index >= 0){
+      records[index] = { ...records[index], ...data, updatedAt:new Date().toISOString() };
+      saveRecords(records);
+      renderTable();
+      clearForm();
+      setStatus('Training record updated and saved.');
+      return;
+    }
+  }
+
+  records.push({
+    id:'rec_' + Date.now() + '_' + Math.random().toString(36).slice(2,7),
+    ...data,
+    createdAt:new Date().toISOString()
+  });
+  saveRecords(records);
+  renderTable();
+  clearForm();
+  setStatus('Training record added and saved.');
+}
+
+function editRecord(id){
+  openModal("delete", function(){
+
+    const record = getRecords().find(r => r.id === id);
+    if(!record) return;
+
+    byId('personName').value = record.personName || '';
+    byId('role').value = record.role || '';
+    byId('courseName').value = record.courseName || '';
+    byId('provider').value = record.provider || '';
+    byId('completionDate').value = record.completionDate || '';
+    byId('status').value = record.status || 'Verified';
+    byId('evidenceType').value = record.evidenceType || 'Certificate';
+    byId('reviewedBy').value = record.reviewedBy || '';
+    byId('renewalYears').value = String(record.renewalYears ?? 2);
+    byId('manualRenewalDate').value = record.manualRenewalDate || '';
+    byId('notes').value = record.notes || '';
+
+    attachedFileMeta = record.fileName 
+      ? { name:record.fileName, size:record.fileSize || '' } 
+      : null;
+
+    syncFileMeta();
+    byId('certificateFile').value = '';
+    editId = id;
+
+    byId('saveBtn').textContent = 'Update Training Record';
+
+    window.scrollTo({top:0,behavior:'smooth'});
+    setStatus('Editing record. Change anything you need, then click Update.');
+
+  });
+}
+
+function deleteRecord(id){
+  const records = getRecords().filter(r => r.id !== id);
+  saveRecords(records);
+  if(editId === id) clearForm();
+  renderTable();
+  setStatus('Individual training record deleted.');
+}
+
+function wipeAll(){
+  const ok = confirm('Delete all saved records from this device?');
+  if(!ok) return;
+  localStorage.removeItem(STORAGE_KEY);
+  clearForm();
+  renderTable();
+  setStatus('All records deleted from this device.');
+}
+
+function exportCsv(){
+  const records = sortByName(getRecords());
+  if(!records.length){ setStatus('There are no records to export yet.'); return; }
+  const headers = ['Name','Role','Course','Provider','Completion Date','Evidence Type','Status','Renewal Years','Manual Renewal Date','Calculated Renewal Date','Renewal Flag','Reviewed By','File Name','File Size','Notes','Created At','Updated At'];
+  const rows = records.map(r => [
+    r.personName,r.role,r.courseName,r.provider,r.completionDate,r.evidenceType,r.status,
+    r.renewalYears,r.manualRenewalDate || '',getRenewalDate(r),renewalSummary(r).label,
+    r.reviewedBy,r.fileName || '',r.fileSize || '',r.notes,r.createdAt || '',r.updatedAt || ''
+  ]);
+  const csv = [headers,...rows].map(row => row.map(v => '"' + String(v ?? '').replace(/"/g,'""') + '"').join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8;'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'reconnectus-training-log-' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setStatus('CSV export downloaded.');
+}
+
+function syncFullscreenButtons(){
+  const label = document.fullscreenElement ? 'Exit Fullscreen' : 'Fullscreen';
+  byId('topFullscreenBtn').textContent = label;
+  byId('floatingFullscreenBtn').textContent = label;
+}
+async function toggleFullscreen(){
+  try{
+    if(!document.fullscreenElement) await document.documentElement.requestFullscreen();
+    else await document.exitFullscreen();
+  }catch(e){
+    setStatus('Fullscreen was blocked by the browser on this action.');
+  }
+  syncFullscreenButtons();
+}
+function keepFullscreen(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().then(syncFullscreenButtons).catch(()=>{});
+  }
+}
+
+byId('certificateFile').addEventListener('change', (e)=>{
+  const file = e.target.files && e.target.files[0];
+  attachedFileMeta = file ? { name:file.name, size:fileSizeLabel(file.size) } : null;
+  syncFileMeta();
+});
+
+byId('saveBtn').addEventListener('click', addOrUpdateRecord);
+byId('clearBtn').addEventListener('click', ()=>{ clearForm(); setStatus('Form cleared.'); });
+byId('exportBtn').addEventListener('click', exportCsv);
+byId('printBtn').addEventListener('click', ()=>window.print());
+byId('wipeBtn').addEventListener('click', wipeAll);
+byId('topFullscreenBtn').addEventListener('click', toggleFullscreen);
+byId('floatingFullscreenBtn').addEventListener('click', toggleFullscreen);
+byId('renewalFilter').addEventListener('change', renderTable);
+byId('soonDays').addEventListener('change', renderTable);
+byId('searchText').addEventListener('input', renderTable);
+
+document.addEventListener('fullscreenchange', syncFullscreenButtons);
+window.addEventListener('focus', ()=>setTimeout(keepFullscreen,150));
+document.addEventListener('visibilitychange', ()=>{ if(document.visibilityState === 'visible') setTimeout(keepFullscreen,150); });
+document.body.addEventListener('click', function autoEnter(){
+  if(!document.fullscreenElement){
+    document.documentElement.requestFullscreen().then(syncFullscreenButtons).catch(()=>{});
+  }
+  document.body.removeEventListener('click', autoEnter);
+}, { once:true });
+
+clearForm();
+renderTable();
+syncFileMeta();
+syncFullscreenButtons();
+
+const PASSWORD_KEY = "reconnectus_login_password";
+const DELETE_PASSWORD_KEY = "reconnectus_delete_password";
+
+if (!localStorage.getItem(PASSWORD_KEY)) {
+  localStorage.setItem(PASSWORD_KEY, "admin123");
+}
+if (!localStorage.getItem(DELETE_PASSWORD_KEY)) {
+  localStorage.setItem(DELETE_PASSWORD_KEY, "delete123");
+}
+
+document.getElementById("unlockBtn").addEventListener("click", function(){
+  const input = document.getElementById("passwordInput").value;
+  const saved = localStorage.getItem(PASSWORD_KEY);
+
+  if(input === saved){
+    document.getElementById("passwordOverlay").style.display = "none";
+  } else {
+    document.getElementById("errorMsg").style.display = "block";
+  }
+});
+
+let modalMode = null;
+let modalAction = null;
+
+function openModal(mode, action=null){
+  modalMode = mode;
+  modalAction = action;
+
+  document.getElementById("modalOverlay").style.display = "flex";
+  document.getElementById("modalError").style.display = "none";
+  document.getElementById("modalInput1").value = "";
+  document.getElementById("modalInput2").value = "";
+
+  if(mode === "delete"){
+    document.getElementById("modalTitle").textContent = "Enter Delete Password";
+    document.getElementById("modalInput2").style.display = "none";
+  }
+
+  if(mode === "changeLogin"){
+    document.getElementById("modalTitle").textContent = "Change Login Password";
+    document.getElementById("modalInput2").style.display = "block";
+  }
+
+  if(mode === "changeDelete"){
+    document.getElementById("modalTitle").textContent = "Change Delete Password";
+    document.getElementById("modalInput2").style.display = "block";
+  }
+}
+
+function closeModal(){
+  document.getElementById("modalOverlay").style.display = "none";
+}
+
+function openChangePassword(type){
+  if(type === "login"){
+    openModal("changeLogin");
+  } else {
+    openModal("changeDelete");
+  }
+}
+
+function handleModalConfirm(){
+  const val1 = document.getElementById("modalInput1").value;
+  const val2 = document.getElementById("modalInput2").value;
+
+  if(modalMode === "delete"){
+    if(val1 === localStorage.getItem(DELETE_PASSWORD_KEY)){
+      closeModal();
+      if(modalAction) modalAction();
+    } else {
+      showError("Wrong password");
+    }
+  }
+
+  if(modalMode === "changeLogin"){
+    if(val1 !== localStorage.getItem(PASSWORD_KEY)){
+      showError("Wrong current password");
+      return;
+    }
+    if(!val2 || val2.length < 4){
+      showError("Min 4 characters");
+      return;
+    }
+    localStorage.setItem(PASSWORD_KEY, val2);
+    closeModal();
+  }
+
+  if(modalMode === "changeDelete"){
+    if(val1 !== localStorage.getItem(DELETE_PASSWORD_KEY)){
+      showError("Wrong current password");
+      return;
+    }
+    if(!val2 || val2.length < 4){
+      showError("Min 4 characters");
+      return;
+    }
+    localStorage.setItem(DELETE_PASSWORD_KEY, val2);
+    closeModal();
+  }
+}
+
+function showError(msg){
+  const el = document.getElementById("modalError");
+  el.textContent = msg;
+  el.style.display = "block";
+}
+
+// Override deletes
+function deleteRecord(id){
+  openModal("delete", function(){
+    if(!confirm("Delete this record?")) return;
+    const records = getRecords().filter(r => r.id !== id);
+    saveRecords(records);
+    if(editId === id) clearForm();
+    renderTable();
+    setStatus("Record deleted.");
+  });
+}
+
+function wipeAll(){
+  openModal("delete", function(){
+    if(!confirm("Delete ALL records?")) return;
+    localStorage.removeItem(STORAGE_KEY);
+    clearForm();
+    renderTable();
+    setStatus("All records deleted.");
+  });
+}
+
+</script>
+
+<div id="modalOverlay" style="
+display:none;position:fixed;top:0;left:0;width:100%;height:100%;
+background:rgba(0,0,0,0.6);z-index:99999;
+align-items:center;justify-content:center;">
+
+  <div style="background:#0b3d91;padding:20px;border-radius:16px;text-align:center;width:300px;">
+
+    <h3 id="modalTitle">Enter Password</h3>
+
+    <input id="modalInput1" type="password" placeholder="Password"
+      style="padding:10px;border-radius:10px;border:none;width:100%;margin:6px 0;" />
+
+    <input id="modalInput2" type="password" placeholder="New password"
+      style="padding:10px;border-radius:10px;border:none;width:100%;margin:6px 0;display:none;" />
+
+    <button onclick="handleModalConfirm()" 
+      style="padding:10px;border-radius:10px;border:none;font-weight:bold;margin-top:8px;">
+      Confirm
+    </button>
+
+    <button onclick="closeModal()" 
+      style="margin-top:8px;background:none;border:none;color:#fff;">
+      Cancel
+    </button>
+
+    <p id="modalError" style="color:#ff7b7b;display:none;">Error</p>
+  </div>
+</div>
+
+</body>
+</html>
