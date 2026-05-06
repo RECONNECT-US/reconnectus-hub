@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Financial Awareness Training Platform</title>
+<style>
+:root {
+  --bg1:#e9f6ff;
+  --bg2:#cfefff;
+  --bg3:#a7d9f5;
+  --blue:#1f7fbf;
+  --blue2:#45a6d9;
+  --teal:#1ca7a8;
+  --dark:#183246;
+  --panel:rgba(255,255,255,.88);
+  --panelBlue:rgba(229,247,255,.92);
+  --shadow:0 14px 35px rgba(20,72,103,.18);
+  --radius:22px;
+}
+
+*{box-sizing:border-box}
+
+body{
+  margin:0;
+  font-family:Arial, Helvetica, sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(255,255,255,.95), transparent 35%),
+    linear-gradient(160deg,var(--bg1),var(--bg2),var(--bg3));
+  color:var(--dark);
+  min-height:100vh;
+}
+
+.app-shell{
+  min-height:100vh;
+  padding-bottom:86px;
+}
+
+header{
+  background:linear-gradient(135deg,#e8f8ff,#bfe9ff 52%,#9ed6f1);
+  border-bottom:1px solid rgba(255,255,255,.8);
+  box-shadow:0 8px 24px rgba(27,109,153,.18);
+  padding:26px 18px;
+}
+
+.header-inner{
+  max-width:1180px;
+  margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr auto;
+  gap:20px;
+  align-items:center;
+}
+
+.brand{
+  display:flex;
+  align-items:center;
+  gap:16px;
+}
+
+.logo{
+  width:72px;
+  height:72px;
+  border-radius:20px;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:24px;
+  box-shadow:0 10px 25px rgba(31,127,191,.25);
+}
+
+h1{
+  margin:0;
+  font-size:clamp(26px,4vw,44px);
+  letter-spacing:.3px;
+  color:#17324a;
+}
+
+.tagline{
+  margin:8px 0 0;
+  font-size:18px;
+  line-height:1.45;
+  max-width:860px;
+}
+
+.status-card{
+  background:rgba(255,255,255,.8);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:18px;
+  padding:14px 16px;
+  min-width:210px;
+  box-shadow:0 10px 22px rgba(31,127,191,.14);
+}
+
+.status-card strong{font-size:28px;color:#176fa8}
+.status-card span{display:block;font-size:14px;margin-top:4px}
+
+main{
+  max-width:1180px;
+  margin:24px auto;
+  padding:0 16px;
+}
+
+.hero-grid{
+  display:grid;
+  grid-template-columns:1.1fr .9fr;
+  gap:18px;
+  margin-bottom:20px;
+}
+
+.panel{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,.85);
+  border-radius:var(--radius);
+  box-shadow:var(--shadow);
+  padding:24px;
+}
+
+.panel h2{margin:0 0 10px;font-size:28px;color:#176fa8}
+.panel p{font-size:17px;line-height:1.6;margin:10px 0}
+
+.warning{
+  background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(230,249,255,.95));
+  border-left:8px solid var(--teal);
+}
+
+.section-tabs{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:12px;
+  margin:22px 0;
+}
+
+.tab{
+  background:linear-gradient(135deg,#ffffff,#e4f7ff);
+  border:1px solid rgba(255,255,255,.9);
+  border-radius:18px;
+  padding:16px 12px;
+  cursor:pointer;
+  box-shadow:0 8px 18px rgba(31,127,191,.13);
+  color:#17324a;
+  text-align:left;
+  font-weight:800;
+  min-height:86px;
+}
+
+.tab small{
+  display:block;
+  font-weight:700;
+  opacity:.75;
+  margin-top:5px;
+}
+
+.tab.active{
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;
+}
+
+.training-area{
+  display:grid;
+  grid-template-columns:320px 1fr;
+  gap:18px;
+  align-items:start;
+}
+
+.side-card{
+  position:sticky;
+  top:12px;
+}
+
+.progress-bar{
+  height:16px;
+  border-radius:999px;
+  background:#d8edf8;
+  overflow:hidden;
+  margin:14px 0;
+  border:1px solid rgba(255,255,255,.9);
+}
+
+.progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg,var(--teal),var(--blue2));
+  border-radius:999px;
+  transition:.3s ease;
+}
+
+.module-title{
+  font-size:30px;
+  margin:0 0 8px;
+  color:#176fa8;
+}
+
+.module-subtitle{
+  font-size:18px;
+  line-height:1.5;
+  margin:0 0 16px;
+}
+
+.question-card{
+  background:var(--panelBlue);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:22px;
+  padding:20px;
+  box-shadow:0 12px 28px rgba(31,127,191,.16);
+  margin-bottom:16px;
+}
+
+.q-head{
+  display:flex;
+  gap:12px;
+  align-items:flex-start;
+  margin-bottom:12px;
+}
+
+.badge{
+  min-width:42px;
+  height:42px;
+  border-radius:14px;
+  background:linear-gradient(135deg,var(--blue),var(--teal));
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+
+.question-card h3{
+  margin:2px 0 6px;
+  font-size:21px;
+  color:#17324a;
+}
+
+.question-card p{
+  margin:0;
+  line-height:1.5;
+  font-size:16px;
+}
+
+.answers{
+  display:grid;
+  gap:10px;
+  margin-top:16px;
+}
+
+.answer{
+  width:100%;
+  background:#ffffff;
+  border:2px solid #d5ecf8;
+  border-radius:16px;
+  padding:14px 15px;
+  text-align:left;
+  cursor:pointer;
+  color:#17324a;
+  font-weight:800;
+  font-size:16px;
+  box-shadow:0 5px 12px rgba(31,127,191,.08);
+}
+
+.answer:hover{
+  border-color:var(--blue2);
+  transform:translateY(-1px);
+}
+
+.answer.correct{
+  background:#e8fff6;
+  border-color:#23a66f;
+}
+
+.answer.wrong{
+  background:#fff0f0;
+  border-color:#d84f4f;
+}
+
+.feedback{
+  display:none;
+  margin-top:14px;
+  padding:14px 16px;
+  border-radius:16px;
+  font-weight:800;
+  line-height:1.45;
+}
+
+.feedback.show{
+  display:block;
+  background:rgba(255,255,255,.92);
+  border:1px solid rgba(31,127,191,.18);
+}
+
+.debt-simulator{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:12px;
+  margin-top:16px;
+}
+
+.sim-box{
+  background:rgba(255,255,255,.88);
+  border-radius:18px;
+  padding:16px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,.9);
+}
+
+.sim-box strong{font-size:28px;color:#176fa8;display:block}
+
+.footer-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:rgba(232,248,255,.96);
+  border-top:1px solid rgba(255,255,255,.9);
+  box-shadow:0 -8px 24px rgba(27,109,153,.18);
+  padding:12px 14px;
+  z-index:20;
+}
+
+.footer-inner{
+  max-width:1180px;
+  margin:0 auto;
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  align-items:center;
+}
+
+.nav-btn{
+  border:none;
+  border-radius:14px;
+  padding:13px 18px;
+  background:linear-gradient(135deg,var(--blue),var(--blue2));
+  color:white;
+  font-weight:900;
+  cursor:pointer;
+  font-size:15px;
+  box-shadow:0 8px 18px rgba(31,127,191,.18);
+}
+
+.nav-btn.secondary{
+  background:linear-gradient(135deg,#4f7f9f,#7faccc);
+}
+
+.nav-btn:disabled{
+  opacity:.45;
+  cursor:not-allowed;
+}
+
+.copyright{
+  text-align:center;
+  font-size:13px;
+  opacity:.8;
+  font-weight:700;
+}
+
+@media(max-width:900px){
+  .header-inner,.hero-grid,.training-area{grid-template-columns:1fr}
+  .section-tabs{grid-template-columns:1fr 1fr}
+  .side-card{position:static}
+  .debt-simulator{grid-template-columns:1fr}
+}
+
+@media(max-width:560px){
+  .brand{align-items:flex-start}
+  .logo{width:58px;height:58px;font-size:20px}
+  .section-tabs{grid-template-columns:1fr}
+  .footer-inner{flex-wrap:wrap;justify-content:center}
+  .copyright{order:3;width:100%}
+}
+
+
+.reset-modal{
+  display:none;
+  position:fixed;
+  inset:0;
+  background:rgba(7,38,58,.55);
+  z-index:9999;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+}
+
+.reset-modal.show{display:flex}
+
+.reset-box{
+  width:min(440px,100%);
+  background:linear-gradient(135deg,#ffffff,#e8f8ff);
+  border:1px solid rgba(255,255,255,.95);
+  border-radius:26px;
+  padding:28px;
+  box-shadow:0 24px 60px rgba(0,0,0,.28);
+  text-align:center;
+}
+
+.reset-box h2{
+  margin:0 0 10px;
+  color:#176fa8;
+  font-size:28px;
+}
+
+.reset-box p{
+  font-size:17px;
+  line-height:1.5;
+  margin:0;
+  color:#183246;
+}
+
+.reset-actions{
+  display:flex;
+  justify-content:center;
+  gap:12px;
+  margin-top:24px;
+  flex-wrap:wrap;
+}
+
+</style>
+</head>
+<body>
+<div class="app-shell">
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <div class="logo">RU</div>
+      <div>
+        <h1>RECONNECT-US Financial Awareness Training</h1>
+        <p class="tagline">A practical learning platform about credit, debt, Buy Now Pay Later, hidden spending and safer money choices.</p>
+      </div>
+    </div>
+    <div class="status-card">
+      <strong id="scoreTotal">0%</strong>
+      <span>overall correct answers</span>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero-grid">
+    <div class="panel warning">
+      <h2>Why this matters</h2>
+      <p>Debt often starts small. A £20 payment here, a £15 subscription there, a Buy Now Pay Later order somewhere else — then suddenly someone has several payments due before payday.</p>
+      <p>This platform helps learners slow down, understand the true cost, and recognise when borrowing is becoming pressure.</p>
+    </div>
+    <div class="panel">
+      <h2>Debt pressure example</h2>
+      <p>Small payments can stack quickly. This example shows how separate repayments become one bigger problem.</p>
+      <div class="debt-simulator">
+        <div class="sim-box"><strong>£25</strong><span>trainers</span></div>
+        <div class="sim-box"><strong>£18</strong><span>shopping</span></div>
+        <div class="sim-box"><strong>£32</strong><span>phone bill</span></div>
+      </div>
+      <p><strong>Total pressure:</strong> £75 due around the same time.</p>
+    </div>
+  </section>
+
+  <section class="section-tabs" id="tabs"></section>
+
+  <section class="training-area">
+    <aside class="panel side-card">
+      <h2 id="sideTitle">Module</h2>
+      <p id="sideIntro">Choose answers and build your progress.</p>
+      <div class="progress-bar"><div class="progress-fill" id="moduleProgress"></div></div>
+      <p><strong id="moduleScore">0 / 15 completed</strong></p>
+      <p style="font-size:15px;">Learners can take their time. Each answer gives feedback straight away, so the learning happens while they interact.</p>
+    </aside>
+
+    <section class="panel">
+      <h2 class="module-title" id="moduleTitle"></h2>
+      <p class="module-subtitle" id="moduleSubtitle"></p>
+      <div id="questions"></div>
+    </section>
+  </section>
+</main>
+</div>
+
+<footer class="footer-nav">
+  <div class="footer-inner">
+    <button class="nav-btn secondary" id="prevBtn">Previous</button>
+    <div class="copyright">© RECONNECT-US — All rights reserved</div>
+    <button class="nav-btn secondary" id="resetBtn">Reset Progress</button>
+    <button class="nav-btn" id="fullscreenBtn">Full Screen</button>
+    <button class="nav-btn" id="nextBtn">Next</button>
+  </div>
+</footer>
+
+
+<div class="reset-modal" id="resetModal" aria-hidden="true">
+  <div class="reset-box" role="dialog" aria-modal="true" aria-labelledby="resetTitle">
+    <h2 id="resetTitle">Reset Progress?</h2>
+    <p>This will clear all learner answers and progress from this device and start the training again from the beginning.</p>
+    <div class="reset-actions">
+      <button class="nav-btn secondary" id="cancelResetBtn" type="button">Cancel</button>
+      <button class="nav-btn" id="confirmResetBtn" type="button">Reset Everything</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const DATA = [{"id": "credit", "title": "Understanding Credit", "subtitle": "Learn what credit really means and why a spending limit is not free money.", "intro": "Credit can be useful, but it is borrowed money. The key skill is knowing when credit helps and when it creates pressure.", "questions": [["A finance company gives someone a £450 spending limit. What does that mean?", ["It is a gift from the company", "It is a borrowing limit, not free money", "It is money they can spend without paying back", "Assume repayments will sort themselves out", "Ignore the budget completely"], 1, "A spending limit is permission to borrow up to that amount. It still has to be repaid."], ["What is the safest way to think about credit?", ["Spend first and think later", "Can I worry about it later?", "Only look at the smallest payment", "Can I afford the first small payment only?", "Can I afford the full cost?"], 4, "Small payments can feel easy, but the full cost still matters."], ["Why can credit feel tempting?", ["Assume repayments will sort themselves out", "Because it removes the cost", "Ignore the budget completely", "Because it delays the full cost", "Because it always improves money problems"], 3, "Credit can make something feel affordable today, even when it creates pressure later."], ["What should someone check before using credit?", ["Assume repayments will sort themselves out", "Only the colour of the item", "Borrow more to cover it", "Their budget and upcoming bills", "Whether their friend thinks it looks good"], 3, "Rent, food, travel, energy and other essentials should come first."], ["What is a common debt warning sign?", ["Avoid checking the details", "Saving money each month", "Only look at the smallest payment", "Checking prices before buying", "Using credit because normal income has run out"], 4, "If credit is filling everyday gaps, the budget may need support."], ["Why is it risky to use all available credit?", ["Hope the problem disappears", "It leaves less room for emergencies", "Choose the quickest option without checking", "It makes repayments disappear", "It proves the company trusts you"], 1, "Using the full limit can make repayments harder and reduce flexibility."], ["What does 'interest-free' usually mean?", ["The purchase is free", "Nobody has to repay it", "There is no cost if repayments are made on time", "Choose the quickest option without checking", "Only look at the smallest payment"], 2, "Interest-free does not mean repayment-free. Missed payments can still cause problems."], ["What should someone do if they do not understand the terms?", ["Ignore the budget completely", "Assume repayments will sort themselves out", "Pause and ask for help before agreeing", "Click agree quickly", "Ignore the details"], 2, "If terms are unclear, pausing is the safest move."], ["What is the difference between saving and credit?", ["They are exactly the same", "Avoid checking the details", "Saving is your money; credit is borrowed money", "Credit never needs a plan", "Choose the quickest option without checking"], 2, "Savings do not create repayment deadlines. Credit does."], ["Why can repeated small credit use become a problem?", ["Small repayments can stack up", "Small debts cancel each other out", "Small repayments are invisible to companies", "Hope the problem disappears", "Only look at the smallest payment"], 0, "Several small plans can become one large pressure."], ["What is a healthy rule for non-essential spending?", ["If I cannot afford it outright, I should think twice", "If it is popular, it is necessary", "If there is a credit button, I should use it", "Hope the problem disappears", "Avoid checking the details"], 0, "Thinking twice protects the essentials."], ["What should someone prioritise before taking new credit?", ["Only look at the smallest payment", "Using the full limit", "Existing bills and repayments", "Buying something before it sells out", "Ignore the budget completely"], 2, "New borrowing should not put essential bills at risk."], ["What can happen if someone misses credit payments?", ["The company pays it instead", "Spend first and think later", "Fees, stress and possible credit file impact", "Assume repayments will sort themselves out", "Nothing at all"], 2, "Missed payments can lead to extra costs and restrictions."], ["Why is credit not the same as income?", ["Income is money coming in; credit is money owed back", "Assume repayments will sort themselves out", "Borrow more to cover it", "Credit increases wages", "Credit replaces a budget"], 0, "Credit has to be repaid, so it is not income."], ["What is a strong financial choice?", ["Only look at the smallest payment", "Ignore the budget completely", "Only borrowing when there is a clear repayment plan", "Borrowing to impress others", "Borrowing because it is offered"], 2, "A clear repayment plan reduces risk."]]}, {"id": "bnpl", "title": "Buy Now Pay Later", "subtitle": "Understand Clearpay, Klarna-style payments, PayPal Pay in 3 and repayment stacking.", "intro": "Buy Now Pay Later can look harmless because payments are split. The danger is forgetting that every purchase creates a new repayment plan.", "questions": [["A £100 item is split into 4 payments. What is each payment?", ["Ignore the budget completely", "Assume repayments will sort themselves out", "£10", "£25", "£50"], 3, "£100 divided by 4 is £25 per payment."], ["Why can Buy Now Pay Later be risky?", ["Avoid checking the details", "It deletes the purchase cost", "Several plans can overlap", "Only worry about today", "It is always free money"], 2, "Overlapping plans can make normal weeks feel tight."], ["Someone has three BNPL orders due on the same week. What is the issue?", ["Only one company can charge them", "Borrow more to cover it", "Spend first and think later", "The total repayment may be much higher than expected", "The smallest order disappears"], 3, "Each plan is separate, so totals can build quickly."], ["What should someone check before clicking Buy Now Pay Later?", ["Only the product photo", "Only look at the smallest payment", "Only the delivery date", "All repayment dates and amounts", "Use credit because it is there"], 3, "Dates matter because money has to be available on time."], ["What is a safe BNPL habit?", ["Guess the dates", "Ignore small amounts", "Write down every future payment", "Only look at the smallest payment", "Hope the problem disappears"], 2, "Tracking payments prevents surprises."], ["Why do small BNPL amounts feel easier?", ["Assume repayments will sort themselves out", "Ignore the budget completely", "They reduce the price", "They are paid by the shop", "They hide the full cost"], 4, "The full cost is still there; it is just spread out."], ["What should someone avoid doing?", ["Checking their bank balance", "Using BNPL for lots of small items at once", "Assume repayments will sort themselves out", "Only look at the smallest payment", "Planning repayments"], 1, "Lots of small items can create a messy repayment pile."], ["If someone cannot afford the item today, what should they ask?", ["Borrow more to cover it", "Can I hide the payment?", "Can I afford every repayment without missing essentials?", "Will the company forget?", "Only look at the smallest payment"], 2, "Affordability means the whole repayment plan, not just today."], ["What can happen if BNPL payments are missed?", ["The shop pays it back", "Avoid checking the details", "Late fees or account restrictions may happen", "The item becomes free", "Hope the problem disappears"], 2, "Missed payments can create extra costs and block future use."], ["What is payment stacking?", ["Putting cash in a wallet", "Multiple repayment plans happening at the same time", "Deleting old purchases", "Choose the quickest option without checking", "Ignore the budget completely"], 1, "Stacking is when several repayment plans overlap."], ["What is a warning sign with BNPL?", ["Using it once with a clear plan", "Only look at the smallest payment", "Assume repayments will sort themselves out", "Checking repayment dates", "Using it for everyday essentials because money is short"], 4, "Using credit for essentials can show budget pressure."], ["Why should someone avoid using BNPL when stressed?", ["Stress makes repayments cheaper", "Stress cancels debt", "Avoid checking the details", "Only look at the smallest payment", "Stress can lead to rushed choices"], 4, "Money choices are better when calm and planned."], ["What is the best way to compare a BNPL purchase?", ["Ignore all future payments", "Spend first and think later", "Ignore the budget completely", "Look at the full price, not just the instalment", "Only look at the smallest number"], 3, "The full price tells the true cost."], ["If a BNPL app says 'available to spend', what does it really mean?", ["A reward", "Only worry about today", "Free cash", "Available to borrow", "Use credit because it is there"], 3, "Available to spend means a borrowing limit, not money in your bank."], ["What should someone do before taking another BNPL order?", ["Only look at the smallest payment", "Use a different app to hide it", "Choose the quickest option without checking", "Check all existing repayment plans first", "Assume it will be fine"], 3, "Checking existing plans helps prevent debt pressure."]]}, {"id": "loans", "title": "Loans, Overdrafts & Credit Cards", "subtitle": "Spot how borrowing can grow through interest, fees and minimum payments.", "intro": "Loans, overdrafts and credit cards can help in some emergencies, but they need careful planning because costs can grow.", "questions": [["What is a credit card minimum payment?", ["Spend first and think later", "The smallest amount required that month", "The full balance", "A discount", "Only worry about today"], 1, "Minimum payments keep the account going but can leave debt for longer."], ["Why can only paying the minimum be risky?", ["The balance disappears faster", "Use credit because it is there", "Choose the quickest option without checking", "Interest always stops", "The debt can take much longer to clear"], 4, "Paying only the minimum can keep debt hanging around."], ["What is an overdraft?", ["Free savings", "A cancelled bill", "Ignore the budget completely", "Spending more than is in the account, if the bank allows it", "Hope the problem disappears"], 3, "An overdraft is borrowed money from the bank."], ["What does APR help show?", ["The delivery date", "The colour of a card", "Borrow more to cover it", "Hope the problem disappears", "The yearly cost of borrowing"], 4, "APR helps compare borrowing costs."], ["What is the danger of payday loans?", ["They never need repaying", "Avoid checking the details", "Spend first and think later", "They can be expensive and hard to repay", "They improve every budget"], 3, "High-cost short-term borrowing can trap people."], ["What should someone check before a loan?", ["Total repayable amount", "Choose the quickest option without checking", "Only the advert", "Avoid checking the details", "Only the monthly payment"], 0, "The total repayable amount shows the real cost."], ["Why can a loan advert be misleading?", ["It must show every personal risk clearly", "Hope the problem disappears", "It may focus on speed, not the full cost", "Only look at the smallest payment", "It always means approval is safe"], 2, "Quick approval does not mean affordable."], ["What is a secured loan risk?", ["It cannot create debt", "An asset could be at risk if payments are missed", "Ignore the budget completely", "It has no conditions", "Borrow more to cover it"], 1, "Secured borrowing can put property or assets at risk."], ["What is a sign credit card use is becoming unhealthy?", ["Using one card to pay another debt", "Hope the problem disappears", "Checking statements", "Use credit because it is there", "Paying in full each month"], 0, "Paying debt with more debt can become a cycle."], ["Why should someone read loan terms carefully?", ["Fees, interest and repayment rules matter", "Terms are never important", "Borrow more to cover it", "Use credit because it is there", "Terms only apply to shops"], 0, "The terms explain the responsibilities."], ["What should come before loan repayments in a budget plan?", ["Assume repayments will sort themselves out", "Gambling or impulse spending", "Essential living costs should be protected", "Only worry about today", "Luxury shopping"], 2, "A budget must protect essentials first."], ["What can happen when someone ignores debt letters?", ["Spend first and think later", "Problems can get worse", "Only worry about today", "Debt automatically stops", "The lender cannot contact them again"], 1, "Ignoring letters can lead to extra action and stress."], ["What is a better step if struggling with repayments?", ["Use credit because it is there", "Contact the lender or seek free debt advice", "Borrow more without checking", "Only look at the smallest payment", "Throw letters away"], 1, "Early support can prevent things getting worse."], ["Why is using an overdraft every month a warning sign?", ["Hope the problem disappears", "It means bills are solved", "It may show regular spending is higher than income", "It means the bank is giving a bonus", "Use credit because it is there"], 2, "Repeating overdraft use can show a budget gap."], ["What is the strongest credit card habit?", ["Spend first and think later", "Use credit because it is there", "Paying the full balance when possible", "Avoiding statements", "Only guessing the balance"], 2, "Paying in full reduces interest and keeps control."]]}, {"id": "hidden", "title": "Hidden Spending & Money Leaks", "subtitle": "Spot the small payments that quietly drain money before payday.", "intro": "Debt is not always caused by one big purchase. Sometimes small daily costs, subscriptions and impulse spending quietly eat the budget.", "questions": [["Why are subscriptions easy to miss?", ["They are always free", "They leave automatically", "Only worry about today", "They never renew", "Spend first and think later"], 1, "Automatic payments can be forgotten."], ["What should someone do with unused subscriptions?", ["Cancel them", "Choose the quickest option without checking", "Borrow more to cover it", "Open more", "Keep paying forever"], 0, "Cancelling unused subscriptions frees up money."], ["Why does daily small spending matter?", ["Small spending never counts", "It adds up over time", "Ignore the budget completely", "Spend first and think later", "Banks refund it"], 1, "Small amounts can become large monthly totals."], ["What is impulse buying?", ["Buying essentials from a list", "Hope the problem disappears", "Avoid checking the details", "Saving for a goal", "Buying without planning or thinking it through"], 4, "Impulse buying often happens quickly and emotionally."], ["What is a useful cooling-off rule?", ["Ignore the price", "Only worry about today", "Buy immediately", "Use credit because it is there", "Wait 24 hours before non-essential purchases"], 4, "Waiting helps separate need from impulse."], ["Why can contactless spending feel unreal?", ["Only worry about today", "It cannot affect a bank balance", "It does not use real money", "Avoid checking the details", "It is quick and easy to lose track"], 4, "Fast payments can make spending less noticeable."], ["What is one way to track money leaks?", ["Delete banking apps", "Only look at the smallest payment", "Check statements weekly", "Avoid looking at accounts", "Avoid checking the details"], 2, "Regular checking helps spot patterns."], ["Why can takeaways become a budget problem?", ["Assume repayments will sort themselves out", "Takeaways do not affect money", "Food delivery is always cheaper", "Only worry about today", "Repeated costs add up"], 4, "Repeated convenience spending can drain cash."], ["What is emotional spending?", ["Only worry about today", "Spending to cope with feelings", "Spending with a clear plan", "Spending only on bills", "Spend first and think later"], 1, "Stress, boredom or sadness can trigger spending."], ["What should someone ask before buying something non-essential?", ["Will others be impressed?", "Do I need it, and can I afford it after bills?", "Only look at the smallest payment", "Only worry about today", "Can I hide it from myself?"], 1, "A simple pause can prevent regret."], ["What is a budget leak?", ["Assume repayments will sort themselves out", "A bill that pays itself", "Money leaving regularly without being noticed", "Use credit because it is there", "A savings bonus"], 2, "Budget leaks are small costs that quietly reduce spare money."], ["Why should someone check free trials?", ["Ignore the budget completely", "They always stay free forever", "Choose the quickest option without checking", "They may turn into paid subscriptions", "They cancel themselves after one day"], 3, "Free trials often need cancelling before a date."], ["What is a practical spending boundary?", ["Set a weekly limit for non-essentials", "Spend until the account is empty", "Assume repayments will sort themselves out", "Only check money after payday", "Ignore the budget completely"], 0, "A clear limit keeps control."], ["Why can social media increase spending?", ["It pays people’s bills", "It creates pressure to keep up", "It removes debt", "Ignore the budget completely", "Assume repayments will sort themselves out"], 1, "Comparison can push people into unnecessary spending."], ["What is a good habit after payday?", ["Ignore the budget completely", "Only look at the smallest payment", "Spend first and plan later", "Plan bills, food, travel and savings first", "Ignore regular payments"], 3, "Planning first protects the month."]]}, {"id": "choices", "title": "Real-Life Financial Choices", "subtitle": "Practise safer decisions in realistic pressure situations.", "intro": "These scenarios are about judgement. The best choice is usually the one that protects essentials, reduces stress and avoids unnecessary borrowing.", "questions": [["Your cooker breaks and payday is two weeks away. What is the safest first step?", ["Ignore rent to buy a cooker", "Check savings and essential budget before borrowing", "Borrow more to cover it", "Take the first loan offered", "Only look at the smallest payment"], 1, "Emergencies need calm planning before borrowing."], ["A friend says 'everyone uses credit'. What should you do?", ["Choose the quickest option without checking", "Borrow to fit in", "Spend more than planned", "Make your own decision based on your budget", "Borrow more to cover it"], 3, "Your budget matters more than social pressure."], ["You want new trainers but rent is due. What comes first?", ["Trainers", "Use credit because it is there", "Rent and essential bills", "Using BNPL to feel better", "Assume repayments will sort themselves out"], 2, "Essentials come first."], ["A loan company offers instant cash. What should you check?", ["Total cost and repayment dates", "Only the advert headline", "Only look at the smallest payment", "Only how fast it arrives", "Choose the quickest option without checking"], 0, "Speed does not equal safety."], ["You are anxious about debt letters. What is the best next move?", ["Avoid checking the details", "Borrow more to cover it", "Open them and ask for support", "Hide them", "Borrow more to avoid reading them"], 2, "Facing it early reduces damage."], ["You have several payments due this week. What should you do?", ["List them and prioritise essentials", "Only look at the smallest payment", "Only worry about today", "Ignore them all", "Take out more credit without checking"], 0, "Listing payments gives control."], ["You see a sale ending today. What should you remember?", ["Borrow more to cover it", "Credit makes it harmless", "Sales mean you must buy", "Ignore the budget completely", "A discount is not saving money if you cannot afford it"], 4, "A sale can still create debt."], ["You are offered store credit at the till. What should you do?", ["Use the full limit", "Say yes quickly", "Pause and consider if you need it", "Hope the problem disappears", "Use credit because it is there"], 2, "Credit should not be a rushed decision."], ["A family member asks to borrow money you need for bills. What is safest?", ["Choose the quickest option without checking", "Borrow more to lend it", "Be honest and protect essential bills", "Give it and miss your bills", "Assume repayments will sort themselves out"], 2, "Helping others should not put you into crisis."], ["Your phone contract is ending. What is sensible?", ["Compare cheaper options before upgrading", "Spend first and think later", "Avoid checking the details", "Upgrade automatically", "Choose the most expensive phone"], 0, "Comparing options can save money."], ["You feel low and want to shop online. What helps?", ["Buy quickly", "Use credit because it is there", "Choose the quickest option without checking", "Wait and do something else before spending", "Use credit to cheer yourself up"], 3, "A pause can protect money when emotions are high."], ["You receive extra money one month. What is a safe choice?", ["Spend it all before planning", "Take on more repayments", "Spend first and think later", "Clear priority debts or strengthen savings", "Assume repayments will sort themselves out"], 3, "Extra money can reduce future pressure."], ["Your bank balance looks good, but bills are due tomorrow. What should you remember?", ["Hope the problem disappears", "Spend it before bills leave", "Bills only matter after payday", "Avoid checking the details", "Pending bills must be counted"], 4, "Available balance can be misleading before bills leave."], ["Someone says debt advice is embarrassing. What is true?", ["Hope the problem disappears", "Ignoring debt is better", "Getting advice is responsible", "Only careless people need help", "Borrow more to cover it"], 2, "Debt support is practical, not shameful."], ["What is the best overall money rule?", ["Choose the quickest option without checking", "Spend first and think later", "Avoid checking the details", "Protect essentials, plan repayments, avoid pressure spending", "Use every credit limit offered"], 3, "This rule keeps people safer."]]}];
+let currentSection = 0;
+const answers = {};
+
+function save() {
+  localStorage.setItem("reconnect_us_finance_training_answers", JSON.stringify(answers));
+}
+
+function load() {
+  try {
+    const stored = JSON.parse(localStorage.getItem("reconnect_us_finance_training_answers") || "{}");
+    Object.assign(answers, stored);
+  } catch(e) {}
+}
+
+function renderTabs() {
+  const tabs = document.getElementById("tabs");
+  tabs.innerHTML = "";
+  DATA.forEach((section, index) => {
+    const done = section.questions.filter((q, qi) => answers[section.id + "_" + qi] !== undefined).length;
+    const tab = document.createElement("button");
+    tab.className = "tab" + (index === currentSection ? " active" : "");
+    tab.innerHTML = section.title + "<small>" + done + " / " + section.questions.length + " completed</small>";
+    tab.onclick = () => {
+      currentSection = index;
+      render();
+      window.scrollTo({top:0, behavior:"smooth"});
+    };
+    tabs.appendChild(tab);
+  });
+}
+
+function renderQuestions(section) {
+  const wrap = document.getElementById("questions");
+  wrap.innerHTML = "";
+  section.questions.forEach((q, qi) => {
+    const key = section.id + "_" + qi;
+    const chosen = answers[key];
+    const card = document.createElement("div");
+    card.className = "question-card";
+    card.innerHTML = `
+      <div class="q-head">
+        <div class="badge">${qi + 1}</div>
+        <div>
+          <h3>${q[0]}</h3>
+          <p>Choose the safest answer.</p>
+        </div>
+      </div>
+      <div class="answers"></div>
+      <div class="feedback"></div>
+    `;
+    const answerBox = card.querySelector(".answers");
+    const feedback = card.querySelector(".feedback");
+
+    q[1].forEach((option, oi) => {
+      const btn = document.createElement("button");
+      btn.className = "answer";
+      btn.textContent = option;
+      if (chosen !== undefined) {
+        btn.disabled = true;
+        if (oi === q[2]) btn.classList.add("correct");
+        if (oi === chosen && chosen !== q[2]) btn.classList.add("wrong");
+      }
+      btn.onclick = () => {
+        answers[key] = oi;
+        save();
+        render();
+      };
+      answerBox.appendChild(btn);
+    });
+
+    if (chosen !== undefined) {
+      const correct = chosen === q[2];
+      feedback.className = "feedback show";
+      feedback.innerHTML = (correct ? "✅ Correct. " : "❌ Not quite. ") + q[3];
+    }
+
+    wrap.appendChild(card);
+  });
+}
+
+function updateProgress(section) {
+  const completed = section.questions.filter((q, qi) => answers[section.id + "_" + qi] !== undefined).length;
+
+  const correctAnswers = section.questions.filter((q, qi) => {
+    return answers[section.id + "_" + qi] === q[2];
+  }).length;
+
+  const percent = Math.round((correctAnswers / section.questions.length) * 100);
+
+  document.getElementById("moduleProgress").style.width = percent + "%";
+  document.getElementById("moduleScore").textContent =
+    correctAnswers + " correct / " + section.questions.length + " questions";
+
+  document.getElementById("sideTitle").textContent = section.title;
+  document.getElementById("sideIntro").textContent = section.intro;
+
+  const totalQuestions = DATA.reduce((sum, s) => sum + s.questions.length, 0);
+
+  const totalCorrect = DATA.reduce((sum, s) => {
+    return sum + s.questions.filter((q, qi) => {
+      return answers[s.id + "_" + qi] === q[2];
+    }).length;
+  }, 0);
+
+  document.getElementById("scoreTotal").textContent =
+    Math.round((totalCorrect / totalQuestions) * 100) + "%";
+}
+
+function render() {
+  const section = DATA[currentSection];
+  document.getElementById("moduleTitle").textContent = section.title;
+  document.getElementById("moduleSubtitle").textContent = section.subtitle;
+  renderTabs();
+  renderQuestions(section);
+  updateProgress(section);
+  document.getElementById("prevBtn").disabled = currentSection === 0;
+  document.getElementById("nextBtn").disabled = currentSection === DATA.length - 1;
+}
+
+document.getElementById("prevBtn").onclick = () => {
+  if (currentSection > 0) {
+    currentSection--;
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+};
+
+document.getElementById("nextBtn").onclick = () => {
+  if (currentSection < DATA.length - 1) {
+    currentSection++;
+    render();
+    window.scrollTo({top:0, behavior:"smooth"});
+  }
+};
+
+document.getElementById("fullscreenBtn").onclick = async () => {
+  try {
+    if (!document.fullscreenElement) {
+      await document.documentElement.requestFullscreen();
+    } else {
+      await document.exitFullscreen();
+    }
+  } catch(e) {}
+};
+
+
+const resetModal = document.getElementById("resetModal");
+const resetBtn = document.getElementById("resetBtn");
+const cancelResetBtn = document.getElementById("cancelResetBtn");
+const confirmResetBtn = document.getElementById("confirmResetBtn");
+
+function openResetModal() {
+  resetModal.classList.add("show");
+  resetModal.setAttribute("aria-hidden", "false");
+}
+
+function closeResetModal() {
+  resetModal.classList.remove("show");
+  resetModal.setAttribute("aria-hidden", "true");
+}
+
+resetBtn.onclick = openResetModal;
+cancelResetBtn.onclick = closeResetModal;
+
+resetModal.onclick = (event) => {
+  if (event.target === resetModal) closeResetModal();
+};
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") closeResetModal();
+});
+
+confirmResetBtn.onclick = () => {
+  localStorage.removeItem("reconnect_us_finance_training_answers");
+  Object.keys(answers).forEach(key => delete answers[key]);
+  currentSection = 0;
+  closeResetModal();
+  render();
+  window.scrollTo({top:0, behavior:"smooth"});
+};
+
+load();
+render();
+
+</script>
+</body>
+</html>
