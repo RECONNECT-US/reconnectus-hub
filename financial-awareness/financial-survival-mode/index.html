@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Financial Survival Mode</title>
+  <style>
+    :root{
+      --orange:#f28c28;
+      --orange-dark:#cc6e12;
+      --grey:#3f4a52;
+      --deep:#17212b;
+      --light-grey:#eef2f5;
+      --pale-blue:#dff3fb;
+      --blue:#0c89a5;
+      --green:#1d9b5f;
+      --amber:#d98310;
+      --red:#c64545;
+      --white:#ffffff;
+      --shadow:0 18px 45px rgba(23,33,43,.16);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--deep);
+      background:
+        radial-gradient(circle at top left, rgba(242,140,40,.24), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(12,137,165,.22), transparent 42%),
+        linear-gradient(135deg,#f9fcfd,#edf4f7);
+      min-height:100vh;
+    }
+
+    .app{
+      max-width:1180px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      background:rgba(255,255,255,.9);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:74px;
+      height:74px;
+      border-radius:22px;
+      background:linear-gradient(135deg,var(--orange),var(--blue));
+      color:white;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:25px;
+      box-shadow:0 14px 30px rgba(242,140,40,.35);
+      letter-spacing:-1px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(25px,4vw,42px);
+      line-height:1;
+      color:var(--grey);
+    }
+
+    .brand p{
+      margin:7px 0 0;
+      color:#59656f;
+      font-size:15px;
+    }
+
+    .pill{
+      background:var(--pale-blue);
+      color:#07576b;
+      padding:11px 14px;
+      border-radius:999px;
+      font-weight:900;
+      white-space:nowrap;
+      border:1px solid rgba(12,137,165,.18);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 385px;
+      gap:22px;
+      align-items:start;
+    }
+
+    .card{
+      background:rgba(255,255,255,.94);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:22px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,var(--grey),#202b35);
+      color:white;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:280px;
+      height:280px;
+      border-radius:50%;
+      background:rgba(242,140,40,.25);
+      right:-90px;
+      top:-120px;
+    }
+
+    .hero h2,.hero p{position:relative;z-index:1}
+    .hero h2{margin:0 0 8px;font-size:29px}
+    .hero p{margin:0;line-height:1.55;color:#edf7fb}
+
+    .stats{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:12px;
+      margin-bottom:20px;
+    }
+
+    .stat{
+      background:#f7fafb;
+      border:1px solid #e1eaee;
+      border-radius:20px;
+      padding:15px;
+    }
+
+    .stat span{
+      display:block;
+      color:#64717a;
+      font-size:13px;
+      font-weight:800;
+      margin-bottom:5px;
+    }
+
+    .stat strong{
+      font-size:26px;
+      color:var(--grey);
+    }
+
+    .money strong{color:var(--green)}
+    .debt strong{color:var(--red)}
+    .stress strong{color:var(--amber)}
+    .week strong{color:var(--blue)}
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .section-title h2{
+      margin:0;
+      font-size:24px;
+      color:var(--grey);
+    }
+
+    .mini{
+      color:#65727c;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .setup{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+      margin-bottom:12px;
+    }
+
+    .setup button{
+      min-height:86px;
+      text-align:left;
+    }
+
+    button{
+      border:0;
+      border-radius:16px;
+      padding:13px 15px;
+      font-weight:900;
+      cursor:pointer;
+      color:white;
+      background:var(--grey);
+      transition:.2s ease;
+      font-size:15px;
+    }
+
+    button:hover{transform:translateY(-2px);filter:brightness(1.04)}
+    button small{display:block;font-weight:700;opacity:.9;margin-top:5px;line-height:1.35}
+
+    .primary{background:linear-gradient(135deg,var(--orange),var(--orange-dark))}
+    .blue{background:linear-gradient(135deg,var(--blue),#075b70)}
+    .green{background:linear-gradient(135deg,var(--green),#137648)}
+    .red{background:linear-gradient(135deg,var(--red),#982d2d)}
+    .light{background:var(--pale-blue);color:#07576b}
+
+    .choice-grid{
+      display:grid;
+      gap:12px;
+    }
+
+    .choice{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:12px;
+      align-items:center;
+      text-align:left;
+      background:#f8fbfc;
+      color:#2f3d47;
+      border:1px solid #e2ebef;
+      padding:16px;
+    }
+
+    .choice b{
+      display:block;
+      font-size:17px;
+      margin-bottom:5px;
+    }
+
+    .choice em{
+      display:block;
+      font-style:normal;
+      color:#65727c;
+      font-weight:700;
+      line-height:1.35;
+    }
+
+    .tag{
+      padding:8px 10px;
+      border-radius:999px;
+      font-size:13px;
+      color:white;
+      background:var(--grey);
+      white-space:nowrap;
+    }
+
+    .event-card{
+      border-left:8px solid var(--orange);
+      background:#fffaf4;
+    }
+
+    .event-card h3{
+      margin:0 0 8px;
+      font-size:24px;
+      color:#6d3a06;
+    }
+
+    .event-card p{
+      margin:0;
+      line-height:1.55;
+      color:#5e4a31;
+      font-weight:700;
+    }
+
+    .log{
+      max-height:340px;
+      overflow:auto;
+      display:grid;
+      gap:10px;
+      padding-right:4px;
+    }
+
+    .log-item{
+      background:#f7fafb;
+      border:1px solid #e2ebef;
+      border-radius:16px;
+      padding:12px;
+      line-height:1.4;
+      font-size:14px;
+    }
+
+    .log-item b{color:var(--grey)}
+    .good-text{color:var(--green);font-weight:900}
+    .bad-text{color:var(--red);font-weight:900}
+    .warn-text{color:var(--amber);font-weight:900}
+
+    .meter{
+      height:14px;
+      background:#e7eef2;
+      border-radius:999px;
+      overflow:hidden;
+      margin:10px 0 5px;
+    }
+
+    .meter-fill{
+      height:100%;
+      width:50%;
+      background:linear-gradient(90deg,var(--green),var(--orange),var(--red));
+      border-radius:999px;
+      transition:.3s ease;
+    }
+
+    .status-card{
+      position:sticky;
+      top:20px;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      color:white;
+      font-weight:900;
+      margin-bottom:10px;
+      background:var(--blue);
+    }
+
+    .result{
+      background:var(--pale-blue);
+      border-left:8px solid var(--blue);
+      display:none;
+    }
+
+    .result h2{margin:0 0 10px;color:#07576b}
+    .result p{line-height:1.55;margin:0 0 12px}
+
+    .footer{
+      text-align:center;
+      color:#5d6973;
+      font-size:13px;
+      padding:12px 0 20px;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(23,33,43,.84);
+      display:grid;
+      place-items:center;
+      z-index:50;
+      padding:20px;
+    }
+
+    .modal{
+      max-width:720px;
+      background:white;
+      border-radius:30px;
+      padding:28px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      text-align:center;
+    }
+
+    .modal .logo{margin:0 auto 14px}
+    .modal h2{font-size:32px;margin:0 0 10px;color:var(--grey)}
+    .modal p{line-height:1.55;color:#58656f;font-weight:700}
+    .modal .buttons{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:18px}
+
+    .buttons{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    @media(max-width:960px){
+      .grid{grid-template-columns:1fr}
+      .status-card{position:static}
+      .stats,.setup{grid-template-columns:1fr 1fr}
+      header{align-items:flex-start;flex-direction:column}
+      .pill{white-space:normal}
+    }
+
+    @media(max-width:620px){
+      .stats,.setup{grid-template-columns:1fr}
+      .choice{grid-template-columns:1fr}
+      .app{padding:14px}
+    }
+
+    @media print{
+      body{background:white}
+      header,.card{box-shadow:none}
+      button,.overlay{display:none!important}
+      .grid{grid-template-columns:1fr}
+      .status-card{position:static}
+      .result{display:block!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="startOverlay">
+    <div class="modal">
+      <div class="logo">RU</div>
+      <h2>Financial Survival Mode</h2>
+      <p>You have one month to survive. Pay your priority bills, avoid scams, handle emergencies, and try not to end the month in debt. This is a training simulator only — not financial advice.</p>
+      <div class="buttons">
+        <button class="primary" onclick="startGame('standard')">Start normal month</button>
+        <button class="blue" onclick="startGame('tight')">Start tight month</button>
+        <button class="green" onclick="startGame('support')">Start support mode</button>
+      </div>
+    </div>
+  </div>
+
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">RU</div>
+        <div>
+          <h1>RECONNECT-US</h1>
+          <p>Financial Survival Mode · Budgeting, scams, bills and real-life choices</p>
+        </div>
+      </div>
+      <button class="blue" id="fullscreenBtn" onclick="toggleFullscreen()">
+        Enter Full Screen
+      </button>
+    </header>
+
+    <section class="card hero">
+      <h2>Can you survive the month without getting financially wrecked?</h2>
+      <p>Make weekly choices, deal with surprise events, avoid bad borrowing, and learn which bills matter most. It’s practical, realistic, and built for discussion in a session.</p>
+    </section>
+
+    <div class="grid">
+      <section>
+        <div class="card">
+          <div class="section-title">
+            <h2>Month dashboard</h2>
+            <div class="mini" id="modeLabel">Normal month</div>
+          </div>
+          <div class="stats">
+            <div class="stat money"><span>Money left</span><strong id="money">£0</strong></div>
+            <div class="stat debt"><span>Debt</span><strong id="debt">£0</strong></div>
+            <div class="stat stress"><span>Stress</span><strong id="stress">0%</strong></div>
+            <div class="stat week"><span>Week</span><strong id="week">1/4</strong></div>
+          </div>
+
+          <div class="section-title">
+            <h2>Priority bills</h2>
+            <div class="mini">Pay these before non-essentials</div>
+          </div>
+          <div class="choice-grid" id="billChoices"></div>
+        </div>
+
+        <div class="card event-card" id="eventCard">
+          <h3>Life event</h3>
+          <p id="eventText">Choose a starting mode to begin.</p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <h2>What do you do?</h2>
+            <div class="mini">Choose carefully</div>
+          </div>
+          <div class="choice-grid" id="actionChoices"></div>
+        </div>
+
+        <div class="card result" id="resultCard">
+          <h2 id="resultTitle">Month complete</h2>
+          <p id="resultText"></p>
+          <div class="buttons">
+            <button class="primary" onclick="window.print()">Print learner result</button>
+            <button class="blue" onclick="downloadResult()">Save result</button>
+            <button class="light" onclick="restart()">Play again</button>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card status-card">
+        <div class="section-title">
+          <h2>Status</h2>
+          <div class="mini">Live result</div>
+        </div>
+        <div class="badge" id="badge">Getting started</div>
+        <p id="statusText">Start the game and try to finish the month with money left, low stress, and no unnecessary debt.</p>
+
+        <div>
+          <b>Financial pressure</b>
+          <div class="meter"><div class="meter-fill" id="pressureMeter"></div></div>
+          <div class="mini" id="pressureText">Waiting to start</div>
+        </div>
+
+        <hr style="border:0;border-top:1px solid #e1eaee;margin:18px 0">
+
+        <div class="section-title">
+          <h2>Session log</h2>
+          <div class="mini">Learning trail</div>
+        </div>
+        <div class="log" id="log"></div>
+
+        <div class="buttons" style="margin-top:16px">
+          <button class="red" onclick="restart()">Restart</button>
+          <button class="light" onclick="window.print()">Print</button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer">© RECONNECT-US — All rights reserved · Financial Awareness Training Tool</div>
+  </main>
+
+  <script>
+    let state = {
+      mode:'standard',
+      week:1,
+      money:0,
+      debt:0,
+      stress:0,
+      paid:{rent:false, energy:false, food:false, phone:false},
+      currentEvent:null,
+      gameOver:false,
+      log:[]
+    };
+
+    const bills = [
+      {id:'rent', name:'Rent / housing', cost:360, priority:'High priority', detail:'Missing this can put housing at risk.'},
+      {id:'energy', name:'Gas and electric', cost:95, priority:'High priority', detail:'Important household bill. Ask supplier for help early if struggling.'},
+      {id:'food', name:'Food shop', cost:85, priority:'Essential', detail:'Basic food and household needs.'},
+      {id:'phone', name:'Phone / internet', cost:38, priority:'Important', detail:'Useful for work, appointments and staying connected.'}
+    ];
+
+    const events = [
+      {
+        title:'Washing machine breaks',
+        text:'A repair costs £90. Ignoring it means laundrette costs and more stress.',
+        actions:[
+          {label:'Pay the repair now', detail:'Costs £90 but keeps stress lower.', money:-90, stress:-5, log:'Paid for the washing machine repair.'},
+          {label:'Use laundrette for now', detail:'Costs £30 this week but adds stress.', money:-30, stress:14, log:'Used the laundrette and delayed the repair.'},
+          {label:'Take a payday loan', detail:'Gets money quickly but adds debt.', money:80, debt:140, stress:18, log:'Used high-cost borrowing for the repair.'}
+        ]
+      },
+      {
+        title:'Fake bank text arrives',
+        text:'A text says your bank account is locked and asks you to tap a link.',
+        actions:[
+          {label:'Ignore and contact bank safely', detail:'Best choice. No money lost.', money:0, stress:-8, log:'Spotted a fake bank text and avoided the scam.'},
+          {label:'Tap the link and enter details', detail:'You lose £120 and stress rises.', money:-120, stress:25, log:'Fell for a fake bank link and lost money.'},
+          {label:'Ask someone trusted first', detail:'Good support choice. Slight delay, safer outcome.', money:0, stress:-4, log:'Asked for support before reacting to a suspicious message.'}
+        ]
+      },
+      {
+        title:'Friend asks to borrow money',
+        text:'A friend asks for £60 and promises to pay it back next week.',
+        actions:[
+          {label:'Say yes immediately', detail:'Kind, but risky if your bills are tight.', money:-60, stress:12, log:'Lent money before checking the budget.'},
+          {label:'Check budget first and say no', detail:'Protects priority bills.', money:0, stress:-3, log:'Protected the budget by saying no.'},
+          {label:'Offer practical help instead', detail:'No cost, keeps boundaries.', money:0, stress:-6, log:'Offered support without handing over money.'}
+        ]
+      },
+      {
+        title:'Unexpected appointment travel',
+        text:'You need to travel to an appointment. It costs £18.',
+        actions:[
+          {label:'Pay travel cost', detail:'Keeps appointment on track.', money:-18, stress:-4, log:'Paid travel and attended the appointment.'},
+          {label:'Skip it', detail:'Saves cash now but may create problems later.', money:0, stress:18, log:'Skipped an important appointment due to travel costs.'},
+          {label:'Look for travel support', detail:'Takes effort, reduces cost.', money:-6, stress:-2, log:'Looked for support and reduced the travel cost.'}
+        ]
+      },
+      {
+        title:'Buy Now Pay Later offer',
+        text:'A £120 item can be split into payments. It looks easy, but it is still a commitment.',
+        actions:[
+          {label:'Buy it on BNPL', detail:'Small payment now, debt later.', money:-30, debt:90, stress:10, log:'Used Buy Now Pay Later for a non-essential item.'},
+          {label:'Wait and save', detail:'Best long-term choice.', money:0, stress:-6, log:'Waited instead of using Buy Now Pay Later.'},
+          {label:'Buy a cheaper alternative', detail:'Costs £35 now, no debt.', money:-35, stress:-2, log:'Chose a cheaper option and avoided debt.'}
+        ]
+      },
+      {
+        title:'Food shop has gone up',
+        text:'The weekly food shop costs more than expected.',
+        actions:[
+          {label:'Pay extra for the normal shop', detail:'Costs £25 extra.', money:-25, stress:4, log:'Paid extra for the food shop.'},
+          {label:'Meal plan and switch brands', detail:'Saves money and keeps basics covered.', money:-5, stress:-5, log:'Used meal planning to reduce food costs.'},
+          {label:'Put food on credit', detail:'Avoids immediate cash pressure but adds debt.', money:0, debt:40, stress:12, log:'Used credit for food because cash was tight.'}
+        ]
+      }
+    ];
+
+    function startGame(mode){
+      document.getElementById('startOverlay').style.display='none';
+      const settings = {
+        standard:{money:650, label:'Normal month'},
+        tight:{money:520, label:'Tight month'},
+        support:{money:740, label:'Support mode'}
+      };
+      state = {
+        mode,
+        week:1,
+        money:settings[mode].money,
+        debt:0,
+        stress:18,
+        paid:{rent:false, energy:false, food:false, phone:false},
+        currentEvent:null,
+        gameOver:false,
+        log:[`Started ${settings[mode].label} with £${settings[mode].money}.`]
+      };
+      document.getElementById('modeLabel').textContent = settings[mode].label;
+      nextEvent();
+      render();
+    }
+
+    function restart(){
+      document.getElementById('startOverlay').style.display='grid';
+      document.getElementById('resultCard').style.display='none';
+      state.gameOver=false;
+    }
+
+    function payBill(id){
+      if(state.gameOver || state.paid[id]) return;
+      const bill = bills.find(b => b.id === id);
+      state.money -= bill.cost;
+      state.paid[id] = true;
+      state.stress = Math.max(0, state.stress - 4);
+      state.log.unshift(`Paid ${bill.name}: £${bill.cost}.`);
+      render();
+    }
+
+    function nextEvent(){
+      state.currentEvent = events[Math.floor(Math.random()*events.length)];
+      document.getElementById('eventText').textContent = state.currentEvent.text;
+      document.querySelector('#eventCard h3').textContent = state.currentEvent.title;
+    }
+
+    function chooseAction(index){
+      if(state.gameOver) return;
+      const action = state.currentEvent.actions[index];
+      state.money += action.money || 0;
+      state.debt += action.debt || 0;
+      state.stress += action.stress || 0;
+      state.stress = Math.max(0, Math.min(100, state.stress));
+      state.log.unshift(action.log);
+
+      if(state.money < 0){
+        state.debt += Math.abs(state.money);
+        state.log.unshift(`Budget went below £0, so £${Math.abs(state.money)} was added as debt.`);
+        state.money = 0;
+        state.stress = Math.min(100, state.stress + 12);
+      }
+
+      endWeek();
+    }
+
+    function endWeek(){
+      const unpaidPriority = ['rent','energy','food'].filter(id => !state.paid[id]).length;
+      if(unpaidPriority > 0){
+        state.stress = Math.min(100, state.stress + unpaidPriority * 14);
+        state.log.unshift(`${unpaidPriority} priority bill(s) still unpaid this week.`);
+      }
+
+      if(state.week >= 4){
+        finishGame();
+        return;
+      }
+
+      state.week++;
+      state.paid = {rent:false, energy:false, food:false, phone:false};
+      state.money += state.mode === 'tight' ? 110 : state.mode === 'support' ? 170 : 140;
+      state.log.unshift(`Week ${state.week} started. Weekly money added.`);
+      nextEvent();
+      render();
+    }
+
+    function finishGame(){
+      state.gameOver = true;
+      const unpaid = Object.keys(state.paid).filter(k => !state.paid[k]).length;
+      let score = 100;
+      score -= state.debt * 0.18;
+      score -= state.stress * 0.45;
+      score -= unpaid * 10;
+      score += state.money * 0.08;
+      score = Math.max(0, Math.min(100, Math.round(score)));
+
+      let title, text;
+      if(score >= 75){
+        title = 'You survived the month well';
+        text = 'Strong result. You protected priority bills, avoided unnecessary debt, and kept pressure under control.';
+      } else if(score >= 50){
+        title = 'You survived, but it was tight';
+        text = 'You got through the month, but some choices created pressure. The next step is reducing debt and planning for surprise costs.';
+      } else {
+        title = 'The month became financially risky';
+        text = 'This month shows how quickly pressure builds. The priority is housing, energy, food, safe support, and avoiding high-cost borrowing or scams.';
+      }
+
+      document.getElementById('resultTitle').textContent = title;
+      document.getElementById('resultText').textContent =
+        `${text} Final result: £${state.money} left, £${state.debt} debt, ${state.stress}% stress. Survival score: ${score}/100.`;
+      document.getElementById('resultCard').style.display='block';
+      state.log.unshift(`Month complete. Survival score: ${score}/100.`);
+      render();
+    }
+
+    function render(){
+      document.getElementById('money').textContent = `£${Math.round(state.money)}`;
+      document.getElementById('debt').textContent = `£${Math.round(state.debt)}`;
+      document.getElementById('stress').textContent = `${Math.round(state.stress)}%`;
+      document.getElementById('week').textContent = `${state.week}/4`;
+
+      const pressure = Math.min(100, Math.round(state.stress + (state.debt/10)));
+      document.getElementById('pressureMeter').style.width = pressure + '%';
+      document.getElementById('pressureText').textContent = pressure < 35 ? 'Low pressure' : pressure < 70 ? 'Medium pressure' : 'High pressure';
+
+      const badge = document.getElementById('badge');
+      const status = document.getElementById('statusText');
+
+      if(state.gameOver){
+        badge.textContent = 'Month complete';
+        badge.style.background = 'var(--blue)';
+      } else if(state.money <= 50 || state.stress >= 75){
+        badge.textContent = 'High risk';
+        badge.style.background = 'var(--red)';
+        status.textContent = 'Money or stress is now in the danger zone. Focus on priority bills and avoid extra borrowing.';
+      } else if(state.debt > 150 || state.stress >= 45){
+        badge.textContent = 'Tight budget';
+        badge.style.background = 'var(--amber)';
+        status.textContent = 'The month is getting tight. One bad choice could push things into debt.';
+      } else {
+        badge.textContent = 'Stable';
+        badge.style.background = 'var(--green)';
+        status.textContent = 'You are managing the month fairly well. Keep protecting priority bills.';
+      }
+
+      document.getElementById('billChoices').innerHTML = bills.map(b => {
+        const paid = state.paid[b.id];
+        return `<button class="choice ${paid ? 'green' : ''}" onclick="payBill('${b.id}')" ${paid || state.gameOver ? 'disabled' : ''}>
+          <div><b>${paid ? '✓ ' : ''}${b.name}</b><em>${b.detail}</em></div>
+          <span class="tag">${paid ? 'Paid' : '£' + b.cost + ' · ' + b.priority}</span>
+        </button>`;
+      }).join('');
+
+      if(state.currentEvent && !state.gameOver){
+        document.getElementById('actionChoices').innerHTML = state.currentEvent.actions.map((a,i) =>
+          `<button class="choice" onclick="chooseAction(${i})">
+            <div><b>${a.label}</b><em>${a.detail}</em></div>
+            <span class="tag">${formatImpact(a)}</span>
+          </button>`
+        ).join('');
+      } else {
+        document.getElementById('actionChoices').innerHTML = '<p class="mini">Game finished. Review or print the result.</p>';
+      }
+
+      document.getElementById('log').innerHTML = state.log.map(item => `<div class="log-item">${highlight(item)}</div>`).join('');
+    }
+
+    function formatImpact(a){
+      let bits = [];
+      if(a.money) bits.push((a.money > 0 ? '+£' : '-£') + Math.abs(a.money));
+      if(a.debt) bits.push('+£' + a.debt + ' debt');
+      if(a.stress) bits.push((a.stress > 0 ? '+' : '') + a.stress + '% stress');
+      return bits.join(' · ') || 'Safe';
+    }
+
+    function highlight(text){
+      return text
+        .replace(/scam|fake bank|lost money|debt|below £0|unpaid/gi, '<span class="bad-text">$&</span>')
+        .replace(/Paid|avoided|support|reduced|Protected|Waited|survived|complete/gi, '<span class="good-text">$&</span>')
+        .replace(/tight|pressure|stress|delayed/gi, '<span class="warn-text">$&</span>');
+    }
+
+
+    function toggleFullscreen(){
+      if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function updateFullscreenButton(){
+      const btn = document.getElementById('fullscreenBtn');
+      if(!btn) return;
+
+      btn.textContent = document.fullscreenElement
+        ? 'Exit Full Screen'
+        : 'Enter Full Screen';
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+    updateFullscreenButton();
+
+
+    function downloadResult(){
+      const text = `RECONNECT-US Financial Survival Mode Result
+
+Money left: £${Math.round(state.money)}
+Debt: £${Math.round(state.debt)}
+Stress: ${Math.round(state.stress)}%
+Week reached: ${state.week}/4
+
+Session log:
+${state.log.map(x => '- ' + x).join('\n')}
+
+Training reminder:
+This is a practice simulator only. It is not financial advice.
+
+© RECONNECT-US — All rights reserved`;
+      const blob = new Blob([text], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'RECONNECT-US-financial-survival-result.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>

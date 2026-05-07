@@ -1,0 +1,917 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Benefits Maximiser Simulation</title>
+  <style>
+    :root{
+      --orange:#f28c28;
+      --orange-dark:#cc6e12;
+      --grey:#3f4a52;
+      --deep:#17212b;
+      --light-grey:#eef2f5;
+      --pale-blue:#dff3fb;
+      --blue:#0c89a5;
+      --green:#1d9b5f;
+      --amber:#d98310;
+      --red:#c64545;
+      --white:#ffffff;
+      --shadow:0 18px 45px rgba(23,33,43,.16);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--deep);
+      background:
+        radial-gradient(circle at top left, rgba(242,140,40,.25), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(12,137,165,.22), transparent 42%),
+        linear-gradient(135deg,#f9fcfd,#edf4f7);
+      min-height:100vh;
+    }
+
+    .app{
+      max-width:1180px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.86);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+      margin-bottom:22px;
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:74px;
+      height:74px;
+      border-radius:22px;
+      background:linear-gradient(135deg,var(--orange),var(--blue));
+      color:white;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:25px;
+      box-shadow:0 14px 30px rgba(242,140,40,.35);
+      letter-spacing:-1px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(25px,4vw,42px);
+      line-height:1;
+      color:var(--grey);
+    }
+
+    .brand p{
+      margin:7px 0 0;
+      color:#59656f;
+      font-size:15px;
+    }
+
+    .pill{
+      background:var(--pale-blue);
+      color:#07576b;
+      padding:11px 14px;
+      border-radius:999px;
+      font-weight:900;
+      white-space:nowrap;
+      border:1px solid rgba(12,137,165,.18);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 390px;
+      gap:22px;
+      align-items:start;
+    }
+
+    .card{
+      background:rgba(255,255,255,.94);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:22px;
+    }
+
+    .hero{
+      background:linear-gradient(135deg,var(--grey),#202b35);
+      color:white;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .hero:after{
+      content:"";
+      position:absolute;
+      width:280px;
+      height:280px;
+      border-radius:50%;
+      background:rgba(242,140,40,.25);
+      right:-90px;
+      top:-120px;
+    }
+
+    .hero h2,.hero p{position:relative;z-index:1}
+    .hero h2{margin:0 0 8px;font-size:29px}
+    .hero p{margin:0;line-height:1.55;color:#edf7fb}
+
+    .warning{
+      background:#fff5e8;
+      border-left:8px solid var(--orange);
+    }
+
+    .warning h2{margin:0 0 8px;color:#7b4308}
+    .warning p{margin:0;line-height:1.55;color:#5b4630;font-weight:700}
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:16px;
+    }
+
+    .section-title h2{
+      margin:0;
+      font-size:24px;
+      color:var(--grey);
+    }
+
+    .mini{
+      color:#65727c;
+      font-size:14px;
+      font-weight:800;
+    }
+
+    .profile-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:12px;
+    }
+
+    .field{
+      background:#f7fafb;
+      border:1px solid #e1eaee;
+      border-radius:18px;
+      padding:14px;
+    }
+
+    label{
+      display:block;
+      font-weight:900;
+      color:#34414b;
+      margin-bottom:8px;
+    }
+
+    select,input[type="number"]{
+      width:100%;
+      border:1px solid #d6e2e8;
+      background:white;
+      border-radius:14px;
+      padding:12px;
+      font-size:15px;
+      color:#26333d;
+      outline:none;
+    }
+
+    .checks{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .check{
+      background:#f7fafb;
+      border:1px solid #e1eaee;
+      border-radius:16px;
+      padding:13px;
+      display:flex;
+      gap:10px;
+      align-items:flex-start;
+      font-weight:800;
+      color:#34414b;
+      line-height:1.35;
+      cursor:pointer;
+    }
+
+    .check input{margin-top:2px;accent-color:var(--orange)}
+
+    button{
+      border:0;
+      border-radius:16px;
+      padding:13px 15px;
+      font-weight:900;
+      cursor:pointer;
+      color:white;
+      background:var(--grey);
+      transition:.2s ease;
+      font-size:15px;
+    }
+
+    button:hover{transform:translateY(-2px);filter:brightness(1.04)}
+    .primary{background:linear-gradient(135deg,var(--orange),var(--orange-dark))}
+    .blue{background:linear-gradient(135deg,var(--blue),#075b70)}
+    .green{background:linear-gradient(135deg,var(--green),#137648)}
+    .red{background:linear-gradient(135deg,var(--red),#982d2d)}
+    .light{background:var(--pale-blue);color:#07576b}
+
+    .buttons{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:16px;
+    }
+
+    .result-card{
+      position:sticky;
+      top:20px;
+    }
+
+    .score-ring{
+      width:225px;
+      height:225px;
+      margin:8px auto 18px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:conic-gradient(var(--blue) 0deg, var(--blue) 0deg, #e4eaee 0deg);
+      transition:.45s ease;
+      box-shadow:inset 0 0 0 16px rgba(255,255,255,.9), 0 16px 35px rgba(23,33,43,.12);
+    }
+
+    .score-inner{
+      width:160px;
+      height:160px;
+      background:white;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      box-shadow:inset 0 0 0 1px #e8eef2;
+      text-align:center;
+    }
+
+    .score-number{
+      font-size:52px;
+      font-weight:900;
+      letter-spacing:-2px;
+      color:var(--grey);
+    }
+
+    .score-label{
+      margin-top:-12px;
+      font-size:13px;
+      color:#68747c;
+      font-weight:900;
+    }
+
+    .badge{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      color:white;
+      font-weight:900;
+      margin-bottom:10px;
+      background:var(--blue);
+    }
+
+    .summary{
+      color:#56626c;
+      line-height:1.5;
+      margin:0 auto 14px;
+      max-width:320px;
+      text-align:center;
+    }
+
+    .recommendations{
+      display:grid;
+      gap:12px;
+    }
+
+    .rec{
+      background:#f7fafb;
+      border:1px solid #e1eaee;
+      border-radius:18px;
+      padding:15px;
+      line-height:1.45;
+    }
+
+    .rec h3{
+      margin:0 0 6px;
+      color:var(--grey);
+      font-size:18px;
+    }
+
+    .rec p{margin:0;color:#52606b;font-weight:700}
+    .rec .tag{
+      display:inline-block;
+      margin-top:10px;
+      padding:7px 10px;
+      border-radius:999px;
+      background:var(--pale-blue);
+      color:#07576b;
+      font-weight:900;
+      font-size:13px;
+    }
+
+    .resource-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:12px;
+    }
+
+    .resource{
+      background:#f7fafb;
+      border:1px solid #e1eaee;
+      border-radius:18px;
+      padding:16px;
+      min-height:145px;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .resource h3{margin:0 0 8px;color:var(--grey)}
+    .resource p{margin:0 0 12px;color:#5d6973;line-height:1.4;font-weight:700}
+    .resource a{
+      color:white;
+      background:var(--blue);
+      text-decoration:none;
+      padding:10px 12px;
+      border-radius:12px;
+      display:inline-block;
+      font-weight:900;
+      text-align:center;
+    }
+
+    .journey{
+      background:var(--pale-blue);
+      border-left:8px solid var(--blue);
+    }
+
+    .journey h2{margin:0 0 12px;color:#07576b}
+    .journey ol{margin:0;padding-left:22px;line-height:1.65;font-weight:700;color:#29434d}
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(23,33,43,.86);
+      display:grid;
+      place-items:center;
+      z-index:50;
+      padding:20px;
+    }
+
+    .modal{
+      max-width:760px;
+      background:white;
+      border-radius:30px;
+      padding:28px;
+      box-shadow:0 30px 80px rgba(0,0,0,.35);
+      text-align:center;
+    }
+
+    .modal .logo{margin:0 auto 14px}
+    .modal h2{font-size:32px;margin:0 0 10px;color:var(--grey)}
+    .modal p{line-height:1.55;color:#58656f;font-weight:700}
+
+    .smallprint{
+      font-size:13px;
+      color:#66737d;
+      line-height:1.45;
+      margin-top:12px;
+      font-weight:700;
+    }
+
+    .footer{
+      text-align:center;
+      color:#5d6973;
+      font-size:13px;
+      padding:12px 0 20px;
+    }
+
+    @media(max-width:980px){
+      .grid{grid-template-columns:1fr}
+      .result-card{position:static}
+      .resource-grid{grid-template-columns:1fr}
+      header{align-items:flex-start;flex-direction:column}
+      .pill{white-space:normal}
+    }
+
+    @media(max-width:680px){
+      .app{padding:14px}
+      .profile-grid,.checks{grid-template-columns:1fr}
+    }
+
+    @media print{
+      body{background:white}
+      header,.card{box-shadow:none}
+      button,.overlay{display:none!important}
+      .grid{grid-template-columns:1fr}
+      .result-card{position:static}
+      a{color:#07576b!important;background:transparent!important;padding:0!important}
+    }
+  </style>
+</head>
+<body>
+  <div class="overlay" id="startOverlay">
+    <div class="modal">
+      <div class="logo">RU</div>
+      <h2>Benefits Maximiser Simulation Game</h2>
+      <p>This is a simulation game inside the RECONNECT-US financial awareness programme. It does not check real entitlement, does not calculate real benefit amounts, and is not welfare rights advice.</p>
+      <p>The aim is to help learners practise spotting possible support routes and understand when to use official calculators or speak to an adviser.</p>
+      <button class="primary" onclick="closeOverlay()">Start simulation</button>
+    </div>
+  </div>
+
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">RU</div>
+        <div>
+          <h1>RECONNECT-US</h1>
+          <p>Benefits Maximiser · Simulation Game · Financial Awareness Tool</p>
+        </div>
+      </div>
+      <button class="blue" id="fullscreenBtn" onclick="toggleFullscreen()">
+        Enter Full Screen
+      </button>
+    </header>
+
+    <section class="card hero">
+      <h2>Can the learner spot support they might be missing?</h2>
+      <p>Build a fictional learner profile, run the simulation, and get awareness prompts for possible support areas such as low income, housing costs, disability support, caring responsibilities, council tax help, and food or energy support.</p>
+    </section>
+
+    <section class="card warning">
+      <h2>Important: this is a simulation game</h2>
+      <p>This tool does not decide eligibility and must not be used as a real benefits calculator. For real checks, use official benefits calculators or get help from Citizens Advice, Turn2us, a local welfare adviser, or GOV.UK signposting.</p>
+    </section>
+
+    <div class="grid">
+      <section>
+        <div class="card">
+          <div class="section-title">
+            <h2>Learner profile</h2>
+            <div class="mini">Fictional practice details</div>
+          </div>
+
+          <div class="profile-grid">
+            <div class="field">
+              <label for="age">Age group</label>
+              <select id="age">
+                <option value="working">Working age</option>
+                <option value="pension">Pension age</option>
+                <option value="young">Under 25</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="work">Work situation</label>
+              <select id="work">
+                <option value="out">Not working</option>
+                <option value="part">Part-time / low hours</option>
+                <option value="full">Full-time</option>
+                <option value="sick">Unable to work due to health</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="income">Monthly income after tax</label>
+              <input id="income" type="number" value="820" min="0" step="10">
+            </div>
+
+            <div class="field">
+              <label for="rent">Monthly rent / housing cost</label>
+              <input id="rent" type="number" value="520" min="0" step="10">
+            </div>
+
+            <div class="field">
+              <label for="savings">Savings</label>
+              <input id="savings" type="number" value="120" min="0" step="10">
+            </div>
+
+            <div class="field">
+              <label for="household">Household</label>
+              <select id="household">
+                <option value="single">Single adult</option>
+                <option value="couple">Couple</option>
+                <option value="children">Children in household</option>
+                <option value="carer">Caring for someone</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="checks">
+            <label class="check"><input id="health" type="checkbox"> Long-term health condition, disability, or mental health barrier</label>
+            <label class="check"><input id="care" type="checkbox"> Provides regular care for someone</label>
+            <label class="check"><input id="council" type="checkbox"> Struggling with council tax</label>
+            <label class="check"><input id="energy" type="checkbox"> Struggling with energy bills</label>
+            <label class="check"><input id="food" type="checkbox"> Struggling with food costs</label>
+            <label class="check"><input id="internet" type="checkbox"> Needs phone/internet for appointments or work search</label>
+          </div>
+
+          <div class="buttons">
+            <button class="primary" onclick="runSimulation()">Run simulation</button>
+            <button class="blue" onclick="loadScenario('lowIncome')">Low income example</button>
+            <button class="green" onclick="loadScenario('health')">Health barrier example</button>
+            <button class="light" onclick="resetForm()">Reset</button>
+          </div>
+
+          <p class="smallprint">The simulation uses broad awareness prompts only. It deliberately does not estimate real benefit amounts.</p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <h2>Possible support routes</h2>
+            <div class="mini">Generated by the simulation</div>
+          </div>
+          <div class="recommendations" id="recommendations">
+            <div class="rec">
+              <h3>Run the simulation</h3>
+              <p>Add a fictional profile and press “Run simulation” to see possible support areas.</p>
+              <span class="tag">Waiting</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card journey">
+          <h2>Suggested learner journey</h2>
+          <ol>
+            <li>Gather accurate information: income, rent, savings, household, health, caring, and current benefits.</li>
+            <li>Use an official benefits calculator for a real estimate.</li>
+            <li>Speak to Citizens Advice, Turn2us, a local welfare adviser, housing officer, probation support worker, or trusted support service if unsure.</li>
+            <li>Do not ignore letters, rent arrears, council tax, or benefit decisions. Ask for help early.</li>
+            <li>Keep copies of forms, messages, decisions, fit notes, rent proof, and medical evidence where needed.</li>
+          </ol>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <h2>Official signposting</h2>
+            <div class="mini">For real checks</div>
+          </div>
+          <div class="resource-grid">
+            <div class="resource">
+              <div>
+                <h3>GOV.UK calculators</h3>
+                <p>Links to recognised benefits calculators including Turn2us, entitledto and Policy in Practice.</p>
+              </div>
+              <a href="https://www.gov.uk/benefits-calculators" target="_blank">Open GOV.UK</a>
+            </div>
+            <div class="resource">
+              <div>
+                <h3>Citizens Advice</h3>
+                <p>General benefits help and guidance on checking what someone might be able to claim.</p>
+              </div>
+              <a href="https://www.citizensadvice.org.uk/benefits/benefits-introduction/what-benefits-can-i-get/" target="_blank">Open Citizens Advice</a>
+            </div>
+            <div class="resource">
+              <div>
+                <h3>Turn2us</h3>
+                <p>Free and confidential benefits calculator, grants search, and support information.</p>
+              </div>
+              <a href="https://benefits-calculator.turn2us.org.uk/" target="_blank">Open Turn2us</a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <aside class="card result-card">
+        <div class="section-title">
+          <h2>Awareness score</h2>
+          <div class="mini">Simulation</div>
+        </div>
+
+        <div class="score-ring" id="scoreRing">
+          <div class="score-inner">
+            <div>
+              <div class="score-number" id="scoreNumber">0</div>
+              <div class="score-label">support flags</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="text-align:center">
+          <div class="badge" id="badge">Not checked</div>
+          <p class="summary" id="summary">Run the simulation to generate awareness prompts. This is not a real entitlement result.</p>
+        </div>
+
+        <div class="buttons">
+          <button class="primary" onclick="window.print()">Print learner summary</button>
+          <button class="blue" onclick="downloadSummary()">Save summary</button>
+        </div>
+
+        <p class="smallprint">Real benefit rules change and depend on full circumstances. Always check properly before acting.</p>
+      </aside>
+    </div>
+
+    <div class="footer">© RECONNECT-US — All rights reserved · Benefits Maximiser Simulation Game</div>
+  </main>
+
+  <script>
+    const fields = ['age','work','income','rent','savings','household'];
+    const checks = ['health','care','council','energy','food','internet'];
+
+    function closeOverlay(){
+      document.getElementById('startOverlay').style.display = 'none';
+      runSimulation();
+    }
+
+    function getProfile(){
+      const p = {};
+      fields.forEach(id => p[id] = document.getElementById(id).value);
+      ['income','rent','savings'].forEach(id => p[id] = Number(p[id] || 0));
+      checks.forEach(id => p[id] = document.getElementById(id).checked);
+      return p;
+    }
+
+    function runSimulation(){
+      const p = getProfile();
+      const recs = [];
+      let flags = 0;
+      const disposable = p.income - p.rent;
+
+      if(p.age === 'pension'){
+        flags++;
+        recs.push({
+          title:'Pension-age support check',
+          text:'This fictional profile should be encouraged to check Pension Credit and help with housing or council tax if money is tight.',
+          tag:'Pension-age route'
+        });
+      }
+
+      if(p.age !== 'pension' && (p.work === 'out' || p.work === 'part' || p.work === 'sick' || disposable < 450)){
+        flags++;
+        recs.push({
+          title:'Low income / Universal Credit awareness',
+          text:'This profile may need a real benefits calculator check for low income support. The simulation cannot say if they qualify.',
+          tag:'Check low income support'
+        });
+      }
+
+      if(p.rent > 0 && disposable < 600){
+        flags++;
+        recs.push({
+          title:'Housing cost pressure',
+          text:'Rent is taking a large part of income. A real check should look at housing support, rent arrears help, and local housing advice.',
+          tag:'Housing support'
+        });
+      }
+
+      if(p.health || p.work === 'sick'){
+        flags++;
+        recs.push({
+          title:'Health or disability support awareness',
+          text:'The learner may need signposting about PIP, work capability support, fit notes, medical evidence, and specialist advice.',
+          tag:'Health barrier'
+        });
+      }
+
+      if(p.care || p.household === 'carer'){
+        flags++;
+        recs.push({
+          title:'Carer support awareness',
+          text:'If the learner regularly cares for someone, they should check carer-related support and how it may affect other benefits.',
+          tag:'Caring role'
+        });
+      }
+
+      if(p.household === 'children'){
+        flags++;
+        recs.push({
+          title:'Children in household',
+          text:'A real check should include child-related support, school costs, childcare help, free school meals, and local support schemes.',
+          tag:'Family support'
+        });
+      }
+
+      if(p.council){
+        flags++;
+        recs.push({
+          title:'Council tax help',
+          text:'Council tax is a priority bill. The learner may need to check Council Tax Reduction, discounts, payment plans, or local advice.',
+          tag:'Council tax'
+        });
+      }
+
+      if(p.energy){
+        flags++;
+        recs.push({
+          title:'Energy bill support',
+          text:'The learner may need to contact their supplier early, ask about hardship support, grants, repayment plans, or local help.',
+          tag:'Energy support'
+        });
+      }
+
+      if(p.food){
+        flags++;
+        recs.push({
+          title:'Food and essentials support',
+          text:'This profile should be signposted to local food support, community help, Household Support Fund-style local schemes where available, and budgeting support.',
+          tag:'Essentials'
+        });
+      }
+
+      if(p.internet){
+        flags++;
+        recs.push({
+          title:'Social tariffs and digital access',
+          text:'If phone or internet costs are a barrier, the learner could check social tariffs, library access, community digital support, or trusted local schemes.',
+          tag:'Digital access'
+        });
+      }
+
+      if(p.savings < 250 && disposable < 350){
+        flags++;
+        recs.push({
+          title:'Emergency safety-net planning',
+          text:'Low savings and low spare income means the learner may need a crisis plan: priority bills, emergency contacts, local welfare support, and debt advice.',
+          tag:'Crisis prevention'
+        });
+      }
+
+      if(recs.length === 0){
+        recs.push({
+          title:'No major support flags from this simulation',
+          text:'This does not mean the learner is not entitled to anything. A real calculator could still find support based on details not included here.',
+          tag:'Still check properly'
+        });
+      }
+
+      renderResults(flags, recs);
+    }
+
+    function renderResults(flags, recs){
+      const score = Math.min(flags, 10);
+      const degrees = Math.round((score / 10) * 360);
+      const colour = score >= 7 ? 'var(--red)' : score >= 4 ? 'var(--amber)' : score >= 1 ? 'var(--blue)' : 'var(--green)';
+
+      document.getElementById('scoreNumber').textContent = score;
+      document.getElementById('scoreRing').style.background =
+        `conic-gradient(${colour} 0deg, ${colour} ${degrees}deg, #e4eaee ${degrees}deg)`;
+
+      const badge = document.getElementById('badge');
+      const summary = document.getElementById('summary');
+
+      if(score >= 7){
+        badge.textContent = 'High support need';
+        badge.style.background = 'var(--red)';
+        summary.textContent = 'This fictional profile shows several possible support needs. A real benefits check and adviser support would be sensible.';
+      } else if(score >= 4){
+        badge.textContent = 'Several support flags';
+        badge.style.background = 'var(--amber)';
+        summary.textContent = 'This profile shows a few areas worth checking properly with an official calculator or adviser.';
+      } else if(score >= 1){
+        badge.textContent = 'Some support flags';
+        badge.style.background = 'var(--blue)';
+        summary.textContent = 'There are one or more areas to explore. This is only awareness, not entitlement.';
+      } else {
+        badge.textContent = 'Low flags';
+        badge.style.background = 'var(--green)';
+        summary.textContent = 'No major flags appeared, but a real calculator may still be useful.';
+      }
+
+      document.getElementById('recommendations').innerHTML = recs.map(r => `
+        <div class="rec">
+          <h3>${r.title}</h3>
+          <p>${r.text}</p>
+          <span class="tag">${r.tag}</span>
+        </div>
+      `).join('');
+    }
+
+    function loadScenario(type){
+      if(type === 'lowIncome'){
+        setVal('age','working');
+        setVal('work','part');
+        setVal('income',760);
+        setVal('rent',560);
+        setVal('savings',80);
+        setVal('household','single');
+        setChecks({health:false, care:false, council:true, energy:true, food:true, internet:true});
+      }
+      if(type === 'health'){
+        setVal('age','working');
+        setVal('work','sick');
+        setVal('income',420);
+        setVal('rent',500);
+        setVal('savings',40);
+        setVal('household','single');
+        setChecks({health:true, care:false, council:true, energy:true, food:true, internet:false});
+      }
+      runSimulation();
+    }
+
+    function setVal(id,val){ document.getElementById(id).value = val; }
+
+    function setChecks(obj){
+      checks.forEach(id => document.getElementById(id).checked = !!obj[id]);
+    }
+
+    function resetForm(){
+      setVal('age','working');
+      setVal('work','out');
+      setVal('income',820);
+      setVal('rent',520);
+      setVal('savings',120);
+      setVal('household','single');
+      setChecks({});
+      runSimulation();
+    }
+
+    function downloadSummary(){
+      const p = getProfile();
+      const recText = Array.from(document.querySelectorAll('.rec')).map(rec => {
+        const title = rec.querySelector('h3')?.textContent || '';
+        const body = rec.querySelector('p')?.textContent || '';
+        const tag = rec.querySelector('.tag')?.textContent || '';
+        return `- ${title} (${tag}): ${body}`;
+      }).join('\n');
+
+      const text = `RECONNECT-US Benefits Maximiser Simulation Summary
+
+IMPORTANT:
+This is a simulation game inside the RECONNECT-US financial awareness programme.
+It is not a real benefits calculator, does not decide eligibility, and is not welfare rights advice.
+
+Fictional profile:
+Age group: ${p.age}
+Work situation: ${p.work}
+Monthly income after tax: £${p.income}
+Monthly rent / housing cost: £${p.rent}
+Savings: £${p.savings}
+Household: ${p.household}
+Health/disability barrier: ${p.health ? 'Yes' : 'No'}
+Caring role: ${p.care ? 'Yes' : 'No'}
+Council tax struggle: ${p.council ? 'Yes' : 'No'}
+Energy bill struggle: ${p.energy ? 'Yes' : 'No'}
+Food cost struggle: ${p.food ? 'Yes' : 'No'}
+Phone/internet need: ${p.internet ? 'Yes' : 'No'}
+
+Support flags score: ${document.getElementById('scoreNumber').textContent}/10
+Simulation result: ${document.getElementById('badge').textContent}
+
+Possible support routes:
+${recText}
+
+For real checks:
+Use GOV.UK benefits calculator signposting, Turn2us, Citizens Advice, entitledto, Policy in Practice, or a local welfare adviser.
+
+© RECONNECT-US — All rights reserved`;
+
+      const blob = new Blob([text], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'RECONNECT-US-benefits-maximiser-simulation-summary.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+
+    function toggleFullscreen(){
+      if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function updateFullscreenButton(){
+      const btn = document.getElementById('fullscreenBtn');
+      if(!btn) return;
+
+      btn.textContent = document.fullscreenElement
+        ? 'Exit Full Screen'
+        : 'Enter Full Screen';
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+    updateFullscreenButton();
+
+
+    document.querySelectorAll('select,input').forEach(el => el.addEventListener('change', runSimulation));
+  </script>
+</body>
+</html>
