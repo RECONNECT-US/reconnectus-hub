@@ -1,0 +1,1711 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Escape Room</title>
+  <style>
+    :root{
+      --orange:#f97316;
+      --orange-dark:#ea580c;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --grey:#334155;
+      --dark:#0f172a;
+      --light:#f8fafc;
+      --soft-blue:#dbeafe;
+      --soft-orange:#ffedd5;
+      --green:#16a34a;
+      --red:#dc2626;
+      --purple:#7c3aed;
+      --yellow:#ca8a04;
+      --teal:#0f766e;
+      --shadow:0 20px 55px rgba(15,23,42,.22);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:#1e293b;
+      background:
+        radial-gradient(circle at top left, rgba(249,115,22,.22), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,.22), transparent 32%),
+        linear-gradient(135deg,#fff7ed,#f8fafc,#dbeafe);
+      min-height:100vh;
+    }
+
+    button, input{font:inherit}
+
+    .app{
+      max-width:1220px;
+      margin:0 auto;
+      padding:16px;
+    }
+
+    .shell{
+      border:4px solid var(--orange);
+      border-radius:32px;
+      overflow:hidden;
+      background:white;
+      box-shadow:var(--shadow);
+      min-height:92vh;
+    }
+
+    header{
+      background:
+        linear-gradient(90deg,rgba(249,115,22,.97),rgba(37,99,235,.97)),
+        repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 8px, transparent 8px 16px);
+      color:white;
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    header::after{
+      content:"";
+      position:absolute;
+      right:-80px;
+      top:-90px;
+      width:260px;
+      height:260px;
+      border:22px solid rgba(255,255,255,.15);
+      border-radius:50%;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+
+    .logo-block{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:76px;
+      height:76px;
+      border-radius:24px;
+      background:white;
+      color:var(--orange);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:28px;
+      font-weight:1000;
+      letter-spacing:-2px;
+      box-shadow:0 12px 24px rgba(15,23,42,.22);
+      border:4px solid rgba(255,255,255,.4);
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:42px;
+      font-weight:1000;
+      letter-spacing:1px;
+    }
+
+    .brand p{
+      margin:6px 0 0;
+      font-size:18px;
+      opacity:.96;
+      font-weight:700;
+    }
+
+    .stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .stat{
+      background:rgba(255,255,255,.2);
+      border:1px solid rgba(255,255,255,.38);
+      border-radius:18px;
+      padding:11px 14px;
+      font-weight:1000;
+      min-width:105px;
+      text-align:center;
+      backdrop-filter:blur(6px);
+    }
+
+    .intro{
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:22px;
+      padding:16px;
+      line-height:1.45;
+      font-weight:800;
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns:290px 1fr;
+      min-height:670px;
+    }
+
+    .signposts{
+      background:#f8fafc;
+      border-right:1px solid #e2e8f0;
+      padding:18px;
+    }
+
+    .signposts h2{
+      margin:0 0 14px;
+      font-size:22px;
+      color:#1e293b;
+    }
+
+    .signpost{
+      width:100%;
+      border:0;
+      border-radius:18px;
+      padding:13px 12px;
+      margin-bottom:11px;
+      text-align:left;
+      color:white;
+      cursor:pointer;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      position:relative;
+      box-shadow:0 9px 18px rgba(15,23,42,.12);
+      transition:.2s;
+      font-weight:1000;
+    }
+
+    .signpost::after{
+      content:"";
+      position:absolute;
+      right:-12px;
+      width:24px;
+      height:24px;
+      background:inherit;
+      transform:rotate(45deg);
+      border-radius:4px;
+    }
+
+    .signpost:hover{transform:translateX(4px)}
+    .signpost.locked{opacity:.55; filter:grayscale(.4)}
+    .signpost.active{outline:4px solid rgba(249,115,22,.3); transform:translateX(5px) scale(1.01)}
+    .signpost.done::before{
+      content:"✓";
+      position:absolute;
+      right:16px;
+      z-index:2;
+      width:25px;
+      height:25px;
+      border-radius:50%;
+      background:white;
+      color:var(--green);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:1000;
+    }
+
+    .s-scam{background:var(--orange)}
+    .s-password{background:var(--blue)}
+    .s-online{background:var(--purple)}
+    .s-budget{background:var(--teal)}
+    .s-job{background:var(--yellow)}
+    .s-final{background:var(--dark)}
+
+    .progress-panel{
+      margin-top:18px;
+      background:white;
+      border:1px solid #e2e8f0;
+      border-radius:20px;
+      padding:14px;
+      box-shadow:0 10px 20px rgba(15,23,42,.06);
+    }
+
+    .progress-panel h3{
+      margin:0 0 10px;
+      font-size:17px;
+    }
+
+    .bar{
+      height:16px;
+      background:#e2e8f0;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .bar-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--orange),var(--blue));
+      transition:.35s;
+    }
+
+    .smallprint{
+      margin-top:14px;
+      color:#64748b;
+      font-size:13px;
+      line-height:1.4;
+      font-weight:700;
+    }
+
+    .room{
+      padding:22px;
+      background:linear-gradient(145deg,#ffffff,#f8fafc);
+    }
+
+    .room-card{
+      background:white;
+      border:1px solid #e2e8f0;
+      border-radius:28px;
+      box-shadow:0 16px 34px rgba(15,23,42,.08);
+      overflow:hidden;
+      min-height:620px;
+    }
+
+    .room-hero{
+      padding:24px;
+      background:#f8fafc;
+      border-bottom:1px solid #e2e8f0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .room-title{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .room-icon{
+      font-size:46px;
+      width:70px;
+      height:70px;
+      border-radius:22px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#fff7ed;
+      border:2px solid #fed7aa;
+    }
+
+    .room-title h2{
+      margin:0;
+      font-size:30px;
+    }
+
+    .room-title p{
+      margin:5px 0 0;
+      color:#64748b;
+      font-weight:800;
+    }
+
+    .badge{
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:1000;
+      background:#dbeafe;
+      color:#1e40af;
+    }
+
+    .room-body{
+      padding:24px;
+    }
+
+    .story{
+      background:linear-gradient(135deg,#fff7ed,#eff6ff);
+      border:1px solid #fed7aa;
+      border-radius:22px;
+      padding:18px;
+      line-height:1.5;
+      font-size:18px;
+      font-weight:800;
+      margin-bottom:18px;
+    }
+
+    .question-box{
+      border:2px solid #e2e8f0;
+      border-radius:24px;
+      padding:20px;
+      background:#f8fafc;
+      margin-bottom:16px;
+    }
+
+    .question-box h3{
+      margin:0 0 10px;
+      font-size:23px;
+    }
+
+    .question{
+      margin:0;
+      color:#334155;
+      line-height:1.45;
+      font-size:18px;
+      font-weight:800;
+    }
+
+    .options{
+      display:grid;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .option{
+      border:2px solid #e2e8f0;
+      background:white;
+      color:#1e293b;
+      border-radius:18px;
+      padding:15px 16px;
+      text-align:left;
+      font-weight:900;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .option:hover{
+      border-color:var(--orange);
+      background:#fff7ed;
+      transform:translateY(-1px);
+    }
+
+
+    .option:disabled{
+      cursor:not-allowed;
+      opacity:1;
+    }
+
+
+    .option.correct{
+      background:#dcfce7;
+      border-color:var(--green);
+      color:#166534;
+    }
+
+    .option.wrong{
+      background:#fee2e2;
+      border-color:var(--red);
+      color:#991b1b;
+    }
+
+    .feedback{
+      display:none;
+      margin-top:18px;
+      border-left:8px solid var(--blue);
+      background:#eff6ff;
+      border-radius:20px;
+      padding:18px;
+    }
+
+    .feedback.show{display:block}
+    .feedback h3{margin:0 0 8px;font-size:23px;color:#1d4ed8}
+    .feedback p{margin:0 0 14px;line-height:1.45;font-weight:800;color:#334155}
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .primary{
+      border:0;
+      border-radius:17px;
+      background:var(--blue);
+      color:white;
+      padding:14px 18px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(37,99,235,.18);
+    }
+
+    .primary:hover{background:var(--blue-dark)}
+    .orange{background:var(--orange)}
+    .orange:hover{background:var(--orange-dark)}
+
+    .ghost{
+      border:2px solid #e2e8f0;
+      border-radius:17px;
+      background:white;
+      color:#334155;
+      padding:12px 16px;
+      font-weight:1000;
+      cursor:pointer;
+    }
+
+    .ghost:hover{border-color:var(--orange);background:#fff7ed}
+
+    .mini-game{
+      background:#0f172a;
+      color:white;
+      border-radius:24px;
+      padding:20px;
+      margin-top:16px;
+      box-shadow:inset 0 0 0 1px rgba(255,255,255,.08);
+    }
+
+    .mini-game h3{
+      margin:0 0 10px;
+      font-size:24px;
+      color:white;
+    }
+
+    .mini-game p{
+      margin:0 0 14px;
+      color:#cbd5e1;
+      line-height:1.45;
+      font-weight:800;
+    }
+
+    .code-row{
+      display:grid;
+      grid-template-columns:1fr auto;
+      gap:10px;
+    }
+
+    .code-row input{
+      border:2px solid #334155;
+      background:#020617;
+      color:white;
+      border-radius:16px;
+      padding:14px;
+      font-size:20px;
+      font-weight:1000;
+      letter-spacing:3px;
+      text-align:center;
+      text-transform:uppercase;
+    }
+
+    .inventory{
+      display:grid;
+      grid-template-columns:repeat(5,1fr);
+      gap:10px;
+      margin-top:14px;
+    }
+
+    .item{
+      background:#f8fafc;
+      border:2px dashed #cbd5e1;
+      border-radius:16px;
+      padding:11px;
+      text-align:center;
+      font-weight:1000;
+      color:#64748b;
+      min-height:70px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:4px;
+    }
+
+    .item.got{
+      border-style:solid;
+      background:#fff7ed;
+      border-color:var(--orange);
+      color:#9a3412;
+    }
+
+    .completion{
+      text-align:center;
+      padding:32px;
+    }
+
+    .completion .big{
+      font-size:78px;
+      margin-bottom:10px;
+    }
+
+    .completion h2{
+      font-size:38px;
+      margin:0 0 10px;
+    }
+
+    .scorebox{
+      max-width:520px;
+      margin:22px auto;
+      background:#f8fafc;
+      border:1px solid #e2e8f0;
+      border-radius:24px;
+      padding:22px;
+    }
+
+    .score-big{
+      font-size:60px;
+      font-weight:1000;
+      color:var(--blue);
+    }
+
+    .certificate{
+      text-align:left;
+      max-width:720px;
+      margin:20px auto;
+      background:#fff7ed;
+      border:2px solid #fed7aa;
+      border-radius:24px;
+      padding:20px;
+      line-height:1.5;
+      font-weight:800;
+    }
+
+    footer{
+      text-align:center;
+      padding:16px;
+      background:#f8fafc;
+      border-top:1px solid #e2e8f0;
+      color:#64748b;
+      font-weight:900;
+    }
+
+    .hint-modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.7);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:100000;
+      padding:20px;
+    }
+
+    .hint-modal-overlay.show{
+      display:flex;
+    }
+
+    .hint-modal{
+      width:min(500px,100%);
+      background:white;
+      border:4px solid var(--orange);
+      border-radius:24px;
+      padding:24px;
+      text-align:center;
+      box-shadow:0 24px 60px rgba(0,0,0,.35);
+    }
+
+    .hint-modal h3{
+      margin-top:0;
+      font-size:30px;
+      color:#1e293b;
+    }
+
+    .hint-modal p{
+      font-size:18px;
+      line-height:1.5;
+      color:#475569;
+      font-weight:800;
+    }
+
+
+@media(max-width:940px){
+      .content{grid-template-columns:1fr}
+      .signposts{border-right:0;border-bottom:1px solid #e2e8f0}
+      .inventory{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media(max-width:620px){
+      .app{padding:8px}
+      header{padding:20px}
+      .logo{width:60px;height:60px;font-size:22px;border-radius:20px}
+      .brand h1{font-size:28px}
+      .brand p{font-size:15px}
+      .stats{width:100%}
+      .stat{flex:1;min-width:90px}
+      .room{padding:12px}
+      .room-hero{padding:18px}
+      .room-title h2{font-size:24px}
+      .room-body{padding:16px}
+      .code-row{grid-template-columns:1fr}
+      .inventory{grid-template-columns:repeat(2,1fr)}
+    }
+
+    @media print{
+      body{background:white}
+      .signposts,.controls,.feedback,.mini-game,footer{display:none!important}
+      .shell{border:0;box-shadow:none}
+      .content{display:block}
+      header{background:white;color:#1e293b;border-bottom:3px solid #1e293b}
+      .room-card{box-shadow:none;border:0}
+    }
+  </style>
+</head>
+<body>
+  <button type="button" class="fullscreen-btn" id="fullscreenBtn" aria-label="Toggle full screen">⛶ Full Screen</button>
+  <div class="fullscreen-message" id="fullscreenMessage"></div>
+
+
+  <div class="hint-modal-overlay" id="hintModalOverlay">
+    <div class="hint-modal">
+      <h3>Escape Room Hint</h3>
+      <p id="hintModalText"></p>
+      <button class="primary orange" onclick="closeHintModal()">Close</button>
+    </div>
+  </div>
+
+<div class="app">
+    <section class="shell">
+      <header>
+        <div class="topbar">
+          <div class="logo-block">
+            <div class="logo">RU</div>
+            <div class="brand">
+              <h1>RECONNECT-US</h1>
+              <p>Escape Room: Digital Skills, Safety & Real-Life Confidence</p>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat" id="scoreStat">Score<br>0</div>
+            <div class="stat" id="keysStat">Keys<br>0/5</div>
+            <div class="stat" id="roomStat">Room<br>1/6</div>
+          </div>
+        </div>
+        <div class="intro">
+          Welcome to the RECONNECT-US Escape Room. Solve scam clues, password puzzles, online safety challenges,
+          budgeting tasks, and job application missions. Collect all 5 keys to unlock the final door.
+          No actual doors will be harmed. Probably.
+        </div>
+      </header>
+
+      <div class="content">
+        <aside class="signposts">
+          <h2>Escape Signposts</h2>
+          <button class="signpost s-scam active" data-room="0">🕵️ Scam Clue Corridor</button>
+          <button class="signpost s-password locked" data-room="1">🔐 Password Vault</button>
+          <button class="signpost s-online locked" data-room="2">🛡️ Online Safety Lab</button>
+          <button class="signpost s-budget locked" data-room="3">💷 Budgeting Basement</button>
+          <button class="signpost s-job locked" data-room="4">💼 Job Application Office</button>
+          <button class="signpost s-final locked" data-room="5">🚪 Final Exit Door</button>
+
+          <div class="progress-panel">
+            <h3>Escape Progress</h3>
+            <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+            <div class="inventory" id="inventory"></div>
+            <div class="smallprint">
+              Tip: Learners can replay this as a group activity. One person reads the question,
+              another chooses the answer, and everyone argues dramatically like they are on a quiz show.
+            </div>
+          </div>
+        </aside>
+
+        <main class="room">
+          <section class="room-card" id="roomCard"></section>
+        </main>
+      </div>
+
+      <footer>
+        © RECONNECT-US — Escape Room Learning Game
+      </footer>
+    </section>
+  </div>
+
+  <script>
+    const rooms = [
+      {
+        id:"scam",
+        title:"Scam Clue Corridor",
+        subtitle:"Your first key is hidden behind dodgy messages, fake links, and nonsense urgency.",
+        icon:"🕵️",
+        colour:"s-scam",
+        key:"Scam Spotter Key",
+        keyIcon:"🕵️",
+        code:"SAFE",
+        story:"You enter a corridor covered in suspicious texts. One says you have won a yacht. Another says your bank account has been attacked by a goat. The door whispers: prove you can spot a scam.",
+        questions:[
+          {
+            q:"A text says: “Your parcel failed delivery. Pay £1.99 here: royal-mail-help-payment.co”. What is the biggest warning sign?",
+            options:["The link does not look like an official Royal Mail website","The text mentions a parcel","It asks for a small amount, so it must be safe","Blame the Wi-Fi gremlins","Ask a random pigeon for advice"],
+            a:0,
+            why:"Scam links often look almost official but include extra words, odd endings, or pressure to pay quickly."
+          },
+          {
+            q:"Someone calls saying they are from your bank and asks for your one-time passcode. What should you do?",
+            options:["Read it out because they sound serious","Hang up and contact the bank using the number on your card/app","Ask them to text you a better story","Ignore all common sense","Trust every stranger online"],
+            a:1,
+            why:"Never share one-time passcodes. Real banks do not need you to read them out."
+          },
+          {
+            q:"A Facebook Marketplace seller says you must pay by bank transfer before viewing the item. Best answer?",
+            options:["Pay quickly before someone else gets it","Ask for proof, meet safely, and avoid risky payment methods","Send extra money to show trust","Trust every stranger online","Ask a random pigeon for advice"],
+            a:1,
+            why:"Scammers love pressure and bank transfers. Use safer payment methods and verify the item first."
+          },
+          {
+            q:"Which message is most suspicious?",
+            options:["Your GP appointment is Tuesday at 10am. Call the surgery if needed.","URGENT!!! You owe tax. Pay now or police arrive in 20 minutes.","Your library book is due next week.","Tell the printer your secrets","Write the password on your forehead"],
+            a:1,
+            why:"Threats, panic, and urgent payment demands are classic scam tactics."
+          },
+          {
+            q:"A message has spelling mistakes, a weird link, and asks for bank details. What is the correct move?",
+            options:["Click it just to check","Delete/report it and use the official website or app","Reply with only half your bank details","Download absolutely everything","Pretend the problem does not exist"],
+            a:1,
+            why:"Do not engage. Report, delete, and check through official channels."
+          },
+          {
+            q:"An email says your Netflix account will close today unless you pay immediately. What should you do?",
+            options:["Go directly to Netflix through the official app/site","Click the email link","Send your card details by reply","Ask a random pigeon for advice","Send your details to everyone"],
+            a:0,
+            why:"Scammers use panic and urgency. Always go directly to the official service."
+          },
+          {
+            q:"A caller says they are from HMRC and threatens arrest unless you pay gift cards.",
+            options:["Hang up and contact HMRC officially","Buy the gift cards","Give them your bank login","Tell the printer your secrets","Write the password on your forehead"],
+            a:0,
+            why:"HMRC does not demand payment through gift cards or threats."
+          },
+          {
+            q:"A WhatsApp message says 'Hi Mum, lost my phone, send money.' What should you do?",
+            options:["Verify by another method first","Send money immediately","Share your PIN too","Use telepathy instead","Ask a toaster for help"],
+            a:0,
+            why:"Family impersonation scams are extremely common."
+          },
+          {
+            q:"A website promises a free iPhone if you enter your bank details.",
+            options:["Avoid the site","Enter the details quickly","Send it to friends","Blame the Wi-Fi gremlins","Ignore all common sense"],
+            a:0,
+            why:"If it sounds too good to be true, it usually is."
+          },
+          {
+            q:"Someone online pressures you to keep a conversation secret.",
+            options:["Treat it as a warning sign","Trust them more","Send personal details","Blame the Wi-Fi gremlins","Send your details to everyone"],
+            a:0,
+            why:"Secrecy and pressure are manipulation tactics."
+          },
+          {
+            q:"What is phishing?",
+            options:["A scam trying to steal information","A fishing hobby","A Wi-Fi upgrade","Turn the computer upside down","Ask a toaster for help"],
+            a:0,
+            why:"Phishing is used to steal passwords and financial details."
+          },
+          {
+            q:"Why do scammers create urgency?",
+            options:["To stop people thinking clearly","Because they are helpful","To improve customer service","Challenge the scammer to a duel","Download absolutely everything"],
+            a:0,
+            why:"Pressure reduces careful decision-making."
+          },
+          {
+            q:"A scammer asks you to move a conversation away from the official platform.",
+            options:["Be cautious","Do it immediately","Send ID documents first","Throw the keyboard into the sea","Tell the printer your secrets"],
+            a:0,
+            why:"Moving away from official systems removes protections."
+          },
+          {
+            q:"What should you do before donating to an online charity appeal?",
+            options:["Verify the charity independently","Donate instantly","Ignore all charities forever","Tell the printer your secrets","Ask a random pigeon for advice"],
+            a:0,
+            why:"Check official registrations and websites."
+          },
+          {
+            q:"You receive an attachment from an unknown sender.",
+            options:["Do not open it without verification","Open it immediately","Forward it everywhere","Challenge the scammer to a duel","Tell the printer your secrets"],
+            a:0,
+            why:"Attachments can contain malware or scams."
+          }]
+      },
+      {
+        id:"password",
+        title:"Password Vault",
+        subtitle:"Crack the password vault without using 'password123', because we are not living in chaos.",
+        icon:"🔐",
+        colour:"s-password",
+        key:"Password Key",
+        keyIcon:"🔐",
+        code:"LOCK",
+        story:"A giant digital vault blocks the way. It looks expensive. It also looks like it judges people who use their cat's name as every password. The vault demands password wisdom.",
+        questions:[
+          {
+            q:"Which password is strongest?",
+            options:["Betty2024","B3tty!River_Chair#72","password1","Trust every stranger online","Use telepathy instead"],
+            a:1,
+            why:"A strong password uses a mix of letters, numbers, symbols, and is harder to guess."
+          },
+          {
+            q:"What is two-factor authentication?",
+            options:["Using two passwords that are both terrible","A second security step, like a code sent to your phone or app","Logging in twice because the website is annoying","Blame the Wi-Fi gremlins","Pretend the problem does not exist"],
+            a:1,
+            why:"Two-factor authentication adds another layer of protection."
+          },
+          {
+            q:"What should you do if a website says your password was leaked?",
+            options:["Ignore it and hope the internet forgets","Change that password and anywhere else you reused it","Post the password online to warn others","Turn the computer upside down","Pretend the problem does not exist"],
+            a:1,
+            why:"Reused passwords are dangerous. Change them quickly."
+          },
+          {
+            q:"Why should you avoid using the same password everywhere?",
+            options:["Because one hacked site can open the door to everything else","Because websites get jealous","Because long passwords are illegal","Throw the keyboard into the sea","Ignore all common sense"],
+            a:0,
+            why:"If one account is compromised, attackers may try that password on other accounts."
+          },
+          {
+            q:"A safe way to manage lots of passwords is:",
+            options:["Write them on a public noticeboard","Use a trusted password manager or secure personal system","Use your birthday for everything","Pretend the problem does not exist","Ask a random pigeon for advice"],
+            a:1,
+            why:"A password manager can help create and store stronger passwords."
+          },
+          {
+            q:"What should you avoid in passwords?",
+            options:["Names and birthdays","Random symbols","Long phrases","Tell the printer your secrets","Write the password on your forehead"],
+            a:0,
+            why:"Personal information is easier to guess."
+          },
+          {
+            q:"What makes a password harder to crack?",
+            options:["Length and complexity","Using only numbers","Using '123'","Press every button and hope","Ask a toaster for help"],
+            a:0,
+            why:"Longer and more complex passwords are stronger."
+          },
+          {
+            q:"Should you share passwords with friends?",
+            options:["No, keep them private","Yes, always","Only on social media","Ask a random pigeon for advice","Send your details to everyone"],
+            a:0,
+            why:"Passwords should stay private."
+          },
+          {
+            q:"What is a password manager for?",
+            options:["Securely storing passwords","Posting passwords online","Deleting websites","Write the password on your forehead","Tell the printer your secrets"],
+            a:0,
+            why:"Password managers help organise secure passwords."
+          },
+          {
+            q:"If a friend asks for your login details, what should you do?",
+            options:["Refuse politely","Share them immediately","Post them publicly","Ignore all common sense","Turn the computer upside down"],
+            a:0,
+            why:"Even trusted people should not need your passwords."
+          },
+          {
+            q:"Why is 'qwerty' a bad password?",
+            options:["It is common and predictable","It looks cool","Banks recommend it","Ignore all common sense","Turn the computer upside down"],
+            a:0,
+            why:"Predictable passwords are easy to crack."
+          },
+          {
+            q:"What is credential stuffing?",
+            options:["Using leaked passwords on other sites","Stuffing paper into keyboards","Creating usernames","Download absolutely everything","Click the suspicious flashing advert"],
+            a:0,
+            why:"Attackers reuse leaked passwords on multiple websites."
+          },
+          {
+            q:"How often should you update weak or reused passwords?",
+            options:["As soon as possible","Never","Every 30 years","Use telepathy instead","Trust every stranger online"],
+            a:0,
+            why:"Weak passwords should be changed quickly."
+          },
+          {
+            q:"Which is safest for security questions?",
+            options:["Answers others cannot easily guess","Your real public information","Your postcode everywhere","Click the suspicious flashing advert","Ask a random pigeon for advice"],
+            a:0,
+            why:"Security answers should not be easily discoverable."
+          },
+          {
+            q:"What is a passphrase?",
+            options:["Several random words combined","A short PIN","A Wi-Fi signal","Download absolutely everything","Trust every stranger online"],
+            a:0,
+            why:"Passphrases can be memorable and strong."
+          }]
+      },
+      {
+        id:"online",
+        title:"Online Safety Lab",
+        subtitle:"A shiny lab full of Wi-Fi, QR codes, and one suspicious printer that definitely has secrets.",
+        icon:"🛡️",
+        colour:"s-online",
+        key:"Safety Key",
+        keyIcon:"🛡️",
+        code:"WISE",
+        story:"The lab lights flicker. A QR code appears on the wall. A public Wi-Fi network called FREE_BANKING_SAFE_TRUST_ME appears. Absolutely not, mate.",
+        questions:[
+          {
+            q:"You are on public Wi-Fi in a café. What should you avoid?",
+            options:["Checking the weather","Logging into banking or entering sensitive details","Reading a news article","Ignore all common sense","Tell the printer your secrets"],
+            a:1,
+            why:"Public Wi-Fi can be less secure. Avoid sensitive tasks unless using trusted protection."
+          },
+          {
+            q:"A QR code is stuck over a parking machine sign. What is safest?",
+            options:["Scan and enter card details immediately","Use the official parking app or website instead","Take it home and frame it","Pretend the problem does not exist","Trust every stranger online"],
+            a:1,
+            why:"Fake QR codes can send people to scam payment pages."
+          },
+          {
+            q:"What information should you avoid posting publicly?",
+            options:["Your favourite biscuit","Your address, routine, ID documents, and financial details","A photo of a sunset","Challenge the scammer to a duel","Ask a random pigeon for advice"],
+            a:1,
+            why:"Personal details can be used for fraud, stalking, or account recovery attacks."
+          },
+          {
+            q:"Someone online asks for intimate photos or money and says they love you after two days. What is this likely to be?",
+            options:["A romance scam or manipulation risk","A normal admin process","A council tax discount","Trust every stranger online","Blame the Wi-Fi gremlins"],
+            a:0,
+            why:"Fast emotional pressure plus money or images is a serious warning sign."
+          },
+          {
+            q:"A website address starts with https. Does that always mean the site is safe?",
+            options:["Yes, all https sites are safe","No, it means the connection is encrypted, not that the site is trustworthy","Only on Thursdays","Turn the computer upside down","Pretend the problem does not exist"],
+            a:1,
+            why:"Scam sites can also use https. You still need to check the website and context."
+          },
+          {
+            q:"What should you do before downloading an app?",
+            options:["Check reviews and permissions","Download everything","Disable all security","Ignore all common sense","Press every button and hope"],
+            a:0,
+            why:"Always check apps before installing."
+          },
+          {
+            q:"What is oversharing online?",
+            options:["Posting too much personal information","Sharing recipes","Watching videos","Write the password on your forehead","Ask a random pigeon for advice"],
+            a:0,
+            why:"Oversharing can create safety risks."
+          },
+          {
+            q:"Why should you update devices regularly?",
+            options:["Updates patch security problems","Updates are pointless","It changes wallpaper only","Pretend the problem does not exist","Ask a toaster for help"],
+            a:0,
+            why:"Updates often fix vulnerabilities."
+          },
+          {
+            q:"A stranger asks for your location online.",
+            options:["Be cautious and avoid sharing","Send your address","Invite them over","Press every button and hope","Challenge the scammer to a duel"],
+            a:0,
+            why:"Location sharing can be dangerous."
+          },
+          {
+            q:"What is catfishing?",
+            options:["Pretending to be someone else online","A fishing hobby","A banking app","Click the suspicious flashing advert","Ignore all common sense"],
+            a:0,
+            why:"Fake identities are common in scams."
+          },
+          {
+            q:"What should you do if an account is hacked?",
+            options:["Change passwords and secure it quickly","Ignore it","Delete your phone","Send your details to everyone","Ask a random pigeon for advice"],
+            a:0,
+            why:"Act quickly to limit damage."
+          },
+          {
+            q:"Why should social media privacy settings matter?",
+            options:["They control who sees your information","They are decorative","They improve battery life","Use telepathy instead","Ignore all common sense"],
+            a:0,
+            why:"Privacy settings help protect personal data."
+          },
+          {
+            q:"What is malware?",
+            options:["Harmful software","A social media trend","A keyboard shortcut","Blame the Wi-Fi gremlins","Ask a random pigeon for advice"],
+            a:0,
+            why:"Malware can steal data or damage devices."
+          },
+          {
+            q:"What should you do with suspicious links?",
+            options:["Avoid clicking and verify first","Open them immediately","Share them widely","Ask a toaster for help","Pretend the problem does not exist"],
+            a:0,
+            why:"Always verify links."
+          },
+          {
+            q:"Why avoid posting travel plans publicly?",
+            options:["It can reveal when you are away","It improves Wi-Fi","Airlines require it","Download absolutely everything","Write the password on your forehead"],
+            a:0,
+            why:"Public travel details can create security risks."
+          }]
+      },
+      {
+        id:"budget",
+        title:"Budgeting Basement",
+        subtitle:"Escape the basement by surviving real-life money choices without buying a golden kettle.",
+        icon:"💷",
+        colour:"s-budget",
+        key:"Budget Key",
+        keyIcon:"💷",
+        code:"PLAN",
+        story:"You find a table, a calculator, and a receipt long enough to carpet a hallway. The basement door says: make sensible money choices and I will let you leave.",
+        questions:[
+          {
+            q:"You have £40 until Friday. What should come first?",
+            options:["Food, travel, essential bills/appointments","A giant inflatable flamingo","Mystery online shopping at 2am","Ignore all common sense","Send your details to everyone"],
+            a:0,
+            why:"Essentials come first: food, travel, bills, appointments, and safety."
+          },
+          {
+            q:"A buy-now-pay-later option splits payment into four. What should you check first?",
+            options:["Whether you can afford every payment date","Whether the button looks pretty","Whether your mate thinks it is a vibe","Download absolutely everything","Ask a random pigeon for advice"],
+            a:0,
+            why:"Missed payments can cause stress and fees. Always check dates and affordability."
+          },
+          {
+            q:"What is a good budgeting habit?",
+            options:["Track income, bills, debts, food, travel, and upcoming payments","Avoid looking at your bank account forever","Guess everything and hope","Challenge the scammer to a duel","Trust every stranger online"],
+            a:0,
+            why:"Tracking money helps avoid surprises."
+          },
+          {
+            q:"If you cannot pay an important bill, what is usually best?",
+            options:["Ignore all letters","Contact the organisation early and ask for support/options","Change your name to The Invisible Goose","Write the password on your forehead","Ignore all common sense"],
+            a:1,
+            why:"Early contact gives more options and can prevent things getting worse."
+          },
+          {
+            q:"Which is a warning sign of financial trouble?",
+            options:["Knowing your payment dates","Borrowing to pay other borrowing repeatedly","Making a shopping list","Click the suspicious flashing advert","Ask a random pigeon for advice"],
+            a:1,
+            why:"Using debt to pay debt can become a cycle. It is a sign to seek advice."
+          },
+          {
+            q:"What is a budget?",
+            options:["A plan for your money","A type of sandwich","A shopping app","Ask a toaster for help","Use telepathy instead"],
+            a:0,
+            why:"Budgets help manage spending."
+          },
+          {
+            q:"Why is an emergency fund useful?",
+            options:["It helps with unexpected costs","It buys luxury trainers","It replaces wages forever","Send your details to everyone","Trust every stranger online"],
+            a:0,
+            why:"Savings help with emergencies."
+          },
+          {
+            q:"Which is a need rather than a want?",
+            options:["Electricity bill","Designer trainers","Random gadgets","Trust every stranger online","Pretend the problem does not exist"],
+            a:0,
+            why:"Needs are essentials."
+          },
+          {
+            q:"Why track spending?",
+            options:["To understand where money goes","To confuse yourself","To avoid banks","Blame the Wi-Fi gremlins","Tell the printer your secrets"],
+            a:0,
+            why:"Tracking helps spot problems."
+          },
+          {
+            q:"What is impulse buying?",
+            options:["Buying without planning","Paying rent","Budgeting carefully","Press every button and hope","Download absolutely everything"],
+            a:0,
+            why:"Impulse buying can damage budgets."
+          },
+          {
+            q:"What can help reduce debt stress?",
+            options:["Seeking advice early","Ignoring letters","Borrowing endlessly","Write the password on your forehead","Click the suspicious flashing advert"],
+            a:0,
+            why:"Early advice can help."
+          },
+          {
+            q:"Why compare prices?",
+            options:["To save money","Because adverts say so","To waste time","Press every button and hope","Ignore all common sense"],
+            a:0,
+            why:"Comparing prices helps stretch budgets."
+          },
+          {
+            q:"What is a direct debit?",
+            options:["Automatic payment from your account","A video game","A type of loan shark","Trust every stranger online","Blame the Wi-Fi gremlins"],
+            a:0,
+            why:"Direct debits automate payments."
+          },
+          {
+            q:"Why should you read finance agreements carefully?",
+            options:["To understand costs and repayments","Because paperwork is fun","You should never read them","Pretend the problem does not exist","Send your details to everyone"],
+            a:0,
+            why:"Always understand agreements before signing."
+          },
+          {
+            q:"What is a realistic money goal?",
+            options:["Something achievable and planned","Winning the lottery tomorrow","Buying a castle next week","Write the password on your forehead","Blame the Wi-Fi gremlins"],
+            a:0,
+            why:"Realistic goals improve financial confidence."
+          }]
+      },
+      {
+        id:"job",
+        title:"Job Application Office",
+        subtitle:"Complete the application mission. Beware the haunted printer and the CV goblin.",
+        icon:"💼",
+        colour:"s-job",
+        key:"Job Key",
+        keyIcon:"💼",
+        code:"WORK",
+        story:"The office door is locked. A printer growls in the corner. On the desk is a CV, a job advert, and a note: prove you can apply properly.",
+        questions:[
+          {
+            q:"What should a CV be?",
+            options:["Clear, honest, relevant, and easy to read","Twelve pages of tiny writing","Mostly emojis and vibes","Press every button and hope","Send your details to everyone"],
+            a:0,
+            why:"Employers need a clear picture of skills, experience, and reliability."
+          },
+          {
+            q:"You have a gap in employment. Best approach?",
+            options:["Lie completely","Explain it honestly and focus on skills, training, volunteering, or readiness","Delete the whole year from history","Download absolutely everything","Challenge the scammer to a duel"],
+            a:1,
+            why:"Honesty plus a focus on progress is usually stronger than hiding things."
+          },
+          {
+            q:"Before submitting an application, what should you check?",
+            options:["Spelling, contact details, closing date, and whether you answered the questions","Whether the moon approves","Nothing — chaos builds character","Download absolutely everything","Ask a random pigeon for advice"],
+            a:0,
+            why:"Small errors can cost opportunities. Check before sending."
+          },
+          {
+            q:"What should you do if a job advert asks for money upfront to apply?",
+            options:["Be cautious — legitimate employers usually do not charge you to apply","Pay immediately","Send your passport and bank details first","Pretend the problem does not exist","Tell the printer your secrets"],
+            a:0,
+            why:"Upfront fees can be a job scam warning sign."
+          },
+          {
+            q:"A good interview answer often uses examples. Which method can help?",
+            options:["STAR: Situation, Task, Action, Result","MARS: Make Answer Really Spicy","RUN: Rapid Unclear Nonsense","Ask a toaster for help","Throw the keyboard into the sea"],
+            a:0,
+            why:"STAR helps structure answers clearly."
+          },
+          {
+            q:"Why tailor a CV to a job?",
+            options:["To match relevant skills and experience","To make it longer","To confuse employers","Turn the computer upside down","Use telepathy instead"],
+            a:0,
+            why:"Tailored CVs are more effective."
+          },
+          {
+            q:"What should you include in a cover letter?",
+            options:["Why you fit the role","Your favourite pizza","Nothing relevant","Throw the keyboard into the sea","Trust every stranger online"],
+            a:0,
+            why:"Cover letters explain suitability."
+          },
+          {
+            q:"Why arrive early to interviews?",
+            options:["It shows reliability","To scare the interviewer","To redecorate the office","Write the password on your forehead","Trust every stranger online"],
+            a:0,
+            why:"Punctuality creates a good impression."
+          },
+          {
+            q:"What should you research before an interview?",
+            options:["The company and role","Random celebrities","Nothing","Throw the keyboard into the sea","Ignore all common sense"],
+            a:0,
+            why:"Preparation improves confidence."
+          },
+          {
+            q:"Why keep contact details updated on a CV?",
+            options:["Employers need to reach you","It looks decorative","It does not matter","Write the password on your forehead","Send your details to everyone"],
+            a:0,
+            why:"Outdated details can lose opportunities."
+          },
+          {
+            q:"What is professional communication?",
+            options:["Clear and respectful messages","Typing in all caps","Sending memes only","Tell the printer your secrets","Download absolutely everything"],
+            a:0,
+            why:"Professional communication matters."
+          },
+          {
+            q:"What is networking?",
+            options:["Building professional connections","Fixing routers","Avoiding people","Blame the Wi-Fi gremlins","Send your details to everyone"],
+            a:0,
+            why:"Networking can create opportunities."
+          },
+          {
+            q:"Why practise interview questions?",
+            options:["To improve confidence and structure","To waste time","Because interviews are fake","Download absolutely everything","Ask a random pigeon for advice"],
+            a:0,
+            why:"Practice helps performance."
+          },
+          {
+            q:"What should references do?",
+            options:["Confirm reliability and character","Send jokes","Pay your wages","Challenge the scammer to a duel","Ask a toaster for help"],
+            a:0,
+            why:"References support applications."
+          },
+          {
+            q:"What is transferable skill?",
+            options:["A skill useful in different jobs","A train ticket","A bank account","Challenge the scammer to a duel","Turn the computer upside down"],
+            a:0,
+            why:"Many skills apply across roles."
+          }]
+      },
+      {
+        id:"final",
+        title:"Final Exit Door",
+        subtitle:"Use your collected keys and final code words to escape the RECONNECT-US Escape Room.",
+        icon:"🚪",
+        colour:"s-final",
+        key:"Exit Complete",
+        keyIcon:"🚪",
+        code:"ESCAPE",
+        story:"The final door towers above you. It has five locks, a dramatic sound effect, and a tiny sign saying: no panic-clicking. Enter the final code to escape.",
+        questions:[]
+      }
+    ];
+
+    let currentRoom = 0;
+    let questionIndex = 0;
+    let score = 0;
+    let answered = false;
+    let activeQuestion = null;
+    let unlockedRooms = [true, false, false, false, false, false];
+    let completedRooms = [false, false, false, false, false, false];
+    let keys = [];
+    let codeWords = [];
+
+
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const fullscreenMessage = document.getElementById("fullscreenMessage");
+
+    function isFullscreen(){
+      return !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement
+      );
+    }
+
+    function updateFullscreenButton(){
+      fullscreenBtn.textContent = isFullscreen() ? "❎ Exit Full Screen" : "⛶ Full Screen";
+    }
+
+    function showFullscreenMessage(message){
+      fullscreenMessage.textContent = message;
+      fullscreenMessage.classList.add("show");
+      setTimeout(() => fullscreenMessage.classList.remove("show"), 4200);
+    }
+
+    async function enterFullscreen(){
+      const target = document.documentElement;
+
+      try{
+        if(target.requestFullscreen){
+          await target.requestFullscreen();
+          return true;
+        }
+        if(target.webkitRequestFullscreen){
+          target.webkitRequestFullscreen();
+          return true;
+        }
+        if(target.msRequestFullscreen){
+          target.msRequestFullscreen();
+          return true;
+        }
+      }catch(error){
+        return false;
+      }
+
+      return false;
+    }
+
+    async function exitFullscreenMode(){
+      try{
+        if(document.exitFullscreen){
+          await document.exitFullscreen();
+          return true;
+        }
+        if(document.webkitExitFullscreen){
+          document.webkitExitFullscreen();
+          return true;
+        }
+        if(document.msExitFullscreen){
+          document.msExitFullscreen();
+          return true;
+        }
+      }catch(error){
+        return false;
+      }
+
+      return false;
+    }
+
+    fullscreenBtn.addEventListener("click", async function(event){
+      event.preventDefault();
+      event.stopPropagation();
+
+      let worked = false;
+
+      if(isFullscreen()){
+        worked = await exitFullscreenMode();
+      }else{
+        worked = await enterFullscreen();
+      }
+
+      setTimeout(updateFullscreenButton, 150);
+
+      if(!worked && !isFullscreen()){
+        showFullscreenMessage("Full screen was blocked by this browser. On some phones, open this file in Chrome/Safari and tap the button again.");
+      }
+    });
+
+    document.addEventListener("fullscreenchange", updateFullscreenButton);
+    document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
+    document.addEventListener("MSFullscreenChange", updateFullscreenButton);
+
+
+    const roomCard = document.getElementById("roomCard");
+    const scoreStat = document.getElementById("scoreStat");
+    const keysStat = document.getElementById("keysStat");
+    const roomStat = document.getElementById("roomStat");
+    const barFill = document.getElementById("barFill");
+    const inventory = document.getElementById("inventory");
+
+
+    function shuffleQuestionOptions(question){
+      const mixed = question.options.map((text, index) => ({
+        text,
+        correct:index === question.a
+      }));
+
+      for(let i = mixed.length - 1; i > 0; i--){
+        const j = Math.floor(Math.random() * (i + 1));
+        [mixed[i], mixed[j]] = [mixed[j], mixed[i]];
+      }
+
+      return {
+        ...question,
+        mixedOptions:mixed
+      };
+    }
+
+    function render(){
+      renderStats();
+      renderSignposts();
+
+      const room = rooms[currentRoom];
+
+      if(room.id === "final"){
+        renderFinalRoom();
+        return;
+      }
+
+      activeQuestion = shuffleQuestionOptions({...room.questions[questionIndex]});
+      const q = activeQuestion;
+
+      roomCard.innerHTML = `
+        <div class="room-hero">
+          <div class="room-title">
+            <div class="room-icon">${room.icon}</div>
+            <div>
+              <h2>${room.title}</h2>
+              <p>${room.subtitle}</p>
+            </div>
+          </div>
+          <div class="badge">Puzzle ${questionIndex + 1}/${room.questions.length}</div>
+        </div>
+
+        <div class="room-body">
+          <div class="story">${room.story}</div>
+
+          <div class="question-box">
+            <h3>${room.icon} Challenge ${questionIndex + 1}</h3>
+            <p class="question">${q.q}</p>
+            <div class="options" id="options">
+              ${q.mixedOptions.map((opt, i) => `<button class="option" data-index="${i}" data-correct="${opt.correct ? "true" : "false"}">${opt.text}</button>`).join("")}
+            </div>
+
+            <div class="feedback" id="feedback">
+              <h3 id="feedbackTitle"></h3>
+              <p id="feedbackText"></p>
+              <button class="primary orange" id="nextBtn">${questionIndex + 1 === room.questions.length ? "Claim Room Key" : "Next Puzzle"}</button>
+            </div>
+          </div>
+
+          <div class="mini-game">
+            <h3>Room Code Clue</h3>
+            <p>Complete all puzzles in this room to reveal the code word. You will need the code words at the final door.</p>
+            <div class="code-row">
+              <input value="${completedRooms[currentRoom] ? room.code : "????"}" readonly />
+              <button class="primary" onclick="showHint()">Need a Hint?</button>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="ghost" onclick="restartRoom()">Restart This Room</button>
+            <button class="ghost" onclick="restartGame()">Restart Whole Game</button>
+            <button class="ghost" onclick="window.print()">Print Current Screen</button>
+          </div>
+        </div>
+      `;
+
+      document.querySelectorAll(".option").forEach(btn => {
+        btn.addEventListener("click", () => chooseAnswer(Number(btn.dataset.index)));
+      });
+    }
+
+    function chooseAnswer(index){
+      if(answered) return;
+
+      answered = true;
+      const q = activeQuestion;
+      const buttons = [...document.querySelectorAll(".option")];
+      const clickedButton = buttons[index];
+      const isCorrect = clickedButton && clickedButton.dataset.correct === "true";
+
+      buttons.forEach((btn) => {
+        if(btn.dataset.correct === "true"){
+          btn.classList.add("correct");
+        } else if(btn === clickedButton){
+          btn.classList.add("wrong");
+        }
+        btn.disabled = true;
+      });
+
+      const feedback = document.getElementById("feedback");
+      const feedbackTitle = document.getElementById("feedbackTitle");
+      const feedbackText = document.getElementById("feedbackText");
+
+      if(isCorrect){
+        score += 10;
+        feedbackTitle.textContent = "✅ Correct — the room approves.";
+      } else {
+        score += 2;
+        feedbackTitle.textContent = "❌ Not quite — but the room is feeling generous.";
+      }
+
+      feedbackText.textContent = q.why;
+      feedback.classList.add("show");
+      renderStats();
+
+      document.getElementById("nextBtn").addEventListener("click", nextPuzzle);
+    }
+
+    function nextPuzzle(){
+      const room = rooms[currentRoom];
+
+      if(questionIndex + 1 < room.questions.length){
+        questionIndex++;
+        answered = false;
+render();
+      } else {
+        completeRoom();
+      }
+    }
+
+    function completeRoom(){
+      const room = rooms[currentRoom];
+      completedRooms[currentRoom] = true;
+
+      if(!keys.includes(room.key)){
+        keys.push(room.key);
+        codeWords.push(room.code);
+        score += 25;
+      }
+
+      if(currentRoom + 1 < rooms.length){
+        unlockedRooms[currentRoom + 1] = true;
+      }
+
+      roomCard.innerHTML = `
+        <div class="completion">
+          <div class="big">${room.keyIcon}</div>
+          <h2>${room.title} Complete</h2>
+          <p style="font-size:19px;font-weight:800;line-height:1.5;color:#475569;max-width:720px;margin:0 auto;">
+            You collected the <strong>${room.key}</strong>. The code word for this room is:
+          </p>
+
+          <div class="scorebox">
+            <div class="score-big">${room.code}</div>
+            <p style="font-weight:900;color:#64748b;">Write this down or remember it for the final exit door.</p>
+          </div>
+
+          <div class="controls" style="justify-content:center;">
+            <button class="primary orange" onclick="goNextRoom()">${currentRoom + 1 === 5 ? "Go to Final Door" : "Go to Next Room"}</button>
+            <button class="ghost" onclick="restartGame()">Restart Whole Game</button>
+          </div>
+        </div>
+      `;
+
+      renderStats();
+      renderSignposts();
+    }
+
+    function renderFinalRoom(){
+      const allKeys = keys.length >= 5;
+      const finalCode = codeWords.join("-");
+
+      roomCard.innerHTML = `
+        <div class="room-hero">
+          <div class="room-title">
+            <div class="room-icon">🚪</div>
+            <div>
+              <h2>Final Exit Door</h2>
+              <p>Use your five code words to unlock the door.</p>
+            </div>
+          </div>
+          <div class="badge">${keys.length}/5 Keys</div>
+        </div>
+
+        <div class="room-body">
+          <div class="story">
+            The final door is covered in glowing locks. A sign says:
+            “Only learners with digital confidence may pass.” Very dramatic. Slightly unnecessary. Still exciting.
+          </div>
+
+          <div class="question-box">
+            <h3>Enter the Final Escape Code</h3>
+            <p class="question">
+              Enter the five room code words in order, separated by dashes.
+              ${allKeys ? "You have all the keys. Nice work." : "You still need to complete every room first."}
+            </p>
+
+            <div class="mini-game">
+              <h3>Final Code</h3>
+              <p>Clue: Scam Corridor - Password Vault - Safety Lab - Budget Basement - Job Office</p>
+              <div class="code-row">
+                <input id="finalInput" placeholder="SAFE-LOCK-WISE-PLAN-WORK" ${allKeys ? "" : "disabled"} />
+                <button class="primary orange" onclick="checkFinalCode()" ${allKeys ? "" : "disabled"}>Unlock Door</button>
+              </div>
+            </div>
+
+            <div class="feedback" id="feedback">
+              <h3 id="feedbackTitle"></h3>
+              <p id="feedbackText"></p>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="ghost" onclick="restartGame()">Restart Whole Game</button>
+            <button class="ghost" onclick="window.print()">Print</button>
+          </div>
+        </div>
+      `;
+
+      renderStats();
+      renderSignposts();
+    }
+
+    function checkFinalCode(){
+      const expected = "SAFE-LOCK-WISE-PLAN-WORK";
+      const value = document.getElementById("finalInput").value.trim().toUpperCase().replace(/\s+/g,"");
+      const feedback = document.getElementById("feedback");
+      const title = document.getElementById("feedbackTitle");
+      const text = document.getElementById("feedbackText");
+
+      feedback.classList.add("show");
+
+      if(value === expected){
+        completedRooms[5] = true;
+        score += 50;
+        roomCard.innerHTML = `
+          <div class="completion">
+            <div class="big">🎉</div>
+            <h2>You Escaped!</h2>
+            <p style="font-size:20px;font-weight:900;color:#475569;line-height:1.5;max-width:760px;margin:0 auto;">
+              Congratulations. You completed the RECONNECT-US Escape Room and proved your skills in scams,
+              passwords, online safety, budgeting, and job applications.
+            </p>
+
+            <div class="scorebox">
+              <div class="score-big">${score}</div>
+              <p style="font-weight:900;color:#64748b;">Final Score</p>
+            </div>
+
+            <div class="certificate">
+              <h3 style="margin-top:0;">RECONNECT-US Completion Statement</h3>
+              <p>This confirms the learner completed the RECONNECT-US Escape Room learning activity.</p>
+              <p><strong>Skills covered:</strong> scam awareness, password safety, online safety, budgeting choices, and job application confidence.</p>
+              <p><strong>Learner name:</strong> ________________________________</p>
+              <p><strong>Date:</strong> ________________________________</p>
+              <p><strong>Trainer/Facilitator:</strong> RECONNECT-US</p>
+            </div>
+
+            <div class="controls" style="justify-content:center;">
+              <button class="primary orange" onclick="window.print()">Print Completion Statement</button>
+              <button class="ghost" onclick="restartGame()">Play Again</button>
+            </div>
+          </div>
+        `;
+        renderStats();
+        renderSignposts();
+      } else {
+        title.textContent = "🔒 Still locked";
+        text.textContent = "That code is not right yet. Check the five room code words and try again. The door is judging gently.";
+      }
+    }
+
+    function goNextRoom(){
+      if(currentRoom + 1 < rooms.length){
+        currentRoom++;
+        questionIndex = 0;
+        answered = false;
+        render();
+      }
+    }
+
+    function restartRoom(){
+      questionIndex = 0;
+      answered = false;
+      render();
+    }
+
+    function restartGame(){
+      currentRoom = 0;
+      questionIndex = 0;
+      score = 0;
+      answered = false;
+      unlockedRooms = [true, false, false, false, false, false];
+      completedRooms = [false, false, false, false, false, false];
+      keys = [];
+      codeWords = [];
+      render();
+    }
+
+
+    function closeHintModal(){
+      document.getElementById("hintModalOverlay").classList.remove("show");
+    }
+
+
+    function showHint(){
+      const hints = [
+        "Look for urgency, weird links, payment demands, and requests for codes.",
+        "Longer and less obvious is usually better. Do not reuse passwords.",
+        "Public Wi-Fi, QR codes, and oversharing are sneaky little gremlins.",
+        "Needs first, wants second. Future-you deserves fewer surprises.",
+        "Clear, honest, checked applications beat rushed chaos."
+      ];
+      
+      document.getElementById("hintModalText").textContent =
+        hints[currentRoom] || "Collect all five code words.";
+      document.getElementById("hintModalOverlay").classList.add("show");
+
+    }
+
+    function renderSignposts(){
+      document.querySelectorAll(".signpost").forEach(btn => {
+        const index = Number(btn.dataset.room);
+        btn.classList.toggle("active", index === currentRoom);
+        btn.classList.toggle("locked", !unlockedRooms[index]);
+        btn.classList.toggle("done", completedRooms[index]);
+        btn.onclick = () => {
+          if(!unlockedRooms[index]) {
+            alert("This room is still locked. Complete the earlier rooms first.");
+            return;
+          }
+          currentRoom = index;
+          questionIndex = 0;
+          answered = false;
+          render();
+        };
+      });
+    }
+
+    function renderStats(){
+      scoreStat.innerHTML = `Score<br>${score}`;
+      keysStat.innerHTML = `Keys<br>${keys.length}/5`;
+      roomStat.innerHTML = `Room<br>${Math.min(currentRoom + 1, 6)}/6`;
+      barFill.style.width = `${Math.round((keys.length / 5) * 100)}%`;
+
+      inventory.innerHTML = "";
+      const slots = [
+        ["🕵️","Scam"],
+        ["🔐","Password"],
+        ["🛡️","Safety"],
+        ["💷","Budget"],
+        ["💼","Job"]
+      ];
+
+      slots.forEach((slot, i) => {
+        const div = document.createElement("div");
+        div.className = "item" + (keys[i] ? " got" : "");
+        div.innerHTML = keys[i] ? `<span>${slot[0]}</span>${slot[1]} Key` : `<span>🔒</span>${slot[1]}`;
+        inventory.appendChild(div);
+      });
+    }
+
+    render();
+  </script>
+</body>
+</html>

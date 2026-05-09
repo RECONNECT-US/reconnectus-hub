@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Street Safe Online</title>
+  <style>
+    :root{
+      --orange:#f97316;
+      --orange-dark:#ea580c;
+      --blue:#2563eb;
+      --blue-dark:#1d4ed8;
+      --dark:#0f172a;
+      --grey:#334155;
+      --light:#f8fafc;
+      --soft-orange:#ffedd5;
+      --soft-blue:#dbeafe;
+      --green:#16a34a;
+      --red:#dc2626;
+      --purple:#7c3aed;
+      --teal:#0f766e;
+      --yellow:#ca8a04;
+      --shadow:0 22px 58px rgba(15,23,42,.22);
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top left, rgba(249,115,22,.25), transparent 30%),
+        radial-gradient(circle at bottom right, rgba(37,99,235,.25), transparent 34%),
+        linear-gradient(135deg,#fff7ed,#f8fafc,#dbeafe);
+      color:#1e293b;
+      min-height:100vh;
+    }
+
+    button{font:inherit}
+
+    .app{
+      max-width:1240px;
+      margin:0 auto;
+      padding:16px;
+    }
+
+    .shell{
+      background:white;
+      border:4px solid var(--orange);
+      border-radius:34px;
+      overflow:hidden;
+      box-shadow:var(--shadow);
+      min-height:92vh;
+    }
+
+    header{
+      background:
+        linear-gradient(90deg,rgba(249,115,22,.97),rgba(37,99,235,.97)),
+        repeating-linear-gradient(45deg,rgba(255,255,255,.12) 0 10px, transparent 10px 20px);
+      color:white;
+      padding:28px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    header::after{
+      content:"";
+      position:absolute;
+      right:-75px;
+      top:-80px;
+      width:245px;
+      height:245px;
+      border:22px solid rgba(255,255,255,.16);
+      border-radius:50%;
+    }
+
+    .topbar{
+      display:flex;
+      justify-content:space-between;
+      gap:18px;
+      align-items:center;
+      flex-wrap:wrap;
+      position:relative;
+      z-index:1;
+    }
+
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      gap:16px;
+    }
+
+    .logo{
+      width:76px;
+      height:76px;
+      border-radius:24px;
+      background:white;
+      color:var(--orange);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:1000;
+      font-size:28px;
+      letter-spacing:-2px;
+      border:4px solid rgba(255,255,255,.45);
+      box-shadow:0 12px 24px rgba(15,23,42,.22);
+    }
+
+    h1{
+      margin:0;
+      font-size:42px;
+      font-weight:1000;
+      letter-spacing:1px;
+    }
+
+    .brand p{
+      margin:6px 0 0;
+      font-size:18px;
+      font-weight:800;
+      opacity:.95;
+    }
+
+    .stats{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+
+    .stat{
+      background:rgba(255,255,255,.2);
+      border:1px solid rgba(255,255,255,.38);
+      border-radius:18px;
+      padding:11px 14px;
+      min-width:110px;
+      text-align:center;
+      font-weight:1000;
+      backdrop-filter:blur(6px);
+    }
+
+    .intro{
+      margin-top:18px;
+      position:relative;
+      z-index:1;
+      background:rgba(255,255,255,.18);
+      border:1px solid rgba(255,255,255,.35);
+      border-radius:22px;
+      padding:16px;
+      font-weight:800;
+      line-height:1.45;
+    }
+
+    .content{
+      display:grid;
+      grid-template-columns:310px 1fr;
+      min-height:700px;
+    }
+
+    aside{
+      background:#f8fafc;
+      border-right:1px solid #e2e8f0;
+      padding:18px;
+    }
+
+    aside h2{
+      margin:0 0 14px;
+      font-size:22px;
+    }
+
+    .case-btn{
+      width:100%;
+      border:0;
+      border-radius:18px;
+      padding:14px 14px;
+      margin-bottom:12px;
+      text-align:left;
+      color:white;
+      cursor:pointer;
+      font-weight:1000;
+      display:flex;
+      align-items:center;
+      gap:10px;
+      position:relative;
+      box-shadow:0 10px 20px rgba(15,23,42,.12);
+      transition:.2s;
+    }
+
+    .case-btn::after{
+      content:"";
+      position:absolute;
+      right:-11px;
+      width:23px;
+      height:23px;
+      background:inherit;
+      transform:rotate(45deg);
+      border-radius:4px;
+    }
+
+    .case-btn:hover{transform:translateX(4px)}
+    .case-btn.active{outline:4px solid rgba(249,115,22,.32); transform:translateX(4px)}
+    .case-btn.done::before{
+      content:"✓";
+      position:absolute;
+      right:14px;
+      z-index:2;
+      width:25px;
+      height:25px;
+      border-radius:50%;
+      background:white;
+      color:var(--green);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    .c-charity{background:var(--orange)}
+    .c-parcel{background:var(--blue)}
+    .c-qr{background:var(--purple)}
+    .c-atm{background:var(--teal)}
+    .c-police{background:var(--dark)}
+    .c-final{background:var(--yellow)}
+
+    .panel{
+      background:white;
+      border:1px solid #e2e8f0;
+      border-radius:22px;
+      padding:15px;
+      margin-top:18px;
+      box-shadow:0 10px 22px rgba(15,23,42,.06);
+    }
+
+    .panel h3{
+      margin:0 0 10px;
+      font-size:18px;
+    }
+
+    .bar{
+      height:16px;
+      background:#e2e8f0;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .bar-fill{
+      height:100%;
+      width:0%;
+      background:linear-gradient(90deg,var(--orange),var(--blue));
+      transition:.3s;
+    }
+
+    .badge-list{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:8px;
+      margin-top:12px;
+    }
+
+    .badge{
+      border:2px dashed #cbd5e1;
+      background:#f8fafc;
+      color:#64748b;
+      border-radius:15px;
+      padding:9px;
+      font-size:13px;
+      font-weight:1000;
+      text-align:center;
+      min-height:55px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:2px;
+    }
+
+    .badge.got{
+      background:#fff7ed;
+      border-style:solid;
+      border-color:var(--orange);
+      color:#9a3412;
+    }
+
+    .small{
+      margin-top:12px;
+      color:#64748b;
+      font-size:13px;
+      font-weight:800;
+      line-height:1.4;
+    }
+
+    main{
+      padding:22px;
+      background:linear-gradient(145deg,#ffffff,#f8fafc);
+    }
+
+    .case-card{
+      background:white;
+      border:1px solid #e2e8f0;
+      border-radius:30px;
+      overflow:hidden;
+      box-shadow:0 16px 34px rgba(15,23,42,.08);
+      min-height:660px;
+    }
+
+    .case-hero{
+      padding:24px;
+      background:#f8fafc;
+      border-bottom:1px solid #e2e8f0;
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:16px;
+      flex-wrap:wrap;
+    }
+
+    .case-title{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .case-icon{
+      width:74px;
+      height:74px;
+      border-radius:24px;
+      background:#fff7ed;
+      border:2px solid #fed7aa;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-size:42px;
+    }
+
+    .case-title h2{
+      margin:0;
+      font-size:30px;
+    }
+
+    .case-title p{
+      margin:5px 0 0;
+      color:#64748b;
+      font-weight:800;
+    }
+
+    .case-count{
+      background:#dbeafe;
+      color:#1e40af;
+      border-radius:999px;
+      padding:10px 14px;
+      font-weight:1000;
+    }
+
+    .case-body{
+      padding:24px;
+    }
+
+    .scene{
+      display:grid;
+      grid-template-columns:1.1fr .9fr;
+      gap:18px;
+      margin-bottom:18px;
+    }
+
+    .scene-box{
+      background:linear-gradient(135deg,#fff7ed,#eff6ff);
+      border:1px solid #fed7aa;
+      border-radius:24px;
+      padding:18px;
+      font-size:18px;
+      line-height:1.5;
+      font-weight:800;
+    }
+
+    .evidence-board{
+      background:#0f172a;
+      color:white;
+      border-radius:24px;
+      padding:18px;
+      position:relative;
+      overflow:hidden;
+    }
+
+    .evidence-board::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background:repeating-linear-gradient(45deg,rgba(255,255,255,.04) 0 8px,transparent 8px 16px);
+      pointer-events:none;
+    }
+
+    .evidence-board h3{
+      margin:0 0 12px;
+      color:white;
+      position:relative;
+      z-index:1;
+    }
+
+    .evidence{
+      display:grid;
+      gap:8px;
+      position:relative;
+      z-index:1;
+    }
+
+    .evidence div{
+      background:rgba(255,255,255,.1);
+      border:1px solid rgba(255,255,255,.16);
+      border-radius:14px;
+      padding:10px;
+      color:#e2e8f0;
+      font-weight:800;
+      line-height:1.35;
+    }
+
+    .question-box{
+      border:2px solid #e2e8f0;
+      background:#f8fafc;
+      border-radius:24px;
+      padding:20px;
+    }
+
+    .question-box h3{
+      margin:0 0 10px;
+      font-size:23px;
+    }
+
+    .question{
+      margin:0;
+      color:#334155;
+      font-size:18px;
+      font-weight:900;
+      line-height:1.45;
+    }
+
+    .answers{
+      display:grid;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .answer{
+      border:2px solid #e2e8f0;
+      background:white;
+      color:#1e293b;
+      border-radius:18px;
+      padding:15px 16px;
+      font-weight:900;
+      text-align:left;
+      cursor:pointer;
+      transition:.2s;
+    }
+
+    .answer:hover{
+      border-color:var(--orange);
+      background:#fff7ed;
+      transform:translateY(-1px);
+    }
+
+    .answer.correct{
+      background:#dcfce7;
+      border-color:var(--green);
+      color:#166534;
+    }
+
+    .answer.wrong{
+      background:#fee2e2;
+      border-color:var(--red);
+      color:#991b1b;
+    }
+
+    .answer:disabled{
+      cursor:not-allowed;
+      opacity:1;
+    }
+
+    .feedback{
+      display:none;
+      margin-top:18px;
+      background:#eff6ff;
+      border-left:8px solid var(--blue);
+      border-radius:20px;
+      padding:18px;
+    }
+
+    .feedback.show{display:block}
+    .feedback h3{margin:0 0 8px;color:#1d4ed8;font-size:23px}
+    .feedback p{margin:0 0 14px;color:#334155;line-height:1.45;font-weight:800}
+
+    .controls{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top:18px;
+    }
+
+    .primary{
+      border:0;
+      border-radius:17px;
+      background:var(--blue);
+      color:white;
+      padding:14px 18px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow:0 10px 22px rgba(37,99,235,.18);
+    }
+
+    .primary:hover{background:var(--blue-dark)}
+    .orange{background:var(--orange)}
+    .orange:hover{background:var(--orange-dark)}
+
+    .ghost{
+      border:2px solid #e2e8f0;
+      border-radius:17px;
+      background:white;
+      color:#334155;
+      padding:12px 16px;
+      font-weight:1000;
+      cursor:pointer;
+    }
+
+    .ghost:hover{
+      border-color:var(--orange);
+      background:#fff7ed;
+    }
+
+    .completion{
+      text-align:center;
+      padding:34px;
+    }
+
+    .completion .big{
+      font-size:78px;
+      margin-bottom:10px;
+    }
+
+    .completion h2{
+      margin:0 0 10px;
+      font-size:38px;
+    }
+
+    .scorebox{
+      max-width:520px;
+      margin:22px auto;
+      border:1px solid #e2e8f0;
+      background:#f8fafc;
+      border-radius:24px;
+      padding:22px;
+    }
+
+    .score-big{
+      font-size:58px;
+      font-weight:1000;
+      color:var(--blue);
+    }
+
+    .certificate{
+      max-width:760px;
+      margin:20px auto;
+      text-align:left;
+      background:#fff7ed;
+      border:2px solid #fed7aa;
+      border-radius:24px;
+      padding:20px;
+      line-height:1.5;
+      font-weight:800;
+    }
+
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(15,23,42,.72);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:100000;
+      padding:20px;
+      backdrop-filter:blur(5px);
+    }
+
+    .modal-overlay.show{display:flex}
+
+    .modal{
+      width:min(540px,100%);
+      background:white;
+      border:4px solid var(--orange);
+      border-radius:28px;
+      padding:24px;
+      text-align:center;
+      box-shadow:0 25px 60px rgba(0,0,0,.35);
+      animation:pop .18s ease-out;
+    }
+
+    @keyframes pop{
+      from{transform:scale(.92);opacity:0}
+      to{transform:scale(1);opacity:1}
+    }
+
+    .modal h3{
+      margin:0 0 12px;
+      font-size:30px;
+    }
+
+    .modal p{
+      margin:0 0 18px;
+      color:#475569;
+      font-size:18px;
+      line-height:1.5;
+      font-weight:800;
+    }
+
+    .fullscreen-btn{
+      position:fixed;
+      top:16px;
+      right:16px;
+      z-index:99999;
+      border:0;
+      border-radius:18px;
+      background:linear-gradient(135deg,var(--orange),var(--blue));
+      color:white;
+      padding:13px 17px;
+      font-weight:1000;
+      cursor:pointer;
+      box-shadow:0 12px 26px rgba(15,23,42,.32);
+    }
+
+    .fullscreen-message{
+      position:fixed;
+      top:72px;
+      right:16px;
+      max-width:310px;
+      z-index:99998;
+      background:#0f172a;
+      color:white;
+      border:2px solid rgba(255,255,255,.2);
+      border-radius:18px;
+      padding:13px 15px;
+      font-size:14px;
+      line-height:1.35;
+      font-weight:800;
+      box-shadow:0 12px 24px rgba(15,23,42,.3);
+      display:none;
+    }
+
+    .fullscreen-message.show{display:block}
+
+    footer{
+      padding:16px;
+      text-align:center;
+      background:#f8fafc;
+      border-top:1px solid #e2e8f0;
+      color:#64748b;
+      font-weight:900;
+    }
+
+    @media(max-width:980px){
+      .content{grid-template-columns:1fr}
+      aside{border-right:0;border-bottom:1px solid #e2e8f0}
+      .scene{grid-template-columns:1fr}
+      .badge-list{grid-template-columns:repeat(3,1fr)}
+    }
+
+    @media(max-width:620px){
+      .app{padding:8px}
+      header{padding:20px}
+      .logo{width:60px;height:60px;font-size:22px;border-radius:20px}
+      h1{font-size:28px}
+      .brand p{font-size:15px}
+      .stats{width:100%}
+      .stat{flex:1;min-width:90px}
+      main{padding:12px}
+      .case-hero{padding:18px}
+      .case-title h2{font-size:24px}
+      .case-body{padding:16px}
+      .badge-list{grid-template-columns:repeat(2,1fr)}
+      .fullscreen-btn{top:10px;right:10px;padding:11px 13px;font-size:14px}
+    }
+
+    @media print{
+      body{background:white}
+      aside,.controls,.feedback,.modal-overlay,.fullscreen-btn,.fullscreen-message,footer{display:none!important}
+      .shell{border:0;box-shadow:none}
+      .content{display:block}
+      header{background:white;color:#1e293b;border-bottom:3px solid #1e293b}
+      .case-card{box-shadow:none;border:0}
+    }
+  </style>
+</head>
+<body>
+  <button type="button" class="fullscreen-btn" id="fullscreenBtn">⛶ Full Screen</button>
+  <div class="fullscreen-message" id="fullscreenMessage"></div>
+
+  <div class="modal-overlay" id="modalOverlay">
+    <div class="modal">
+      <h3 id="modalTitle">Detective Hint</h3>
+      <p id="modalText"></p>
+      <button class="primary orange" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <div class="app">
+    <section class="shell">
+      <header>
+        <div class="topbar">
+          <div class="logo-wrap">
+            <div class="logo">RU</div>
+            <div class="brand">
+              <h1>RECONNECT-US</h1>
+              <p>Street Safe Online — Scam Detective Programme</p>
+            </div>
+          </div>
+          <div class="stats">
+            <div class="stat" id="scoreStat">Score<br>0</div>
+            <div class="stat" id="caseStat">Case<br>1/6</div>
+            <div class="stat" id="badgeStat">Badges<br>0/5</div>
+          </div>
+        </div>
+        <div class="intro">
+          Welcome to Street Safe Online. Learners investigate real-world scams that happen both on the street and online:
+          fake charity collectors, parcel delivery tricks, QR code scams, ATM distraction scams, and fake police phone calls.
+          Your job is to inspect the evidence, make safe decisions, and close every case.
+        </div>
+      </header>
+
+      <div class="content">
+        <aside>
+          <h2>Case Signposts</h2>
+          <button class="case-btn c-charity active" data-case="0">🪙 Fake Charity Collector</button>
+          <button class="case-btn c-parcel" data-case="1">📦 Fake Parcel Driver</button>
+          <button class="case-btn c-qr" data-case="2">🔳 QR Code Trap</button>
+          <button class="case-btn c-atm" data-case="3">🏧 ATM Distraction</button>
+          <button class="case-btn c-police" data-case="4">🚓 Fake Police Call</button>
+          <button class="case-btn c-final" data-case="5">🕵️ Final Detective Review</button>
+
+          <div class="panel">
+            <h3>Investigation Progress</h3>
+            <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+            <div class="badge-list" id="badgeList"></div>
+            <div class="small">
+              This programme is designed for group learning, one-to-one support, or independent practice.
+              Discuss the evidence before choosing an answer.
+            </div>
+          </div>
+        </aside>
+
+        <main>
+          <section class="case-card" id="caseCard"></section>
+        </main>
+      </div>
+
+      <footer>© RECONNECT-US — Street Safe Online Programme</footer>
+    </section>
+  </div>
+
+  <script>
+    const cases = [
+      {
+        title:"Fake Charity Collector",
+        icon:"🪙",
+        badge:"Charity Scam Badge",
+        badgeIcon:"🪙",
+        subtitle:"A friendly collector, a clipboard, and a card reader that looks a bit too eager.",
+        scene:"You are walking through town when someone wearing a bright charity vest stops you. They are friendly, but they pressure you to tap your card immediately and will not show proper ID. The clipboard has a charity logo, but the website address looks slightly wrong.",
+        evidence:[
+          "Collector refuses to show official ID.",
+          "They ask for immediate card payment.",
+          "The charity web address looks unusual.",
+          "They use pressure: “It only takes ten seconds.”"
+        ],
+        hint:"A real charity collector should be willing to show ID and let you check the charity independently.",
+        questions:[
+          {q:"What is the safest first response?", options:["Ask for official ID and check the charity independently","Tap your card quickly","Give them your PIN","Let them photograph your bank card","Sign anything without reading it"], a:0, why:"Always verify identity and charity details before donating."},
+          {q:"What is a warning sign?", options:["They pressure you to pay immediately","They let you read information","They provide a charity number","They explain how to donate later","They step back when asked"], a:0, why:"Pressure is a classic warning sign."},
+          {q:"Where can you check a charity in England and Wales?", options:["The Charity Commission register","A random comment section","A stranger's phone screen","A fake QR sticker","A gossip page"], a:0, why:"The Charity Commission register can help verify registered charities."},
+          {q:"What should you avoid doing in the street?", options:["Entering card details into someone else's device","Taking a leaflet","Walking away politely","Checking a website later","Asking questions"], a:0, why:"Do not enter sensitive payment details into an unverified device."},
+          {q:"If you want to donate safely, what can you do?", options:["Go to the official charity website later","Pay the collector because they look nice","Share your online banking login","Let them choose the amount","Ignore all charities forever"], a:0, why:"Donating later through official channels is safer."},
+          {q:"Why should you avoid feeling pressured to donate immediately?", options:["Pressure can stop careful thinking","It improves scams","All charities are fake","Cash machines explode","Leaflets are dangerous"], a:0, why:"Pressure tactics are common in scams."},
+          {q:"What should official collectors usually have?", options:["Visible identification","Secret passwords","Your PIN","A random QR code","Your banking app"], a:0, why:"Official ID helps verify collectors."},
+          {q:"If unsure about a collector, what can you do?", options:["Donate later through the official website","Give cash immediately","Hand over your card","Share your address","Follow them home"], a:0, why:"Independent verification is safer."},
+          {q:"What is suspicious about a collector refusing questions?", options:["Legitimate collectors should answer basic questions","It proves honesty","It means they are busy","It is legally required","It makes donations safer"], a:0, why:"Refusing reasonable questions can be suspicious."},
+          {q:"Why avoid handing over your card?", options:["Cards can be copied or misused","Collectors need it","It speeds things up","It unlocks rewards","It verifies your postcode"], a:0, why:"Keep control of your payment card."}
+          ,{q:"What is usually safest when unsure?", options:["Stop and verify independently","Rush immediately","Share passwords","Ignore warning signs","Trust random strangers"], a:0, why:"Pausing and checking independently improves safety."}
+          ,{q:"Why do scammers create pressure?", options:["To stop careful thinking","To improve security","To help victims","To increase honesty","To reduce confusion"], a:0, why:"Pressure can stop people checking properly."}
+          ,{q:"What should you protect?", options:["Personal and financial information","Scam websites","Fake QR codes","Criminal requests","Unknown callers"], a:0, why:"Protect sensitive information carefully."}
+          ,{q:"What is a safer habit?", options:["Using official websites and apps","Trusting every message","Sharing one-time codes","Entering PINs publicly","Ignoring bank warnings"], a:0, why:"Official routes are generally safer."}
+          ,{q:"What can help avoid scams?", options:["Awareness and checking details","Responding instantly","Keeping everything secret","Sharing passwords","Trusting urgency"], a:0, why:"Awareness and verification reduce scam risk."}
+]
+      },
+      {
+        title:"Fake Parcel Delivery Driver",
+        icon:"📦",
+        badge:"Parcel Safety Badge",
+        badgeIcon:"📦",
+        subtitle:"A parcel, a uniform, and a suspicious request for a redelivery fee.",
+        scene:"A person at the door says they have a missed parcel for you. They ask you to scan a QR code or pay a small redelivery fee by card. You were not expecting a parcel, and the van outside has no company markings.",
+        evidence:[
+          "Unexpected parcel visit.",
+          "Small payment requested at the door.",
+          "Unmarked vehicle.",
+          "QR code shown on a personal phone."
+        ],
+        hint:"Unexpected delivery payment requests should be checked through the official delivery company, not a doorstep QR code.",
+        questions:[
+          {q:"What should you do first?", options:["Do not pay; check directly with the delivery company","Scan their QR code","Give card details at the door","Let them inside to explain","Pay because it is only small"], a:0, why:"Small fees are often used because people feel less cautious."},
+          {q:"What is suspicious here?", options:["The QR code is shown on a personal phone","They knock on the door","They mention a parcel","They wear shoes","They speak politely"], a:0, why:"A QR code on a personal phone is not a reliable official payment route."},
+          {q:"What should you avoid saying?", options:["Details about when you are usually home","I will check with the company","No thank you","Please leave information","I am not interested"], a:0, why:"Avoid giving information about your routine or home security."},
+          {q:"If they become pushy, what is safest?", options:["Close the door and seek help if needed","Argue for twenty minutes","Let them inside","Hand over ID","Pay to make them leave"], a:0, why:"You do not have to continue a doorstep conversation."},
+          {q:"A real missed delivery usually lets you:", options:["Rebook through official card/app/website routes","Pay only by random QR code","Pay only to the driver","Send a bank transfer to a personal account","Give your PIN at the door"], a:0, why:"Use official delivery channels."},
+          {q:"What should you check if expecting a parcel?", options:["Official tracking through the delivery company","A random social media comment","The driver's opinion","A handwritten note only","A QR sticker on a wall"], a:0, why:"Official tracking is safer."},
+          {q:"Why is an unmarked van suspicious?", options:["Legitimate companies usually have branding","All vans are fake","Drivers hate logos","It improves delivery speed","It means free parcels"], a:0, why:"Lack of branding can be a warning sign."},
+          {q:"Should you let strangers inside to explain a fee?", options:["No, keep the conversation at the door","Always","Only at night","Only if they smile","Only if they rush you"], a:0, why:"Keep boundaries and verify independently."},
+          {q:"What should you avoid scanning?", options:["Random QR codes from strangers","Official app store links","Trusted company websites","Known banking apps","Official delivery emails"], a:0, why:"Unknown QR codes may redirect to scams."},
+          {q:"Why are small payment requests effective for scammers?", options:["People may lower their guard","Banks demand them","It is a legal requirement","It guarantees safety","It proves identity"], a:0, why:"Small amounts feel less risky to many people."}
+          ,{q:"What is usually safest when unsure?", options:["Stop and verify independently","Rush immediately","Share passwords","Ignore warning signs","Trust random strangers"], a:0, why:"Pausing and checking independently improves safety."}
+          ,{q:"Why do scammers create pressure?", options:["To stop careful thinking","To improve security","To help victims","To increase honesty","To reduce confusion"], a:0, why:"Pressure can stop people checking properly."}
+          ,{q:"What should you protect?", options:["Personal and financial information","Scam websites","Fake QR codes","Criminal requests","Unknown callers"], a:0, why:"Protect sensitive information carefully."}
+          ,{q:"What is a safer habit?", options:["Using official websites and apps","Trusting every message","Sharing one-time codes","Entering PINs publicly","Ignoring bank warnings"], a:0, why:"Official routes are generally safer."}
+          ,{q:"What can help avoid scams?", options:["Awareness and checking details","Responding instantly","Keeping everything secret","Sharing passwords","Trusting urgency"], a:0, why:"Awareness and verification reduce scam risk."}
+]
+      },
+      {
+        title:"QR Code Trap",
+        icon:"🔳",
+        badge:"QR Safety Badge",
+        badgeIcon:"🔳",
+        subtitle:"A sticker on a parking machine. A shortcut. A trap with a square face.",
+        scene:"You are paying for parking. A QR sticker has been placed over the official sign. It opens a payment page asking for card details and a password. The page looks professional, but the web address is odd.",
+        evidence:[
+          "QR sticker placed over official information.",
+          "Website address is unfamiliar.",
+          "It asks for too much information.",
+          "The sign underneath looks different."
+        ],
+        hint:"A QR code can be useful, but it is just a link. If the link is fake, the QR code is fake too.",
+        questions:[
+          {q:"What is the safest option?", options:["Use the official parking app or type the official website yourself","Use the sticker because it is convenient","Enter card and password","Ask a stranger to pay for you","Photograph your bank card"], a:0, why:"Official apps and typed addresses reduce QR scam risk."},
+          {q:"What is a major warning sign?", options:["The QR sticker covers another sign","The car park has lines","The machine has buttons","The weather is terrible","You are in a hurry"], a:0, why:"Stickers placed over signs can redirect people to scam sites."},
+          {q:"What should a parking payment page not need?", options:["Your online banking password","Your vehicle registration","A payment amount","A location code","A receipt option"], a:0, why:"Never enter banking passwords into random payment pages."},
+          {q:"What can you do if unsure?", options:["Cancel and check official information nearby","Keep typing details","Use the first result from a dodgy advert","Pay twice","Share the QR code online"], a:0, why:"Stop and verify before paying."},
+          {q:"Why are QR scams effective?", options:["People trust them as quick shortcuts","They are magic","They only work at night","Phones approve every QR code","They are impossible to avoid"], a:0, why:"QR codes hide the destination until opened."},
+          {q:"What can a QR code hide?", options:["A dangerous or fake website","A free car","A safe bank guarantee","Your PIN automatically","A printer"], a:0, why:"QR codes hide the destination until opened."},
+          {q:"What is safest when paying for parking?", options:["Use official apps or websites","Trust every sticker","Use any link instantly","Share card details publicly","Scan every code nearby"], a:0, why:"Use trusted payment methods."},
+          {q:"Why are fake QR stickers dangerous?", options:["They redirect people to scam sites","They improve parking","They stop adverts","They clean machines","They upgrade phones"], a:0, why:"Fake stickers can steal payment details."},
+          {q:"What should you check before entering payment details?", options:["The website address","The weather","Your ringtone","The colour of the machine","How busy the road is"], a:0, why:"Always verify the web address."},
+          {q:"If a QR code asks for too much information, what should you do?", options:["Stop and verify independently","Enter everything","Call the scammer back","Ignore all parking rules","Share your password"], a:0, why:"Scam sites often ask for excessive details."}
+          ,{q:"What is usually safest when unsure?", options:["Stop and verify independently","Rush immediately","Share passwords","Ignore warning signs","Trust random strangers"], a:0, why:"Pausing and checking independently improves safety."}
+          ,{q:"Why do scammers create pressure?", options:["To stop careful thinking","To improve security","To help victims","To increase honesty","To reduce confusion"], a:0, why:"Pressure can stop people checking properly."}
+          ,{q:"What should you protect?", options:["Personal and financial information","Scam websites","Fake QR codes","Criminal requests","Unknown callers"], a:0, why:"Protect sensitive information carefully."}
+          ,{q:"What is a safer habit?", options:["Using official websites and apps","Trusting every message","Sharing one-time codes","Entering PINs publicly","Ignoring bank warnings"], a:0, why:"Official routes are generally safer."}
+          ,{q:"What can help avoid scams?", options:["Awareness and checking details","Responding instantly","Keeping everything secret","Sharing passwords","Trusting urgency"], a:0, why:"Awareness and verification reduce scam risk."}
+]
+      },
+      {
+        title:"ATM Distraction Scam",
+        icon:"🏧",
+        badge:"ATM Safety Badge",
+        badgeIcon:"🏧",
+        subtitle:"A cash machine, a helpful stranger, and a hand far too close to your card.",
+        scene:"You are using a cash machine. Someone nearby says the machine is broken and tries to help. Another person stands close behind you. You feel rushed and distracted while entering your PIN.",
+        evidence:[
+          "Someone stands too close.",
+          "A stranger offers unsolicited help.",
+          "You feel rushed.",
+          "Your PIN could be seen."
+        ],
+        hint:"At cash machines, protect your PIN, keep space around you, and cancel if something feels wrong.",
+        questions:[
+          {q:"What should you do if someone stands too close?", options:["Cancel if needed and protect your PIN","Carry on while they watch","Ask them to hold your card","Say your PIN out loud","Let them press buttons"], a:0, why:"Distance and privacy matter at ATMs."},
+          {q:"What is shoulder surfing?", options:["Watching someone enter private details","A beach sport","Helping with shopping","Fixing a cash machine","Scanning a receipt"], a:0, why:"Shoulder surfing means watching over someone's shoulder to steal information."},
+          {q:"If the machine keeps your card after a distraction, what should you do?", options:["Contact the bank immediately using official details","Walk away and hope","Ask the stranger to retrieve it","Enter your PIN again for them","Give them your phone"], a:0, why:"Contact your bank quickly if your card may be compromised."},
+          {q:"How can you protect your PIN?", options:["Cover the keypad with your hand","Type it loudly","Let someone check it","Write it on the card","Use the same PIN as your birthday and announce it"], a:0, why:"Covering the keypad helps stop people or cameras seeing your PIN."},
+          {q:"What is a good ATM habit?", options:["Use machines in well-lit, safer areas when possible","Use any machine no matter what","Ignore people crowding you","Accept help from strangers","Leave receipts behind"], a:0, why:"Choose safer locations and stay aware."},
+          {q:"Why cover the keypad at an ATM?", options:["To stop others seeing your PIN","To improve Wi-Fi","Because machines require it","To make withdrawals faster","To hide receipts"], a:0, why:"Protecting your PIN reduces theft risk."},
+          {q:"What is a distraction scam?", options:["Distracting someone to steal money or card details","A music performance","A bank service","A parking fee","A fake app"], a:0, why:"Distraction helps criminals exploit confusion."},
+          {q:"If a stranger offers help at an ATM, what should you do?", options:["Be cautious and keep control of your card","Hand them your card","Tell them your PIN","Leave your wallet open","Walk away without your card"], a:0, why:"Stay in control of your card and information."},
+          {q:"What should you do with ATM receipts?", options:["Keep or safely dispose of them","Leave them in the machine","Give them to strangers","Post them online","Throw them into the street"], a:0, why:"Receipts can contain useful information."},
+          {q:"Why choose well-lit ATMs?", options:["Safer surroundings reduce risk","They give extra money","They are always faster","They remove all scams","They work only in daylight"], a:0, why:"Safer surroundings can reduce crime risks."}
+          ,{q:"What is usually safest when unsure?", options:["Stop and verify independently","Rush immediately","Share passwords","Ignore warning signs","Trust random strangers"], a:0, why:"Pausing and checking independently improves safety."}
+          ,{q:"Why do scammers create pressure?", options:["To stop careful thinking","To improve security","To help victims","To increase honesty","To reduce confusion"], a:0, why:"Pressure can stop people checking properly."}
+          ,{q:"What should you protect?", options:["Personal and financial information","Scam websites","Fake QR codes","Criminal requests","Unknown callers"], a:0, why:"Protect sensitive information carefully."}
+          ,{q:"What is a safer habit?", options:["Using official websites and apps","Trusting every message","Sharing one-time codes","Entering PINs publicly","Ignoring bank warnings"], a:0, why:"Official routes are generally safer."}
+          ,{q:"What can help avoid scams?", options:["Awareness and checking details","Responding instantly","Keeping everything secret","Sharing passwords","Trusting urgency"], a:0, why:"Awareness and verification reduce scam risk."}
+]
+      },
+      {
+        title:"Fake Police Phone Call",
+        icon:"🚓",
+        badge:"Police Call Badge",
+        badgeIcon:"🚓",
+        subtitle:"A serious voice, a fake crime story, and a demand to move your money.",
+        scene:"Your phone rings. The caller says they are police and your bank account is involved in a crime. They tell you not to speak to anyone and ask you to transfer money to a safe account. They sound official and frightening.",
+        evidence:[
+          "Caller creates fear and urgency.",
+          "They tell you to keep it secret.",
+          "They ask you to move money.",
+          "They may know some personal details."
+        ],
+        hint:"Police and banks do not ask you to move money to a safe account. Hang up and verify independently.",
+        questions:[
+          {q:"What should you do?", options:["Hang up and verify using official police/bank contact routes","Transfer the money","Tell them your card PIN","Stay on the line for instructions","Download their remote access app"], a:0, why:"Safe account scams are a known fraud tactic."},
+          {q:"What phrase is a major red flag?", options:["Move your money to a safe account","Please call us back officially","Visit a police station if unsure","We cannot take your PIN","Take time to check"], a:0, why:"There is no legitimate safe account transfer process like this."},
+          {q:"Why might they tell you to keep it secret?", options:["To isolate you and stop you checking","Because it is normal police procedure","Because your family must never know anything","Because banks prefer secrets","Because phones work better"], a:0, why:"Isolation is used to stop victims getting advice."},
+          {q:"What should you never install for a caller?", options:["Remote access software","Official app store updates you chose yourself","A calculator","A weather app","A keyboard theme"], a:0, why:"Remote access software can let criminals control your device."},
+          {q:"If you are scared after the call, what is sensible?", options:["Contact someone trusted or call the organisation back using official details","Transfer money quickly","Delete all evidence","Call the scammer back","Share your banking app screen"], a:0, why:"A trusted person or official route can help you slow down and verify."},
+          {q:"Why might scammers sound official?", options:["To create trust and fear","Because they are real police","To improve phone quality","To test microphones","Because banks require it"], a:0, why:"Scammers often imitate authority."},
+          {q:"What is a safe account scam?", options:["A fake request to move money for protection","A savings account","A police pension","A secure app","A council tax refund"], a:0, why:"There is no legitimate safe account transfer."},
+          {q:"What should you never share over the phone?", options:["PINs and banking login details","The weather","Your favourite biscuit","A public business number","A TV schedule"], a:0, why:"Private banking details should stay private."},
+          {q:"What should you do after a suspicious call?", options:["Contact the organisation using official details","Transfer money","Delete all evidence","Call the scammer back","Install remote software"], a:0, why:"Use official contact routes."},
+          {q:"Why is secrecy a warning sign?", options:["Scammers want to stop victims checking","Police always demand secrecy","Banks prefer silence","It speeds up refunds","It unlocks accounts"], a:0, why:"Isolation is a manipulation tactic."}
+          ,{q:"What is usually safest when unsure?", options:["Stop and verify independently","Rush immediately","Share passwords","Ignore warning signs","Trust random strangers"], a:0, why:"Pausing and checking independently improves safety."}
+          ,{q:"Why do scammers create pressure?", options:["To stop careful thinking","To improve security","To help victims","To increase honesty","To reduce confusion"], a:0, why:"Pressure can stop people checking properly."}
+          ,{q:"What should you protect?", options:["Personal and financial information","Scam websites","Fake QR codes","Criminal requests","Unknown callers"], a:0, why:"Protect sensitive information carefully."}
+          ,{q:"What is a safer habit?", options:["Using official websites and apps","Trusting every message","Sharing one-time codes","Entering PINs publicly","Ignoring bank warnings"], a:0, why:"Official routes are generally safer."}
+          ,{q:"What can help avoid scams?", options:["Awareness and checking details","Responding instantly","Keeping everything secret","Sharing passwords","Trusting urgency"], a:0, why:"Awareness and verification reduce scam risk."}
+]
+      },
+      {
+        title:"Final Detective Review",
+        icon:"🕵️",
+        badge:"Street Safe Detective",
+        badgeIcon:"🕵️",
+        subtitle:"Review the evidence and prove you can spot street-and-online scam tactics.",
+        scene:"You have investigated every case. The final board shows the same patterns again and again: pressure, secrecy, strange payment routes, fake authority, and requests for personal information.",
+        evidence:[
+          "Pressure is a warning sign.",
+          "Official routes are safer.",
+          "Never share PINs, passwords, or one-time codes.",
+          "Stop, check, and ask for help if unsure."
+        ],
+        hint:"The safest answer usually slows things down, checks independently, and protects private information.",
+        questions:[
+          {q:"What do many scams have in common?", options:["Pressure, urgency, secrecy, or unusual payment requests","Clear official verification","Patient explanations","No request for money","Encouragement to check independently"], a:0, why:"Scams often rely on pressure and confusion."},
+          {q:"What is the best general rule?", options:["Stop, check, and use official contact routes","Rush because time matters","Trust uniforms always","Trust any QR code","Pay small amounts without checking"], a:0, why:"Slowing down helps you spot risks."},
+          {q:"What should never be shared?", options:["PINs, passwords, one-time passcodes, or banking login details","Your favourite TV show","The weather","A public opening time","A shop name"], a:0, why:"These details can give criminals access to accounts."},
+          {q:"What should you do if you think you have been scammed?", options:["Contact your bank quickly and report it","Hide it forever","Keep paying","Reply to the scammer","Give them more details"], a:0, why:"Quick action can reduce harm."},
+          {q:"What is a strong learner takeaway?", options:["I can pause, check evidence, and choose safer actions","All strangers are criminals","All technology is bad","Scams are always obvious","Only older people get scammed"], a:0, why:"Confidence comes from knowing how to pause and check."},
+          {q:"What is one of the best anti-scam habits?", options:["Pause and verify independently","Rush immediately","Trust every caller","Share passwords","Ignore warnings"], a:0, why:"Slowing down helps spot scams."},
+          {q:"Why should learners discuss scams openly?", options:["It helps others recognise warning signs","It improves scams","Banks dislike it","It removes passwords","It blocks Wi-Fi"], a:0, why:"Sharing awareness helps protect people."},
+          {q:"What should you do if a website feels wrong?", options:["Leave and verify independently","Enter details quickly","Ignore the feeling","Share it online instantly","Download everything"], a:0, why:"Trust caution and verify."},
+          {q:"What is a common scam tactic?", options:["Urgency and emotional pressure","Patient education","Independent checking","Clear written evidence","Official callbacks"], a:0, why:"Pressure tactics are very common."},
+          {q:"What makes someone safer online and offline?", options:["Awareness, checking, and confidence","Fear of all technology","Never asking questions","Sharing banking details","Trusting every uniform"], a:0, why:"Confidence and verification improve safety."}
+          ,{q:"What is usually safest when unsure?", options:["Stop and verify independently","Rush immediately","Share passwords","Ignore warning signs","Trust random strangers"], a:0, why:"Pausing and checking independently improves safety."}
+          ,{q:"Why do scammers create pressure?", options:["To stop careful thinking","To improve security","To help victims","To increase honesty","To reduce confusion"], a:0, why:"Pressure can stop people checking properly."}
+          ,{q:"What should you protect?", options:["Personal and financial information","Scam websites","Fake QR codes","Criminal requests","Unknown callers"], a:0, why:"Protect sensitive information carefully."}
+          ,{q:"What is a safer habit?", options:["Using official websites and apps","Trusting every message","Sharing one-time codes","Entering PINs publicly","Ignoring bank warnings"], a:0, why:"Official routes are generally safer."}
+          ,{q:"What can help avoid scams?", options:["Awareness and checking details","Responding instantly","Keeping everything secret","Sharing passwords","Trusting urgency"], a:0, why:"Awareness and verification reduce scam risk."}
+]
+      }
+    ];
+
+    let currentCase = 0;
+    let questionIndex = 0;
+    let score = 0;
+    let answered = false;
+    let completed = [false,false,false,false,false,false];
+    let badges = [];
+    let activeQuestion = null;
+
+    const caseCard = document.getElementById("caseCard");
+    const scoreStat = document.getElementById("scoreStat");
+    const caseStat = document.getElementById("caseStat");
+    const badgeStat = document.getElementById("badgeStat");
+    const barFill = document.getElementById("barFill");
+    const badgeList = document.getElementById("badgeList");
+
+    function shuffleQuestion(question){
+      const mixed = question.options.map((text,index)=>({text,correct:index===question.a}));
+      for(let i=mixed.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [mixed[i],mixed[j]]=[mixed[j],mixed[i]];
+      }
+      return {...question,mixedOptions:mixed};
+    }
+
+    function render(){
+      renderStats();
+      renderButtons();
+
+      const item = cases[currentCase];
+      activeQuestion = shuffleQuestion({...item.questions[questionIndex]});
+      const q = activeQuestion;
+
+      caseCard.innerHTML = `
+        <div class="case-hero">
+          <div class="case-title">
+            <div class="case-icon">${item.icon}</div>
+            <div>
+              <h2>${item.title}</h2>
+              <p>${item.subtitle}</p>
+            </div>
+          </div>
+          <div class="case-count">Question ${questionIndex + 1}/${item.questions.length}</div>
+        </div>
+
+        <div class="case-body">
+          <div class="scene">
+            <div class="scene-box">${item.scene}</div>
+            <div class="evidence-board">
+              <h3>Evidence Board</h3>
+              <div class="evidence">
+                ${item.evidence.map(e=>`<div>📌 ${e}</div>`).join("")}
+              </div>
+            </div>
+          </div>
+
+          <div class="question-box">
+            <h3>${item.icon} Detective Question</h3>
+            <p class="question">${q.q}</p>
+            <div class="answers">
+              ${q.mixedOptions.map((opt,i)=>`<button class="answer" data-index="${i}" data-correct="${opt.correct ? "true" : "false"}">${opt.text}</button>`).join("")}
+            </div>
+
+            <div class="feedback" id="feedback">
+              <h3 id="feedbackTitle"></h3>
+              <p id="feedbackText"></p>
+              <button class="primary orange" id="nextBtn">${questionIndex + 1 === item.questions.length ? "Close Case" : "Next Question"}</button>
+            </div>
+          </div>
+
+          <div class="controls">
+            <button class="primary" onclick="showHint()">Detective Hint</button>
+            <button class="ghost" onclick="restartCase()">Restart This Case</button>
+            <button class="ghost" onclick="restartProgramme()">Restart Programme</button>
+            <button class="ghost" onclick="window.print()">Print Screen</button>
+          </div>
+        </div>
+      `;
+
+      document.querySelectorAll(".answer").forEach(btn=>{
+        btn.addEventListener("click",()=>chooseAnswer(Number(btn.dataset.index)));
+      });
+    }
+
+    function chooseAnswer(index){
+      if(answered) return;
+      answered = true;
+
+      const buttons = [...document.querySelectorAll(".answer")];
+      const clicked = buttons[index];
+      const correct = clicked && clicked.dataset.correct === "true";
+
+      buttons.forEach(btn=>{
+        if(btn.dataset.correct === "true") btn.classList.add("correct");
+        else if(btn === clicked) btn.classList.add("wrong");
+        btn.disabled = true;
+      });
+
+      const feedback = document.getElementById("feedback");
+      const title = document.getElementById("feedbackTitle");
+      const text = document.getElementById("feedbackText");
+
+      if(correct){
+        score += 10;
+        title.textContent = "✅ Correct — good detective work.";
+      }else{
+        score += 2;
+        title.textContent = "❌ Not quite — review the evidence.";
+      }
+
+      text.textContent = activeQuestion.why;
+      feedback.classList.add("show");
+      renderStats();
+
+      document.getElementById("nextBtn").addEventListener("click", nextQuestion);
+    }
+
+    function nextQuestion(){
+      const item = cases[currentCase];
+
+      if(questionIndex + 1 < item.questions.length){
+        questionIndex++;
+        answered = false;
+        render();
+      }else{
+        closeCase();
+      }
+    }
+
+    function closeCase(){
+      const item = cases[currentCase];
+      completed[currentCase] = true;
+
+      if(currentCase < 5 && !badges.includes(item.badge)){
+        badges.push(item.badge);
+        score += 25;
+      }
+
+      caseCard.innerHTML = `
+        <div class="completion">
+          <div class="big">${item.badgeIcon}</div>
+          <h2>${item.title} Closed</h2>
+          <p style="font-size:20px;font-weight:900;color:#475569;line-height:1.5;max-width:760px;margin:0 auto;">
+            Case closed. You collected the <strong>${item.badge}</strong>.
+          </p>
+
+          <div class="scorebox">
+            <div class="score-big">${score}</div>
+            <p style="font-weight:900;color:#64748b;">Current Score</p>
+          </div>
+
+          <div class="controls" style="justify-content:center;">
+            <button class="primary orange" onclick="nextCase()">${currentCase + 1 < cases.length ? "Next Case" : "Finish Programme"}</button>
+            <button class="ghost" onclick="restartProgramme()">Restart Programme</button>
+          </div>
+        </div>
+      `;
+
+      renderStats();
+      renderButtons();
+    }
+
+    function nextCase(){
+      if(currentCase + 1 < cases.length){
+        currentCase++;
+        questionIndex = 0;
+        answered = false;
+        render();
+      }else{
+        renderFinal();
+      }
+    }
+
+    function renderFinal(){
+      completed[5] = true;
+      caseCard.innerHTML = `
+        <div class="completion">
+          <div class="big">🎉</div>
+          <h2>Street Safe Online Complete</h2>
+          <p style="font-size:20px;font-weight:900;color:#475569;line-height:1.5;max-width:800px;margin:0 auto;">
+            You completed the RECONNECT-US Street Safe Online detective programme.
+            You can now identify key warning signs across street scams and digital scams.
+          </p>
+
+          <div class="scorebox">
+            <div class="score-big">${score}</div>
+            <p style="font-weight:900;color:#64748b;">Final Score</p>
+          </div>
+
+          <div class="certificate">
+            <h3 style="margin-top:0;">RECONNECT-US Completion Statement</h3>
+            <p>This confirms the learner completed the Street Safe Online programme.</p>
+            <p><strong>Topics covered:</strong> fake charity collectors, fake parcel delivery drivers, QR code scams, ATM distraction scams, fake police phone calls, and safe reporting actions.</p>
+            <p><strong>Learner name:</strong> ________________________________</p>
+            <p><strong>Date:</strong> ________________________________</p>
+            <p><strong>Trainer/Facilitator:</strong> RECONNECT-US</p>
+          </div>
+
+          <div class="controls" style="justify-content:center;">
+            <button class="primary orange" onclick="window.print()">Print Completion Statement</button>
+            <button class="ghost" onclick="restartProgramme()">Play Again</button>
+          </div>
+        </div>
+      `;
+
+      renderStats();
+      renderButtons();
+    }
+
+    function renderButtons(){
+      document.querySelectorAll(".case-btn").forEach(btn=>{
+        const index = Number(btn.dataset.case);
+        btn.classList.toggle("active", index === currentCase);
+        btn.classList.toggle("done", completed[index]);
+        btn.onclick = () => {
+          currentCase = index;
+          questionIndex = 0;
+          answered = false;
+          render();
+        };
+      });
+    }
+
+    function renderStats(){
+      scoreStat.innerHTML = `Score<br>${score}`;
+      caseStat.innerHTML = `Case<br>${Math.min(currentCase + 1, 6)}/6`;
+      badgeStat.innerHTML = `Badges<br>${badges.length}/5`;
+      barFill.style.width = `${Math.round((badges.length / 5) * 100)}%`;
+
+      badgeList.innerHTML = "";
+      const slots = [
+        ["🪙","Charity"],
+        ["📦","Parcel"],
+        ["🔳","QR Code"],
+        ["🏧","ATM"],
+        ["🚓","Police"]
+      ];
+
+      slots.forEach((slot,i)=>{
+        const div = document.createElement("div");
+        div.className = "badge" + (badges[i] ? " got" : "");
+        div.innerHTML = badges[i] ? `<span>${slot[0]}</span>${slot[1]} Badge` : `<span>🔍</span>${slot[1]}`;
+        badgeList.appendChild(div);
+      });
+    }
+
+    function showHint(){
+      const item = cases[currentCase];
+      showModal("Detective Hint", item.hint || "Look for pressure, secrecy, unusual payment requests, and requests for private information.");
+    }
+
+    function showModal(title,text){
+      document.getElementById("modalTitle").textContent = title;
+      document.getElementById("modalText").textContent = text;
+      document.getElementById("modalOverlay").classList.add("show");
+    }
+
+    function closeModal(){
+      document.getElementById("modalOverlay").classList.remove("show");
+    }
+
+    document.getElementById("modalOverlay").addEventListener("click",(e)=>{
+      if(e.target.id === "modalOverlay") closeModal();
+    });
+
+    function restartCase(){
+      questionIndex = 0;
+      answered = false;
+      render();
+    }
+
+    function restartProgramme(){
+      currentCase = 0;
+      questionIndex = 0;
+      score = 0;
+      answered = false;
+      completed = [false,false,false,false,false,false];
+      badges = [];
+      render();
+    }
+
+    const fullscreenBtn = document.getElementById("fullscreenBtn");
+    const fullscreenMessage = document.getElementById("fullscreenMessage");
+
+    function isFullscreen(){
+      return !!(document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement);
+    }
+
+    function updateFullscreenButton(){
+      fullscreenBtn.textContent = isFullscreen() ? "❎ Exit Full Screen" : "⛶ Full Screen";
+    }
+
+    function showFullscreenMessage(message){
+      fullscreenMessage.textContent = message;
+      fullscreenMessage.classList.add("show");
+      setTimeout(()=>fullscreenMessage.classList.remove("show"),4200);
+    }
+
+    async function enterFullscreen(){
+      const target = document.documentElement;
+      try{
+        if(target.requestFullscreen){ await target.requestFullscreen(); return true; }
+        if(target.webkitRequestFullscreen){ target.webkitRequestFullscreen(); return true; }
+        if(target.msRequestFullscreen){ target.msRequestFullscreen(); return true; }
+      }catch(e){ return false; }
+      return false;
+    }
+
+    async function exitFullscreenMode(){
+      try{
+        if(document.exitFullscreen){ await document.exitFullscreen(); return true; }
+        if(document.webkitExitFullscreen){ document.webkitExitFullscreen(); return true; }
+        if(document.msExitFullscreen){ document.msExitFullscreen(); return true; }
+      }catch(e){ return false; }
+      return false;
+    }
+
+    fullscreenBtn.addEventListener("click", async (event)=>{
+      event.preventDefault();
+      event.stopPropagation();
+
+      let worked = false;
+      if(isFullscreen()) worked = await exitFullscreenMode();
+      else worked = await enterFullscreen();
+
+      setTimeout(updateFullscreenButton,150);
+
+      if(!worked && !isFullscreen()){
+        showFullscreenMessage("Full screen was blocked by this browser. On some phones, open this file in Chrome/Safari and tap the button again.");
+      }
+    });
+
+    document.addEventListener("fullscreenchange", updateFullscreenButton);
+    document.addEventListener("webkitfullscreenchange", updateFullscreenButton);
+    document.addEventListener("MSFullscreenChange", updateFullscreenButton);
+
+    render();
+  </script>
+</body>
+</html>

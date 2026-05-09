@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Investigation Room</title>
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:linear-gradient(135deg,#0f172a,#1e293b,#334155);
+    color:white;
+    min-height:100vh;
+}
+.wrapper{
+    max-width:1200px;
+    margin:auto;
+    padding:24px;
+}
+.hero{
+    text-align:center;
+    padding:40px 20px;
+}
+.hero h1{
+    font-size:52px;
+    margin-bottom:10px;
+}
+.hero p{
+    font-size:20px;
+    color:#cbd5e1;
+}
+.grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:24px;
+    margin-top:40px;
+}
+.tile{
+    background:rgba(255,255,255,0.08);
+    border:2px solid rgba(255,255,255,0.12);
+    border-radius:28px;
+    padding:28px;
+    text-decoration:none;
+    color:white;
+    transition:.2s;
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
+.tile:hover{
+    transform:translateY(-6px) scale(1.02);
+    border-color:#22d3ee;
+}
+.icon{
+    font-size:64px;
+    margin-bottom:18px;
+}
+.tile h2{
+    margin:0 0 12px;
+    font-size:32px;
+}
+.tile p{
+    color:#dbeafe;
+    line-height:1.5;
+    font-size:18px;
+}
+.footer-buttons{
+    display:flex;
+    justify-content:center;
+    gap:14px;
+    flex-wrap:wrap;
+    margin-top:50px;
+}
+.btn{
+    border:none;
+    border-radius:18px;
+    padding:16px 22px;
+    font-weight:700;
+    cursor:pointer;
+    text-decoration:none;
+    color:white;
+    background:#2563eb;
+}
+.btn:hover{
+    background:#1d4ed8;
+}
+.orange{
+    background:#f97316;
+}
+.orange:hover{
+    background:#ea580c;
+}
+</style>
+</head>
+<body>
+
+<div class="wrapper">
+
+<div class="hero">
+<h1>🕵️ Investigation Room</h1>
+<p>Choose an investigation programme to continue.</p>
+</div>
+
+<div class="grid">
+
+<a class="tile" href="streetsafe-online/index.html">
+<div class="icon">🚨</div>
+<h2>StreetSafe Online</h2>
+<p>Investigate scams, fake delivery drivers, QR traps, ATM scams and online fraud awareness scenarios.</p>
+</a>
+
+<a class="tile" href="escape-room/index.html">
+<div class="icon">🔐</div>
+<h2>Escape Room</h2>
+<p>Interactive RECONNECT-US digital safety escape room with puzzles, missions, budgeting and online safety challenges.</p>
+</a>
+
+</div>
+
+<div class="footer-buttons">
+<a class="btn orange" href="../index.html">← Return To Home Screen</a>
+<button class="btn" onclick="toggleFullscreen()">⛶ Full Screen</button>
+</div>
+
+</div>
+
+<script>
+function toggleFullscreen(){
+    if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+    }else{
+        document.exitFullscreen();
+    }
+}
+</script>
+
+</body>
+</html>
