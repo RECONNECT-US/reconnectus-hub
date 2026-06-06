@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Rubik's Cube Centre</title>
+<style>
+body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,#0b1d30,#123a5c);color:white}
+header{text-align:center;padding:20px;background:linear-gradient(90deg,#0d2941,#1d6fa5)}
+.container{max-width:1000px;margin:auto;padding:20px}
+.controls{display:flex;justify-content:space-between;margin-bottom:20px}
+.btn{background:#1d6fa5;color:white;border:none;padding:10px 15px;border-radius:10px;cursor:pointer;font-weight:bold}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.tile{background:#16324d;color:white;text-decoration:none;padding:25px;border-radius:20px;border:2px solid rgba(255,255,255,.15)}
+.tile:hover{border-color:#39c5ff}
+.icon{font-size:60px}
+footer{text-align:center;padding:20px;color:#d0dbe6}
+</style>
+</head>
+<body>
+<header>
+<h1>🧩 RECONNECT-US Rubik's Cube Centre</h1>
+<p>Cube Solver • Patterns & Designs</p>
+</header>
+
+<div class="container">
+<div class="controls">
+<button class="btn" onclick="history.back()">← Back</button>
+<button class="btn" onclick="toggleFullScreen()">Full Screen</button>
+</div>
+
+<div class="tiles">
+
+<a class="tile" href="cube-solver/index.html">
+<div class="icon">🧩</div>
+<h2>Cube Solver</h2>
+<p>Solve a scrambled Rubik's Cube step-by-step.</p>
+</a>
+
+<a class="tile" href="cube-patterns/index.html">
+<div class="icon">🎨</div>
+<h2>Cube Patterns & Designs</h2>
+<p>Learn patterns, designs, symbols and visual cube effects.</p>
+</a>
+
+</div>
+</div>
+
+<footer>© 2026 RECONNECT-US. All Rights Reserved.</footer>
+
+<script>
+function toggleFullScreen(){
+if(!document.fullscreenElement){document.documentElement.requestFullscreen();}
+else{document.exitFullscreen();}
+}
+</script>
+</body>
+</html>

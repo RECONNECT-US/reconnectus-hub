@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>RECONNECT-US Cube Patterns & Designs</title>
+<style>
+:root{
+  --bg:#071421;--panel:#102033;--text:#f5fbff;--muted:#b8c9d8;--line:rgba(255,255,255,.14);
+  --blue:#25a7e8;--teal:#19c3b1;--orange:#ff9f32;--green:#3bd985;--red:#ff6b6b;--shadow:0 18px 45px rgba(0,0,0,.35);
+  --cubie:54px;--step:58px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;min-height:100%;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,#071421,#0d2941 58%,#081723);color:var(--text)}
+button,input{font:inherit}
+.app{min-height:100vh;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;background:linear-gradient(90deg,#092033,#10466a,#0a726b);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20}
+.brand{display:flex;align-items:center;gap:12px;min-width:0}
+.logo{width:48px;height:48px;border-radius:15px;background:linear-gradient(135deg,var(--teal),var(--blue));display:grid;place-items:center;font-weight:900;box-shadow:var(--shadow);border:1px solid rgba(255,255,255,.35)}
+.title{font-weight:900;font-size:21px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.subtitle{font-size:12px;color:#d8f5ff;margin-top:2px}
+.topActions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.btn{border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.1);color:white;padding:9px 12px;border-radius:12px;cursor:pointer;font-weight:800}
+.btn:hover{background:rgba(255,255,255,.18)}.btn.primary{background:linear-gradient(135deg,var(--blue),var(--teal));border-color:transparent}.btn.orange{background:linear-gradient(135deg,#ff9f32,#ff7a22);border-color:transparent}.btn.green{background:linear-gradient(135deg,#27c96f,#16a765);border-color:transparent}.btn.red{background:linear-gradient(135deg,#ff6b6b,#d94b4b);border-color:transparent}.btn.small{padding:7px 9px;font-size:13px;border-radius:10px}
+.main{width:min(1360px,100%);margin:0 auto;padding:14px;display:grid;grid-template-columns:315px 1fr 330px;gap:14px;flex:1}
+.panel{background:rgba(16,32,51,.9);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}
+.panelHeader{padding:13px 15px;border-bottom:1px solid var(--line);background:rgba(255,255,255,.04)}.panelHeader h2{margin:0;font-size:17px}.panelBody{padding:14px}
+.notice{background:rgba(255,159,50,.14);border:1px solid rgba(255,159,50,.38);border-radius:14px;padding:12px;color:#ffe4bf;font-size:14px;line-height:1.35;margin-bottom:12px}
+.search{width:100%;padding:11px 12px;border-radius:13px;border:1px solid var(--line);background:#071421;color:white;outline:none;margin-bottom:10px}
+.tabs{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:12px}.tab{font-size:13px;padding:8px 9px;border-radius:999px;border:1px solid var(--line);background:rgba(255,255,255,.06);color:var(--muted);cursor:pointer}.tab.active{background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border-color:transparent}
+.patternList{display:flex;flex-direction:column;gap:8px;max-height:calc(100vh - 310px);overflow:auto;padding-right:3px}.patternItem{padding:11px;border:1px solid var(--line);background:rgba(255,255,255,.055);border-radius:14px;cursor:pointer}.patternItem.active{border-color:rgba(40,167,232,.85);background:rgba(40,167,232,.18)}.patternName{font-weight:900;margin-bottom:4px}.meta{font-size:12px;color:var(--muted);display:flex;gap:7px;flex-wrap:wrap}.badge{padding:3px 7px;border-radius:999px;background:rgba(255,255,255,.08);border:1px solid var(--line)}
+.stage{display:flex;flex-direction:column;gap:14px}.hero{padding:15px;background:linear-gradient(135deg,rgba(40,167,232,.16),rgba(25,195,177,.1));border:1px solid var(--line);border-radius:18px}.hero h1{margin:0 0 6px;font-size:26px}.hero p{margin:0;color:var(--muted);line-height:1.42}
+.visualPanel{display:grid;grid-template-columns:minmax(350px,1fr) 310px;gap:14px}
+.cubeStage{min-height:550px;background:radial-gradient(circle at center,rgba(40,167,232,.18),rgba(0,0,0,.08) 55%,rgba(0,0,0,.2));border:1px solid var(--line);border-radius:20px;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.cubeHint{position:absolute;left:14px;top:14px;right:14px;display:flex;justify-content:space-between;gap:8px;align-items:flex-start;z-index:5}.hintPill{background:rgba(0,0,0,.38);border:1px solid var(--line);border-radius:999px;padding:7px 10px;font-size:13px;color:#e8f7ff;font-weight:800}
+.scene{width:390px;height:390px;perspective:1150px;display:grid;place-items:center;touch-action:none}
+.cube3d{position:relative;width:1px;height:1px;transform-style:preserve-3d;transform:rotateX(-28deg) rotateY(38deg);transition:transform .35s ease}
+.cubie{position:absolute;width:var(--cubie);height:var(--cubie);transform-style:preserve-3d}
+.cubieFace{position:absolute;width:var(--cubie);height:var(--cubie);border:2px solid #050b12;border-radius:8px;background:#111;box-shadow:inset 0 2px 7px rgba(255,255,255,.18), inset 0 -4px 10px rgba(0,0,0,.35)}
+.cf-front{transform:translateZ(calc(var(--cubie)/2))}.cf-back{transform:rotateY(180deg) translateZ(calc(var(--cubie)/2))}.cf-right{transform:rotateY(90deg) translateZ(calc(var(--cubie)/2))}.cf-left{transform:rotateY(-90deg) translateZ(calc(var(--cubie)/2))}.cf-up{transform:rotateX(90deg) translateZ(calc(var(--cubie)/2))}.cf-down{transform:rotateX(-90deg) translateZ(calc(var(--cubie)/2))}
+.c-white{background:#f5f5f5}.c-yellow{background:#ffd447}.c-green{background:#18c66a}.c-blue{background:#2488ff}.c-red{background:#f14141}.c-orange{background:#ff8c24}.c-black{background:#050b12}
+.cubie.inLayer .cubieFace{box-shadow:0 0 20px rgba(255,255,255,.72), inset 0 2px 7px rgba(255,255,255,.25)}
+.layerArrow{position:absolute;font-size:90px;line-height:1;right:26px;bottom:26px;z-index:4;filter:drop-shadow(0 10px 20px rgba(0,0,0,.55));opacity:.95}.layerArrow.ccw{transform:scaleX(-1)}.layerArrow.twice::after{content:" 2x";font-size:26px;vertical-align:middle}
+.stepCard{background:rgba(255,255,255,.045);border:1px solid var(--line);border-radius:20px;padding:14px;display:flex;flex-direction:column;gap:12px}.stepMode{color:var(--muted);font-size:13px;font-weight:900;text-transform:uppercase;letter-spacing:.8px}.moveBig{text-align:center;font-size:74px;font-weight:900;line-height:1;color:white;text-shadow:0 8px 25px rgba(40,167,232,.35)}.moveWords{text-align:center;font-size:20px;font-weight:900}.stepHint{text-align:center;color:var(--muted);line-height:1.35}.progressOuter{height:13px;background:rgba(255,255,255,.08);border-radius:999px;overflow:hidden;border:1px solid var(--line)}.progressInner{height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));width:0%}.controls{display:grid;grid-template-columns:1fr 1fr;gap:8px}.controls .wide{grid-column:1/-1}.movesList{display:flex;flex-wrap:wrap;gap:7px;max-height:110px;overflow:auto}.movePill{padding:7px 9px;border-radius:10px;background:rgba(255,255,255,.07);border:1px solid var(--line);font-weight:900}.movePill.done{background:rgba(57,217,138,.22);border-color:rgba(57,217,138,.55)}
+details.helpDrop{border:1px solid var(--line);border-radius:16px;background:rgba(255,255,255,.05);overflow:hidden}details.helpDrop summary{cursor:pointer;padding:13px 14px;font-weight:900;background:rgba(255,255,255,.04)}.helpContent{padding:12px;display:grid;gap:10px}.helpMove{display:grid;grid-template-columns:55px 1fr 65px;align-items:center;gap:8px;border:1px solid var(--line);border-radius:13px;padding:9px;background:rgba(255,255,255,.045)}.helpMove strong{font-size:20px}.helpMove p{margin:0;color:var(--muted);font-size:13px;line-height:1.3}
+.infoCard{padding:12px;border-radius:14px;background:rgba(255,255,255,.05);border:1px solid var(--line);margin-bottom:10px}.infoCard h3{margin:0 0 7px;font-size:15px}.infoCard p,.infoCard li{color:var(--muted);font-size:14px;line-height:1.4}.infoCard ul{margin:7px 0 0 18px;padding:0}
+.overlay{position:fixed;inset:0;background:rgba(3,8,14,.84);z-index:60;display:none;align-items:center;justify-content:center;padding:14px}.overlay.show{display:flex}.modal{width:min(780px,100%);max-height:90vh;overflow:auto;background:#102033;border:1px solid var(--line);border-radius:22px;padding:20px;box-shadow:var(--shadow)}.modal p,.modal li{color:var(--muted);line-height:1.45}.modalActions{text-align:right;margin-top:12px}
+.footer{text-align:center;color:#b9c9d6;padding:13px 8px;border-top:1px solid var(--line);font-size:13px;background:rgba(0,0,0,.18)}
+@media(max-width:1160px){.main{grid-template-columns:300px 1fr}.rightPanel{grid-column:1/-1}.visualPanel{grid-template-columns:1fr}.patternList{max-height:360px}.cubeStage{min-height:520px}}
+@media(max-width:760px){:root{--cubie:42px;--step:46px}.topbar{align-items:flex-start}.title{font-size:17px}.subtitle{font-size:11px}.logo{width:40px;height:40px}.main{grid-template-columns:1fr;padding:10px}.patternList{max-height:270px}.visualPanel{grid-template-columns:1fr}.cubeStage{min-height:410px}.scene{width:300px;height:300px}.moveBig{font-size:56px}.controls{grid-template-columns:1fr}.layerArrow{font-size:58px}.helpMove{grid-template-columns:45px 1fr 56px}}
+</style>
+</head>
+<body>
+<div class="app">
+<header class="topbar">
+  <div class="brand"><div class="logo">RU</div><div><div class="title">RECONNECT-US Cube Patterns & Designs</div><div class="subtitle">Verified Rubik's Cube pattern library</div></div></div>
+  <div class="topActions"><button class="btn small" onclick="goBack()">← Back</button><button class="btn small" onclick="showHelp()">Help</button><button class="btn small" onclick="toggleFullScreen()">Full Screen</button></div>
+</header>
+
+<main class="main">
+  <section class="panel leftPanel"><div class="panelHeader"><h2>Choose a Pattern</h2></div><div class="panelBody">
+    <div class="notice"><strong>Start solved:</strong> These patterns use recognised Rubik's Cube algorithms and only work from a fully solved cube. If your cube is scrambled, use the RECONNECT-US Cube Solver first.</div>
+    <input id="searchBox" class="search" placeholder="Search patterns..." oninput="renderPatterns()"><div id="tabs" class="tabs"></div><div id="patternList" class="patternList"></div>
+  </div></section>
+
+  <section class="stage">
+    <div class="hero"><h1 id="patternTitle">Checkerboard</h1><p id="patternDescription"></p></div>
+    <div class="visualPanel">
+      <div class="cubeStage">
+        <div class="cubeHint"><span id="visualStatus" class="hintPill">Whole side turns together</span><span id="directionPill" class="hintPill">Drag cube to view</span></div>
+        <div id="layerArrow" class="layerArrow">↻</div>
+        <div id="scene" class="scene"><div id="cube" class="cube3d"></div>
+        </div>
+        <div id="viewControls" style="position:absolute;left:20px;bottom:20px;z-index:10;background:rgba(0,0,0,.35);padding:10px;border-radius:16px;border:1px solid rgba(255,255,255,.15)">
+          <div style="text-align:center;margin-bottom:4px;">
+            <button class="btn small" onclick="cubeViewUp()">▲</button>
+          </div>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button class="btn small" onclick="cubeViewLeft()">◄</button>
+            <button class="btn small" onclick="cubeViewReset()">●</button>
+            <button class="btn small" onclick="cubeViewRight()">►</button>
+          </div>
+          <div style="text-align:center;margin-top:4px;">
+            <button class="btn small" onclick="cubeViewDown()">▼</button>
+          </div>
+        </div>
+      </div>
+      <div class="stepCard">
+        <div id="stepMode" class="stepMode">Create Pattern</div><div id="moveBig" class="moveBig">R2</div><div id="moveWords" class="moveWords">Turn the right face twice</div><div id="stepHint" class="stepHint">The whole side turns as one piece.</div>
+        <div class="progressOuter"><div id="progressInner" class="progressInner"></div></div>
+        <div class="controls"><button class="btn" onclick="prevStep()">◀ Previous</button><button class="btn primary" onclick="nextStep()">Next ▶</button><button class="btn orange" onclick="toggleAutoPlay()">Slow Play</button><button class="btn green" onclick="setMode('reverse')">Reverse to Solved</button><button class="btn red wide" onclick="resetSteps()">Restart This Pattern</button></div>
+        <div id="movesList" class="movesList"></div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="panel rightPanel"><div class="panelHeader"><h2>Learning Help</h2></div><div class="panelBody">
+    <details class="helpDrop" open><summary>Cube Notation Help</summary><div class="helpContent" id="notationHelp"></div></details>
+    <div class="infoCard" style="margin-top:10px"><h3>Visual Learning</h3><p>This version uses a curated pattern library with recognised Rubik's Cube pattern names and algorithms. Please test each pattern visually before using it with learners.</p></div>
+    <div class="infoCard"><h3>RECONNECT-US Notice</h3><p>This is a RECONNECT-US app. It is for authorised use only and must not be copied, shared, or distributed without written permission from RECONNECT-US.</p></div>
+  </div></aside>
+</main>
+<footer class="footer">© 2026 RECONNECT-US. All Rights Reserved.</footer>
+</div>
+
+<div id="helpOverlay" class="overlay" onclick="hideHelp(event)"><div class="modal">
+<h2>How to Use This App</h2>
+<p>Pick a pattern, start with a solved cube, then press <strong>Next</strong> or <strong>Slow Play</strong>. The correct side of the cube turns as one complete layer.</p>
+<ul><li><strong>R</strong> means right side clockwise.</li><li><strong>R'</strong> means right side anti-clockwise.</li><li><strong>R2</strong> means right side twice.</li><li><strong>Reverse to Solved</strong> turns the moves backwards.</li></ul>
+<p>You can drag the cube with your mouse or finger to view it from a better angle.</p>
+<div class="modalActions"><button class="btn primary" onclick="hideHelp()">Close</button></div>
+</div></div>
+
+<script>
+const categories=["All", "Popular", "Beginner", "Intermediate", "Advanced", "Spots", "Geometric", "Symbols", "Artistic"];
+const patterns=[
+{name:"Checkerboard",cat:["Popular", "Beginner", "Geometric"],difficulty:"Easy",desc:"Classic checkerboard on all six faces. Expected look: alternating colour squares on every side.",moves:"U2 D2 F2 B2 L2 R2"},
+{name:"Easy Checkerboard",cat:["Beginner", "Geometric"],difficulty:"Easy",desc:"A simple checkerboard version using middle-slice moves. Expected look: clean checkerboard effect.",moves:"M2 E2 S2"},
+{name:"Cube in a Cube",cat:["Popular", "Intermediate", "Geometric"],difficulty:"Medium",desc:"A classic cube-in-cube design. Expected look: a smaller cube shape appears inside the main cube.",moves:"F L F U' R U F2 L2 U' L' B D' B' L2 U"},
+{name:"Cube in a Cube in a Cube",cat:["Advanced", "Geometric"],difficulty:"Hard",desc:"A deeper layered cube pattern. Expected look: repeated cube-in-cube effect.",moves:"U' L' U' F' R2 B' R F U B2 U B' L U' F U R F'"},
+{name:"Superflip",cat:["Popular", "Advanced"],difficulty:"Hard",desc:"Famous pattern where all edge pieces are flipped. Expected look: every edge is reversed while corners remain placed.",moves:"U R2 F B R B2 R U2 L B2 R U' D' R2 F R' L B2 U2 F2"},
+{name:"Cross",cat:["Intermediate", "Symbols"],difficulty:"Medium",desc:"Cross pattern across the cube. Expected look: clear cross shapes formed by contrasting colours.",moves:"U F B' L2 U2 L2 F' B U2 L2 U"},
+{name:"Plummer's Cross",cat:["Advanced", "Symbols"],difficulty:"Hard",desc:"A more complex cross-style pattern. Expected look: stronger cross arrangement across several faces.",moves:"R2 L' D F2 R' D' R' L U' D R D B2 R' U D2"},
+{name:"Four Crosses",cat:["Intermediate", "Symbols"],difficulty:"Medium",desc:"Four-cross pattern. Expected look: cross shapes visible on multiple faces.",moves:"B2 F2 D' L2 R2 U2 B2 F2 U' R D2 L2 R2 U2 R'"},
+{name:"Six Spots",cat:["Popular", "Intermediate", "Spots"],difficulty:"Medium",desc:"Six-spot / six-dot pattern. Expected look: one contrasting centre-style spot on each face.",moves:"U D' R L' F B' U D'"},
+{name:"Four Spots",cat:["Intermediate", "Spots"],difficulty:"Medium",desc:"Four-spot pattern. Expected look: four faces show a spot-style centre contrast.",moves:"M2 E M2 E'"},
+{name:"Dot Pattern",cat:["Intermediate", "Spots"],difficulty:"Medium",desc:"Dot pattern using middle slices. Expected look: dot-like centre colour contrast.",moves:"E M' E' M'"},
+{name:"Anaconda",cat:["Popular", "Advanced", "Artistic"],difficulty:"Hard",desc:"Snake-like Anaconda pattern. Expected look: a winding trail around the cube.",moves:"L U B' U' R L' B R' F B' D R D' F'"},
+{name:"Python",cat:["Advanced", "Artistic"],difficulty:"Hard",desc:"Python snake pattern. Expected look: a longer winding snake-style trail.",moves:"F2 R' B' U R' L F' L F' B D' R B L2"},
+{name:"Black Mamba",cat:["Advanced", "Artistic"],difficulty:"Hard",desc:"Mamba-style snake pattern. Expected look: bold winding blocks across the cube.",moves:"R D L F' R L' D R' U D' B U' R' D'"},
+{name:"Green Mamba",cat:["Advanced", "Artistic"],difficulty:"Hard",desc:"Green Mamba snake pattern. Expected look: another winding mamba-style design.",moves:"R D R F R' F' B D R' U' B' U D2"},
+{name:"Twister",cat:["Advanced", "Artistic"],difficulty:"Hard",desc:"Twister pattern. Expected look: twisted shapes crossing the cube faces.",moves:"F R U R' U' F' L F U F' U' L'"},
+{name:"Vertical Stripes",cat:["Beginner", "Geometric"],difficulty:"Easy",desc:"Vertical stripe pattern. Expected look: straight stripe-like bands.",moves:"F U F R L2 B D' R D2 L D' B R2 L F U F"},
+{name:"Gift Box",cat:["Popular", "Intermediate", "Artistic"],difficulty:"Medium",desc:"Gift-box pattern. Expected look: wrapped present / ribbon-style layout.",moves:"U B2 R2 B2 L2 F2 R2 D' F2 L2 B F' L F2 D U' R2 F' L' R'"},
+{name:"Spiral Pattern",cat:["Intermediate", "Artistic"],difficulty:"Medium",desc:"Spiral-style pattern. Expected look: colours appear to spiral or flow around the cube.",moves:"L' B' D U R U' R' D2 R2 D L D' L' R' F U"},
+{name:"Plus Minus",cat:["Beginner", "Symbols"],difficulty:"Easy",desc:"Plus/minus pattern. Expected look: simple plus and minus style contrast.",moves:"U2 R2 L2 U2 R2 L2"},
+{name:"Perpendicular Lines",cat:["Beginner", "Geometric"],difficulty:"Easy",desc:"Perpendicular lines pattern. Expected look: lines crossing at right angles.",moves:"U2 L2 B2 U2 L2 U2"},
+{name:"Rings",cat:["Intermediate", "Geometric"],difficulty:"Medium",desc:"Rings pattern. Expected look: ring-like blocks across the faces.",moves:"F2 R2 U2 F2 R2 U2"},
+{name:"Tetris",cat:["Advanced", "Artistic"],difficulty:"Hard",desc:"Tetris-style pattern. Expected look: blocky shapes like falling puzzle pieces.",moves:"L R F B U' D' L' R'"},
+{name:"Wrapped Cube",cat:["Intermediate", "Artistic"],difficulty:"Medium",desc:"Wrapped-cube pattern. Expected look: ribbon/wrap effect around the cube.",moves:"R L U2 R' L' F B U2 F' B'"}
+];
+
+let selectedIndex=0,selectedCategory="All",mode="forward",stepIndex=0,autoTimer=null,isTurning=false;
+let viewX=-28, viewY=38, dragging=false, lastX=0,lastY=0;
+const STEP=58;
+const faceNames={R:"Right face",L:"Left face",U:"Top face",D:"Bottom face",F:"Front face",B:"Back face",M:"Middle vertical slice",E:"Middle horizontal slice",S:"Middle front slice"};
+const cubeEl=document.getElementById("cube");
+let cubies=[];
+
+function newCubies(){
+  cubies=[];
+  for(let x=-1;x<=1;x++)for(let y=-1;y<=1;y++)for(let z=-1;z<=1;z++){
+    const colors={};
+    if(x===1)colors.right="c-red"; if(x===-1)colors.left="c-orange";
+    if(y===1)colors.up="c-white"; if(y===-1)colors.down="c-yellow";
+    if(z===1)colors.front="c-green"; if(z===-1)colors.back="c-blue";
+    cubies.push({id:`c_${x}_${y}_${z}_${Math.random().toString(36).slice(2,6)}`,x,y,z,rx:0,ry:0,rz:0,colors});
+  }
+}
+
+function baseTransform(c){
+  return `translate3d(${c.x*STEP}px,${-c.y*STEP}px,${c.z*STEP}px) rotateX(${c.rx}deg) rotateY(${c.ry}deg) rotateZ(${c.rz}deg)`;
+}
+
+function animatedTransform(c,axis,angle){
+  const x=c.x*STEP, y=-c.y*STEP, z=c.z*STEP;
+  if(axis==="x") return `rotateX(${angle}deg) translate3d(${x}px,${y}px,${z}px) rotateX(${c.rx}deg) rotateY(${c.ry}deg) rotateZ(${c.rz}deg)`;
+  if(axis==="y") return `rotateY(${angle}deg) translate3d(${x}px,${y}px,${z}px) rotateX(${c.rx}deg) rotateY(${c.ry}deg) rotateZ(${c.rz}deg)`;
+  return `rotateZ(${angle}deg) translate3d(${x}px,${y}px,${z}px) rotateX(${c.rx}deg) rotateY(${c.ry}deg) rotateZ(${c.rz}deg)`;
+}
+
+const defaultFaceColours = {
+  front:"c-green",
+  back:"c-blue",
+  right:"c-red",
+  left:"c-orange",
+  up:"c-white",
+  down:"c-yellow"
+};
+
+function drawCube(){
+  cubeEl.innerHTML="";
+  cubies.forEach(c=>{
+    const el=document.createElement("div");el.className="cubie";el.id=c.id;el.style.transform=baseTransform(c);
+    [["front","cf-front"],["back","cf-back"],["right","cf-right"],["left","cf-left"],["up","cf-up"],["down","cf-down"]].forEach(([name,cls])=>{
+      const f=document.createElement("div");
+
+      // Important fix:
+      // No visible cube face should ever turn black. If a sticker colour is missing after a move,
+      // use the normal Rubik's Cube colour for that face instead of black.
+      const colour = c.colors[name] || defaultFaceColours[name];
+
+      f.className=`cubieFace ${cls} ${colour}`;
+      el.appendChild(f);
+    });
+    cubeEl.appendChild(el);
+  });
+  updateView();
+}
+function updateView(){cubeEl.style.transform=`rotateX(${viewX}deg) rotateY(${viewY}deg)`;}
+function setCubeViewForMove(base){
+  const views={R:[-26,48],L:[-26,-42],U:[-55,38],D:[8,38],F:[-28,38],B:[-28,218],M:[-26,48],E:[-55,38],S:[-28,38]};
+  const v=views[base]||[-28,38]; viewX=v[0];viewY=v[1];updateView();
+}
+function layerFor(base){
+  if(base==="R")return c=>c.x===1;if(base==="L")return c=>c.x===-1;if(base==="U")return c=>c.y===1;if(base==="D")return c=>c.y===-1;if(base==="F")return c=>c.z===1;if(base==="B")return c=>c.z===-1;
+  if(base==="M")return c=>c.x===0;if(base==="E")return c=>c.y===0;if(base==="S")return c=>c.z===0;
+  return c=>false;
+}
+function axisFor(base){ if("RLM".includes(base))return "x"; if("UDE".includes(base))return "y"; return "z"; }
+function dirFor(move){
+  const b=move[0]; let d=move.endsWith("'")?-1:1;
+  if(["L","D","B","M","E"].includes(b)) d*=-1;
+  return d;
+}
+function rotateStickerColours(c,axis,dir){
+  const old={...c.colors};
+  c.colors={...old};
+
+  // Stickers must travel with the cubie. Without this, some new outside faces appear black.
+  // These mappings rotate the visible sticker colours around the same axis as the physical layer.
+  if(axis==="x"){
+    if(dir===1){
+      c.colors.up=old.back; c.colors.front=old.up; c.colors.down=old.front; c.colors.back=old.down;
+    }else{
+      c.colors.up=old.front; c.colors.back=old.up; c.colors.down=old.back; c.colors.front=old.down;
+    }
+    c.colors.left=old.left; c.colors.right=old.right;
+  }
+
+  if(axis==="y"){
+    if(dir===1){
+      c.colors.front=old.left; c.colors.right=old.front; c.colors.back=old.right; c.colors.left=old.back;
+    }else{
+      c.colors.front=old.right; c.colors.left=old.front; c.colors.back=old.left; c.colors.right=old.back;
+    }
+    c.colors.up=old.up; c.colors.down=old.down;
+  }
+
+  if(axis==="z"){
+    if(dir===1){
+      c.colors.up=old.left; c.colors.right=old.up; c.colors.down=old.right; c.colors.left=old.down;
+    }else{
+      c.colors.up=old.right; c.colors.left=old.up; c.colors.down=old.left; c.colors.right=old.down;
+    }
+    c.colors.front=old.front; c.colors.back=old.back;
+  }
+
+  // Remove empty/undefined stickers so inside faces stay black and outside stickers stay coloured.
+  Object.keys(c.colors).forEach(k=>{ if(!c.colors[k]) delete c.colors[k]; });
+}
+
+function rotateCoords(c,axis,dir){
+  let x=c.x,y=c.y,z=c.z;
+  rotateStickerColours(c,axis,dir);
+  if(axis==="x"){c.y=dir===1?-z:z;c.z=dir===1?y:-y;c.rx+=90*dir;}
+  if(axis==="y"){c.x=dir===1?z:-z;c.z=dir===1?-x:x;c.ry+=90*dir;}
+  if(axis==="z"){c.x=dir===1?-y:y;c.y=dir===1?x:-x;c.rz+=90*dir;}
+  c.x=Math.round(c.x);c.y=Math.round(c.y);c.z=Math.round(c.z);
+}
+
+function animateQuarter(move, cb){
+  if(isTurning)return; isTurning=true;
+  const base=move[0], axis=axisFor(base), dir=dirFor(move), layer=layerFor(base), layerCubies=cubies.filter(layer);
+  setCubeViewForMove(base);
+  layerCubies.forEach(c=>document.getElementById(c.id)?.classList.add("inLayer"));
+  let start=null,duration=950;
+  function frame(t){
+    if(!start)start=t;
+    let p=Math.min(1,(t-start)/duration);
+    let eased=p<.5 ? 4*p*p*p : 1-Math.pow(-2*p+2,3)/2;
+    let angle=90*dir*eased;
+    layerCubies.forEach(c=>{
+      document.getElementById(c.id).style.transform=animatedTransform(c,axis,angle);
+    });
+    if(p<1) requestAnimationFrame(frame);
+    else{
+      layerCubies.forEach(c=>rotateCoords(c,axis,dir));
+      drawCube();
+      isTurning=false;
+      cb&&cb();
+    }
+  }
+  requestAnimationFrame(frame);
+}
+function applyMoveAnimated(move, cb){
+  const times=move.endsWith("2")?2:1; let n=0;
+  function run(){ if(n>=times){cb&&cb();return;} animateQuarter(move,()=>{n++;setTimeout(run,180);}); }
+  run();
+}
+function applyMoveInstant(move){
+  const times=move.endsWith("2")?2:1;
+  for(let i=0;i<times;i++){
+    const b=move[0],axis=axisFor(b),dir=dirFor(move);
+    cubies.filter(layerFor(b)).forEach(c=>rotateCoords(c,axis,dir));
+  }
+}
+function rebuildToStep(){
+  newCubies();
+  const arr=moveArray();
+  for(let i=0;i<stepIndex;i++)applyMoveInstant(arr[i]);
+  drawCube();updateStepText();
+}
+function moveArray(){
+  const moves=patterns[selectedIndex].moves.trim().split(/\s+/);
+  return mode==="forward"?moves:moves.slice().reverse().map(invertMove);
+}
+function invertMove(m){if(m.endsWith("2"))return m;if(m.endsWith("'"))return m.slice(0,-1);return m+"'";}
+function moveWords(m){const base=m[0],name=faceNames[base]||"cube face";if(m.endsWith("2"))return `Turn the ${name.toLowerCase()} twice`;if(m.endsWith("'"))return `Turn the ${name.toLowerCase()} anti-clockwise`;return `Turn the ${name.toLowerCase()} clockwise`;}
+function updateArrow(){
+  const arr=moveArray(),m=arr[stepIndex], arrow=document.getElementById("layerArrow");
+  arrow.className="layerArrow"; if(!m){arrow.textContent="✓";return;}
+  arrow.textContent=m.endsWith("'")?"↺":"↻"; if(m.endsWith("'"))arrow.classList.add("ccw"); if(m.endsWith("2"))arrow.classList.add("twice");
+  document.getElementById("directionPill").textContent=m.endsWith("2")?"Whole side turns twice / 180°":(m.endsWith("'")?"Whole side anti-clockwise":"Whole side clockwise");
+}
+function updateStepText(){
+  const arr=moveArray();if(stepIndex<0)stepIndex=0;if(stepIndex>arr.length)stepIndex=arr.length;
+  const done=stepIndex>=arr.length;
+  document.getElementById("stepMode").textContent=mode==="forward"?"Create Pattern":"Reverse to Solved";
+  document.getElementById("moveBig").textContent=done?"✓":arr[stepIndex];
+  document.getElementById("moveWords").textContent=done?(mode==="forward"?"Pattern complete":"Cube should now be solved"):moveWords(arr[stepIndex]);
+  document.getElementById("stepHint").textContent=done?(mode==="forward"?"Pattern finished. Press Reverse to Solved to undo it.":"Reverse finished. Your cube should be solved again."):`Step ${stepIndex+1} of ${arr.length}. Watch the whole side turn together.`;
+  document.getElementById("progressInner").style.width=Math.round((stepIndex/arr.length)*100)+"%";
+  document.getElementById("movesList").innerHTML=arr.map((m,i)=>`<span class="movePill ${i<stepIndex?'done':''}">${m}</span>`).join("");
+  document.getElementById("visualStatus").textContent=done?"Finished":"Whole side turns together";
+  updateArrow();
+}
+function nextStep(){
+  if(isTurning)return;
+  const arr=moveArray(); if(stepIndex>=arr.length){stopAuto();return;}
+  const m=arr[stepIndex]; updateStepText(); applyMoveAnimated(m,()=>{stepIndex++;updateStepText();});
+}
+function prevStep(){if(isTurning||stepIndex<=0)return;stepIndex--;rebuildToStep();}
+function resetSteps(){stepIndex=0;stopAuto();newCubies();drawCube();updateStepText();}
+function setMode(newMode){mode=newMode;stepIndex=0;stopAuto();newCubies();drawCube();updateStepText();}
+function toggleAutoPlay(){if(autoTimer){stopAuto();return;} autoTimer=setInterval(()=>{if(isTurning)return;const arr=moveArray();if(stepIndex>=arr.length){stopAuto();return;}nextStep();},1700);}
+function stopAuto(){if(autoTimer){clearInterval(autoTimer);autoTimer=null;}}
+function renderTabs(){document.getElementById("tabs").innerHTML=categories.map(c=>`<button class="tab ${c===selectedCategory?'active':''}" onclick="selectCategory('${c}')">${c}</button>`).join("");}
+function selectCategory(c){selectedCategory=c;renderTabs();renderPatterns();}
+function filteredPatterns(){const q=document.getElementById("searchBox").value.toLowerCase().trim();return patterns.map((p,i)=>({...p,i})).filter(p=>(selectedCategory==="All"||p.cat.includes(selectedCategory))&&(!q||p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||p.difficulty.toLowerCase().includes(q)));}
+function renderPatterns(){const list=filteredPatterns();document.getElementById("patternList").innerHTML=list.map(p=>`<div class="patternItem ${p.i===selectedIndex?'active':''}" onclick="selectPattern(${p.i})"><div class="patternName">${p.name}</div><div class="meta"><span class="badge">${p.difficulty}</span><span class="badge">${p.moves.trim().split(/\s+/).length} moves</span><span class="badge">${p.cat[0]}</span></div></div>`).join("")||'<div class="notice">No matching patterns found.</div>';}
+function selectPattern(i){selectedIndex=i;mode="forward";stepIndex=0;stopAuto();newCubies();drawCube();updateAll();}
+function updateAll(){const p=patterns[selectedIndex];document.getElementById("patternTitle").textContent=p.name;document.getElementById("patternDescription").textContent=p.desc;renderTabs();renderPatterns();updateStepText();}
+function renderNotationHelp(){
+  const moves=["R","R'","R2","L","L'","L2","U","U'","U2","D","D'","D2","F","F'","F2","B","B'","B2","M","M'","M2","E","E'","E2","S","S'","S2"];
+  document.getElementById("notationHelp").innerHTML=moves.map(m=>`<div class="helpMove"><strong>${m}</strong><p>${moveWords(m)}.<br>Press Play to see that whole side turn.</p><button class="btn small" onclick="demoNotation('${m}')">Play</button></div>`).join("");
+}
+function demoNotation(m){if(isTurning)return;stopAuto();newCubies();drawCube();document.getElementById("moveBig").textContent=m;document.getElementById("moveWords").textContent=moveWords(m);document.getElementById("stepHint").textContent="Practice example from the notation help.";applyMoveAnimated(m,()=>{});}
+function toggleFullScreen(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.();}
+function showHelp(){document.getElementById("helpOverlay").classList.add("show")}
+function hideHelp(e){if(e&&!e.target.classList.contains("overlay"))return;document.getElementById("helpOverlay").classList.remove("show")}
+function goBack(){if(history.length>1)history.back();else alert("This button is ready to link back to your main RECONNECT-US menu when added to your website.");}
+
+const scene=document.getElementById("scene");
+scene.addEventListener("pointerdown",e=>{dragging=true;lastX=e.clientX;lastY=e.clientY;scene.setPointerCapture(e.pointerId);});
+scene.addEventListener("pointermove",e=>{if(!dragging)return;viewY+=(e.clientX-lastX)*.55;viewX-=(e.clientY-lastY)*.55;viewX=Math.max(-85,Math.min(85,viewX));lastX=e.clientX;lastY=e.clientY;updateView();});
+scene.addEventListener("pointerup",()=>dragging=false);
+document.addEventListener("keydown",e=>{if(e.key==="ArrowRight")nextStep();if(e.key==="ArrowLeft")prevStep();if(e.key==="Escape")hideHelp();});
+
+function cubeViewLeft(){ viewY -= 15; updateView(); }
+function cubeViewRight(){ viewY += 15; updateView(); }
+function cubeViewUp(){ viewX -= 15; if(viewX < -85) viewX=-85; updateView(); }
+function cubeViewDown(){ viewX += 15; if(viewX > 85) viewX=85; updateView(); }
+function cubeViewReset(){ viewX=-28; viewY=38; updateView(); }
+
+renderNotationHelp();newCubies();drawCube();updateAll();
+
+</script>
+</body>
+</html>
