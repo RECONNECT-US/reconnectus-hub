@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>RECONNECT-US Core Version 2</title>
+<style>
+:root{
+  --bg1:#071a3a;--bg2:#0b3d91;--card:rgba(255,255,255,.08);
+  --border:rgba(255,255,255,.16);--text:#fff;--muted:#cfe0ff;
+  --accent:#00e0a4;--warn:#ffd166;--danger:#ff7b7b;--soft:#9cc3ff;
+}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);min-height:100vh}
+button,input,select{font:inherit}
+button{border:0;border-radius:11px;padding:11px 14px;font-weight:700;cursor:pointer}
+.primary{background:#fff;color:#0b3d91}.secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid var(--border)}.danger{background:var(--danger);color:#280909}
+.wrap{width:min(1500px,96vw);margin:auto;padding:14px}
+.topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.brand h1{margin:0;font-size:clamp(1.45rem,3vw,2rem)} .muted{color:var(--muted)}
+.toolbar,.tabs,.actions{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.card{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:17px;margin-bottom:15px;backdrop-filter:blur(8px)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:14px}.kpi{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:14px;padding:14px}.kpi b{display:block;font-size:1.8rem;margin-top:5px}
+.field label{display:block;color:var(--muted);font-size:.9rem;margin-bottom:6px}
+.field input,.field select{width:100%;padding:11px;border:1px solid rgba(255,255,255,.14);border-radius:11px;background:#fff;color:#112957}
+.span2{grid-column:1/-1}
+.badge{display:inline-block;padding:6px 9px;border-radius:999px;font-size:.78rem;font-weight:700}
+.good{background:var(--accent);color:#05291f}.gold{background:var(--warn);color:#3f2b00}.red{background:var(--danger);color:#3f1010}.blue{background:var(--soft);color:#10264f}
+.tab{display:none}.tab.active{display:block}
+table{width:100%;border-collapse:collapse;min-width:900px} th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top} th{background:rgba(255,255,255,.08)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:13px}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:8px}
+.check{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.06);padding:9px;border-radius:10px}
+.notice{padding:12px;border:1px solid var(--accent);background:rgba(0,224,164,.12);border-radius:12px}
+.warning{padding:12px;border:1px solid var(--warn);background:rgba(255,209,102,.12);border-radius:12px}
+.status{margin-top:10px;color:var(--muted)}
+#loginOverlay{position:fixed;inset:0;background:linear-gradient(135deg,#071a3a,#0b3d91);z-index:99999;display:flex;align-items:center;justify-content:center;padding:20px}
+.loginCard{width:min(430px,95vw);padding:24px;background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:18px;text-align:center}
+.loginCard input{width:100%;padding:12px;border-radius:10px;border:0;margin:7px 0;color:#10264f}
+.small{font-size:.86rem}.footer{text-align:center;color:var(--muted);font-size:.85rem;padding:10px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.span2{grid-column:auto}}
+</style>
+</head>
+<body>
+<div id="loginOverlay">
+  <div class="loginCard">
+    <h2>RECONNECT-US Core</h2>
+    <p class="muted">Secure owner, manager, volunteer and learner access.</p>
+    <input id="loginEmail" type="email" placeholder="Email address" autocomplete="username">
+    <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password">
+    <button id="loginBtn" class="primary" style="width:100%;margin-top:8px">Sign In</button>
+    <button id="resetBtn" class="secondary" style="width:100%;margin-top:8px">Forgot Password</button>
+    <p id="loginMessage" class="small" style="display:none"></p>
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="topbar">
+    <div class="brand">
+      <h1>RECONNECT-US Core — Version 2</h1>
+      <div class="muted">Users, roles, apps and permissions</div>
+    </div>
+    <div class="toolbar">
+      <span id="roleBadge" class="badge blue" style="display:none"></span>
+      <button id="fullscreenBtn" class="secondary">Fullscreen</button>
+      <button id="signOutBtn" class="secondary">Sign Out</button>
+    </div>
+  </div>
+
+  <div id="bootstrapCard" class="card" style="display:none">
+    <h2>First-time owner setup</h2>
+    <div class="warning">
+      No RECONNECT-US owner has been registered yet. Press the button below while signed in with your own Firebase account.
+      The first account to complete this step becomes the permanent Super Admin.
+    </div>
+    <div class="actions" style="margin-top:12px">
+      <button id="claimOwnerBtn" class="primary">Make This Account Super Admin</button>
+    </div>
+  </div>
+
+  <div id="mainApp" style="display:none">
+    <div class="card">
+      <div class="tabs">
+        <button class="secondary tabBtn" data-tab="dashboard">Dashboard</button>
+        <button class="secondary tabBtn adminOnly" data-tab="users">Users & Roles</button>
+        <button class="secondary tabBtn adminOnly" data-tab="apps">Apps & Permissions</button>
+        <button class="secondary tabBtn" data-tab="myaccess">My Access</button>
+      </div>
+    </div>
+
+    <section id="dashboard" class="tab active">
+      <div class="card">
+        <h2>Dashboard</h2>
+        <div class="kpis adminOnly">
+          <div class="kpi"><span class="muted">All users</span><b id="kpiUsers">0</b></div>
+          <div class="kpi"><span class="muted">Managers</span><b id="kpiManagers">0</b></div>
+          <div class="kpi"><span class="muted">Volunteers / Staff</span><b id="kpiVolunteers">0</b></div>
+          <div class="kpi"><span class="muted">Learners / Clients</span><b id="kpiLearners">0</b></div>
+          <div class="kpi"><span class="muted">Waiting approval</span><b id="kpiPending">0</b></div>
+          <div class="kpi"><span class="muted">Registered apps</span><b id="kpiApps">0</b></div>
+        </div>
+        <div class="grid">
+          <div class="notice"><b>Signed in as</b><br><span id="signedInEmail"></span></div>
+          <div class="notice"><b>Your role</b><br><span id="signedInRole"></span></div>
+        </div>
+        <p class="muted">The Core controls what each signed-in user is allowed to open. Each protected app must also check Firebase before showing its contents.</p>
+      </div>
+    </section>
+
+    <section id="users" class="tab">
+      <div class="card">
+        <h2>Add or update a user profile</h2>
+        <div class="warning">
+          First create the person in Firebase: <b>Authentication → Users → Add user</b>.
+          After a new Firebase user signs in once, their account can be added here and approved. You can still paste their Firebase UID manually when needed.
+        </div>
+        <div class="grid" style="margin-top:13px">
+          <div class="field span2"><label>Firebase UID</label><input id="userUid" placeholder="Paste the UID from Firebase Authentication"></div>
+          <div class="field"><label>Name</label><input id="userName" placeholder="Person's name"></div>
+          <div class="field"><label>Email</label><input id="userEmail" type="email" placeholder="Email address"></div>
+          <div class="field"><label>Role</label>
+            <select id="userRole">
+              <option value="learner">Learner / Client</option>
+              <option value="volunteer">Volunteer / Staff</option>
+              <option value="manager">Manager</option>
+              <option value="superadmin">Super Admin</option>
+            </select>
+          </div>
+          <div class="field"><label>Status</label>
+            <select id="userStatus"><option value="active">Active</option><option value="pending">Pending approval</option><option value="disabled">Disabled</option></select>
+          </div>
+          <div class="field span2"><label>Allowed apps</label><div id="userAppChecks" class="checks"></div></div>
+        </div>
+        <div class="actions" style="margin-top:13px">
+          <button id="saveUserBtn" class="primary">Save User Profile</button>
+          <button id="clearUserBtn" class="secondary">Clear</button>
+        </div>
+        <div id="userStatusLine" class="status">Ready.</div>
+      </div>
+
+      <div class="card">
+        <h2>Current users</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th><th>Last sign-in</th><th>Allowed Apps</th><th>Actions</th></tr></thead>
+            <tbody id="usersBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="apps" class="tab">
+      <div class="card">
+        <h2>Add or update an app</h2>
+        <div class="grid">
+          <div class="field"><label>App ID</label><input id="appId" placeholder="training-policy"></div>
+          <div class="field"><label>App name</label><input id="appName" placeholder="Training Policy"></div>
+          <div class="field span2"><label>Web address</label><input id="appUrl" placeholder="https://reconnectus.github.io/reconnectushub/..."></div>
+          <div class="field"><label>Minimum role</label>
+            <select id="appMinRole">
+              <option value="learner">Learner</option>
+              <option value="volunteer">Volunteer</option>
+              <option value="manager">Manager</option>
+              <option value="superadmin">Super Admin</option>
+            </select>
+          </div>
+          <div class="field"><label>Status</label><select id="appStatus"><option value="active">Active</option><option value="hidden">Hidden</option></select></div>
+        </div>
+        <div class="actions" style="margin-top:13px">
+          <button id="saveAppBtn" class="primary">Save App</button>
+          <button id="clearAppBtn" class="secondary">Clear</button>
+        </div>
+        <div id="appStatusLine" class="status">Ready.</div>
+      </div>
+
+      <div class="card">
+        <h2>App catalogue</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>App</th><th>Address</th><th>Minimum role</th><th>Status</th><th>Actions</th></tr></thead>
+            <tbody id="appsBody"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <section id="myaccess" class="tab">
+      <div class="card">
+        <h2>My available apps</h2>
+        <div id="myApps" class="checks"></div>
+      </div>
+    </section>
+  </div>
+
+  <div class="footer">© RECONNECT-US — All rights reserved.</div>
+</div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  signOut,
+  onAuthStateChanged,
+  sendPasswordResetEmail,
+  setPersistence,
+  inMemoryPersistence
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, collection, getDocs, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",
+  authDomain: "reconnect-us-hub.firebaseapp.com",
+  projectId: "reconnect-us-hub",
+  storageBucket: "reconnect-us-hub.firebasestorage.app",
+  messagingSenderId: "891220836369",
+  appId: "1:891220836369:web:6f2b4a09350b8d9fe0b1b0"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+
+// RECONNECT-US secure-login setting:
+// Firebase does not remember the signed-in account after a refresh or reopen.
+await setPersistence(auth, inMemoryPersistence);
+
+// Always clear any Firebase session remembered by an older version of the app.
+// This guarantees that opening or refreshing RECONNECT-US Core starts locked.
+await signOut(auth);
+const db = getFirestore(app);
+const byId = id => document.getElementById(id);
+const ROLE_ORDER = { learner:1, volunteer:2, manager:3, superadmin:4 };
+
+let currentUser = null;
+let currentProfile = null;
+let apps = [];
+let users = [];
+
+function message(el, text, bad=false){
+  el.textContent = text;
+  el.style.color = bad ? "#ffb3b3" : "#cfe0ff";
+  el.style.display = "block";
+}
+function friendly(error){
+  const c=error?.code||"";
+  if(c.includes("invalid-credential")) return "The email address or password is incorrect.";
+  if(c.includes("permission-denied")) return "Firebase blocked this action. Check the Core security rules.";
+  if(c.includes("network-request-failed")) return "There was a network problem.";
+  return error?.message||"Something went wrong.";
+}
+function esc(v){return String(v??"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;")}
+
+async function login(){
+  const email=byId("loginEmail").value.trim(), password=byId("loginPassword").value;
+  if(!email||!password) return message(byId("loginMessage"),"Enter your email address and password.",true);
+  try{await signInWithEmailAndPassword(auth,email,password);byId("loginPassword").value=""}
+  catch(e){message(byId("loginMessage"),friendly(e),true)}
+}
+async function resetPassword(){
+  const email=byId("loginEmail").value.trim();
+  if(!email) return message(byId("loginMessage"),"Enter your email address first.",true);
+  try{await sendPasswordResetEmail(auth,email);message(byId("loginMessage"),"Password reset email sent.")}
+  catch(e){message(byId("loginMessage"),friendly(e),true)}
+}
+async function loadProfile(uid){
+  const snap=await getDoc(doc(db,"users",uid));
+  return snap.exists()?{uid,...snap.data()}:null;
+}
+async function ownerExists(){
+  const snap=await getDoc(doc(db,"system","config"));
+  return snap.exists() && !!snap.data().ownerUid;
+}
+async function claimOwner(){
+  try{
+    await setDoc(doc(db,"system","config"),{ownerUid:currentUser.uid,createdAt:serverTimestamp()});
+    await setDoc(doc(db,"users",currentUser.uid),{
+      name:"Zoe",email:currentUser.email,role:"superadmin",status:"active",
+      allowedApps:["*"],createdAt:serverTimestamp(),updatedAt:serverTimestamp()
+    },{merge:true});
+    location.reload();
+  }catch(e){alert(friendly(e))}
+}
+function isAdmin(){return ["manager","superadmin"].includes(currentProfile?.role)}
+function isSuper(){return currentProfile?.role==="superadmin"}
+
+async function loadAll(){
+  const appSnap=await getDocs(collection(db,"apps"));
+  apps=appSnap.docs.map(d=>({id:d.id,...d.data()})).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+  renderApps(); renderAppChecks(); renderMyApps();
+  if(isAdmin()){
+    const userSnap=await getDocs(collection(db,"users"));
+    users=userSnap.docs.map(d=>({uid:d.id,...d.data()})).sort((a,b)=>(a.name||"").localeCompare(b.name||""));
+    renderUsers();
+    document.getElementById("kpiUsers").textContent=users.length;
+    document.getElementById("kpiManagers").textContent=users.filter(u=>u.role==="manager").length;
+    document.getElementById("kpiVolunteers").textContent=users.filter(u=>u.role==="volunteer").length;
+    document.getElementById("kpiLearners").textContent=users.filter(u=>u.role==="learner").length;
+    document.getElementById("kpiPending").textContent=users.filter(u=>u.status==="pending").length;
+  }
+  document.getElementById("kpiApps").textContent=apps.length;
+}
+function renderAppChecks(selected=[]){
+  const box=byId("userAppChecks"); box.innerHTML="";
+  apps.forEach(a=>{
+    const label=document.createElement("label");label.className="check";
+    label.innerHTML=`<input type="checkbox" value="${esc(a.id)}" ${selected.includes(a.id)||selected.includes("*")?"checked":""}> ${esc(a.name||a.id)}`;
+    box.appendChild(label);
+  });
+}
+function renderUsers(){
+  const body=byId("usersBody");body.innerHTML="";
+  users.forEach(u=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${esc(u.name)}</td><td>${esc(u.email)}</td><td><span class="badge blue">${esc(u.role)}</span></td>
+    <td>${esc(u.status||"active")}</td><td>${u.lastLogin?.toDate ? u.lastLogin.toDate().toLocaleString("en-GB") : "—"}</td><td>${esc((u.allowedApps||[]).join(", "))}</td>
+    <td><button class="secondary" data-edit-user="${u.uid}">Edit</button> ${isSuper()&&u.uid!==currentUser.uid?`<button class="danger" data-del-user="${u.uid}">Delete profile</button>`:""}</td>`;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll("[data-edit-user]").forEach(b=>b.onclick=()=>editUser(b.dataset.editUser));
+  body.querySelectorAll("[data-del-user]").forEach(b=>b.onclick=()=>deleteUserProfile(b.dataset.delUser));
+}
+function editUser(uid){
+  const u=users.find(x=>x.uid===uid);if(!u)return;
+  byId("userUid").value=u.uid;byId("userName").value=u.name||"";byId("userEmail").value=u.email||"";
+  byId("userRole").value=u.role||"learner";byId("userStatus").value=u.status||"active";
+  renderAppChecks(u.allowedApps||[]);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+async function saveUser(){
+  const uid=byId("userUid").value.trim(), role=byId("userRole").value;
+  if(!uid) return message(byId("userStatusLine"),"Paste the Firebase UID.",true);
+  if(role==="superadmin"&&!isSuper()) return message(byId("userStatusLine"),"Only the Super Admin can assign Super Admin.",true);
+  const allowedApps=[...byId("userAppChecks").querySelectorAll("input:checked")].map(x=>x.value);
+  try{
+    await setDoc(doc(db,"users",uid),{
+      name:byId("userName").value.trim(),email:byId("userEmail").value.trim(),role,
+      status:byId("userStatus").value,allowedApps,updatedAt:serverTimestamp()
+    },{merge:true});
+    message(byId("userStatusLine"),"User profile saved.");
+    clearUser();await loadAll();
+  }catch(e){message(byId("userStatusLine"),friendly(e),true)}
+}
+async function deleteUserProfile(uid){
+  if(!confirm("Delete this Core profile? This does not delete the Firebase Authentication account."))return;
+  try{await deleteDoc(doc(db,"users",uid));await loadAll()}catch(e){alert(friendly(e))}
+}
+function clearUser(){
+  ["userUid","userName","userEmail"].forEach(id=>byId(id).value="");
+  byId("userRole").value="learner";byId("userStatus").value="active";renderAppChecks([]);
+}
+function renderApps(){
+  const body=byId("appsBody");body.innerHTML="";
+  apps.forEach(a=>{
+    const tr=document.createElement("tr");
+    tr.innerHTML=`<td>${esc(a.name||a.id)}</td><td>${a.url?`<a style="color:#fff" target="_blank" href="${esc(a.url)}">Open</a>`:"—"}</td>
+    <td>${esc(a.minRole||"learner")}</td><td>${esc(a.status||"active")}</td>
+    <td><button class="secondary" data-edit-app="${a.id}">Edit</button> ${isSuper()?`<button class="danger" data-del-app="${a.id}">Delete</button>`:""}</td>`;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll("[data-edit-app]").forEach(b=>b.onclick=()=>editApp(b.dataset.editApp));
+  body.querySelectorAll("[data-del-app]").forEach(b=>b.onclick=()=>deleteApp(b.dataset.delApp));
+}
+function editApp(id){
+  const a=apps.find(x=>x.id===id);if(!a)return;
+  byId("appId").value=a.id;byId("appName").value=a.name||"";byId("appUrl").value=a.url||"";
+  byId("appMinRole").value=a.minRole||"learner";byId("appStatus").value=a.status||"active";
+}
+async function saveApp(){
+  const id=byId("appId").value.trim().toLowerCase().replace(/[^a-z0-9-]/g,"-");
+  if(!id) return message(byId("appStatusLine"),"Enter an App ID.",true);
+  try{
+    await setDoc(doc(db,"apps",id),{
+      name:byId("appName").value.trim()||id,url:byId("appUrl").value.trim(),
+      minRole:byId("appMinRole").value,status:byId("appStatus").value,updatedAt:serverTimestamp()
+    },{merge:true});
+    message(byId("appStatusLine"),"App saved.");clearApp();await loadAll();
+  }catch(e){message(byId("appStatusLine"),friendly(e),true)}
+}
+async function deleteApp(id){if(confirm("Delete this app from the Core catalogue?")){await deleteDoc(doc(db,"apps",id));await loadAll()}}
+function clearApp(){["appId","appName","appUrl"].forEach(id=>byId(id).value="");byId("appMinRole").value="learner";byId("appStatus").value="active"}
+function renderMyApps(){
+  const box=byId("myApps");box.innerHTML="";
+  const allowed=currentProfile?.allowedApps||[];
+  const role=currentProfile?.role||"learner";
+  const visible=apps.filter(a=>a.status==="active"&&(allowed.includes("*")||allowed.includes(a.id)||ROLE_ORDER[role]>=ROLE_ORDER[a.minRole||"learner"]));
+  if(!visible.length){box.innerHTML='<p class="muted">No apps have been assigned yet.</p>';return}
+  visible.forEach(a=>{
+    const item=document.createElement("div");item.className="check";
+    item.innerHTML=`<div style="flex:1"><b>${esc(a.name||a.id)}</b><br><span class="small muted">${esc(a.minRole||"learner")} access</span></div>
+    ${a.url?`<a href="${esc(a.url)}" target="_blank"><button class="primary">Open</button></a>`:""}`;
+    box.appendChild(item);
+  });
+}
+function showTab(id){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.remove("active"));
+  byId(id).classList.add("active");
+}
+byId("loginOverlay").style.display="flex";
+byId("mainApp").style.display="none";
+
+onAuthStateChanged(auth,async user=>{
+  currentUser=user||null;
+  if(!user){byId("loginOverlay").style.display="flex";byId("mainApp").style.display="none";return}
+  byId("loginOverlay").style.display="none";
+  const exists=await ownerExists();
+  if(!exists){byId("bootstrapCard").style.display="block";return}
+  currentProfile=await loadProfile(user.uid);
+  if(currentProfile){ await setDoc(doc(db,"users",user.uid),{lastLogin:serverTimestamp()},{merge:true}); }
+  if(!currentProfile||currentProfile.status==="disabled"){
+    alert("This account has not been given access, or it has been disabled.");
+    await signOut(auth);return;
+  }
+  byId("mainApp").style.display="block";byId("signedInEmail").textContent=user.email;
+  byId("signedInRole").textContent=currentProfile.role;byId("roleBadge").textContent=currentProfile.role;
+  byId("roleBadge").style.display="inline-block";
+  if(!isAdmin()) document.querySelectorAll(".adminOnly").forEach(x=>x.style.display="none");
+  await loadAll();
+});
+
+byId("loginBtn").onclick=login;byId("loginPassword").onkeydown=e=>{if(e.key==="Enter")login()};
+byId("resetBtn").onclick=resetPassword;
+byId("signOutBtn").onclick=async()=>{
+  await signOut(auth);
+  byId("loginEmail").value="";
+  byId("loginPassword").value="";
+  byId("loginOverlay").style.display="flex";
+  byId("mainApp").style.display="none";
+};
+byId("claimOwnerBtn").onclick=claimOwner;
+document.querySelectorAll(".tabBtn").forEach(b=>b.onclick=()=>showTab(b.dataset.tab));
+byId("saveUserBtn").onclick=saveUser;byId("clearUserBtn").onclick=clearUser;
+byId("saveAppBtn").onclick=saveApp;byId("clearAppBtn").onclick=clearApp;
+byId("fullscreenBtn").onclick=async()=>{if(!document.fullscreenElement)await document.documentElement.requestFullscreen();else await document.exitFullscreen()};
+</script>
+</body>
+</html>
