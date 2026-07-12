@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US Credit Score Simulator</title>
+  <style>
+    :root{
+      --orange:#f28c28;
+      --orange-dark:#cc6e12;
+      --grey:#3f4a52;
+      --light-grey:#eef2f5;
+      --pale-blue:#dff3fb;
+      --blue:#0c89a5;
+      --deep:#17212b;
+      --green:#1d9b5f;
+      --amber:#d98310;
+      --red:#c64545;
+      --white:#ffffff;
+      --shadow:0 18px 45px rgba(23,33,43,.16);
+      --radius:24px;
+    }
+
+    *{box-sizing:border-box}
+
+    body{
+      margin:0;
+      font-family:Arial, Helvetica, sans-serif;
+      color:var(--deep);
+      background:
+        radial-gradient(circle at top left, rgba(242,140,40,.25), transparent 35%),
+        radial-gradient(circle at bottom right, rgba(12,137,165,.20), transparent 40%),
+        linear-gradient(135deg, #f7fbfd, #eef4f7);
+      min-height:100vh;
+    }
+
+    .app{
+      max-width:1180px;
+      margin:0 auto;
+      padding:24px;
+    }
+
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:18px;
+      margin-bottom:24px;
+      background:rgba(255,255,255,.86);
+      backdrop-filter:blur(10px);
+      border:1px solid rgba(255,255,255,.8);
+      border-radius:var(--radius);
+      padding:18px;
+      box-shadow:var(--shadow);
+    }
+
+    .brand{
+      display:flex;
+      align-items:center;
+      gap:14px;
+    }
+
+    .logo{
+      width:72px;
+      height:72px;
+      border-radius:22px;
+      background:linear-gradient(135deg,var(--orange),var(--blue));
+      color:white;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      font-size:24px;
+      box-shadow:0 12px 28px rgba(242,140,40,.35);
+      letter-spacing:-1px;
+    }
+
+    h1{
+      margin:0;
+      font-size:clamp(24px,4vw,42px);
+      line-height:1;
+      color:var(--grey);
+    }
+
+    .brand p{
+      margin:7px 0 0;
+      color:#59656f;
+      font-size:15px;
+    }
+
+    .pill{
+      background:var(--pale-blue);
+      color:#07576b;
+      padding:11px 14px;
+      border-radius:999px;
+      font-weight:800;
+      white-space:nowrap;
+      border:1px solid rgba(12,137,165,.18);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:1fr 390px;
+      gap:22px;
+      align-items:start;
+    }
+
+    .card{
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(255,255,255,.85);
+      border-radius:var(--radius);
+      box-shadow:var(--shadow);
+      padding:22px;
+      margin-bottom:22px;
+    }
+
+    .intro{
+      background:linear-gradient(135deg,var(--grey),#202b35);
+      color:white;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .intro:after{
+      content:"";
+      position:absolute;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:rgba(242,140,40,.25);
+      right:-80px;
+      top:-90px;
+    }
+
+    .intro h2,.intro p{position:relative;z-index:1}
+    .intro h2{margin:0 0 8px;font-size:28px}
+    .intro p{margin:0;line-height:1.55;color:#edf7fb}
+
+    .score-card{
+      position:sticky;
+      top:20px;
+      text-align:center;
+      background:linear-gradient(180deg,#ffffff,#f8fbfc);
+    }
+
+    .score-ring{
+      width:230px;
+      height:230px;
+      margin:10px auto 18px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:
+        conic-gradient(var(--green) 0deg, var(--green) 0deg, #e4eaee 0deg);
+      transition:.45s ease;
+      box-shadow:inset 0 0 0 16px rgba(255,255,255,.9), 0 16px 35px rgba(23,33,43,.12);
+    }
+
+    .score-inner{
+      width:165px;
+      height:165px;
+      background:white;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      box-shadow:inset 0 0 0 1px #e8eef2;
+    }
+
+    .score-number{
+      font-size:54px;
+      font-weight:900;
+      letter-spacing:-2px;
+    }
+
+    .score-label{
+      margin-top:-16px;
+      font-size:14px;
+      color:#68747c;
+      font-weight:800;
+    }
+
+    .rating{
+      display:inline-block;
+      padding:10px 16px;
+      border-radius:999px;
+      color:white;
+      font-weight:900;
+      margin-bottom:12px;
+    }
+
+    .hint{
+      color:#56626c;
+      line-height:1.5;
+      margin:0 auto 14px;
+      max-width:310px;
+    }
+
+    .section-title{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:12px;
+      margin-bottom:18px;
+    }
+
+    .section-title h2{
+      margin:0;
+      font-size:24px;
+      color:var(--grey);
+    }
+
+    .mini{
+      color:#65727c;
+      font-size:14px;
+      font-weight:700;
+    }
+
+    .control{
+      background:#f7fafb;
+      border:1px solid #e2ebef;
+      border-radius:18px;
+      padding:16px;
+      margin-bottom:14px;
+    }
+
+    .control label{
+      display:flex;
+      justify-content:space-between;
+      gap:12px;
+      font-weight:900;
+      color:#34414b;
+      margin-bottom:10px;
+    }
+
+    .value{
+      color:var(--blue);
+      white-space:nowrap;
+    }
+
+    input[type="range"]{
+      width:100%;
+      accent-color:var(--orange);
+    }
+
+    .buttons{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:10px;
+    }
+
+    button{
+      border:0;
+      border-radius:15px;
+      padding:13px 14px;
+      font-weight:900;
+      cursor:pointer;
+      color:white;
+      background:var(--grey);
+      transition:.2s ease;
+      font-size:15px;
+    }
+
+    button:hover{transform:translateY(-2px);filter:brightness(1.04)}
+    .primary{background:linear-gradient(135deg,var(--orange),var(--orange-dark))}
+    .blue{background:linear-gradient(135deg,var(--blue),#075b70)}
+    .light{
+      background:var(--pale-blue);
+      color:#07576b;
+    }
+
+    .scenario-list{
+      display:grid;
+      gap:10px;
+    }
+
+    .scenario{
+      text-align:left;
+      background:white;
+      border:1px solid #e3ebef;
+      color:#34414b;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap:10px;
+    }
+
+    .scenario span{
+      background:#f1f5f7;
+      color:#51606a;
+      padding:6px 9px;
+      border-radius:999px;
+      font-size:12px;
+    }
+
+    .feedback{
+      display:grid;
+      gap:11px;
+      margin-top:16px;
+    }
+
+    .feedback-item{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      background:#f7fafb;
+      border:1px solid #e2ebef;
+      border-radius:16px;
+      padding:13px;
+      line-height:1.4;
+    }
+
+    .dot{
+      min-width:16px;
+      height:16px;
+      border-radius:50%;
+      margin-top:2px;
+    }
+
+    .good{background:var(--green)}
+    .warn{background:var(--amber)}
+    .bad{background:var(--red)}
+
+    .lesson{
+      background:var(--pale-blue);
+      border-left:8px solid var(--blue);
+    }
+
+    .lesson h3{margin:0 0 10px;color:#07576b}
+    .lesson ul{margin:0;padding-left:20px;line-height:1.6}
+
+    .footer{
+      text-align:center;
+      color:#5d6973;
+      font-size:13px;
+      padding:12px 0 20px;
+    }
+
+    .print-note{
+      font-size:13px;
+      color:#69747d;
+      margin-top:8px;
+    }
+
+    @media(max-width:900px){
+      .grid{grid-template-columns:1fr}
+      .score-card{position:static}
+      header{align-items:flex-start;flex-direction:column}
+      .pill{white-space:normal}
+      .buttons{grid-template-columns:1fr}
+    }
+
+    @media print{
+      body{background:white}
+      header,.card{box-shadow:none}
+      button,input{display:none}
+      .grid{grid-template-columns:1fr}
+      .score-card{position:static}
+    }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="brand">
+        <div class="logo">RU</div>
+        <div>
+          <h1>RECONNECT-US</h1>
+          <p>Credit Score Simulator · Financial Awareness Training Tool</p>
+        </div>
+      </div>
+      <button class="blue" id="fullscreenBtn" onclick="toggleFullscreen()">
+        Enter Full Screen
+      </button>
+    </header>
+
+    <section class="card intro">
+      <h2>Learn what can help or damage a credit score</h2>
+      <p>This simulator is for practice and awareness only. It does not check a real credit file and it is not financial advice. Move the sliders, try the real-life scenarios, and see how everyday choices can affect credit confidence.</p>
+    </section>
+
+    <div class="grid">
+      <section>
+        <div class="card">
+          <div class="section-title">
+            <h2>Your credit habits</h2>
+            <div class="mini">Adjust the learner profile</div>
+          </div>
+
+          <div class="control">
+            <label>On-time payments <span class="value" id="paymentsValue">80%</span></label>
+            <input id="payments" type="range" min="0" max="100" value="80">
+          </div>
+
+          <div class="control">
+            <label>Credit used <span class="value" id="usageValue">35%</span></label>
+            <input id="usage" type="range" min="0" max="100" value="35">
+          </div>
+
+          <div class="control">
+            <label>Missed payments in last year <span class="value" id="missedValue">1</span></label>
+            <input id="missed" type="range" min="0" max="6" value="1">
+          </div>
+
+          <div class="control">
+            <label>Hard credit applications <span class="value" id="applicationsValue">2</span></label>
+            <input id="applications" type="range" min="0" max="8" value="2">
+          </div>
+
+          <div class="control">
+            <label>Years building credit history <span class="value" id="historyValue">3</span></label>
+            <input id="history" type="range" min="0" max="20" value="3">
+          </div>
+
+          <div class="control">
+            <label>Registered to vote? <span class="value" id="voteValue">Yes</span></label>
+            <input id="vote" type="range" min="0" max="1" value="1">
+          </div>
+
+          <div class="buttons">
+            <button class="primary" onclick="resetSafe()">Reset to healthy habits</button>
+            <button class="blue" onclick="resetRisky()">Show risky habits</button>
+          </div>
+          <p class="print-note">Tip: try increasing missed payments or credit used and watch the score change.</p>
+        </div>
+
+        <div class="card">
+          <div class="section-title">
+            <h2>Real-life scenarios</h2>
+            <div class="mini">Tap to apply</div>
+          </div>
+
+          <div class="scenario-list">
+            <button class="scenario" onclick="scenario('missedBill')">Missed a phone bill payment <span>negative</span></button>
+            <button class="scenario" onclick="scenario('paidOnTime')">Paid bills on time for 3 months <span>positive</span></button>
+            <button class="scenario" onclick="scenario('maxedCard')">Used almost all available credit <span>negative</span></button>
+            <button class="scenario" onclick="scenario('reducedBalance')">Paid down credit card balance <span>positive</span></button>
+            <button class="scenario" onclick="scenario('manyApplications')">Applied for lots of credit quickly <span>negative</span></button>
+            <button class="scenario" onclick="scenario('registeredVote')">Registered on the electoral roll <span>positive</span></button>
+          </div>
+        </div>
+
+        <div class="card lesson">
+          <h3>Training notes</h3>
+          <ul>
+            <li>Paying on time is one of the biggest habits for credit health.</li>
+            <li>Using too much available credit can make lenders see someone as stretched.</li>
+            <li>Lots of applications in a short time can look risky.</li>
+            <li>A poor score is not permanent. Small steady habits can rebuild confidence over time.</li>
+            <li>Buy Now Pay Later should still be treated like debt, even when it feels easy at checkout.</li>
+          </ul>
+        </div>
+      </section>
+
+      <aside class="card score-card">
+        <div class="section-title">
+          <h2>Simulated score</h2>
+          <div class="mini">0–999</div>
+        </div>
+        <div class="score-ring" id="scoreRing">
+          <div class="score-inner">
+            <div>
+              <div class="score-number" id="scoreNumber">706</div>
+              <div class="score-label">credit score</div>
+            </div>
+          </div>
+        </div>
+        <div class="rating" id="rating">Good</div>
+        <p class="hint" id="summary">This profile is fairly healthy, but credit usage and missed payments could still improve.</p>
+        <div class="feedback" id="feedback"></div>
+        <div class="buttons" style="margin-top:16px">
+          <button class="light" onclick="window.print()">Print learner summary</button>
+          <button class="primary" onclick="downloadSummary()">Save summary</button>
+        </div>
+      </aside>
+    </div>
+
+    <div class="footer">© RECONNECT-US — All rights reserved · Financial Awareness Training Tool</div>
+  </main>
+
+  <script>
+    const els = {
+      payments: document.getElementById('payments'),
+      usage: document.getElementById('usage'),
+      missed: document.getElementById('missed'),
+      applications: document.getElementById('applications'),
+      history: document.getElementById('history'),
+      vote: document.getElementById('vote')
+    };
+
+    const valueEls = {
+      payments: document.getElementById('paymentsValue'),
+      usage: document.getElementById('usageValue'),
+      missed: document.getElementById('missedValue'),
+      applications: document.getElementById('applicationsValue'),
+      history: document.getElementById('historyValue'),
+      vote: document.getElementById('voteValue')
+    };
+
+    Object.values(els).forEach(el => el.addEventListener('input', update));
+
+    function clamp(n,min,max){ return Math.max(min, Math.min(max, n)); }
+
+    function calculateScore(){
+      const payments = +els.payments.value;
+      const usage = +els.usage.value;
+      const missed = +els.missed.value;
+      const applications = +els.applications.value;
+      const history = +els.history.value;
+      const vote = +els.vote.value;
+
+      let score = 350;
+      score += payments * 3.0;
+      score += (100 - usage) * 1.6;
+      score -= missed * 55;
+      score -= applications * 18;
+      score += Math.min(history, 10) * 18;
+      score += Math.max(0, history - 10) * 5;
+      score += vote ? 45 : 0;
+
+      return clamp(Math.round(score), 0, 999);
+    }
+
+    function ratingFor(score){
+      if(score >= 800) return ['Excellent', 'var(--green)', 'This is a strong profile. The learner is showing habits that lenders usually like to see.'];
+      if(score >= 650) return ['Good', 'var(--green)', 'This profile is fairly healthy, but there is still room to strengthen it.'];
+      if(score >= 500) return ['Fair', 'var(--amber)', 'This profile may be accepted by some lenders, but borrowing could cost more or be limited.'];
+      if(score >= 350) return ['Poor', 'var(--red)', 'This profile may struggle to get credit. Focus on basics: pay on time, reduce balances, avoid new applications.'];
+      return ['Very poor', 'var(--red)', 'This profile needs rebuilding. The best first step is steady payments and avoiding extra borrowing.'];
+    }
+
+    function update(){
+      valueEls.payments.textContent = els.payments.value + '%';
+      valueEls.usage.textContent = els.usage.value + '%';
+      valueEls.missed.textContent = els.missed.value;
+      valueEls.applications.textContent = els.applications.value;
+      valueEls.history.textContent = els.history.value;
+      valueEls.vote.textContent = els.vote.value == 1 ? 'Yes' : 'No';
+
+      const score = calculateScore();
+      const [label, color, summary] = ratingFor(score);
+      const degrees = Math.round((score / 999) * 360);
+
+      document.getElementById('scoreNumber').textContent = score;
+      document.getElementById('rating').textContent = label;
+      document.getElementById('rating').style.background = color;
+      document.getElementById('summary').textContent = summary;
+      document.getElementById('scoreRing').style.background =
+        `conic-gradient(${color} 0deg, ${color} ${degrees}deg, #e4eaee ${degrees}deg)`;
+
+      buildFeedback();
+    }
+
+    function buildFeedback(){
+      const feedback = [];
+      const payments = +els.payments.value;
+      const usage = +els.usage.value;
+      const missed = +els.missed.value;
+      const applications = +els.applications.value;
+      const history = +els.history.value;
+      const vote = +els.vote.value;
+
+      if(payments >= 90) feedback.push(['good','Strong on-time payment habit. Keep this up.']);
+      else if(payments >= 70) feedback.push(['warn','Mostly paying on time, but missed or late payments still matter.']);
+      else feedback.push(['bad','Payment history is weak. This is one of the first things to fix.']);
+
+      if(usage <= 30) feedback.push(['good','Credit usage is controlled. This usually looks healthier.']);
+      else if(usage <= 60) feedback.push(['warn','Credit usage is getting high. Paying balances down may help.']);
+      else feedback.push(['bad','Credit usage is very high. This can make someone look financially stretched.']);
+
+      if(missed === 0) feedback.push(['good','No missed payments showing in this simulation.']);
+      else if(missed <= 2) feedback.push(['warn','A small number of missed payments can still drag the score down.']);
+      else feedback.push(['bad','Several missed payments are seriously damaging the simulated score.']);
+
+      if(applications <= 2) feedback.push(['good','Credit applications are at a sensible level.']);
+      else if(applications <= 5) feedback.push(['warn','Several applications can make lenders cautious.']);
+      else feedback.push(['bad','Too many applications close together can look risky.']);
+
+      if(history >= 5) feedback.push(['good','A longer credit history can support a stronger profile.']);
+      else feedback.push(['warn','Credit history is still short. Time and consistency help.']);
+
+      if(vote) feedback.push(['good','Being on the electoral roll can help identity checks.']);
+      else feedback.push(['warn','Not being registered to vote can make identity checks harder.']);
+
+      document.getElementById('feedback').innerHTML = feedback.map(item =>
+        `<div class="feedback-item"><div class="dot ${item[0]}"></div><div>${item[1]}</div></div>`
+      ).join('');
+    }
+
+    function setValues(values){
+      Object.entries(values).forEach(([key,val]) => els[key].value = val);
+  
+    function toggleFullscreen(){
+      if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function updateFullscreenButton(){
+      const btn = document.getElementById('fullscreenBtn');
+      if(!btn) return;
+
+      btn.textContent = document.fullscreenElement
+        ? 'Exit Full Screen'
+        : 'Enter Full Screen';
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+
+    update();
+    updateFullscreenButton();
+    }
+
+    function resetSafe(){
+      setValues({payments:98, usage:18, missed:0, applications:1, history:6, vote:1});
+    }
+
+    function resetRisky(){
+      setValues({payments:45, usage:88, missed:4, applications:7, history:1, vote:0});
+    }
+
+    function scenario(type){
+      const v = Object.fromEntries(Object.entries(els).map(([k,el]) => [k,+el.value]));
+      if(type === 'missedBill') v.missed = clamp(v.missed + 1, 0, 6), v.payments = clamp(v.payments - 12, 0, 100);
+      if(type === 'paidOnTime') v.payments = clamp(v.payments + 10, 0, 100), v.missed = clamp(v.missed - 1, 0, 6);
+      if(type === 'maxedCard') v.usage = clamp(v.usage + 30, 0, 100);
+      if(type === 'reducedBalance') v.usage = clamp(v.usage - 25, 0, 100);
+      if(type === 'manyApplications') v.applications = clamp(v.applications + 3, 0, 8);
+      if(type === 'registeredVote') v.vote = 1;
+      setValues(v);
+    }
+
+    function downloadSummary(){
+      const text = `RECONNECT-US Credit Score Simulator Summary
+
+Simulated score: ${document.getElementById('scoreNumber').textContent}
+Rating: ${document.getElementById('rating').textContent}
+
+On-time payments: ${els.payments.value}%
+Credit used: ${els.usage.value}%
+Missed payments: ${els.missed.value}
+Hard applications: ${els.applications.value}
+Years building credit history: ${els.history.value}
+Registered to vote: ${els.vote.value == 1 ? 'Yes' : 'No'}
+
+Training reminder:
+This is a practice simulator only. It does not check a real credit file and is not financial advice.
+
+© RECONNECT-US — All rights reserved`;
+      const blob = new Blob([text], {type:'text/plain'});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'RECONNECT-US-credit-score-summary.txt';
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+
+    function toggleFullscreen(){
+      if(!document.fullscreenElement){
+        document.documentElement.requestFullscreen();
+      } else {
+        document.exitFullscreen();
+      }
+    }
+
+    function updateFullscreenButton(){
+      const btn = document.getElementById('fullscreenBtn');
+      if(!btn) return;
+
+      btn.textContent = document.fullscreenElement
+        ? 'Exit Full Screen'
+        : 'Enter Full Screen';
+    }
+
+    document.addEventListener('fullscreenchange', updateFullscreenButton);
+
+
+    update();
+    updateFullscreenButton();
+  </script>
+</body>
+</html>
