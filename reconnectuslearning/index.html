@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US • Learning — Cloud Hub Build 1</title>
+
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+.box{
+  text-align:center;
+  max-width:420px;
+  width:100%;
+}
+
+h1{
+  margin-bottom:20px;
+}
+
+.btn{
+  display:block;
+  margin:12px auto;
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  width:100%;
+}
+
+.primary{
+  background:#22d7c6;
+  color:#042131;
+}
+
+.alt{
+  background:#59a9ff;
+  color:#042131;
+}
+
+.back{
+  margin-top:20px;
+  background:#444;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>RECONNECT-US Learning</h1>
+  <p style="color:#9fb2c8;font-size:.9rem;margin-top:-8px;">Core protected • Cloud record enabled</p>
+
+  <div style="margin:0 auto 16px auto;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);max-width:420px;">
+    <div id="cloudStatus" style="color:#cbd5e1;font-size:.9rem;">Connecting to the learner's Learning cloud record…</div>
+    <div style="margin-top:8px;font-weight:bold;">Account: <span id="accountLabel">Checking…</span></div>
+    <div style="margin-top:6px;font-weight:bold;">Last app: <span id="lastAppLabel">None yet</span></div>
+  </div>
+
+  <button class="btn primary" data-learning-id="digital-skills-learning" data-learning-name="Digital Skills Learning" data-route="learning.html">
+    Digital Skills Learning
+  </button>
+
+  <button class="btn alt" data-learning-id="life-after-prison-learning" data-learning-name="Life After Prison Learning" data-route="prison.html">
+    Life After Prison Learning
+  </button>
+
+  <button class="btn back" onclick="backHome()">
+    Back to Home
+  </button>
+
+  <div style="margin-top:16px;color:#9fb2c8;font-size:.85rem;">© RECONNECT-US — All rights reserved • Learning Cloud Hub Build 1</div>
+</div>
+
+<script>
+function backHome(){
+  window.location.href = "../index.html";
+}
+</script>
+
+
+
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import {
+  getFirestore,
+  doc,
+  getDoc,
+  setDoc,
+  serverTimestamp
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",
+  authDomain: "reconnect-us-hub.firebaseapp.com",
+  projectId: "reconnect-us-hub",
+  storageBucket: "reconnect-us-hub.firebasestorage.app",
+  messagingSenderId: "891220836369",
+  appId: "1:891220836369:web:6f2b4a09350b8d9fe0b1b0"
+};
+
+const firebaseApp = getApps().length ? getApp() : initializeApp(firebaseConfig);
+const auth = getAuth(firebaseApp);
+const db = getFirestore(firebaseApp);
+
+const LEARNING_APPS = [
+  ["digital-skills-learning", "Digital Skills Learning"],
+  ["life-after-prison-learning", "Life After Prison Learning"]
+];
+
+let currentUser = null;
+let learningRecord = null;
+
+function learningDocRef(){
+  return doc(db, "users", currentUser.uid, "appProgress", "reconnectuslearning");
+}
+
+function emptyLearningRecord(name){
+  return {
+    name,
+    status: "not-started",
+    percent: 0,
+    score: 0,
+    completed: false,
+    lastActivityAt: null,
+    data: {}
+  };
+}
+
+function buildEmptyRecord(){
+  const apps = {};
+  LEARNING_APPS.forEach(([id, name]) => {
+    apps[id] = emptyLearningRecord(name);
+  });
+
+  return {
+    appId: "reconnectuslearning",
+    lastAppId: "",
+    lastAppName: "",
+    lastActivityAt: null,
+    apps
+  };
+}
+
+function updateUi(){
+  document.getElementById("accountLabel").textContent =
+    currentUser?.displayName ||
+    currentUser?.email ||
+    "Signed-in learner";
+
+  document.getElementById("lastAppLabel").textContent =
+    learningRecord?.lastAppName ||
+    "None yet";
+
+  document.getElementById("cloudStatus").textContent =
+    "Cloud record ready. Each learning app will save into this learner's own app section.";
+}
+
+async function ensureLearningRecord(){
+  const ref = learningDocRef();
+  const snapshot = await getDoc(ref);
+  const base = buildEmptyRecord();
+
+  if(snapshot.exists()){
+    const existing = snapshot.data();
+    learningRecord = {
+      ...base,
+      ...existing,
+      apps: {
+        ...base.apps,
+        ...(existing.apps || {})
+      }
+    };
+
+    await setDoc(ref, learningRecord, { merge: true });
+  }else{
+    learningRecord = base;
+    await setDoc(ref, {
+      ...learningRecord,
+      createdAt: serverTimestamp(),
+      updatedAt: serverTimestamp()
+    });
+  }
+
+  updateUi();
+}
+
+async function recordLearningLaunch(appId, appName){
+  if(!currentUser || !learningRecord) return;
+
+  const existingApp =
+    learningRecord.apps[appId] ||
+    emptyLearningRecord(appName);
+
+  const updatedApp = {
+    ...existingApp,
+    name: appName,
+    status: existingApp.status === "not-started"
+      ? "started"
+      : existingApp.status,
+    lastActivityAt: new Date().toISOString()
+  };
+
+  learningRecord.lastAppId = appId;
+  learningRecord.lastAppName = appName;
+  learningRecord.lastActivityAt = new Date().toISOString();
+  learningRecord.apps[appId] = updatedApp;
+
+  await setDoc(learningDocRef(), {
+    appId: "reconnectuslearning",
+    lastAppId: appId,
+    lastAppName: appName,
+    lastActivityAt: new Date().toISOString(),
+    updatedAt: serverTimestamp(),
+    [`apps.${appId}`]: updatedApp
+  }, { merge: true });
+
+  updateUi();
+}
+
+document.querySelectorAll("[data-learning-id]").forEach(button => {
+  button.addEventListener("click", async () => {
+    const route = button.dataset.route;
+    const appId = button.dataset.learningId;
+    const appName = button.dataset.learningName;
+
+    try{
+      if(currentUser && learningRecord){
+        await recordLearningLaunch(appId, appName);
+      }
+    }catch(error){
+      console.error("Learning launch save failed:", error);
+    }
+
+    window.location.href = route;
+  });
+});
+
+onAuthStateChanged(auth, async user => {
+  currentUser = user || null;
+
+  if(!user){
+    document.getElementById("cloudStatus").textContent =
+      "Sign in through RECONNECT-US to use Learning cloud saving.";
+    document.getElementById("accountLabel").textContent = "Not signed in";
+    return;
+  }
+
+  try{
+    await ensureLearningRecord();
+  }catch(error){
+    console.error("Learning cloud record failed:", error);
+    document.getElementById("cloudStatus").textContent =
+      "The Learning cloud record could not be opened.";
+  }
+});
+</script>
+
+<script type="module"
+  src="../reconnectus-core/reconnectus-access-guard.js"
+  data-app-id="reconnectuslearning"
+  data-login-url="../index.html">
+</script>
+
+</body>
+</html>
