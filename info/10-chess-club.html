@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reconnect Us Chess Club</title>
+  <style>
+    :root{
+      --blue:#0d4f9f;
+      --blue-deep:#0a2f66;
+      --teal:#18b7c9;
+      --teal-soft:#8fe8ef;
+      --orange:#f39a24;
+      --white:#ffffff;
+      --ink:#16345d;
+      --panel:rgba(255,255,255,0.90);
+      --shadow:rgba(8,33,79,0.22);
+    }
+
+    *{box-sizing:border-box;}
+
+    body{
+      margin:0;
+      font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+      color:var(--ink);
+      background:
+        radial-gradient(circle at top left, rgba(143,232,239,0.55), transparent 28%),
+        radial-gradient(circle at top right, rgba(243,154,36,0.16), transparent 24%),
+        linear-gradient(160deg, #eef9fb 0%, #d7f2f5 18%, #dff0ff 40%, #edf5ff 62%, #f8fbff 100%);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:28px;
+    }
+
+    .poster{
+      width:min(980px, 100%);
+      background:
+        linear-gradient(180deg, rgba(255,255,255,0.92), rgba(255,255,255,0.96)),
+        linear-gradient(135deg, rgba(24,183,201,0.10), rgba(13,79,159,0.10));
+      border-radius:26px;
+      overflow:hidden;
+      box-shadow:0 24px 60px var(--shadow);
+      border:1px solid rgba(13,79,159,0.10);
+      position:relative;
+    }
+
+    .topband{
+      position:relative;
+      background:
+        linear-gradient(135deg, var(--teal) 0%, #1590c8 32%, var(--blue) 72%, var(--blue-deep) 100%);
+      color:white;
+      padding:42px 52px 60px;
+      overflow:hidden;
+    }
+
+    .topband::before{
+      content:"";
+      position:absolute;
+      inset:auto -10% -38px -10%;
+      height:88px;
+      background:rgba(255,255,255,0.93);
+      border-radius:0 0 50% 50% / 0 0 100% 100%;
+    }
+
+    .topband::after{
+      content:"";
+      position:absolute;
+      right:-90px;
+      top:-90px;
+      width:260px;
+      height:260px;
+      border-radius:50%;
+      background:rgba(255,255,255,0.09);
+      box-shadow:
+        -130px 110px 0 30px rgba(255,255,255,0.06),
+        -250px 150px 0 0 rgba(255,255,255,0.04);
+    }
+
+    .brand{
+      position:relative;
+      z-index:2;
+      text-align:center;
+    }
+
+    .brand h1{
+      margin:0;
+      font-size:clamp(2.4rem, 5vw, 4.7rem);
+      line-height:0.95;
+      letter-spacing:1px;
+      font-weight:900;
+      text-transform:uppercase;
+      text-shadow:0 3px 12px rgba(0,0,0,0.18);
+    }
+
+    .brand .sub{
+      margin-top:14px;
+      font-size:clamp(1rem, 2vw, 1.45rem);
+      font-weight:700;
+      letter-spacing:0.4px;
+      color:#eefcff;
+    }
+
+    .content{
+      position:relative;
+      padding:26px 40px 36px;
+    }
+
+    .intro{
+      text-align:center;
+      padding:8px 10px 20px;
+    }
+
+    .intro h2{
+      margin:0 0 14px;
+      font-size:clamp(1.8rem, 3.2vw, 3rem);
+      color:var(--blue-deep);
+      line-height:1.1;
+    }
+
+    .intro p{
+      margin:0 auto;
+      max-width:840px;
+      font-size:clamp(1.02rem, 1.7vw, 1.28rem);
+      line-height:1.7;
+      color:#26466d;
+    }
+
+    .highlight{
+      color:var(--orange);
+      font-weight:800;
+    }
+
+    .club-box{
+      margin:22px auto 26px;
+      background:linear-gradient(135deg, rgba(24,183,201,0.12), rgba(13,79,159,0.08));
+      border:1px solid rgba(13,79,159,0.12);
+      border-radius:22px;
+      padding:26px 24px;
+      text-align:center;
+      box-shadow:0 10px 24px rgba(9,52,99,0.08);
+    }
+
+    .club-box .label{
+      display:inline-block;
+      background:linear-gradient(135deg, var(--orange), #ffb14d);
+      color:white;
+      padding:8px 16px;
+      border-radius:999px;
+      font-size:0.95rem;
+      font-weight:800;
+      letter-spacing:0.3px;
+      text-transform:uppercase;
+      margin-bottom:14px;
+    }
+
+    .club-box h3{
+      margin:0;
+      font-size:clamp(1.6rem, 2.8vw, 2.5rem);
+      color:var(--blue);
+    }
+
+    .club-box p{
+      margin:12px auto 0;
+      max-width:700px;
+      font-size:clamp(1rem, 1.6vw, 1.18rem);
+      line-height:1.65;
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(2, minmax(0, 1fr));
+      gap:18px;
+      margin-top:8px;
+    }
+
+    .card{
+      background:var(--panel);
+      border-radius:20px;
+      padding:22px 20px;
+      box-shadow:0 10px 22px rgba(8,33,79,0.08);
+      border:1px solid rgba(13,79,159,0.08);
+      min-height:100%;
+    }
+
+    .card h4{
+      margin:0 0 10px;
+      color:var(--blue);
+      font-size:1.3rem;
+      line-height:1.2;
+    }
+
+    .card p{
+      margin:0;
+      line-height:1.65;
+      font-size:1rem;
+      color:#315073;
+    }
+
+    .quote{
+      margin:26px 0 8px;
+      background:linear-gradient(135deg, var(--blue-deep), var(--blue));
+      color:white;
+      border-radius:22px;
+      padding:24px 24px;
+      text-align:center;
+      box-shadow:0 14px 30px rgba(10,47,102,0.22);
+    }
+
+    .quote strong{
+      display:block;
+      font-size:clamp(1.35rem, 2.4vw, 2rem);
+      margin-bottom:10px;
+      color:#ffffff;
+    }
+
+    .quote span{
+      display:block;
+      font-size:clamp(1rem, 1.7vw, 1.2rem);
+      line-height:1.7;
+      color:#e9f7ff;
+    }
+
+    .footer{
+      margin-top:24px;
+      padding-top:20px;
+      border-top:2px solid rgba(13,79,159,0.10);
+      text-align:center;
+    }
+
+    .footer .big{
+      font-size:clamp(1.35rem, 2.4vw, 2rem);
+      color:var(--blue-deep);
+      font-weight:900;
+      line-height:1.25;
+      margin-bottom:8px;
+    }
+
+    .footer .small{
+      font-size:clamp(1rem, 1.6vw, 1.12rem);
+      color:#43607f;
+      line-height:1.65;
+      max-width:820px;
+      margin:0 auto;
+    }
+
+    .copyright{
+      text-align:center;
+      padding:18px 24px 24px;
+      color:#557390;
+      font-size:0.95rem;
+      font-weight:600;
+    }
+
+    @media (max-width: 760px){
+      .topband{padding:34px 24px 52px;}
+      .content{padding:22px 18px 28px;}
+      .grid{grid-template-columns:1fr;}
+      .card{padding:18px 16px;}
+    }
+  </style>
+</head>
+<body>
+  <main class="poster">
+    <section class="topband">
+      <div class="brand">
+        <h1>RECONNECT US</h1>
+        <div class="sub">Online Chess Club • Friendly, social and easy to join</div>
+      </div>
+    </section>
+
+    <section class="content">
+      <div class="intro">
+        <h2>Reconnect Us Chess Club on chess.com</h2>
+        <p>
+          Looking for something positive to do in your spare time? <span class="highlight">Reconnect Us has a chess club on chess.com</span>,
+          and it is a brilliant way to keep your mind active, meet new people, and have a game whenever you feel like it.
+        </p>
+      </div>
+
+      <div class="club-box">
+        <div class="label">Join the club</div>
+        <h3>Club name: Reconnect Us</h3>
+        <p>
+          You can play chess with people online from your own home, your sitting room, or wherever you are comfortable.
+          They do not need to be in the same room as you. They could be in another town, another city, or the other side of the world,
+          and you can still have a proper game because it is all online.
+        </p>
+      </div>
+
+      <div class="grid">
+        <article class="card">
+          <h4>Play anytime you are bored</h4>
+          <p>
+            If you have spare time, feel bored, or just want something different to do, chess is there when you need it.
+            It gives you something to focus on, helps pass the time in a good way, and can be a really enjoyable part of your day.
+          </p>
+        </article>
+
+        <article class="card">
+          <h4>Challenge someone you know</h4>
+          <p>
+            You can message or ring somebody and say you fancy a game. If they are free, you can both go on chess.com and play each other
+            straight away without needing to travel anywhere.
+          </p>
+        </article>
+
+        <article class="card">
+          <h4>Meet people through chess</h4>
+          <p>
+            It is also a great way to get to know people. Online chess gives you a reason to connect, chat, and build confidence with others
+            through something simple and enjoyable.
+          </p>
+        </article>
+
+        <article class="card">
+          <h4>Easy, flexible and at your own pace</h4>
+          <p>
+            You can play casually, take your time, learn as you go, and enjoy it in a relaxed way. Whether you are new to chess or already like the game,
+            there is space for you in the Reconnect Us club.
+          </p>
+        </article>
+      </div>
+
+      <div class="quote">
+        <strong>Fancy a game?</strong>
+        <span>
+          Pick up the phone, message someone, or go online and see who is about. A game of chess can start from your own sofa and connect you to someone anywhere in the world.
+        </span>
+      </div>
+
+      <div class="footer">
+        <div class="big">Good for the mind. Good for connection. Good for passing the time well.</div>
+        <div class="small">
+          Join <strong>Reconnect Us</strong> on <strong>chess.com</strong> and enjoy friendly online chess from the comfort of home.
+        </div>
+      </div>
+    </section>
+
+    <div class="copyright">© RECONNECT US — All rights reserved.</div>
+  </main>
+</body>
+</html>
