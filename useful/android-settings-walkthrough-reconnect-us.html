@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RECONNECT-US | Simple Android Settings Guide</title>
+  <style>
+    :root {
+      --bg: #f4f8fb;
+      --card: #ffffff;
+      --text: #17324d;
+      --muted: #587089;
+      --primary: #1f6fb2;
+      --primary-dark: #164d7a;
+      --primary-soft: #e6f2fb;
+      --accent: #f28c28;
+      --accent-soft: #fff1e2;
+      --border: #d7e5f1;
+      --success: #0f766e;
+      --warn: #9a5b17;
+      --shadow: 0 12px 28px rgba(19, 55, 91, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(circle at top right, #eff7ff 0%, #eff7ff 16%, transparent 16%),
+        linear-gradient(180deg, #eef7fd 0%, var(--bg) 100%);
+      line-height: 1.55;
+    }
+
+    .wrap {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 22px;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      border-radius: 24px;
+      color: #fff;
+      overflow: hidden;
+      box-shadow: 0 18px 34px rgba(22, 77, 122, 0.18);
+      margin-bottom: 20px;
+    }
+
+    .hero-inner {
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 18px;
+      padding: 24px;
+      align-items: center;
+    }
+
+    .brand {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255,255,255,0.12);
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 999px;
+      padding: 10px 16px;
+      margin-bottom: 16px;
+      font-weight: bold;
+      letter-spacing: 0.4px;
+    }
+
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), #ffb25c);
+      color: #17324d;
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+      box-shadow: inset 0 0 0 2px rgba(255,255,255,0.28);
+    }
+
+    .hero h1 {
+      margin: 0 0 10px;
+      font-size: 2rem;
+      line-height: 1.2;
+    }
+
+    .hero p {
+      margin: 0;
+      max-width: 680px;
+      color: rgba(255,255,255,0.96);
+    }
+
+    .phone-visual {
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 28px;
+      padding: 16px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .phone {
+      width: 240px;
+      background: #0e2234;
+      border-radius: 28px;
+      padding: 12px;
+      box-shadow: 0 10px 24px rgba(0,0,0,0.2);
+    }
+
+    .screen {
+      background: linear-gradient(180deg, #f8fbff 0%, #edf5fb 100%);
+      border-radius: 20px;
+      padding: 12px;
+      min-height: 380px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .topbar {
+      height: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .speaker {
+      width: 78px;
+      height: 6px;
+      background: #c8d8e8;
+      border-radius: 999px;
+    }
+
+    .search {
+      background: #ffffff;
+      border: 1px solid #dce8f2;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 0.92rem;
+      color: #6b8094;
+      margin-bottom: 10px;
+    }
+
+    .mini-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    .mini-tile {
+      background: #fff;
+      border: 1px solid #dce8f2;
+      border-radius: 14px;
+      padding: 10px 6px;
+      text-align: center;
+      font-size: 0.78rem;
+      color: var(--primary-dark);
+      min-height: 58px;
+    }
+
+    .mini-list {
+      display: grid;
+      gap: 8px;
+    }
+
+    .mini-item {
+      background: #fff;
+      border: 1px solid #dce8f2;
+      border-radius: 14px;
+      padding: 10px 12px;
+      font-size: 0.84rem;
+      color: #27435d;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-soft);
+    }
+
+    .notice, .card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 20px;
+      box-shadow: var(--shadow);
+      margin-bottom: 18px;
+    }
+
+    .notice {
+      border-left: 8px solid var(--accent);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 1.4rem;
+      line-height: 1.25;
+    }
+
+    h3 {
+      margin: 0 0 10px;
+      font-size: 1.05rem;
+      color: var(--primary-dark);
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 40px 1fr;
+      gap: 12px;
+      align-items: start;
+      margin-bottom: 14px;
+    }
+
+    .num {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      display: grid;
+      place-items: center;
+      font-weight: bold;
+      border: 1px solid #c7ddf0;
+    }
+
+    .step p { margin: 0; }
+
+    .picture-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    .picture {
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: linear-gradient(180deg, #f9fcff 0%, #f0f7fc 100%);
+      padding: 14px;
+      min-height: 180px;
+    }
+
+    .picture .icon {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--accent-soft), #fff);
+      border: 1px solid #f8d2a8;
+      font-size: 2rem;
+      margin-bottom: 10px;
+    }
+
+    .path {
+      display: inline-block;
+      margin: 4px 6px 4px 0;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #f9fcff;
+      border: 1px solid var(--border);
+      font-size: 0.93rem;
+      color: #31506b;
+    }
+
+    ul {
+      margin: 10px 0 0;
+      padding-left: 20px;
+    }
+
+    li { margin-bottom: 7px; }
+
+    .tip, .warning, .copyright-box {
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-top: 12px;
+    }
+
+    .tip {
+      background: #ecfffb;
+      border: 1px solid #bae9dc;
+      color: var(--success);
+      font-weight: bold;
+    }
+
+    .warning {
+      background: #fff7ed;
+      border: 1px solid #f7cf9f;
+      color: var(--warn);
+    }
+
+    .copyright-box {
+      background: #f6faff;
+      border: 1px solid var(--border);
+      color: var(--primary-dark);
+      font-weight: bold;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+
+    .footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.93rem;
+      padding: 8px 0 28px;
+    }
+
+    @media (max-width: 860px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .phone-visual { order: -1; }
+      .hero h1 { font-size: 1.7rem; }
+    }
+
+    @media print {
+      body { background: #fff; }
+      .hero, .card, .notice { box-shadow: none; }
+      .wrap { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <section class="hero">
+      <div class="hero-inner">
+        <div>
+          <div class="brand">
+            <div class="brand-badge">R-U</div>
+            <div>RECONNECT-US</div>
+          </div>
+          <h1>Simple Android Settings Walk-Through</h1>
+          <p>This guide is written in plain, easy English for people who may never have used a phone before. It shows the main Android settings in simple steps, with clear picture boxes to help people understand what they are looking for.</p>
+        </div>
+        <div class="phone-visual" aria-hidden="true">
+          <div class="phone">
+            <div class="screen">
+              <div class="topbar"><div class="speaker"></div></div>
+              <div class="search">🔍 Search settings</div>
+              <div class="mini-grid">
+                <div class="mini-tile">📶<br>Wi-Fi</div>
+                <div class="mini-tile">🔊<br>Sound</div>
+                <div class="mini-tile">💡<br>Display</div>
+              </div>
+              <div class="mini-list">
+                <div class="mini-item"><span>Bluetooth</span><span class="dot"></span></div>
+                <div class="mini-item"><span>Apps</span><span class="dot"></span></div>
+                <div class="mini-item"><span>Security</span><span class="dot"></span></div>
+                <div class="mini-item"><span>About phone</span><span class="dot"></span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice">
+      <h2>Important RECONNECT-US notice</h2>
+      <div class="copyright-box">This guide cannot be removed, copied, shared, moved, or used anywhere else unless RECONNECT-US gives permission.</div>
+      <p style="margin-bottom:0;">This version uses a RECONNECT-US branded heading and a clean blue-and-orange colour style for a professional learning guide.</p>
+    </section>
+
+    <section class="card">
+      <h2>Before you start</h2>
+      <div class="step">
+        <div class="num">1</div>
+        <p>Look for the <strong>Settings</strong> app on the phone. It often looks like a <strong>cog</strong> or <strong>gear</strong>.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <p>Tap it once to open it.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <p>If you cannot see it, swipe up on the home screen to see all apps, then look for <strong>Settings</strong>.</p>
+      </div>
+      <div class="tip">Tip: Many phones have a search box at the top of Settings. If you are stuck, type a word like Wi-Fi, sound, Bluetooth, or brightness.</div>
+    </section>
+
+    <section class="card">
+      <h2>Picture guide: what to look for</h2>
+      <div class="picture-grid">
+        <div class="picture">
+          <div class="icon">⚙️</div>
+          <h3>Settings app</h3>
+          <p>This is the main place where you change how the phone works.</p>
+        </div>
+        <div class="picture">
+          <div class="icon">⬇️</div>
+          <h3>Swipe down from top</h3>
+          <p>This opens <strong>Quick Settings</strong>, where common buttons are kept.</p>
+        </div>
+        <div class="picture">
+          <div class="icon">📶</div>
+          <h3>Wi-Fi and internet</h3>
+          <p>This is where you connect the phone to the internet.</p>
+        </div>
+        <div class="picture">
+          <div class="icon">🔒</div>
+          <h3>Security</h3>
+          <p>This is where you set a PIN, pattern, or password for the phone.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>The quickest way to change common settings</h2>
+      <div class="step">
+        <div class="num">1</div>
+        <p>Put your finger at the very top of the screen.</p>
+      </div>
+      <div class="step">
+        <div class="num">2</div>
+        <p>Swipe down once. You should see small buttons. This is often called <strong>Quick Settings</strong>.</p>
+      </div>
+      <div class="step">
+        <div class="num">3</div>
+        <p>Swipe down again to see more buttons.</p>
+      </div>
+      <div class="step">
+        <div class="num">4</div>
+        <p>Tap a button to turn it on or off. Common ones are <strong>Wi-Fi</strong>, <strong>Bluetooth</strong>, <strong>Torch</strong>, <strong>Airplane mode</strong>, and <strong>Do Not Disturb</strong>.</p>
+      </div>
+      <div class="warning">On many Android phones, touching and holding one of these buttons opens the full settings page for that item.</div>
+    </section>
+
+    <section class="card">
+      <h2>Main parts of Android Settings</h2>
+      <div class="grid">
+        <div>
+          <h3>Internet and connections</h3>
+          <p>Used for Wi-Fi, mobile data, Bluetooth, and hotspot.</p>
+        </div>
+        <div>
+          <h3>Sound and notifications</h3>
+          <p>Used for ringtone, media volume, alarms, and alerts.</p>
+        </div>
+        <div>
+          <h3>Display</h3>
+          <p>Used for brightness, screen timeout, dark mode, and text size.</p>
+        </div>
+        <div>
+          <h3>Apps</h3>
+          <p>Used to look at your apps, remove them, or change what they can use.</p>
+        </div>
+        <div>
+          <h3>Security and privacy</h3>
+          <p>Used for screen lock, fingerprints, permissions, and safety settings.</p>
+        </div>
+        <div>
+          <h3>System / About phone</h3>
+          <p>Used for updates, language, storage, date and time, and phone information.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Step-by-step: the most useful settings</h2>
+
+      <h3>1) Connect to Wi-Fi</h3>
+      <p><span class="path">Settings</span><span class="path">Network &amp; internet</span><span class="path">Wi-Fi</span></p>
+      <ul>
+        <li>Open <strong>Wi-Fi</strong>.</li>
+        <li>Make sure Wi-Fi is turned <strong>on</strong>.</li>
+        <li>Tap the name of the Wi-Fi you want.</li>
+        <li>Type the password if asked, then tap <strong>Connect</strong>.</li>
+      </ul>
+
+      <h3>2) Turn mobile data on or off</h3>
+      <p><span class="path">Settings</span><span class="path">Network &amp; internet</span><span class="path">SIMs / Mobile network / Data usage</span></p>
+      <ul>
+        <li>Open the mobile data section.</li>
+        <li>Tap the switch for <strong>Mobile data</strong> to turn it on or off.</li>
+      </ul>
+
+      <h3>3) Change the volume</h3>
+      <p><span class="path">Settings</span><span class="path">Sound</span></p>
+      <ul>
+        <li>Move the sliders left or right.</li>
+        <li>You may see separate sliders for <strong>Media</strong>, <strong>Calls</strong>, <strong>Ringtone</strong>, and <strong>Alarm</strong>.</li>
+      </ul>
+
+      <h3>4) Make the screen brighter or darker</h3>
+      <p><span class="path">Settings</span><span class="path">Display</span><span class="path">Brightness</span></p>
+      <ul>
+        <li>Move the brightness bar left for darker.</li>
+        <li>Move it right for brighter.</li>
+      </ul>
+
+      <h3>5) Make the writing bigger</h3>
+      <p><span class="path">Settings</span><span class="path">Display</span><span class="path">Font size</span></p>
+      <ul>
+        <li>Choose a bigger text size if the writing is hard to read.</li>
+        <li>Some phones also have <strong>Display size</strong> to make buttons and app items bigger.</li>
+      </ul>
+
+      <h3>6) Turn Bluetooth on</h3>
+      <p><span class="path">Settings</span><span class="path">Connected devices</span><span class="path">Bluetooth</span></p>
+      <ul>
+        <li>Turn on <strong>Bluetooth</strong>.</li>
+        <li>Wait for your phone to look for nearby devices.</li>
+        <li>Tap the device name, such as headphones or a speaker.</li>
+      </ul>
+
+      <h3>7) Set a screen lock</h3>
+      <p><span class="path">Settings</span><span class="path">Security &amp; privacy</span><span class="path">Screen lock</span></p>
+      <ul>
+        <li>Choose <strong>PIN</strong>, <strong>Pattern</strong>, or <strong>Password</strong>.</li>
+        <li>Follow the steps on the screen.</li>
+        <li>Pick something safe that other people will not guess easily.</li>
+      </ul>
+
+      <h3>8) Change app permissions</h3>
+      <p><span class="path">Settings</span><span class="path">Apps</span><span class="path">Choose an app</span><span class="path">Permissions</span></p>
+      <ul>
+        <li>Open an app from the list.</li>
+        <li>Tap <strong>Permissions</strong>.</li>
+        <li>Choose what the app can use, such as camera, microphone, or location.</li>
+      </ul>
+
+      <h3>9) Check for software updates</h3>
+      <p><span class="path">Settings</span><span class="path">System</span><span class="path">Software update</span></p>
+      <ul>
+        <li>Tap <strong>Check for updates</strong> if that button appears.</li>
+        <li>Follow the instructions shown on the screen.</li>
+      </ul>
+
+      <h3>10) Learn about your phone</h3>
+      <p><span class="path">Settings</span><span class="path">About phone</span></p>
+      <ul>
+        <li>Here you can often find the phone model, Android version, storage, and other useful information.</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>Helpful settings for beginners</h2>
+      <div class="two-col">
+        <div>
+          <h3>Dark mode</h3>
+          <p><span class="path">Settings</span><span class="path">Display</span><span class="path">Dark theme</span></p>
+          <p>Can make the screen easier on the eyes.</p>
+        </div>
+        <div>
+          <h3>Do Not Disturb</h3>
+          <p><span class="path">Settings</span><span class="path">Notifications</span><span class="path">Do Not Disturb</span></p>
+          <p>Stops sounds and alerts for a while.</p>
+        </div>
+        <div>
+          <h3>Flashlight / Torch</h3>
+          <p>Usually quicker from Quick Settings by swiping down from the top.</p>
+        </div>
+        <div>
+          <h3>Accessibility</h3>
+          <p><span class="path">Settings</span><span class="path">Accessibility</span></p>
+          <p>Can help with reading, hearing, tapping, and using the screen.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>If the phone looks different</h2>
+      <ul>
+        <li>Some Android phones use different names for the same settings.</li>
+        <li>One phone may say <strong>Network &amp; internet</strong>, while another may say <strong>Connections</strong>.</li>
+        <li>One phone may say <strong>Security &amp; privacy</strong>, while another may split those into two different sections.</li>
+        <li>If you cannot find something, use the search box at the top of Settings.</li>
+      </ul>
+      <div class="tip">The search box is often the easiest way to find what you need.</div>
+    </section>
+
+    <section class="card">
+      <h2>Very simple practice task</h2>
+      <div class="step"><div class="num">1</div><p>Open <strong>Settings</strong>.</p></div>
+      <div class="step"><div class="num">2</div><p>Tap the <strong>search box</strong>.</p></div>
+      <div class="step"><div class="num">3</div><p>Type <strong>Wi-Fi</strong>.</p></div>
+      <div class="step"><div class="num">4</div><p>Tap the result and look at the page.</p></div>
+      <div class="step"><div class="num">5</div><p>Go back and try searching for <strong>Sound</strong> or <strong>Brightness</strong>.</p></div>
+    </section>
+
+    <section class="notice">
+      <h2>Important note</h2>
+      <p>This guide keeps things simple, so exact names may differ slightly depending on the phone brand and Android version. Quick Settings on Android is normally opened by swiping down from the top of the screen, many Quick Settings buttons can be opened further by touching and holding them, app permissions are commonly changed in Settings under Apps or Security and Privacy, and update details are often found under System or About phone. Those are standard Android help patterns, although some phone makers move them around a little.</p>
+    </section>
+
+    <div class="footer">
+      © RECONNECT-US. All rights reserved.<br>
+      This guide cannot be removed, copied, shared, moved, or used anywhere else unless RECONNECT-US gives permission.
+    </div>
+  </div>
+</body>
+</html>
