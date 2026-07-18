@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Level 1 English & Maths</title>
+<style>
+:root{
+  --bg:#eef4f8;--panel:#ffffff;--text:#173042;--muted:#607585;
+  --blue:#0b4f6c;--blue2:#1677a6;--teal:#1ca6a8;--orange:#f28c28;
+  --green:#27895a;--red:#bd3d3d;--line:#d6e1e8;--shadow:0 12px 30px rgba(15,50,70,.12);
+}
+body.dark{--bg:#0f1a22;--panel:#172832;--text:#f4f8fa;--muted:#bfd0d9;--line:#2c4655;--shadow:0 12px 30px rgba(0,0,0,.35)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--bg),#dfeef3);color:var(--text);min-height:100vh}
+body.dark{background:linear-gradient(135deg,#091219,#122630)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,var(--blue),var(--blue2));color:white;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#ffd08b);display:grid;place-items:center;color:#173042;font-weight:900;font-size:22px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.6)}
+.brand h1{font-size:1.15rem;margin:0}.brand small{opacity:.9}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.icon-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:white;border-radius:10px;padding:9px 11px;font-weight:700}
+.wrap{max-width:1250px;margin:auto;padding:18px}
+.hero{background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border-radius:24px;padding:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:1.5fr .8fr;gap:18px;align-items:center}
+.hero h2{font-size:2rem;margin:0 0 8px}.hero p{font-size:1.05rem;line-height:1.55;margin:0}.hero-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:18px;padding:16px}
+.progressbar{height:16px;background:rgba(255,255,255,.28);border-radius:999px;overflow:hidden;margin-top:10px}.progressbar>div{height:100%;background:linear-gradient(90deg,#ffe08a,var(--orange));width:0%;transition:.4s}
+.main-grid{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}
+.sidebar,.content{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.sidebar{padding:14px;height:max-content;position:sticky;top:84px}.navbtn{width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:12px;border-radius:12px;font-weight:700;margin:3px 0}.navbtn:hover,.navbtn.active{background:linear-gradient(90deg,var(--blue),var(--teal));color:white}.navbtn .tag{float:right;background:var(--orange);color:#152b38;border-radius:999px;padding:2px 7px;font-size:.72rem}
+.content{padding:20px;min-height:650px}.screen{display:none}.screen.active{display:block}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:2px solid var(--line);padding-bottom:10px;margin-bottom:16px}.section-title h2{margin:0}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{border:1px solid var(--line);border-radius:16px;padding:16px;background:linear-gradient(180deg,var(--panel),rgba(22,119,166,.04))}.card h3{margin-top:0}.card p{line-height:1.5}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e4f3f4;color:#07545a;font-size:.78rem;font-weight:800}.dark .pill{background:#24464a;color:#c7ffff}
+.primary,.secondary,.danger,.success{border:0;border-radius:11px;padding:10px 14px;font-weight:800}.primary{background:linear-gradient(90deg,var(--blue2),var(--teal));color:white}.secondary{background:#dce7ec;color:#173042}.dark .secondary{background:#314955;color:white}.danger{background:var(--red);color:white}.success{background:var(--green);color:white}
+.lesson-box{border-left:6px solid var(--teal);background:rgba(28,166,168,.08);padding:15px;border-radius:12px;margin:12px 0}.example{background:rgba(242,140,40,.1);border:1px solid rgba(242,140,40,.4);padding:12px;border-radius:10px}.question{border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.question h4{margin:0 0 10px}.option{display:block;padding:9px;border-radius:9px;margin:5px 0;border:1px solid var(--line)}.option:hover{background:rgba(28,166,168,.08)}.feedback{margin-top:10px;font-weight:800}.correct{color:var(--green)}.wrong{color:var(--red)}
+input[type=text],input[type=number],textarea,select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:10px;margin:6px 0 12px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}.stat strong{display:block;font-size:1.6rem;color:var(--blue2)}
+.checklist label{display:block;padding:8px;border-bottom:1px solid var(--line)}.result-box{border-radius:16px;padding:18px;background:rgba(39,137,90,.1);border:2px solid rgba(39,137,90,.35);margin-top:14px}.hidden{display:none!important}
+footer{text-align:center;padding:24px;color:var(--muted);font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(3,18,28,.72);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s ease;backdrop-filter:blur(5px)}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-card{background:var(--panel);color:var(--text);max-width:720px;width:100%;border-radius:24px;max-height:88vh;overflow:auto;border:1px solid var(--line);box-shadow:0 26px 70px rgba(0,0,0,.38);transform:translateY(48px) scale(.96);opacity:0;transition:transform .36s cubic-bezier(.2,.8,.2,1),opacity .28s ease}.modal.show .modal-card{transform:translateY(0) scale(1);opacity:1}.modal-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:linear-gradient(90deg,var(--blue),var(--blue2));color:white}.modal-brand{display:flex;align-items:center;gap:12px}.modal-logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#ffd08b);display:grid;place-items:center;color:#173042;font-weight:900;font-size:21px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}.modal-head h2{margin:0;font-size:1.2rem}.modal-close{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:white;border-radius:12px;padding:10px 13px;font-weight:800}.modal-body{padding:18px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice-btn{display:flex;align-items:center;gap:14px;width:100%;min-height:76px;border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--panel);color:var(--text);text-align:left;font-weight:800;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}.choice-btn:hover,.choice-btn:focus{transform:translateY(-2px);border-color:var(--teal);background:rgba(28,166,168,.08);box-shadow:0 10px 24px rgba(15,50,70,.12)}.choice-icon{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue2),var(--teal));color:white;font-size:1.35rem}.choice-text small{display:block;margin-top:4px;color:var(--muted);font-weight:600}.confirm-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}@media(max-width:560px){.choice-grid{grid-template-columns:1fr}.modal{padding:10px}.modal-card{border-radius:20px}.choice-btn{min-height:70px}}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.main-grid{grid-template-columns:1fr}.sidebar{position:static;display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.cards,.two-col{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.brand small{display:none}.brand h1{font-size:.95rem}.top-actions button{padding:8px}.wrap{padding:10px}.content{padding:14px}.hero{padding:18px}.hero h2{font-size:1.45rem}.sidebar{grid-template-columns:1fr 1fr}.navbtn{font-size:.86rem;padding:10px}.stat-grid{grid-template-columns:1fr 1fr}}
+@media print{.topbar,.sidebar,.hero,.no-print,footer{display:none!important}.main-grid{display:block}.content{box-shadow:none;border:0}.screen{display:none!important}.screen.active{display:block!important}body{background:white;color:black}}
+
+</style>
+<style>#cloudStatus,#syncStatus,#status{display:none!important}</style></head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">RU</div><div><h1>RECONNECT-US</h1><small>Level 1 English & Maths Exam Preparation</small></div></div>
+  <div class="top-actions">
+    <button class="icon-btn" onclick="history.back()">← Back</button>
+    <button class="icon-btn" onclick="openSectionChooser()">☰ Choose Section</button>
+    <button class="icon-btn" onclick="toggleDark()">☾ Theme</button>
+    <button class="icon-btn" onclick="toggleFull()">⛶ Full Screen</button>
+    <button class="icon-btn" onclick="showHelp()">? Help</button>
+  </div>
+</header>
+<div class="wrap">
+<section class="hero">
+  <div><h2>Build the skills. Practise with confidence. Get exam-ready.</h2><p>This learning app supports Functional Skills Level 1 English and Maths. Work through short lessons, practise common exam questions and track your progress on this device.</p></div>
+  <div class="hero-card"><strong>Overall progress: <span id="overallPercent">0%</span></strong><div class="progressbar"><div id="overallBar"></div></div><p id="welcomeMsg" style="margin-top:10px">Start with the diagnostic checks to see which areas need the most practice.</p></div>
+</section>
+<div class="main-grid">
+<nav class="sidebar">
+<button class="navbtn active" data-screen="home" onclick="go('home',this)">🏠 Home</button>
+<button class="navbtn" data-screen="diagnostic" onclick="go('diagnostic',this)">🧭 Diagnostic Check</button>
+<button class="navbtn" data-screen="english" onclick="go('english',this)">📘 English Lessons <span class="tag">L1</span></button>
+<button class="navbtn" data-screen="englishPractice" onclick="go('englishPractice',this)">✍️ English Practice</button>
+<button class="navbtn" data-screen="maths" onclick="go('maths',this)">➗ Maths Lessons <span class="tag">L1</span></button>
+<button class="navbtn" data-screen="mathsPractice" onclick="go('mathsPractice',this)">🧮 Maths Practice</button>
+<button class="navbtn" data-screen="mock" onclick="go('mock',this)">📝 Mini Mock Exams</button>
+<button class="navbtn" data-screen="planner" onclick="go('planner',this)">📅 Study Planner</button>
+<button class="navbtn" data-screen="progress" onclick="go('progress',this)">📊 My Progress</button>
+<button class="navbtn" data-screen="certificate" onclick="go('certificate',this)">🏆 Achievement</button>
+</nav>
+<main class="content">
+<section id="home" class="screen active">
+<div class="section-title"><h2>Welcome</h2><span class="pill">Functional Skills Level 1</span></div>
+<div class="cards">
+<div class="card"><h3>📘 English</h3><p>Reading, spelling, punctuation, grammar, writing clearly, understanding purpose and audience, and communicating information.</p><button class="primary" onclick="go('english')">Start English</button></div>
+<div class="card"><h3>➗ Maths</h3><p>Whole numbers, fractions, decimals, percentages, money, measures, shape, ratio and interpreting data.</p><button class="primary" onclick="go('maths')">Start Maths</button></div>
+<div class="card"><h3>How to use this app</h3><ol><li>Take both diagnostic checks.</li><li>Read the short lessons.</li><li>Complete practice questions.</li><li>Try the mini mock exams.</li><li>Review any weak areas.</li></ol></div>
+<div class="card"><h3>Exam confidence</h3><p>Read each question carefully, underline key information, show your working in maths and leave time to check your answers.</p><button class="secondary" onclick="showExamTips()">View exam tips</button></div>
+</div>
+</section>
+
+<section id="diagnostic" class="screen">
+<div class="section-title"><h2>Diagnostic Check</h2><span class="pill">Find your starting point</span></div>
+<div class="two-col">
+<div class="card"><h3>English diagnostic</h3><p>Five quick questions covering reading, grammar and spelling.</p><button class="primary" onclick="startQuiz('englishDiag')">Start English check</button><p id="englishDiagStatus"></p></div>
+<div class="card"><h3>Maths diagnostic</h3><p>Five quick questions covering number, percentages, measures and data.</p><button class="primary" onclick="startQuiz('mathsDiag')">Start Maths check</button><p id="mathsDiagStatus"></p></div>
+</div><div id="quizAreaDiag"></div>
+</section>
+
+<section id="english" class="screen">
+<div class="section-title"><h2>English Level 1 Lessons</h2><span class="pill">Reading • Writing • Speaking</span></div>
+<div class="cards" id="englishLessons"></div>
+</section>
+<section id="englishPractice" class="screen">
+<div class="section-title"><h2>English Practice</h2><button class="primary" onclick="startQuiz('englishPracticeQuiz')">Start 10 Questions</button></div><div id="quizAreaEnglish"><p>Select “Start 10 Questions” when you are ready.</p></div>
+</section>
+<section id="maths" class="screen">
+<div class="section-title"><h2>Maths Level 1 Lessons</h2><span class="pill">Number • Measure • Data</span></div>
+<div class="cards" id="mathsLessons"></div>
+</section>
+<section id="mathsPractice" class="screen">
+<div class="section-title"><h2>Maths Practice</h2><button class="primary" onclick="startQuiz('mathsPracticeQuiz')">Start 10 Questions</button></div><div id="quizAreaMaths"><p>Select “Start 10 Questions” when you are ready.</p></div>
+</section>
+<section id="mock" class="screen">
+<div class="section-title"><h2>Mini Mock Exams</h2><span class="pill">Exam-style practice</span></div>
+<div class="two-col"><div class="card"><h3>English mini mock</h3><p>10 mixed questions. Recommended time: 20 minutes.</p><button class="primary" onclick="startTimedQuiz('englishMock',20)">Start English mock</button></div><div class="card"><h3>Maths mini mock</h3><p>10 mixed questions. Recommended time: 20 minutes.</p><button class="primary" onclick="startTimedQuiz('mathsMock',20)">Start Maths mock</button></div></div><div id="timer" class="result-box hidden"></div><div id="quizAreaMock"></div>
+</section>
+<section id="planner" class="screen">
+<div class="section-title"><h2>Study Planner</h2><span class="pill">Save on this device</span></div>
+<div class="card"><label>Your name</label><input id="learnerName" type="text" placeholder="Enter your name"><label>Your exam target date</label><input id="targetDate" type="date"><label>My main English target</label><textarea id="englishTarget" rows="3" placeholder="Example: Improve punctuation and formal writing"></textarea><label>My main Maths target</label><textarea id="mathsTarget" rows="3" placeholder="Example: Practise percentages and ratio"></textarea><label>Study days</label><div class="checklist" id="studyDays"></div><button class="success" onclick="savePlanner()">Save Planner</button> <button class="secondary" onclick="printPlanner()">Print</button><p id="plannerSaved"></p></div>
+</section>
+<section id="progress" class="screen">
+<div class="section-title"><h2>My Progress</h2><button class="danger" onclick="resetProgress()">Reset Progress</button></div>
+<div class="stat-grid"><div class="stat"><strong id="engBest">0%</strong>English best</div><div class="stat"><strong id="mathBest">0%</strong>Maths best</div><div class="stat"><strong id="lessonsDone">0</strong>Lessons viewed</div><div class="stat"><strong id="quizCount">0</strong>Quizzes finished</div></div>
+<div class="card" style="margin-top:14px"><h3>Recommended next step</h3><p id="recommendation">Complete a diagnostic check first.</p></div>
+<div class="card"><h3>Completed lessons</h3><div id="completedList">None yet.</div></div>
+</section>
+<section id="certificate" class="screen">
+<div class="section-title"><h2>Achievement Record</h2><button class="secondary no-print" onclick="window.print()">Print</button></div>
+<div class="card" style="text-align:center;padding:28px;border:4px double var(--teal)"><div class="logo" style="margin:auto">RU</div><h2>RECONNECT-US</h2><h1>Level 1 English & Maths Learning Achievement</h1><p>This record recognises</p><h2 id="certName">Learner</h2><p>for completing learning and practice activities in preparation for Functional Skills Level 1 English and Maths.</p><div class="two-col"><div><strong>English best score</strong><h2 id="certEng">0%</h2></div><div><strong>Maths best score</strong><h2 id="certMath">0%</h2></div></div><p id="certDate"></p><p><em>This is a learning achievement record, not an accredited qualification certificate.</em></p></div>
+</section>
+</main></div></div>
+<footer>© RECONNECT-US — All rights reserved.</footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><div class="modal-head"><div class="modal-brand"><div class="modal-logo">RU</div><div><h2 id="modalTitle">RECONNECT-US</h2><small id="modalSubtitle">Level 1 Learning App</small></div></div><button class="modal-close" onclick="closeModal()">✕ Close</button></div><div class="modal-body" id="modalBody"></div></div></div>
+<script>
+const lessons={
+ english:[
+ {id:'e1',title:'Reading for meaning',body:'Identify the main point, important details and the writer’s purpose. Look for headings, repeated ideas and evidence.',example:'Tip: Read the question first, then scan the text for the information you need.'},
+ {id:'e2',title:'Purpose and audience',body:'A text may aim to inform, explain, persuade, instruct or entertain. The language changes depending on who will read it.',example:'A complaint email should be polite, factual and clear.'},
+ {id:'e3',title:'Spelling and vocabulary',body:'Use familiar spelling patterns, prefixes, suffixes and context clues. Check commonly confused words such as their, there and they’re.',example:'Their = belongs to them. There = a place. They’re = they are.'},
+ {id:'e4',title:'Punctuation and grammar',body:'Use capital letters, full stops, commas, apostrophes and question marks accurately. Keep verb tense consistent.',example:'Correct: The learners arrived early, and they brought their notes.'},
+ {id:'e5',title:'Writing clearly',body:'Plan a beginning, middle and end. Use paragraphs, linking words and clear sentences. Check spelling and punctuation at the end.',example:'Useful linking words: firstly, however, because, therefore, finally.'},
+ {id:'e6',title:'Formal and informal language',body:'Use formal language for employers, services and official organisations. Informal language suits friends and family.',example:'Formal: I am writing to request… Informal: Can you send me…'},
+ {id:'e7',title:'Speaking and listening',body:'Listen carefully, take turns, ask relevant questions and explain your ideas clearly. Give reasons and examples.',example:'A useful phrase: “I understand your point; however, I think…”'},
+ {id:'e8',title:'Checking your work',body:'Check that your writing answers the task, suits the audience, is organised and uses accurate spelling, grammar and punctuation.',example:'Use the checklist: purpose, audience, paragraphs, punctuation, spelling.'}
+ ],
+ maths:[
+ {id:'m1',title:'Whole numbers and place value',body:'Read, write, order and compare numbers. Use addition, subtraction, multiplication and division accurately.',example:'4,582 has 4 thousands, 5 hundreds, 8 tens and 2 ones.'},
+ {id:'m2',title:'Fractions, decimals and percentages',body:'Recognise common equivalents and calculate simple fractions and percentages of amounts.',example:'1/2 = 0.5 = 50%. 25% of £80 = £20.'},
+ {id:'m3',title:'Ratio and proportion',body:'Ratio compares quantities. Simplify ratios by dividing both parts by the same number.',example:'8:12 simplifies to 2:3.'},
+ {id:'m4',title:'Money and everyday calculations',body:'Work with prices, change, discounts, wages and budgets. Always include the correct money units.',example:'£20 - £13.75 = £6.25 change.'},
+ {id:'m5',title:'Measures and conversions',body:'Use metric units for length, weight and capacity. Know common conversions.',example:'1 metre = 100 centimetres. 1 kilogram = 1,000 grams. 1 litre = 1,000 millilitres.'},
+ {id:'m6',title:'Time and timetables',body:'Use 12-hour and 24-hour time, calculate durations and read timetables.',example:'14:35 is 2:35 pm. From 09:20 to 10:05 is 45 minutes.'},
+ {id:'m7',title:'Shape, perimeter, area and volume',body:'Perimeter is the distance around a shape. Area is the space inside. Volume is the space inside a 3D object.',example:'Rectangle area = length × width.'},
+ {id:'m8',title:'Tables, charts and averages',body:'Read information from tables, bar charts and line graphs. Calculate the mean and range when required.',example:'Mean = total of values ÷ number of values.'}
+ ]
+};
+const quizzes={
+englishDiag:[
+['Which sentence is punctuated correctly?',['we went to london on monday.','We went to London on Monday.','We Went to london on monday.'],1],
+['What is the main purpose of an instruction leaflet?',['To entertain','To explain how to do something','To complain'],1],
+['Choose the correct word: “_____ going to the meeting.”',['Their','There','They’re'],2],
+['Which is most suitable for a formal email?',['Send it now.','I would be grateful if you could send the document.','Hey, send that thing.'],1],
+['Which is the best summary? A shop closes early because of staff training.',['The shop sells training.','The shop will close early due to staff training.','Staff do not like the shop.'],1]],
+mathsDiag:[
+['What is 25% of 80?',['10','20','25'],1],['What is 3.5 + 2.7?',['5.2','6.2','6.12'],1],['How many centimetres are in 2 metres?',['20','200','2,000'],1],['A train leaves at 13:45 and arrives at 14:30. How long is the journey?',['35 minutes','45 minutes','55 minutes'],1],['What is the mean of 4, 6 and 8?',['5','6','7'],1]],
+englishPracticeQuiz:[
+['Choose the correctly spelled word.',['definately','definitely','definatly'],1],['Which sentence uses an apostrophe correctly?',["The learners books were ready.","The learner's book was ready.","The learners book's were ready."],1],['Which word best links two contrasting ideas?',['because','however','firstly'],1],['Which opening is best for a formal complaint?',['Oi, this is bad.','I am writing to complain about…','You messed up.'],1],['What does “audience” mean in writing?',['The people who will read or hear it','The writer’s handwriting','The length of the text'],0],['Which sentence is in the past tense?',['She walks to work.','She will walk to work.','She walked to work.'],2],['Choose the clearest sentence.',['Due to the fact that it rained, the event was cancelled.','It rained, so the event was cancelled.','The event, rain, cancelled.'],1],['Which is a complete sentence?',['Because the bus was late.','The bus was late.','Although waiting.'],1],['Which punctuation ends a direct question?',['Comma','Question mark','Apostrophe'],1],['Which word means nearly the same as “important”?',['significant','tiny','optional'],0]],
+mathsPracticeQuiz:[
+['What is 48 ÷ 6?',['6','8','9'],1],['What is 3/4 as a percentage?',['25%','50%','75%'],2],['A jacket costs £60 and is reduced by 20%. What is the discount?',['£10','£12','£20'],1],['Simplify 10:15.',['1:5','2:3','5:10'],1],['Convert 2.5 kg to grams.',['250 g','2,500 g','25,000 g'],1],['What is the perimeter of a rectangle 8 cm by 3 cm?',['11 cm','22 cm','24 cm'],1],['What is the area of a rectangle 7 m by 4 m?',['11 m²','22 m²','28 m²'],2],['A bus leaves at 09:50 and arrives at 10:35. Journey time?',['35 min','45 min','55 min'],1],['What is the mean of 3, 7, 8 and 10?',['6','7','8'],1],['You pay £20 for items costing £14.65. Change?',['£5.35','£6.35','£4.45'],0]],
+};
+quizzes.englishMock=[...quizzes.englishPracticeQuiz]; quizzes.mathsMock=[...quizzes.mathsPracticeQuiz];
+let state=JSON.parse(localStorage.getItem('ruLevel1State')||'{}');
+state.completed=state.completed||[];state.scores=state.scores||{};state.quizCount=state.quizCount||0;
+function save(){localStorage.setItem('ruLevel1State',JSON.stringify(state));updateProgress();window.ruLevel1CloudQueue?.({state,planner:getPlannerData()})}
+function go(id,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));let target=btn||document.querySelector(`[data-screen="${id}"]`);if(target)target.classList.add('active');if(innerWidth<850)scrollTo({top:150,behavior:'smooth'});updateProgress()}
+function renderLessons(type){let host=document.getElementById(type+'Lessons');host.innerHTML=lessons[type].map(l=>`<div class="card"><span class="pill">${state.completed.includes(l.id)?'Completed':'Lesson'}</span><h3>${l.title}</h3><p>${l.body}</p><div class="example">${l.example}</div><br><button class="${state.completed.includes(l.id)?'success':'primary'}" onclick="completeLesson('${l.id}',this)">${state.completed.includes(l.id)?'✓ Completed':'Mark as viewed'}</button></div>`).join('')}
+function completeLesson(id,b){if(!state.completed.includes(id))state.completed.push(id);b.textContent='✓ Completed';b.className='success';save();renderLessons(id[0]=='e'?'english':'maths')}
+function startQuiz(name){let data=quizzes[name];let area=name.includes('Diag')?document.getElementById('quizAreaDiag'):name.includes('english')?document.getElementById('quizAreaEnglish'):name.includes('maths')?document.getElementById('quizAreaMaths'):document.getElementById('quizAreaMock');area.innerHTML=`<div class="card"><h3>${prettyName(name)}</h3><form id="form_${name}">${data.map((q,i)=>`<div class="question"><h4>${i+1}. ${q[0]}</h4>${q[1].map((o,j)=>`<label class="option"><input type="radio" name="q${i}" value="${j}"> ${o}</label>`).join('')}<div class="feedback" id="fb_${name}_${i}"></div></div>`).join('')}<button type="button" class="success" onclick="markQuiz('${name}')">Mark My Answers</button></form><div id="result_${name}"></div></div>`;area.scrollIntoView({behavior:'smooth',block:'start'})}
+function markQuiz(name){let data=quizzes[name],score=0;data.forEach((q,i)=>{let chosen=document.querySelector(`input[name="q${i}"]:checked`),fb=document.getElementById(`fb_${name}_${i}`);if(chosen&&+chosen.value===q[2]){score++;fb.textContent='Correct';fb.className='feedback correct'}else{fb.textContent='Answer: '+q[1][q[2]];fb.className='feedback wrong'}});let pct=Math.round(score/data.length*100);state.scores[name]=Math.max(state.scores[name]||0,pct);state.quizCount++;save();let msg=pct>=70?'Good result — keep practising to make it secure.':'This needs more practice. Review the matching lessons and try again.';document.getElementById('result_'+name).innerHTML=`<div class="result-box"><h3>Score: ${score}/${data.length} (${pct}%)</h3><p>${msg}</p></div>`;if(name.includes('Diag'))document.getElementById(name+'Status').textContent=`Best score: ${state.scores[name]}%`;clearInterval(window.quizTimer);document.getElementById('timer').classList.add('hidden')}
+function prettyName(n){return n.replace('english','English ').replace('maths','Maths ').replace('PracticeQuiz','Practice').replace('Diag','Diagnostic').replace('Mock','Mini Mock')}
+function startTimedQuiz(name,mins){go('mock');startQuiz(name);let seconds=mins*60,t=document.getElementById('timer');t.classList.remove('hidden');clearInterval(window.quizTimer);window.quizTimer=setInterval(()=>{let m=Math.floor(seconds/60),s=seconds%60;t.textContent=`Time remaining: ${m}:${String(s).padStart(2,'0')}`;if(seconds--<=0){clearInterval(window.quizTimer);t.textContent='Time is up. Mark your answers now.'}},1000)}
+function updateProgress(){let lessonPct=state.completed.length/16*50;let bestEng=Math.max(0,...Object.entries(state.scores).filter(([k])=>k.toLowerCase().includes('english')).map(([,v])=>v));let bestMath=Math.max(0,...Object.entries(state.scores).filter(([k])=>k.toLowerCase().includes('maths')).map(([,v])=>v));let quizPct=((bestEng+bestMath)/2)*.5;let overall=Math.round(lessonPct+quizPct);document.getElementById('overallPercent').textContent=overall+'%';document.getElementById('overallBar').style.width=overall+'%';engBest.textContent=bestEng+'%';mathBest.textContent=bestMath+'%';lessonsDone.textContent=state.completed.length;quizCount.textContent=state.quizCount;completedList.innerHTML=state.completed.length?state.completed.map(id=>`<span class="pill" style="margin:4px">${[...lessons.english,...lessons.maths].find(x=>x.id==id)?.title}</span>`).join(''):'None yet.';recommendation.textContent=bestEng===0||bestMath===0?'Complete both diagnostic checks first.':bestEng<bestMath?'Focus next on English reading and writing practice.':bestMath<bestEng?'Focus next on Maths number and measure practice.':'Keep both subjects moving with mini mock exams.';englishDiagStatus.textContent=state.scores.englishDiag!=null?'Best score: '+state.scores.englishDiag+'%':'';mathsDiagStatus.textContent=state.scores.mathsDiag!=null?'Best score: '+state.scores.mathsDiag+'%':'';certEng.textContent=bestEng+'%';certMath.textContent=bestMath+'%';certName.textContent=document.getElementById('learnerName')?.value||localStorage.getItem('ruLearnerName')||'Learner';certDate.textContent='Progress record updated: '+new Date().toLocaleDateString('en-GB')}
+function getPlannerData(){return {name:learnerName.value,date:targetDate.value,e:englishTarget.value,m:mathsTarget.value,days:[...document.querySelectorAll('#studyDays input:checked')].map(x=>x.value)}}
+function savePlanner(){let p=getPlannerData();localStorage.setItem('ruPlanner',JSON.stringify(p));localStorage.setItem('ruLearnerName',p.name);plannerSaved.textContent='Planner saved on this device and queued for cloud save.';updateProgress();window.ruLevel1CloudQueue?.({state,planner:p})}
+function loadPlanner(){let p=JSON.parse(localStorage.getItem('ruPlanner')||'{}');learnerName.value=p.name||'';targetDate.value=p.date||'';englishTarget.value=p.e||'';mathsTarget.value=p.m||'';studyDays.innerHTML=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d=>`<label><input type="checkbox" value="${d}" ${(p.days||[]).includes(d)?'checked':''}> ${d}</label>`).join('')}
+function printPlanner(){go('planner');window.print()}
+function resetProgress(){modalTitle.textContent='Delete progress?';modalSubtitle.textContent='Please confirm';modalBody.innerHTML='<p>This will permanently remove all lesson completion and quiz scores from this device and from Firebase Cloud. Your study planner will be kept.</p><div class="confirm-actions"><button class="secondary" onclick="closeModal()">Cancel</button><button class="danger" onclick="confirmResetProgress()">Delete progress</button></div>';openModal()}
+async function confirmResetProgress(){modalBody.innerHTML='<div class="result-box"><h3>Deleting progress…</h3><p>Please keep this page open.</p></div>';state={completed:[],scores:{},quizCount:0};localStorage.setItem('ruLevel1State',JSON.stringify(state));updateProgress();renderLessons('english');renderLessons('maths');const ok=await (window.ruLevel1DeleteCloudProgress?.() ?? Promise.resolve(false));modalTitle.textContent='Progress deleted';modalSubtitle.textContent='RECONNECT-US';modalBody.innerHTML=`<div class="result-box"><h3>✓ Progress is now 0%</h3><p>${ok?'The saved progress was deleted from this device and Firebase Cloud.':'The device copy was deleted. Cloud deletion will need a signed-in connection.'}</p><p>Your study planner has been kept.</p></div><div class="confirm-actions"><button class="primary" onclick="closeModal()">Continue</button></div>`}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('ruDark',document.body.classList.contains('dark'))}
+function toggleFull(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+function openModal(){modal.classList.add('show');document.body.style.overflow='hidden';setTimeout(()=>modal.querySelector('button')?.focus(),80)}
+function openSectionChooser(){modalTitle.textContent='Choose a section';modalSubtitle.textContent='RECONNECT-US Level 1 English & Maths';modalBody.innerHTML=`<div class="choice-grid">${[
+['home','🏠','Home','Return to the main dashboard'],['diagnostic','🧭','Diagnostic Check','Find the areas to practise'],['english','📘','English Lessons','Reading, writing and grammar'],['englishPractice','✍️','English Practice','Exam-style English questions'],['maths','➗','Maths Lessons','Numbers, measures and data'],['mathsPractice','🧮','Maths Practice','Exam-style Maths questions'],['mock','📝','Mini Mock Exams','Timed practice in both subjects'],['planner','📅','Study Planner','Set targets and study days'],['progress','📊','My Progress','Review scores and completed lessons'],['certificate','🏆','Achievement','Print your progress record']].map(x=>`<button type="button" class="choice-btn" data-target="${x[0]}"><span class="choice-icon">${x[1]}</span><span class="choice-text">${x[2]}<small>${x[3]}</small></span></button>`).join('')}</div>`;modalBody.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',()=>{go(b.dataset.target);closeModal()}));openModal()}
+function showHelp(){modalTitle.textContent='How to use the app';modalSubtitle.textContent='Help and guidance';modalBody.innerHTML='<p>Choose a section from the menu. Your lesson completion, quiz scores and study planner are saved on this device and, when signed in through RECONNECT-US, securely synced to Firebase Cloud.</p><p>For the best learning result, read a lesson, complete the matching practice, then repeat any questions you got wrong.</p><p>This app supports exam preparation but does not replace teaching from an accredited provider.</p>';openModal()}
+function showExamTips(){modalTitle.textContent='Level 1 exam tips';modalSubtitle.textContent='Prepare with confidence';modalBody.innerHTML='<h3>English</h3><p>Read the whole task. Identify the purpose and audience. Plan before writing. Use paragraphs. Check spelling, punctuation and grammar.</p><h3>Maths</h3><p>Write down the information given. Choose the calculation. Show your working. Include units. Check that the answer is sensible.</p>';openModal()}
+function closeModal(){modal.classList.remove('show');document.body.style.overflow='';setTimeout(()=>{modalSubtitle.textContent='Level 1 Learning App'},280)}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()})
+if(localStorage.getItem('ruDark')==='true')document.body.classList.add('dark');renderLessons('english');renderLessons('maths');loadPlanner();updateProgress();
+</script>
+
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig={
+ apiKey:"AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",
+ authDomain:"reconnect-us-hub.firebaseapp.com",
+ projectId:"reconnect-us-hub",
+ storageBucket:"reconnect-us-hub.firebasestorage.app",
+ messagingSenderId:"891220836369",
+ appId:"1:891220836369:web:6f2b4a09350b8d9fe0b1b0"
+};
+const app=getApps().length?getApp():initializeApp(firebaseConfig);
+const auth=getAuth(app),db=getFirestore(app);
+const APP_ID="level-1-english-maths";
+let user=null,ready=false,pending=null,timer=null,deleting=false;
+const progressRef=()=>doc(db,"users",user.uid,"appProgress",APP_ID);
+function cloudStatus(message,type=""){
+ const el=document.getElementById("ruLevel1CloudStatus"); if(!el)return;
+ el.textContent=message; el.classList.remove("bad","good"); if(type)el.classList.add(type);
+}
+function normalise(payload={}){
+ const st=payload.state&&typeof payload.state==="object"?payload.state:{completed:[],scores:{},quizCount:0};
+ return {state:{completed:Array.isArray(st.completed)?st.completed:[],scores:st.scores&&typeof st.scores==="object"?st.scores:{},quizCount:Number(st.quizCount)||0},planner:payload.planner&&typeof payload.planner==="object"?payload.planner:{}};
+}
+function summary(st){
+ const lessons=st.completed.length, scores=Object.values(st.scores||{}).map(Number).filter(Number.isFinite);
+ const best=scores.length?Math.max(...scores):0;
+ return {lessonsCompleted:lessons,quizAttempts:st.quizCount,bestScore:best,percent:Math.min(100,Math.round((lessons/16)*50+(best/100)*50))};
+}
+async function saveNow(payload){
+ if(deleting)return;
+ pending=normalise(payload);
+ if(!user||!ready){cloudStatus("Local save active — sign in for cloud sync","bad");return false;}
+ const clean=pending,s=summary(clean.state);
+ try{
+  await setDoc(progressRef(),{appId:APP_ID,appName:"Level 1 English & Maths",updatedAt:serverTimestamp(),lastActivityAt:new Date().toISOString(),status:s.percent>=100?"completed":(s.lessonsCompleted||s.quizAttempts?"in-progress":"started"),percent:s.percent,score:s.bestScore,completed:s.percent>=100,summary:s,data:clean},{merge:true});
+  pending=null; cloudStatus("Saved to Firebase Cloud","good"); return true;
+ }catch(error){console.error("Level 1 cloud save failed",error);cloudStatus("Cloud save failed — local backup kept","bad");return false;}
+}
+window.ruLevel1CloudQueue=payload=>{pending=normalise(payload);clearTimeout(timer);timer=setTimeout(()=>saveNow(pending),500)};
+window.ruLevel1DeleteCloudProgress=async()=>{
+ deleting=true; clearTimeout(timer); pending=null;
+ try{
+  if(!user){cloudStatus("Device progress deleted — sign in to delete cloud copy","bad");return false;}
+  cloudStatus("Deleting Firebase Cloud progress…");
+  await deleteDoc(progressRef());
+  cloudStatus("Progress deleted from Firebase Cloud","good");return true;
+ }catch(error){console.error("Cloud delete failed",error);cloudStatus("Cloud deletion failed — try again online","bad");return false;}
+ finally{deleting=false;}
+};
+onAuthStateChanged(auth,async signedInUser=>{
+ user=signedInUser||null;
+ if(!user){ready=false;cloudStatus("Local save active — sign in through RECONNECT-US for cloud sync","bad");return;}
+ try{
+  cloudStatus("Loading Firebase Cloud progress…");
+  const snap=await getDoc(progressRef()); ready=true;
+  if(snap.exists()){
+   const cloud=normalise(snap.data()?.data||{});
+   localStorage.setItem("ruLevel1State",JSON.stringify(cloud.state));
+   localStorage.setItem("ruPlanner",JSON.stringify(cloud.planner));
+   if(cloud.planner?.name)localStorage.setItem("ruLearnerName",cloud.planner.name);
+   window.state=cloud.state;
+   state=cloud.state;
+   loadPlanner();renderLessons("english");renderLessons("maths");updateProgress();
+   cloudStatus("Firebase Cloud progress loaded","good");
+  }else{
+   const local=normalise({state,planner:getPlannerData()});
+   await saveNow(local);
+  }
+  if(pending)await saveNow(pending);
+ }catch(error){console.error("Cloud load failed",error);ready=true;cloudStatus("Cloud unavailable — local backup active","bad");}
+});
+</script>
+<!-- Set data-app-id to the final Core registry ID when this app's website folder is confirmed. -->
+<script type="module" src="../reconnectus-core/reconnectus-access-guard.js" data-app-id="level-1-english-maths" data-login-url="../index.html"></script>
+
+</body>
+</html>

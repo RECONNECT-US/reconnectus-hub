@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Entry Level 3 English</title>
+<style>
+:root{
+  --bg:#eef4f8;--panel:#ffffff;--text:#173042;--muted:#607585;
+  --blue:#0b4f6c;--blue2:#1677a6;--teal:#1ca6a8;--orange:#f28c28;
+  --green:#27895a;--red:#bd3d3d;--line:#d6e1e8;--shadow:0 12px 30px rgba(15,50,70,.12);
+}
+body.dark{--bg:#0f1a22;--panel:#172832;--text:#f4f8fa;--muted:#bfd0d9;--line:#2c4655;--shadow:0 12px 30px rgba(0,0,0,.35)}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--bg),#dfeef3);color:var(--text);min-height:100vh}
+body.dark{background:linear-gradient(135deg,#091219,#122630)}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,var(--blue),var(--blue2));color:white;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#ffd08b);display:grid;place-items:center;color:#173042;font-weight:900;font-size:22px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.6)}
+.brand h1{font-size:1.15rem;margin:0}.brand small{opacity:.9}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.icon-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:white;border-radius:10px;padding:9px 11px;font-weight:700}
+.wrap{max-width:1250px;margin:auto;padding:18px}
+.hero{background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border-radius:24px;padding:24px;box-shadow:var(--shadow);display:grid;grid-template-columns:1.5fr .8fr;gap:18px;align-items:center}
+.hero h2{font-size:2rem;margin:0 0 8px}.hero p{font-size:1.05rem;line-height:1.55;margin:0}.hero-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:18px;padding:16px}
+.progressbar{height:16px;background:rgba(255,255,255,.28);border-radius:999px;overflow:hidden;margin-top:10px}.progressbar>div{height:100%;background:linear-gradient(90deg,#ffe08a,var(--orange));width:0%;transition:.4s}
+.main-grid{display:grid;grid-template-columns:260px 1fr;gap:18px;margin-top:18px}
+.sidebar,.content{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.sidebar{padding:14px;height:max-content;position:sticky;top:84px}.navbtn{width:100%;text-align:left;border:0;background:transparent;color:var(--text);padding:12px;border-radius:12px;font-weight:700;margin:3px 0}.navbtn:hover,.navbtn.active{background:linear-gradient(90deg,var(--blue),var(--teal));color:white}.navbtn .tag{float:right;background:var(--orange);color:#152b38;border-radius:999px;padding:2px 7px;font-size:.72rem}
+.content{padding:20px;min-height:650px}.screen{display:none}.screen.active{display:block}.section-title{display:flex;align-items:center;justify-content:space-between;gap:10px;border-bottom:2px solid var(--line);padding-bottom:10px;margin-bottom:16px}.section-title h2{margin:0}.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}.card{border:1px solid var(--line);border-radius:16px;padding:16px;background:linear-gradient(180deg,var(--panel),rgba(22,119,166,.04))}.card h3{margin-top:0}.card p{line-height:1.5}.pill{display:inline-block;padding:5px 9px;border-radius:999px;background:#e4f3f4;color:#07545a;font-size:.78rem;font-weight:800}.dark .pill{background:#24464a;color:#c7ffff}
+.primary,.secondary,.danger,.success{border:0;border-radius:11px;padding:10px 14px;font-weight:800}.primary{background:linear-gradient(90deg,var(--blue2),var(--teal));color:white}.secondary{background:#dce7ec;color:#173042}.dark .secondary{background:#314955;color:white}.danger{background:var(--red);color:white}.success{background:var(--green);color:white}
+.lesson-box{border-left:6px solid var(--teal);background:rgba(28,166,168,.08);padding:15px;border-radius:12px;margin:12px 0}.example{background:rgba(242,140,40,.1);border:1px solid rgba(242,140,40,.4);padding:12px;border-radius:10px}.question{border:1px solid var(--line);border-radius:14px;padding:15px;margin:12px 0}.question h4{margin:0 0 10px}.option{display:block;padding:9px;border-radius:9px;margin:5px 0;border:1px solid var(--line)}.option:hover{background:rgba(28,166,168,.08)}.feedback{margin-top:10px;font-weight:800}.correct{color:var(--green)}.wrong{color:var(--red)}
+input[type=text],input[type=number],textarea,select{width:100%;border:1px solid var(--line);background:var(--panel);color:var(--text);border-radius:10px;padding:10px;margin:6px 0 12px}.two-col{display:grid;grid-template-columns:1fr 1fr;gap:14px}.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}.stat{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:14px;text-align:center}.stat strong{display:block;font-size:1.6rem;color:var(--blue2)}
+.checklist label{display:block;padding:8px;border-bottom:1px solid var(--line)}.result-box{border-radius:16px;padding:18px;background:rgba(39,137,90,.1);border:2px solid rgba(39,137,90,.35);margin-top:14px}.hidden{display:none!important}
+footer{text-align:center;padding:24px;color:var(--muted);font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(3,18,28,.72);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s ease;backdrop-filter:blur(5px)}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-card{background:var(--panel);color:var(--text);max-width:720px;width:100%;border-radius:24px;max-height:88vh;overflow:auto;border:1px solid var(--line);box-shadow:0 26px 70px rgba(0,0,0,.38);transform:translateY(48px) scale(.96);opacity:0;transition:transform .36s cubic-bezier(.2,.8,.2,1),opacity .28s ease}.modal.show .modal-card{transform:translateY(0) scale(1);opacity:1}.modal-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:linear-gradient(90deg,var(--blue),var(--blue2));color:white}.modal-brand{display:flex;align-items:center;gap:12px}.modal-logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#ffd08b);display:grid;place-items:center;color:#173042;font-weight:900;font-size:21px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}.modal-head h2{margin:0;font-size:1.2rem}.modal-close{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:white;border-radius:12px;padding:10px 13px;font-weight:800}.modal-body{padding:18px}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice-btn{display:flex;align-items:center;gap:14px;width:100%;min-height:76px;border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--panel);color:var(--text);text-align:left;font-weight:800;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}.choice-btn:hover,.choice-btn:focus{transform:translateY(-2px);border-color:var(--teal);background:rgba(28,166,168,.08);box-shadow:0 10px 24px rgba(15,50,70,.12)}.choice-icon{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue2),var(--teal));color:white;font-size:1.35rem}.choice-text small{display:block;margin-top:4px;color:var(--muted);font-weight:600}.confirm-actions{display:flex;justify-content:flex-end;gap:10px;flex-wrap:wrap;margin-top:18px}@media(max-width:560px){.choice-grid{grid-template-columns:1fr}.modal{padding:10px}.modal-card{border-radius:20px}.choice-btn{min-height:70px}}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.main-grid{grid-template-columns:1fr}.sidebar{position:static;display:grid;grid-template-columns:repeat(2,1fr);gap:5px}.cards,.two-col{grid-template-columns:1fr}.stat-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:520px){.brand small{display:none}.brand h1{font-size:.95rem}.top-actions button{padding:8px}.wrap{padding:10px}.content{padding:14px}.hero{padding:18px}.hero h2{font-size:1.45rem}.sidebar{grid-template-columns:1fr 1fr}.navbtn{font-size:.86rem;padding:10px}.stat-grid{grid-template-columns:1fr 1fr}}
+@media print{.topbar,.sidebar,.hero,.no-print,footer{display:none!important}.main-grid{display:block}.content{box-shadow:none;border:0}.screen{display:none!important}.screen.active{display:block!important}body{background:white;color:black}}
+
+</style>
+<style>#cloudStatus,#syncStatus,#status{display:none!important}</style></head>
+<body>
+<header class="topbar">
+  <div class="brand"><div class="logo">RU</div><div><h1>RECONNECT-US</h1><small>Functional Skills Entry Level 3 English</small></div></div>
+  <div class="top-actions">
+    <button class="icon-btn" onclick="history.back()">← Back</button>
+    <button class="icon-btn" onclick="openSectionChooser()">☰ Choose Section</button>
+    <button class="icon-btn" onclick="toggleDark()">☾ Theme</button>
+    <button class="icon-btn" onclick="toggleFull()">⛶ Full Screen</button>
+    <button class="icon-btn" onclick="showHelp()">? Help</button>
+  </div>
+</header>
+<div class="wrap">
+<section class="hero">
+  <div><h2>Build everyday English skills. Practise with confidence.</h2><p>This learning app supports Functional Skills Entry Level 3 English. Work through short lessons, practise reading and writing skills, try mini mock exams and track your progress.</p></div>
+  <div class="hero-card"><strong>Overall progress: <span id="overallPercent">0%</span></strong><div class="progressbar"><div id="overallBar"></div></div><p id="welcomeMsg" style="margin-top:10px">Start with the diagnostic check to find the areas that need the most practice.</p></div>
+</section>
+<div class="main-grid">
+<nav class="sidebar">
+<button class="navbtn active" data-screen="home" onclick="go('home',this)">🏠 Home</button>
+<button class="navbtn" data-screen="diagnostic" onclick="go('diagnostic',this)">🧭 Diagnostic Check</button>
+<button class="navbtn" data-screen="english" onclick="go('english',this)">📘 English Lessons <span class="tag">E3</span></button>
+<button class="navbtn" data-screen="englishPractice" onclick="go('englishPractice',this)">✍️ English Practice</button>
+<button class="navbtn" data-screen="mock" onclick="go('mock',this)">📝 Mini Mock Exams</button>
+<button class="navbtn" data-screen="planner" onclick="go('planner',this)">📅 Study Planner</button>
+<button class="navbtn" data-screen="progress" onclick="go('progress',this)">📊 My Progress</button>
+<button class="navbtn" data-screen="certificate" onclick="go('certificate',this)">🏆 Achievement</button>
+</nav>
+<main class="content">
+<section id="home" class="screen active">
+<div class="section-title"><h2>Welcome</h2><span class="pill">Functional Skills Entry Level 3</span></div>
+<div class="cards">
+<div class="card"><h3>📖 Reading</h3><p>Read signs, notices, messages, emails and short texts. Find the main point and important details.</p><button class="primary" onclick="go('english')">Start Lessons</button></div>
+<div class="card"><h3>✍️ Writing</h3><p>Build clear sentences and short paragraphs. Practise spelling, punctuation, grammar, forms, emails and letters.</p><button class="primary" onclick="go('englishPractice')">Start Practice</button></div>
+<div class="card"><h3>How to use this app</h3><ol><li>Take the diagnostic check.</li><li>Read each short lesson.</li><li>Complete practice questions.</li><li>Try a mini mock exam.</li><li>Review questions you found difficult.</li></ol></div>
+<div class="card"><h3>Exam confidence</h3><p>Read every instruction carefully. Check what the task asks you to do, then leave time to check spelling, punctuation and meaning.</p><button class="secondary" onclick="showExamTips()">View exam tips</button></div>
+</div>
+</section>
+<section id="diagnostic" class="screen">
+<div class="section-title"><h2>Diagnostic Check</h2><span class="pill">Find your starting point</span></div>
+<div class="card"><h3>Entry Level 3 English diagnostic</h3><p>Eight quick questions covering reading, spelling, punctuation and grammar.</p><button class="primary" onclick="startQuiz('diagnostic')">Start Diagnostic Check</button><p id="diagnosticStatus"></p></div><div id="quizAreaDiag"></div>
+</section>
+<section id="english" class="screen">
+<div class="section-title"><h2>Entry Level 3 English Lessons</h2><span class="pill">Reading • Writing • Speaking & Listening</span></div>
+<div class="cards" id="englishLessons"></div>
+</section>
+<section id="englishPractice" class="screen">
+<div class="section-title"><h2>English Practice</h2><button class="primary" onclick="startQuiz('practice')">Start 10 Questions</button></div><p>Each attempt selects questions from the Entry Level 3 question bank and mixes the answer positions.</p><div id="quizAreaEnglish"><p>Select “Start 10 Questions” when you are ready.</p></div>
+</section>
+<section id="mock" class="screen">
+<div class="section-title"><h2>Mini Mock Exams</h2><span class="pill">Timed Entry Level 3 practice</span></div>
+<div class="two-col"><div class="card"><h3>Mini Mock A</h3><p>15 mixed questions. Recommended time: 25 minutes.</p><button class="primary" onclick="startTimedQuiz('mockA',25)">Start Mini Mock A</button></div><div class="card"><h3>Mini Mock B</h3><p>15 different mixed questions. Recommended time: 25 minutes.</p><button class="primary" onclick="startTimedQuiz('mockB',25)">Start Mini Mock B</button></div></div><div id="timer" class="result-box hidden"></div><div id="quizAreaMock"></div>
+</section>
+<section id="planner" class="screen">
+<div class="section-title"><h2>Study Planner</h2><span class="pill">Saved automatically</span></div>
+<div class="card"><label>Your name</label><input id="learnerName" type="text" placeholder="Enter your name"><label>Your target date</label><input id="targetDate" type="date"><label>My main English target</label><textarea id="englishTarget" rows="3" placeholder="Example: Improve full stops and capital letters"></textarea><label>What will help me?</label><textarea id="supportTarget" rows="3" placeholder="Example: Read short notices and practise writing emails"></textarea><label>Study days</label><div class="checklist" id="studyDays"></div><button class="success" onclick="savePlanner()">Save Planner</button> <button class="secondary" onclick="printPlanner()">Print</button><p id="plannerSaved"></p></div>
+</section>
+<section id="progress" class="screen">
+<div class="section-title"><h2>My Progress</h2><button class="danger" onclick="resetProgress()">Reset Progress</button></div>
+<div class="stat-grid"><div class="stat"><strong id="bestScore">0%</strong>Best score</div><div class="stat"><strong id="diagnosticBest">0%</strong>Diagnostic</div><div class="stat"><strong id="lessonsDone">0</strong>Lessons viewed</div><div class="stat"><strong id="quizCount">0</strong>Quizzes finished</div></div>
+<div class="card" style="margin-top:14px"><h3>Recommended next step</h3><p id="recommendation">Complete the diagnostic check first.</p></div>
+<div class="card"><h3>Completed lessons</h3><div id="completedList">None yet.</div></div>
+</section>
+<section id="certificate" class="screen">
+<div class="section-title"><h2>Achievement Record</h2><button class="secondary no-print" onclick="window.print()">Print</button></div>
+<div class="card" style="text-align:center;padding:28px;border:4px double var(--teal)"><div class="logo" style="margin:auto">RU</div><h2>RECONNECT-US</h2><h1>Entry Level 3 English Learning Achievement</h1><p>This record recognises</p><h2 id="certName">Learner</h2><p>for completing learning and practice activities in preparation for Functional Skills Entry Level 3 English.</p><div class="two-col"><div><strong>Best quiz score</strong><h2 id="certBest">0%</h2></div><div><strong>Lessons completed</strong><h2 id="certLessons">0/12</h2></div></div><p id="certDate"></p><p><em>This is a learning achievement record, not an accredited qualification certificate.</em></p></div>
+</section>
+</main></div></div>
+<footer>© RECONNECT-US — All rights reserved.</footer>
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle"><div class="modal-card"><div class="modal-head"><div class="modal-brand"><div class="modal-logo">RU</div><div><h2 id="modalTitle">RECONNECT-US</h2><small id="modalSubtitle">Entry Level 3 English</small></div></div><button class="modal-close" onclick="closeModal()">✕ Close</button></div><div class="modal-body" id="modalBody"></div></div></div>
+<script>
+const lessons=[
+{id:'e1',title:'Reading signs and notices',body:'Signs and notices give short, important information. Look for key words, times, dates, warnings and instructions.',example:'NOTICE: Staff only beyond this point. This means members of the public must not enter.'},
+{id:'e2',title:'Finding the main point',body:'The main point is the most important message in a text. Ask: What is this text mostly about?',example:'A message explaining a changed appointment is mainly about the new appointment time.'},
+{id:'e3',title:'Finding details',body:'Details include names, places, dates, prices and instructions. Scan the text for the exact information the question asks for.',example:'Question: What time does the shop close? Scan for a time next to “close” or “opening hours”.'},
+{id:'e4',title:'Putting events in order',body:'Words such as first, next, then, after and finally show the order in which things happen.',example:'First wash your hands. Next prepare the food. Finally clean the work surface.'},
+{id:'e5',title:'Fact and opinion',body:'A fact can be checked. An opinion tells what someone thinks or feels.',example:'Fact: The bus leaves at 9:15. Opinion: The bus service is excellent.'},
+{id:'e6',title:'Capital letters and full stops',body:'Start every sentence with a capital letter and finish a statement with a full stop. Use capitals for names, places, days and months.',example:'Correct: Maria starts work in Maidstone on Monday.'},
+{id:'e7',title:'Commas and question marks',body:'Use commas to separate items in a list. Use a question mark at the end of a direct question.',example:'I bought bread, milk, apples and rice. Where is the nearest bus stop?'},
+{id:'e8',title:'Apostrophes',body:'An apostrophe can show missing letters or belonging. Common shortened forms include can’t, don’t and I’m.',example:'Sam’s coat means the coat belongs to Sam. Don’t means do not.'},
+{id:'e9',title:'Spelling everyday words',body:'Break difficult words into smaller parts, say them slowly and look for familiar patterns. Check words that sound the same but have different meanings.',example:'there = a place, their = belonging to them, they’re = they are.'},
+{id:'e10',title:'Building clear sentences',body:'A clear sentence usually tells who or what, and what happened. Keep the verb in the correct tense.',example:'Clear: The learner completed the form yesterday.'},
+{id:'e11',title:'Writing emails, forms and letters',body:'Include the information requested. Use a suitable greeting, clear sentences and a polite ending when writing a message.',example:'Subject: Appointment change. Hello, I cannot attend on Tuesday. Please may I have another date? Thank you.'},
+{id:'e12',title:'Speaking and listening',body:'Listen without interrupting, ask relevant questions and speak clearly. Take turns and stay on the topic.',example:'Useful question: “Could you please repeat the last instruction?”'}
+];
+const bank=[
+{q:'A notice says: “Library closed on Wednesday for staff training.” When is the library closed?',o:['Tuesday','Wednesday','Thursday','Friday'],a:'Wednesday',x:'The notice directly states that the library is closed on Wednesday.'},
+{q:'Which sentence is a question?',o:['The meeting starts at ten.','Please sit down.','Where is the meeting room?','What a busy day!'],a:'Where is the meeting room?',x:'A direct question ends with a question mark.'},
+{q:'Choose the sentence with correct capital letters.',o:['we visited london in june.','We visited London in June.','We Visited london in june.','we visited London in June.'],a:'We visited London in June.',x:'The sentence, place name and month need capital letters.'},
+{q:'Which word completes the sentence? “Please put the bags over ___.”',o:['their','there','they’re','them'],a:'there',x:'“There” refers to a place.'},
+{q:'Which sentence uses a full stop correctly?',o:['The shop closes at six','The shop closes at six.','the shop closes at six.','The shop. closes at six'],a:'The shop closes at six.',x:'A statement starts with a capital letter and ends with one full stop.'},
+{q:'Which is a fact?',o:['This soup tastes wonderful.','The café opens at 8:00 am.','That is the best café.','The chairs are uncomfortable.'],a:'The café opens at 8:00 am.',x:'An opening time can be checked.'},
+{q:'Which is an opinion?',o:['The course has twelve sessions.','The class begins on Monday.','The course is very interesting.','The room number is 14.'],a:'The course is very interesting.',x:'“Interesting” tells what someone thinks.'},
+{q:'Choose the correct plural of “baby”.',o:['babys','babies','babyes','baby’s'],a:'babies',x:'For many words ending consonant + y, change y to ies.'},
+{q:'Which sentence is written in the past tense?',o:['I walk to work.','I will walk to work.','I walked to work.','I am walking to work.'],a:'I walked to work.',x:'“Walked” shows the action already happened.'},
+{q:'Which word is spelt correctly?',o:['becaus','beacause','because','becose'],a:'because',x:'The correct spelling is “because”.'},
+{q:'Choose the best greeting for a formal email when you know the person’s name.',o:['Hiya mate,','Dear Ms Patel,','Oi,','Hello you,'],a:'Dear Ms Patel,',x:'“Dear Ms Patel,” is polite and suitable for a formal email.'},
+{q:'Which sentence contains a comma used for a list?',o:['After lunch, we left.','I bought rice, beans, bread and milk.','Yes, I agree.','On Friday, the office closes early.'],a:'I bought rice, beans, bread and milk.',x:'The commas separate items in a list.'},
+{q:'A text says: “Take one tablet twice a day with food.” How many tablets should be taken each day?',o:['One','Two','Three','Four'],a:'Two',x:'One tablet taken twice a day means two tablets altogether.'},
+{q:'Which instruction should happen first? “Dry the cup. Wash the cup in warm water. Put it away.”',o:['Put it away.','Dry the cup.','Wash the cup in warm water.','None of them.'],a:'Wash the cup in warm water.',x:'The cup must be washed before it is dried and put away.'},
+{q:'Which sentence has the clearest meaning?',o:['The form it yesterday completed Lee.','Lee yesterday the form completed.','Lee completed the form yesterday.','Completed yesterday Lee form the.'],a:'Lee completed the form yesterday.',x:'The words are in a clear and natural order.'},
+{q:'Which shortened form means “do not”?',o:["dont","don't","do'nt","doesn't"],a:"don't",x:'The apostrophe replaces the missing letter in “do not”.'},
+{q:'Which sentence shows belonging?',o:["The dogs barking.","The dog's bowl is empty.","The dogs is bowl empty.","The dog bowl's empty."],a:"The dog's bowl is empty.",x:'The apostrophe shows that the bowl belongs to one dog.'},
+{q:'A message says: “Your dentist appointment has moved from 2:00 pm to 3:30 pm.” What is the new time?',o:['2:00 pm','2:30 pm','3:00 pm','3:30 pm'],a:'3:30 pm',x:'The message says the appointment has moved to 3:30 pm.'},
+{q:'Which word means the same as “quick”?',o:['slow','fast','late','quiet'],a:'fast',x:'“Fast” has a similar meaning to “quick”.'},
+{q:'Which word is opposite in meaning to “empty”?',o:['full','open','small','light'],a:'full',x:'“Full” is the opposite of “empty”.'},
+{q:'Choose the correct word: “___ going to start the course tomorrow.”',o:['Their','There','They’re','Them'],a:'They’re',x:'“They’re” means “they are”.'},
+{q:'Which sentence is punctuated correctly?',o:['Can you help me.','Can you help me?','can you help me?','Can you, help me?'],a:'Can you help me?',x:'A direct question starts with a capital and ends with a question mark.'},
+{q:'Which sentence is most suitable for a work email?',o:['Send me the rota now.','Could you please send me a copy of the rota?','Gimme the rota.','Where is it then?'],a:'Could you please send me a copy of the rota?',x:'This sentence is clear and polite.'},
+{q:'A form asks for “surname”. What should you write?',o:['Your first name','Your family name','Your address','Your date of birth'],a:'Your family name',x:'Surname means family name or last name.'},
+{q:'Which heading best fits a text about bus times and fares?',o:['Healthy Eating','Local Bus Information','Job Application','Weather Warning'],a:'Local Bus Information',x:'Bus times and fares are local bus information.'},
+{q:'Read: “The community centre offers computer classes every Tuesday. Places must be booked.” What must people do before attending?',o:['Bring a computer','Pay on Tuesday','Book a place','Call on Wednesday'],a:'Book a place',x:'The text says places must be booked.'},
+{q:'Which word should start with a capital letter?',o:['table','monday','chair','window'],a:'monday',x:'Days of the week begin with capital letters: Monday.'},
+{q:'Choose the correct sentence.',o:['My friend have a new job.','My friend has a new job.','My friend having a new job.','My friend are a new job.'],a:'My friend has a new job.',x:'The singular subject “friend” takes “has”.'},
+{q:'Which word completes the sentence? “I have lived here ___ 2022.”',o:['for','since','from','during'],a:'since',x:'Use “since” with a starting point in time.'},
+{q:'What is the purpose of a recipe?',o:['To persuade someone to buy food','To explain how to make something','To tell a funny story','To complain about a meal'],a:'To explain how to make something',x:'A recipe gives instructions for preparing food.'},
+{q:'What is the purpose of an advertisement?',o:['To persuade people to buy or use something','To record an appointment','To give private medical results','To list classroom rules only'],a:'To persuade people to buy or use something',x:'Advertisements usually aim to persuade.'},
+{q:'Which word is spelt correctly?',o:['tomorow','tommorrow','tomorrow','tommorow'],a:'tomorrow',x:'The correct spelling is “tomorrow”.'},
+{q:'Which sentence has a verb?',o:['The blue folder.','Very quickly.','The learner reads the notice.','A large room.'],a:'The learner reads the notice.',x:'“Reads” is the action word, or verb.'},
+{q:'Which word is an adjective in “The warm room felt comfortable”?',o:['room','felt','warm','the'],a:'warm',x:'“Warm” describes the room.'},
+{q:'Which sentence gives a clear instruction?',o:['The door is blue.','Please press the green button once.','Buttons can be useful.','I like the green button.'],a:'Please press the green button once.',x:'It clearly tells the reader what action to take.'},
+{q:'Which ending is suitable for a polite email?',o:['Whatever.','Cheers matey.','Kind regards,','Bye then!!!'],a:'Kind regards,',x:'“Kind regards,” is a suitable polite ending.'},
+{q:'A poster says “Free advice: Friday 10 am–1 pm. No appointment needed.” When can someone attend?',o:['Thursday afternoon','Friday morning','Friday evening','Saturday morning'],a:'Friday morning',x:'10 am to 1 pm is on Friday, beginning in the morning.'},
+{q:'Which sentence uses “and” correctly to join ideas?',o:['I filled in the form and posted it.','I filled and the form posted.','And I filled the form.','I and posted filled form.'],a:'I filled in the form and posted it.',x:'“And” joins two related actions clearly.'},
+{q:'Which is the best subject line for an email about missing a class?',o:['Hello','Important thing','Unable to attend Tuesday’s class','Read this now'],a:'Unable to attend Tuesday’s class',x:'A good subject line clearly tells the reader what the email is about.'},
+{q:'Which sentence is in the future tense?',o:['We visit the centre.','We visited the centre.','We will visit the centre.','We are at the centre.'],a:'We will visit the centre.',x:'“Will visit” shows a future action.'}
+];
+const sets={
+ diagnostic:[0,1,2,3,5,8,12,23],
+ mockA:[0,2,4,6,9,10,12,14,16,18,20,22,25,29,34],
+ mockB:[1,3,5,7,8,11,13,15,17,19,21,23,26,31,38]
+};
+let state=JSON.parse(localStorage.getItem('ruEntry3EnglishState')||'{}');
+state.completed=Array.isArray(state.completed)?state.completed:[];state.scores=state.scores&&typeof state.scores==='object'?state.scores:{};state.quizCount=Number(state.quizCount)||0;
+let currentQuizzes={};
+function shuffle(a){let b=[...a];for(let i=b.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[b[i],b[j]]=[b[j],b[i]]}return b}
+function makeQuestion(q){const opts=shuffle(q.o);return {...q,opts,correct:opts.indexOf(q.a)}}
+function makeQuiz(name){let source;if(name==='practice')source=shuffle(bank).slice(0,10);else source=sets[name].map(i=>bank[i]);return source.map(makeQuestion)}
+function save(){localStorage.setItem('ruEntry3EnglishState',JSON.stringify(state));updateProgress();window.ruEntry3EnglishCloudQueue?.({state,planner:getPlannerData()})}
+function go(id,btn){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.navbtn').forEach(b=>b.classList.remove('active'));let target=btn||document.querySelector(`[data-screen="${id}"]`);if(target)target.classList.add('active');if(innerWidth<850)scrollTo({top:150,behavior:'smooth'});updateProgress()}
+function renderLessons(){englishLessons.innerHTML=lessons.map(l=>`<div class="card"><span class="pill">${state.completed.includes(l.id)?'Completed':'Lesson'}</span><h3>${l.title}</h3><p>${l.body}</p><div class="example">${l.example}</div><br><button class="${state.completed.includes(l.id)?'success':'primary'}" onclick="completeLesson('${l.id}')">${state.completed.includes(l.id)?'✓ Completed':'Mark as viewed'}</button></div>`).join('')}
+function completeLesson(id){if(!state.completed.includes(id))state.completed.push(id);save();renderLessons()}
+function startQuiz(name){const data=makeQuiz(name);currentQuizzes[name]=data;const area=name==='diagnostic'?quizAreaDiag:name==='practice'?quizAreaEnglish:quizAreaMock;area.innerHTML=`<div class="card"><h3>${prettyName(name)}</h3><form id="form_${name}">${data.map((q,i)=>`<div class="question"><h4>${i+1}. ${q.q}</h4>${q.opts.map((o,j)=>`<label class="option"><input type="radio" name="${name}_q${i}" value="${j}"> ${o}</label>`).join('')}<div class="feedback" id="fb_${name}_${i}"></div></div>`).join('')}<button type="button" class="success" onclick="markQuiz('${name}')">Mark My Answers</button></form><div id="result_${name}"></div></div>`;area.scrollIntoView({behavior:'smooth',block:'start'})}
+function markQuiz(name){const data=currentQuizzes[name]||[];let score=0;data.forEach((q,i)=>{const chosen=document.querySelector(`input[name="${name}_q${i}"]:checked`),fb=document.getElementById(`fb_${name}_${i}`);if(chosen&&+chosen.value===q.correct){score++;fb.textContent='Correct — '+q.x;fb.className='feedback correct'}else{fb.textContent='Correct answer: '+q.a+'. '+q.x;fb.className='feedback wrong'}});const pct=Math.round(score/data.length*100);state.scores[name]=Math.max(state.scores[name]||0,pct);state.quizCount++;save();const msg=pct>=70?'Good result — keep practising to make the skills secure.':'Review the matching lessons, then try another set of questions.';document.getElementById('result_'+name).innerHTML=`<div class="result-box"><h3>Score: ${score}/${data.length} (${pct}%)</h3><p>${msg}</p></div>`;clearInterval(window.quizTimer);timer.classList.add('hidden')}
+function prettyName(n){return n==='diagnostic'?'Entry Level 3 Diagnostic':n==='practice'?'Entry Level 3 Practice':n==='mockA'?'Mini Mock A':'Mini Mock B'}
+function startTimedQuiz(name,mins){go('mock');startQuiz(name);let seconds=mins*60;timer.classList.remove('hidden');clearInterval(window.quizTimer);window.quizTimer=setInterval(()=>{let m=Math.floor(seconds/60),s=seconds%60;timer.textContent=`Time remaining: ${m}:${String(s).padStart(2,'0')}`;if(seconds--<=0){clearInterval(window.quizTimer);timer.textContent='Time is up. Mark your answers now.'}},1000)}
+function getBest(){return Math.max(0,...Object.values(state.scores).map(Number).filter(Number.isFinite))}
+function updateProgress(){const best=getBest(),lessonPct=state.completed.length/lessons.length*60,quizPct=best*.4,overall=Math.min(100,Math.round(lessonPct+quizPct));overallPercent.textContent=overall+'%';overallBar.style.width=overall+'%';bestScore.textContent=best+'%';diagnosticBest.textContent=(state.scores.diagnostic||0)+'%';lessonsDone.textContent=state.completed.length;quizCount.textContent=state.quizCount;completedList.innerHTML=state.completed.length?state.completed.map(id=>`<span class="pill" style="margin:4px">${lessons.find(x=>x.id===id)?.title}</span>`).join(''):'None yet.';recommendation.textContent=state.scores.diagnostic==null?'Complete the diagnostic check first.':state.completed.length<4?'Read the first four lessons and mark them as viewed.':best<70?'Complete another practice quiz and review the explanations.':state.completed.length<lessons.length?'Continue with the remaining lessons.':'Try both mini mock exams and aim for a secure score.';diagnosticStatus.textContent=state.scores.diagnostic!=null?'Best score: '+state.scores.diagnostic+'%':'';certBest.textContent=best+'%';certLessons.textContent=state.completed.length+'/'+lessons.length;certName.textContent=learnerName?.value||localStorage.getItem('ruEntry3LearnerName')||'Learner';certDate.textContent='Progress record updated: '+new Date().toLocaleDateString('en-GB')}
+function getPlannerData(){return {name:learnerName.value,date:targetDate.value,english:englishTarget.value,support:supportTarget.value,days:[...document.querySelectorAll('#studyDays input:checked')].map(x=>x.value)}}
+function savePlanner(){const p=getPlannerData();localStorage.setItem('ruEntry3EnglishPlanner',JSON.stringify(p));localStorage.setItem('ruEntry3LearnerName',p.name);plannerSaved.textContent='Planner saved.';updateProgress();window.ruEntry3EnglishCloudQueue?.({state,planner:p})}
+function loadPlanner(){const p=JSON.parse(localStorage.getItem('ruEntry3EnglishPlanner')||'{}');learnerName.value=p.name||'';targetDate.value=p.date||'';englishTarget.value=p.english||'';supportTarget.value=p.support||'';studyDays.innerHTML=['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'].map(d=>`<label><input type="checkbox" value="${d}" ${(p.days||[]).includes(d)?'checked':''}> ${d}</label>`).join('')}
+function printPlanner(){go('planner');window.print()}
+function resetProgress(){modalTitle.textContent='Delete progress?';modalSubtitle.textContent='Please confirm';modalBody.innerHTML='<p>This will permanently remove lesson completion and quiz scores from this device and Firebase Cloud. Your study planner will be kept.</p><div class="confirm-actions"><button class="secondary" onclick="closeModal()">Cancel</button><button class="danger" onclick="confirmResetProgress()">Delete progress</button></div>';openModal()}
+async function confirmResetProgress(){modalBody.innerHTML='<div class="result-box"><h3>Deleting progress…</h3><p>Please keep this page open.</p></div>';state={completed:[],scores:{},quizCount:0};localStorage.setItem('ruEntry3EnglishState',JSON.stringify(state));updateProgress();renderLessons();const ok=await (window.ruEntry3EnglishDeleteCloudProgress?.()??Promise.resolve(false));modalTitle.textContent='Progress deleted';modalSubtitle.textContent='RECONNECT-US';modalBody.innerHTML=`<div class="result-box"><h3>✓ Progress is now 0%</h3><p>${ok?'Progress was deleted from this device and Firebase Cloud.':'The device copy was deleted. Cloud deletion needs a signed-in connection.'}</p><p>Your study planner has been kept.</p></div><div class="confirm-actions"><button class="primary" onclick="closeModal()">Continue</button></div>`}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('ruDark',document.body.classList.contains('dark'))}
+function toggleFull(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+function openModal(){modal.classList.add('show');document.body.style.overflow='hidden';setTimeout(()=>modal.querySelector('button')?.focus(),80)}
+function openSectionChooser(){modalTitle.textContent='Choose a section';modalSubtitle.textContent='RECONNECT-US Entry Level 3 English';modalBody.innerHTML=`<div class="choice-grid">${[['home','🏠','Home','Return to the main dashboard'],['diagnostic','🧭','Diagnostic Check','Find the areas to practise'],['english','📘','English Lessons','Reading, writing and communication'],['englishPractice','✍️','English Practice','Mixed Entry Level 3 questions'],['mock','📝','Mini Mock Exams','Timed exam-style practice'],['planner','📅','Study Planner','Set targets and study days'],['progress','📊','My Progress','Review scores and completed lessons'],['certificate','🏆','Achievement','Print your progress record']].map(x=>`<button type="button" class="choice-btn" data-target="${x[0]}"><span class="choice-icon">${x[1]}</span><span class="choice-text">${x[2]}<small>${x[3]}</small></span></button>`).join('')}</div>`;modalBody.querySelectorAll('[data-target]').forEach(b=>b.addEventListener('click',()=>{go(b.dataset.target);closeModal()}));openModal()}
+function showHelp(){modalTitle.textContent='How to use the app';modalSubtitle.textContent='Help and guidance';modalBody.innerHTML='<p>Choose a section from the menu. Lesson completion, quiz scores and the study planner save locally and securely sync to Firebase when the learner is signed in through RECONNECT-US.</p><p>Read a lesson, complete practice questions, then review the explanation after each answer.</p><p>This app supports preparation but does not replace teaching or an assessment from an accredited provider.</p>';openModal()}
+function showExamTips(){modalTitle.textContent='Entry Level 3 exam tips';modalSubtitle.textContent='Prepare with confidence';modalBody.innerHTML='<h3>Reading</h3><p>Read the question first. Scan for names, dates, times and key words. Check that your answer matches the text.</p><h3>Writing</h3><p>Plan the main points. Write complete sentences. Use capital letters and punctuation. Check spelling and make sure all requested information is included.</p><h3>Speaking and listening</h3><p>Listen carefully, take turns, stay on topic and ask for clarification when needed.</p>';openModal()}
+function closeModal(){modal.classList.remove('show');document.body.style.overflow='';setTimeout(()=>{modalSubtitle.textContent='Entry Level 3 English'},280)}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});if(localStorage.getItem('ruDark')==='true')document.body.classList.add('dark');renderLessons();loadPlanner();updateProgress();
+</script>
+<script type="module">
+import { initializeApp, getApps, getApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import { getFirestore, doc, getDoc, setDoc, deleteDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+const firebaseConfig={apiKey:"AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",authDomain:"reconnect-us-hub.firebaseapp.com",projectId:"reconnect-us-hub",storageBucket:"reconnect-us-hub.firebasestorage.app",messagingSenderId:"891220836369",appId:"1:891220836369:web:6f2b4a09350b8d9fe0b1b0"};
+const app=getApps().length?getApp():initializeApp(firebaseConfig),auth=getAuth(app),db=getFirestore(app);const APP_ID="entry-level-3-english";let user=null,ready=false,pending=null,saveTimer=null,deleting=false;const progressRef=()=>doc(db,"users",user.uid,"appProgress",APP_ID);
+function normalise(payload={}){const st=payload.state&&typeof payload.state==='object'?payload.state:{};return {state:{completed:Array.isArray(st.completed)?st.completed:[],scores:st.scores&&typeof st.scores==='object'?st.scores:{},quizCount:Number(st.quizCount)||0},planner:payload.planner&&typeof payload.planner==='object'?payload.planner:{}}}
+function summary(st){const scores=Object.values(st.scores||{}).map(Number).filter(Number.isFinite),best=scores.length?Math.max(...scores):0,completed=st.completed.length,percent=Math.min(100,Math.round((completed/12)*60+(best/100)*40));return {lessonsCompleted:completed,quizAttempts:st.quizCount,bestScore:best,percent}}
+async function saveNow(payload){if(deleting)return false;pending=normalise(payload);if(!user||!ready)return false;const clean=pending,s=summary(clean.state);try{await setDoc(progressRef(),{appId:APP_ID,appName:"Entry Level 3 English",updatedAt:serverTimestamp(),lastActivityAt:new Date().toISOString(),status:s.percent>=100?'completed':(s.lessonsCompleted||s.quizAttempts?'in-progress':'started'),percent:s.percent,score:s.bestScore,completed:s.percent>=100,summary:s,data:clean},{merge:true});pending=null;return true}catch(error){console.error('Entry Level 3 English cloud save failed',error);return false}}
+window.ruEntry3EnglishCloudQueue=payload=>{pending=normalise(payload);clearTimeout(saveTimer);saveTimer=setTimeout(()=>saveNow(pending),500)};
+window.ruEntry3EnglishDeleteCloudProgress=async()=>{deleting=true;clearTimeout(saveTimer);pending=null;try{if(!user)return false;await deleteDoc(progressRef());return true}catch(error){console.error('Cloud delete failed',error);return false}finally{deleting=false}};
+onAuthStateChanged(auth,async signedInUser=>{user=signedInUser||null;if(!user){ready=false;return}try{const snap=await getDoc(progressRef());ready=true;if(snap.exists()){const cloud=normalise(snap.data()?.data||{});localStorage.setItem('ruEntry3EnglishState',JSON.stringify(cloud.state));localStorage.setItem('ruEntry3EnglishPlanner',JSON.stringify(cloud.planner));if(cloud.planner?.name)localStorage.setItem('ruEntry3LearnerName',cloud.planner.name);state=cloud.state;loadPlanner();renderLessons();updateProgress()}else await saveNow({state,planner:getPlannerData()});if(pending)await saveNow(pending)}catch(error){console.error('Cloud load failed',error);ready=true}});
+</script>
+<script type="module" src="../reconnectus-core/reconnectus-access-guard.js" data-app-id="entry-level-3-english" data-login-url="../index.html"></script>
+</body></html>
