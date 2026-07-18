@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US Functional Skills</title>
+<style>
+:root{
+  --bg:#eef4f8;--panel:#ffffff;--text:#173042;--muted:#607585;
+  --blue:#0b4f6c;--blue2:#1677a6;--teal:#1ca6a8;--orange:#f28c28;
+  --green:#27895a;--purple:#7354c7;--line:#d6e1e8;--shadow:0 12px 30px rgba(15,50,70,.12);
+}
+body.dark{--bg:#0f1a22;--panel:#172832;--text:#f4f8fa;--muted:#bfd0d9;--line:#2c4655;--shadow:0 12px 30px rgba(0,0,0,.35)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:linear-gradient(135deg,var(--bg),#dfeef3);color:var(--text);min-height:100vh}
+body.dark{background:linear-gradient(135deg,#091219,#122630)}
+button,a{font:inherit}
+button{cursor:pointer}
+.topbar{position:sticky;top:0;z-index:20;background:linear-gradient(90deg,var(--blue),var(--blue2));color:white;display:flex;align-items:center;justify-content:space-between;padding:10px 14px;box-shadow:0 4px 18px rgba(0,0,0,.2)}
+.brand{display:flex;align-items:center;gap:12px}.logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#ffd08b);display:grid;place-items:center;color:#173042;font-weight:900;font-size:22px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.6)}
+.brand h1{font-size:1.15rem;margin:0}.brand small{opacity:.9}.top-actions{display:flex;gap:8px;flex-wrap:wrap}.icon-btn{border:1px solid rgba(255,255,255,.45);background:rgba(255,255,255,.12);color:white;border-radius:10px;padding:9px 11px;font-weight:700;text-decoration:none}.icon-btn:hover,.icon-btn:focus{background:rgba(255,255,255,.22)}
+.wrap{max-width:1250px;margin:auto;padding:18px}
+.hero{background:linear-gradient(135deg,var(--blue),var(--teal));color:white;border-radius:24px;padding:28px;box-shadow:var(--shadow);display:grid;grid-template-columns:1.45fr .75fr;gap:20px;align-items:center}
+.hero h2{font-size:2.05rem;margin:0 0 10px;line-height:1.2}.hero p{font-size:1.05rem;line-height:1.55;margin:0}.hero-card{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.3);border-radius:18px;padding:18px}.hero-card h3{margin:0 0 8px}.hero-card p{font-size:.98rem}
+.section{margin-top:18px;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:20px}
+.section-head{display:flex;align-items:end;justify-content:space-between;gap:14px;border-bottom:2px solid var(--line);padding-bottom:12px;margin-bottom:16px}.section-head h2{margin:0}.section-head p{margin:4px 0 0;color:var(--muted)}
+.course-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.course{position:relative;display:flex;align-items:center;gap:16px;min-height:150px;padding:20px;border:1px solid var(--line);border-radius:18px;text-decoration:none;color:var(--text);background:linear-gradient(180deg,var(--panel),rgba(22,119,166,.035));overflow:hidden;transition:transform .2s ease,border-color .2s ease,box-shadow .2s ease}
+.course::after{content:'›';position:absolute;right:18px;font-size:2.2rem;font-weight:800;color:var(--muted);transition:transform .2s ease}
+.course:hover,.course:focus{transform:translateY(-3px);border-color:var(--teal);box-shadow:0 14px 30px rgba(15,50,70,.14)}.course:hover::after,.course:focus::after{transform:translateX(4px);color:var(--teal)}
+.course-icon{width:72px;height:72px;flex:0 0 72px;border-radius:20px;display:grid;place-items:center;color:white;font-size:2rem;box-shadow:0 9px 20px rgba(15,50,70,.18)}
+.english .course-icon{background:linear-gradient(135deg,#1688c7,#14b6d3)}.maths .course-icon{background:linear-gradient(135deg,#6f52c7,#9c66dc)}.level1 .course-icon{background:linear-gradient(135deg,#1688c7,var(--teal))}.level2 .course-icon{background:linear-gradient(135deg,var(--orange),#f4b326)}
+.course-copy{padding-right:38px}.course h3{font-size:1.25rem;margin:0 0 7px}.course p{margin:0;color:var(--muted);line-height:1.45}.badge{display:inline-block;margin-top:11px;padding:5px 9px;border-radius:999px;background:#e4f3f4;color:#07545a;font-size:.78rem;font-weight:800}.dark .badge{background:#24464a;color:#c7ffff}
+.info-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:18px}.info-card{border:1px solid var(--line);border-radius:16px;padding:16px;background:var(--panel)}.info-card h3{margin:0 0 7px}.info-card p{margin:0;color:var(--muted);line-height:1.45}
+footer{text-align:center;padding:24px;color:var(--muted);font-weight:700}
+.modal{position:fixed;inset:0;background:rgba(3,18,28,.72);display:flex;align-items:center;justify-content:center;padding:18px;z-index:50;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .28s ease,visibility .28s ease;backdrop-filter:blur(5px)}.modal.show{opacity:1;visibility:visible;pointer-events:auto}.modal-card{background:var(--panel);color:var(--text);max-width:680px;width:100%;border-radius:24px;max-height:88vh;overflow:auto;border:1px solid var(--line);box-shadow:0 26px 70px rgba(0,0,0,.38);transform:translateY(48px) scale(.96);opacity:0;transition:transform .36s cubic-bezier(.2,.8,.2,1),opacity .28s ease}.modal.show .modal-card{transform:translateY(0) scale(1);opacity:1}.modal-head{position:sticky;top:0;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;background:linear-gradient(90deg,var(--blue),var(--blue2));color:white}.modal-brand{display:flex;align-items:center;gap:12px}.modal-logo{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,var(--orange),#ffd08b);display:grid;place-items:center;color:#173042;font-weight:900;font-size:21px;box-shadow:inset 0 0 0 3px rgba(255,255,255,.55)}.modal-head h2{margin:0;font-size:1.2rem}.modal-close{border:1px solid rgba(255,255,255,.5);background:rgba(255,255,255,.14);color:white;border-radius:12px;padding:10px 13px;font-weight:800}.modal-body{padding:18px;line-height:1.55}.modal-body h3{margin-top:0}.choice-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.choice-btn{display:flex;align-items:center;gap:13px;width:100%;min-height:76px;border:1px solid var(--line);border-radius:16px;padding:14px;background:var(--panel);color:var(--text);text-align:left;font-weight:800;text-decoration:none;transition:transform .18s ease,border-color .18s ease,background .18s ease,box-shadow .18s ease}.choice-btn:hover,.choice-btn:focus{transform:translateY(-2px);border-color:var(--teal);background:rgba(28,166,168,.08);box-shadow:0 10px 24px rgba(15,50,70,.12)}.choice-icon{width:46px;height:46px;flex:0 0 46px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,var(--blue2),var(--teal));color:white;font-size:1.35rem}.choice-text small{display:block;margin-top:4px;color:var(--muted);font-weight:600}
+@media(max-width:850px){.hero{grid-template-columns:1fr}.course-grid{grid-template-columns:1fr}.info-grid{grid-template-columns:1fr}}
+@media(max-width:560px){.topbar{align-items:flex-start}.brand small{display:none}.brand h1{font-size:.95rem}.top-actions{justify-content:flex-end}.icon-btn{padding:8px;font-size:.88rem}.wrap{padding:10px}.hero{padding:20px}.hero h2{font-size:1.55rem}.section{padding:14px}.section-head{align-items:flex-start;flex-direction:column}.course{padding:16px;min-height:135px}.course-icon{width:58px;height:58px;flex-basis:58px;font-size:1.6rem}.course h3{font-size:1.08rem}.choice-grid{grid-template-columns:1fr}.modal{padding:10px}.modal-card{border-radius:20px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">RU</div>
+    <div><h1>RECONNECT-US</h1><small>Functional Skills Learning Centre</small></div>
+  </div>
+  <div class="top-actions">
+    <a class="icon-btn" href="../index.html">← Back</a>
+    <button class="icon-btn" type="button" onclick="openCourseChooser()">☰ Choose Course</button>
+    <button class="icon-btn" type="button" onclick="toggleDark()">☾ Theme</button>
+    <button class="icon-btn" type="button" onclick="toggleFull()">⛶ Full Screen</button>
+    <button class="icon-btn" type="button" onclick="showHelp()">? Help</button>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="hero">
+    <div>
+      <h2>Build skills. Gain confidence. Move towards your next qualification.</h2>
+      <p>Choose your Functional Skills course below. Each app contains lessons, practice activities, diagnostic checks, mini mock exams, progress tracking and achievements.</p>
+    </div>
+    <div class="hero-card">
+      <h3>📚 Four learning programmes</h3>
+      <p>Start at the level that suits you and move forward when you feel ready. Your progress is stored separately inside each course.</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="coursesTitle">
+    <div class="section-head">
+      <div><h2 id="coursesTitle">Choose a Functional Skills course</h2><p>Select a course to open its learning app.</p></div>
+    </div>
+
+    <div class="course-grid">
+      <a class="course english" href="entry-level-3-english/index.html">
+        <span class="course-icon">📘</span>
+        <span class="course-copy"><h3>Entry Level 3 English</h3><p>Build confidence in reading, writing, spelling, punctuation and everyday communication.</p><span class="badge">Entry Level 3</span></span>
+      </a>
+
+      <a class="course maths" href="entry-level-3-maths/index.html">
+        <span class="course-icon">➗</span>
+        <span class="course-copy"><h3>Entry Level 3 Maths</h3><p>Practise numbers, money, time, measures, shapes, fractions, data and everyday calculations.</p><span class="badge">Entry Level 3</span></span>
+      </a>
+
+      <a class="course level1" href="level-1-english-maths/index.html">
+        <span class="course-icon">📗</span>
+        <span class="course-copy"><h3>Level 1 English &amp; Maths</h3><p>Prepare for Level 1 with lessons, exam-style practice and mini mock exams in both subjects.</p><span class="badge">Level 1 Preparation</span></span>
+      </a>
+
+      <a class="course level2" href="level-2-english-maths/index.html">
+        <span class="course-icon">📙</span>
+        <span class="course-copy"><h3>Level 2 English &amp; Maths</h3><p>Develop higher-level English and Maths skills using more challenging exam-style activities.</p><span class="badge">Level 2 Preparation</span></span>
+      </a>
+    </div>
+  </section>
+
+  <section class="info-grid" aria-label="Functional Skills information">
+    <article class="info-card"><h3>🎯 Learn at your pace</h3><p>Repeat lessons and practice questions as often as needed. There is no pressure to rush.</p></article>
+    <article class="info-card"><h3>☁️ Progress follows you</h3><p>When signed in through RECONNECT-US, each course securely saves its own progress to Firebase.</p></article>
+    <article class="info-card"><h3>🏆 Track achievement</h3><p>Each app includes progress records, best scores and achievement information for that course.</p></article>
+  </section>
+</main>
+
+<footer>© RECONNECT-US — All rights reserved.</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-card">
+    <div class="modal-head">
+      <div class="modal-brand"><div class="modal-logo">RU</div><div><h2 id="modalTitle">RECONNECT-US</h2><small id="modalSubtitle">Functional Skills</small></div></div>
+      <button class="modal-close" type="button" onclick="closeModal()">✕ Close</button>
+    </div>
+    <div class="modal-body" id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+const modal=document.getElementById('modal');
+const modalTitle=document.getElementById('modalTitle');
+const modalSubtitle=document.getElementById('modalSubtitle');
+const modalBody=document.getElementById('modalBody');
+
+function openModal(){modal.classList.add('show');document.body.style.overflow='hidden';setTimeout(()=>modal.querySelector('a,button')?.focus(),80)}
+function closeModal(){modal.classList.remove('show');document.body.style.overflow='';setTimeout(()=>{modalSubtitle.textContent='Functional Skills'},280)}
+function openCourseChooser(){
+  modalTitle.textContent='Choose a course';modalSubtitle.textContent='RECONNECT-US Functional Skills';
+  const courses=[
+    ['entry-level-3-english/index.html','📘','Entry Level 3 English','Reading, writing and communication'],
+    ['entry-level-3-maths/index.html','➗','Entry Level 3 Maths','Numbers, measures and everyday maths'],
+    ['level-1-english-maths/index.html','📗','Level 1 English & Maths','Level 1 lessons and exam preparation'],
+    ['level-2-english-maths/index.html','📙','Level 2 English & Maths','More advanced exam preparation']
+  ];
+  modalBody.innerHTML='<div class="choice-grid">'+courses.map(c=>`<a class="choice-btn" href="${c[0]}"><span class="choice-icon">${c[1]}</span><span class="choice-text">${c[2]}<small>${c[3]}</small></span></a>`).join('')+'</div>';
+  openModal();
+}
+function showHelp(){
+  modalTitle.textContent='Functional Skills help';modalSubtitle.textContent='Choose the right course';
+  modalBody.innerHTML='<h3>Where should I begin?</h3><p>Start with the course that matches your current learning level. Entry Level 3 is below Level 1. Level 2 is more advanced than Level 1.</p><p>Each course has its own diagnostic check. This can help you see which topics need the most practice.</p><p>Your scores and lesson progress stay separate in each app, so completing one course will not overwrite another course.</p><p>These apps support learning and exam preparation. They do not replace teaching or an assessment from an accredited provider.</p>';
+  openModal();
+}
+function toggleDark(){document.body.classList.toggle('dark');localStorage.setItem('ruFunctionalSkillsDark',document.body.classList.contains('dark'))}
+function toggleFull(){if(!document.fullscreenElement)document.documentElement.requestFullscreen?.();else document.exitFullscreen?.()}
+modal.addEventListener('click',e=>{if(e.target===modal)closeModal()});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&modal.classList.contains('show'))closeModal()});
+if(localStorage.getItem('ruFunctionalSkillsDark')==='true')document.body.classList.add('dark');
+</script>
+
+<!-- Secure RECONNECT-US Core access guard for the Functional Skills section. -->
+<script type="module" src="../reconnectus-core/reconnectus-access-guard.js" data-app-id="functional-skills" data-login-url="../index.html"></script>
+</body>
+</html>
