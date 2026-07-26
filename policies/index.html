@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US • Policies — Role Enforcement Build 1</title>
+
+<style>
+html{
+  min-height:100%;
+}
+
+body{
+  margin:0;
+  padding:30px 16px;
+  font-family:Arial, sans-serif;
+  background:#0b1220;
+  color:white;
+  min-height:100vh;
+  overflow-y:auto;
+  box-sizing:border-box;
+}
+
+*{
+  box-sizing:border-box;
+}
+
+.box{
+  text-align:center;
+  max-width:460px;
+  width:100%;
+  margin:0 auto;
+}
+
+h1{
+  margin:0 0 20px;
+}
+
+.btn{
+  display:block;
+  margin:10px auto;
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  width:100%;
+}
+
+.primary{
+  background:#22d7c6;
+  color:#042131;
+}
+
+.alt{
+  background:#59a9ff;
+  color:#042131;
+}
+
+.whatsapp-title{
+  margin:26px 0 8px;
+  color:#f7a84b;
+  font-size:1.05rem;
+}
+
+.whatsapp{
+  background:#f7a84b;
+  color:#2d1800;
+}
+
+.back{
+  margin-top:20px;
+  background:#444;
+  color:white;
+}
+</style>
+</head>
+
+<body>
+
+<div class="box">
+  <h1>Policies</h1>
+  <p style="color:#9fb2c8;font-size:.9rem;">RECONNECT-US Core protected</p>
+
+  <button class="btn primary" onclick="go('safeguarding.html')">
+    Safeguarding Policy
+  </button>
+
+  <button class="btn primary" onclick="go('gdpr.html')">
+    Data Protection (GDPR)
+  </button>
+
+  <button class="btn primary" onclick="go('prevent.html')">
+    Prevent Policy
+  </button>
+
+  <button class="btn alt" onclick="go('reporting.html')">
+    Online Safety Reporting
+  </button>
+
+  <button class="btn alt" onclick="go('code-of-conduct.html')">
+    Code of Conduct
+  </button>
+
+  <button class="btn alt" onclick="go('complaints.html')">
+    Complaints Policy
+  </button>
+
+  <button class="btn alt" onclick="go('equality.html')">
+    Equality &amp; Diversity
+  </button>
+
+  <h2 class="whatsapp-title">WhatsApp Policies</h2>
+
+  <button class="btn whatsapp" onclick="go('whatsapp/manager/index.html')">
+    Manager WhatsApp Policy
+  </button>
+
+  <button class="btn whatsapp" onclick="go('whatsapp/volunteer/index.html')">
+    Volunteer WhatsApp Policy
+  </button>
+
+  <button class="btn whatsapp" onclick="go('whatsapp/clients/index.html')">
+    Client WhatsApp Policy
+  </button>
+
+  <button class="btn back" onclick="backHome()">
+    Back to Home
+  </button>
+</div>
+
+<script>
+function go(page){
+  window.location.href = page;
+}
+
+function backHome(){
+  window.location.href = "../index.html";
+}
+</script>
+
+<script type="module"
+  src="../reconnectus-core/reconnectus-access-guard.js"
+  data-app-id="policies"
+  data-login-url="../index.html">
+</script>
+
+</body>
+</html>
