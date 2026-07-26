@@ -1,0 +1,49 @@
+// Merge these blocks into your existing Firestore rules.
+// Keep all unrelated RECONNECT-US rules already in use.
+
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() { return request.auth != null; }
+    function profile(uid) { return get(/databases/$(database)/documents/users/$(uid)).data; }
+    function myProfile() { return profile(request.auth.uid); }
+    function active() { return signedIn() && myProfile().status == 'active'; }
+    function superAdmin() { return active() && myProfile().role == 'superadmin'; }
+    function staff() { return active() && myProfile().role in ['volunteer','manager','superadmin']; }
+    function broadcastForMe() {
+      return resource.data.type == 'broadcast' &&
+        (resource.data.audienceKeys.hasAny([myProfile().role + ':' + myProfile().area]) ||
+         resource.data.audienceKeys.hasAny([myProfile().role + ':all']));
+    }
+
+    match /communications/{messageId} {
+      allow read: if active() && (
+        superAdmin() ||
+        resource.data.senderUid == request.auth.uid ||
+        (resource.data.type == 'private' && resource.data.recipientUid == request.auth.uid) ||
+        broadcastForMe()
+      );
+      allow create: if staff() && request.resource.data.senderUid == request.auth.uid;
+      allow update: if false;
+      allow delete: if superAdmin() || (active() && resource.data.senderUid == request.auth.uid);
+    }
+
+    match /communicationReplies/{replyId} {
+      allow read: if active() && (
+        superAdmin() || resource.data.senderUid == request.auth.uid || resource.data.recipientUid == request.auth.uid
+      );
+      allow create: if active()
+        && request.resource.data.senderUid == request.auth.uid
+        && request.resource.data.recipientUid == get(/databases/$(database)/documents/communications/$(request.resource.data.messageId)).data.senderUid;
+      allow update, delete: if false;
+    }
+
+    match /communicationReads/{receiptId} {
+      allow read: if active() && resource.data.uid == request.auth.uid;
+      allow create, update: if active()
+        && request.resource.data.uid == request.auth.uid
+        && receiptId == request.resource.data.messageId + '_' + request.auth.uid;
+      allow delete: if active() && resource.data.uid == request.auth.uid;
+    }
+  }
+}
