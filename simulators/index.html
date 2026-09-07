@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US • Simulators — Cloud Hub Build 1</title>
+<style>
+body{
+  margin:0;
+  font-family: Arial, sans-serif;
+  background:#0b1220;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:100vh;
+}
+.box{
+  text-align:center;
+  max-width:420px;
+  width:100%;
+  padding:20px;
+}
+h1{margin-bottom:20px;}
+.btn{
+  display:block;
+  margin:12px auto;
+  padding:14px;
+  border-radius:10px;
+  border:none;
+  font-size:15px;
+  font-weight:bold;
+  cursor:pointer;
+  width:100%;
+}
+.primary{background:#22d7c6;color:#042131;}
+.alt{background:#59a9ff;color:#042131;}
+.back{margin-top:20px;background:#444;color:white;}
+.note{
+  margin-top:16px;
+  font-size:13px;
+  color:#cbd5e1;
+}
+</style>
+</head>
+<body>
+<div class="box">
+  <h1>Simulators</h1>
+  <p style='color:#9fb2c8;font-size:.9rem;'>Core protected • Cloud record enabled</p>
+
+  
+<div style="margin:0 auto 16px auto;padding:14px;border-radius:16px;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);max-width:420px;">
+<div id="cloudStatus">Connecting to the learner's Simulator cloud record…</div>
+<div>Account: <strong id="accountLabel">Checking…</strong></div>
+<div>Last simulator: <strong id="lastSimulatorLabel">None yet</strong></div>
+</div>
+<button class="btn primary" type="button" data-sim-id="govuk" data-sim-name="GOV.UK Training Simulator" data-route="./govuk.html">
+    GOV.UK Training Simulator
+  </button>
+
+  <button class="btn primary" type="button" data-sim-id="nhs" data-sim-name="NHS App Training Simulator" data-route="./nhs.html">
+    NHS App Training Simulator
+  </button>
+
+  <button class="btn alt" type="button" data-sim-id="citizens" data-sim-name="Citizens Advice Simulator" data-route="./citizens.html">
+    Citizens Advice Simulator
+  </button>
+
+  <button class="btn back" type="button" onclick="backHome()">
+    Back to Home
+  </button>
+
+  <div class="note">This index file must sit in the same folder as govuk.html, nhs.html and citizens.html.</div>
+</div>
+
+<script>
+function backHome(){ window.location.href='../index.html'; }
+</script>
+
+
+<script type="module">
+import {initializeApp,getApps,getApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {getAuth,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,setDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+const cfg={apiKey:"AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",authDomain:"reconnect-us-hub.firebaseapp.com",projectId:"reconnect-us-hub",storageBucket:"reconnect-us-hub.firebasestorage.app",messagingSenderId:"891220836369",appId:"1:891220836369:web:6f2b4a09350b8d9fe0b1b0"};
+const app=getApps().length?getApp():initializeApp(cfg),auth=getAuth(app),db=getFirestore(app);
+let user,rec;
+const sims=[["govuk","GOV.UK Training Simulator"],["nhs","NHS App Training Simulator"],["citizens","Citizens Advice Simulator"]];
+const ref=()=>doc(db,"users",user.uid,"appProgress","simulators");
+const blank=()=>({appId:"simulators",lastSimulatorName:"",simulators:Object.fromEntries(sims.map(([i,n])=>[i,{name:n,status:"not-started",data:{}}]))});
+async function ensure(){const s=await getDoc(ref());rec=s.exists()?{...blank(),...s.data(),simulators:{...blank().simulators,...(s.data().simulators||{})}}:blank();await setDoc(ref(),rec,{merge:true});ui();}
+function ui(){accountLabel.textContent=user.displayName||user.email;lastSimulatorLabel.textContent=rec.lastSimulatorName||"None yet";cloudStatus.textContent="Cloud record ready.";}
+document.querySelectorAll("[data-sim-id]").forEach(b=>b.onclick=async()=>{if(user){rec.lastSimulatorName=b.dataset.simName;await setDoc(ref(),{lastSimulatorName:b.dataset.simName,lastActivityAt:new Date().toISOString(),updatedAt:serverTimestamp(),simulators:{[b.dataset.simId]:{name:b.dataset.simName,status:"started",lastActivityAt:new Date().toISOString()}}},{merge:true});}location.href=b.dataset.route;});
+onAuthStateChanged(auth,async u=>{user=u;if(!u){cloudStatus.textContent="Sign in through RECONNECT-US to use Simulator cloud saving.";accountLabel.textContent="Not signed in";return;}await ensure();});
+</script>
+
+<script type="module"
+  src="../reconnectus-core/reconnectus-access-guard.js"
+  data-app-id="simulators"
+  data-login-url="../index.html">
+</script>
+
+</body>
+</html>
