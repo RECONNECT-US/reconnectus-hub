@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<title>RECONNECT-US Access Requests — Admin Build 1</title>
+<style>
+:root{--bg1:#071a3a;--bg2:#0b3d91;--card:rgba(255,255,255,.08);--border:rgba(255,255,255,.16);--text:#fff;--muted:#cfe0ff;--accent:#00e0a4;--warn:#ffd166;--danger:#ff7b7b}
+*{box-sizing:border-box} body{margin:0;font-family:Arial,sans-serif;background:linear-gradient(135deg,var(--bg1),var(--bg2));color:var(--text);min-height:100vh}
+button,input,select,textarea{font:inherit} button{border:0;border-radius:11px;padding:11px 14px;font-weight:700;cursor:pointer}
+.primary{background:#fff;color:#0b3d91} .secondary{background:rgba(255,255,255,.14);color:#fff;border:1px solid var(--border)} .danger{background:var(--danger);color:#280909}
+.wrap{width:min(1400px,96vw);margin:auto;padding:16px} .topbar{display:flex;justify-content:space-between;gap:12px;align-items:center;flex-wrap:wrap;margin-bottom:16px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:17px;padding:17px;margin-bottom:15px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px} .span2{grid-column:1/-1}
+.field label{display:block;color:var(--muted);font-size:.9rem;margin-bottom:6px} .field input,.field select,.field textarea{width:100%;padding:11px;border:0;border-radius:11px;background:#fff;color:#112957}
+.checks{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:8px} .check{display:flex;gap:8px;align-items:center;background:rgba(255,255,255,.06);padding:9px;border-radius:10px}
+table{width:100%;border-collapse:collapse;min-width:900px} th,td{padding:10px 8px;border-bottom:1px solid var(--border);text-align:left;vertical-align:top} th{background:rgba(255,255,255,.08)}
+.table-wrap{overflow:auto;border:1px solid var(--border);border-radius:13px} .muted{color:var(--muted)} .notice{padding:12px;border:1px solid var(--accent);background:rgba(0,224,164,.12);border-radius:12px}
+#loginOverlay{position:fixed;inset:0;background:linear-gradient(135deg,#071a3a,#0b3d91);z-index:999;display:flex;align-items:center;justify-content:center;padding:20px}
+.loginCard{width:min(430px,95vw);padding:24px;background:rgba(255,255,255,.08);border:1px solid var(--border);border-radius:18px;text-align:center}
+.loginCard input{width:100%;padding:12px;border-radius:10px;border:0;margin:7px 0;color:#10264f}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:14px} .badge{display:inline-block;padding:5px 9px;border-radius:999px;background:var(--warn);color:#3f2b00;font-weight:bold}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.span2{grid-column:auto}}
+</style>
+</head>
+<body>
+<div id="loginOverlay">
+ <div class="loginCard">
+  <h2>Access Requests Admin</h2>
+  <p class="muted">Super Admin access only.</p>
+  <input id="loginEmail" type="email" placeholder="Email address">
+  <input id="loginPassword" type="password" placeholder="Password">
+  <button id="loginBtn" class="primary" style="width:100%;margin-top:8px">Sign In</button>
+  <p id="loginMessage" style="color:#ffb6b6"></p>
+ </div>
+</div>
+
+<div class="wrap">
+ <div class="topbar">
+  <div><h1 style="margin:0">RECONNECT-US Access Requests</h1><div class="muted">Review, approve or reject pending accounts</div></div>
+  <div><span id="pendingBadge" class="badge">0 pending</span> <button id="refreshBtn" class="secondary">Refresh</button> <button id="signOutBtn" class="secondary">Sign Out</button></div>
+ </div>
+
+ <div class="card">
+  <div class="notice"><b>Passwords are never displayed here.</b> Firebase Authentication manages them separately.</div>
+ </div>
+
+ <div class="card">
+  <h2>Pending Requests</h2>
+  <div class="table-wrap">
+   <table>
+    <thead><tr><th>Name</th><th>Email</th><th>Organisation</th><th>Requested access</th><th>Reason</th><th>Requested</th><th>Action</th></tr></thead>
+    <tbody id="requestsBody"></tbody>
+   </table>
+  </div>
+  <p id="listStatus" class="muted">Ready.</p>
+ </div>
+
+ <div id="reviewCard" class="card" style="display:none">
+  <h2>Review Request</h2>
+  <input id="selectedUid" type="hidden">
+  <div class="grid">
+   <div class="field"><label>Name</label><input id="reviewName"></div>
+   <div class="field"><label>Email</label><input id="reviewEmail" readonly></div>
+   <div class="field"><label>Organisation</label><input id="reviewOrganisation"></div>
+   <div class="field"><label>Approved role</label>
+    <select id="reviewRole"><option value="learner">Learner</option><option value="volunteer">Volunteer / Staff</option><option value="manager">Manager</option></select>
+   </div>
+   <div class="field span2"><label>Request reason</label><textarea id="reviewReason" rows="4" readonly></textarea></div>
+   <div class="field span2"><label>App permissions</label><div id="appChecks" class="checks"></div></div>
+  </div>
+  <div class="actions">
+   <button id="approveBtn" class="primary">Approve Access</button>
+   <button id="rejectBtn" class="danger">Reject Request</button>
+   <button id="closeBtn" class="secondary">Close</button>
+  </div>
+  <p id="reviewStatus" class="muted"></p>
+ </div>
+</div>
+
+<script type="module">
+import {initializeApp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+import {getAuth,signInWithEmailAndPassword,signOut,onAuthStateChanged} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js";
+import {getFirestore,doc,getDoc,getDocs,collection,query,where,updateDoc,serverTimestamp} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js";
+
+const firebaseConfig={
+  apiKey:"AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",
+  authDomain:"reconnect-us-hub.firebaseapp.com",
+  projectId:"reconnect-us-hub",
+  storageBucket:"reconnect-us-hub.firebasestorage.app",
+  messagingSenderId:"891220836369",
+  appId:"1:891220836369:web:6f2b4a09350b8d9fe0b1b0"
+};
+const app=initializeApp(firebaseConfig), auth=getAuth(app), db=getFirestore(app);
+const $=id=>document.getElementById(id);
+let requests=[],apps=[];
+
+function fmt(ts){try{return ts?.toDate().toLocaleString("en-GB")||"—"}catch{return"—"}}
+function roleLabel(r){return {learner:"Learner",volunteer:"Volunteer / Staff",manager:"Manager",other:"Not sure / other"}[r]||r||"—"}
+
+async function verifyAdmin(user){
+ const snap=await getDoc(doc(db,"users",user.uid));
+ return snap.exists()&&snap.data().status==="active"&&snap.data().role==="superadmin";
+}
+async function loadApps(){
+ const snap=await getDocs(collection(db,"apps"));
+ apps=snap.docs.map(d=>({id:d.id,...d.data()})).filter(a=>(a.status||"active")==="active").sort((a,b)=>(a.name||a.id).localeCompare(b.name||b.id));
+ $("appChecks").innerHTML=apps.map(a=>`<label class="check"><input type="checkbox" value="${a.id}"> ${a.name||a.id}</label>`).join("")||'<span class="muted">No registered apps found.</span>';
+}
+async function loadRequests(){
+ $("listStatus").textContent="Loading requests…";
+ const snap=await getDocs(query(collection(db,"users"),where("status","==","pending")));
+ requests=snap.docs.map(d=>({uid:d.id,...d.data()})).sort((a,b)=>(b.requestedAt?.seconds||0)-(a.requestedAt?.seconds||0));
+ $("pendingBadge").textContent=`${requests.length} pending`;
+ $("requestsBody").innerHTML=requests.map(r=>`<tr>
+  <td>${r.name||"—"}</td><td>${r.email||"—"}</td><td>${r.organisation||"—"}</td>
+  <td>${roleLabel(r.requestedRole)}</td><td>${r.requestReason||"—"}</td><td>${fmt(r.requestedAt)}</td>
+  <td><button class="primary reviewBtn" data-uid="${r.uid}">Review</button></td></tr>`).join("")||'<tr><td colspan="7">No pending access requests.</td></tr>';
+ document.querySelectorAll(".reviewBtn").forEach(b=>b.onclick=()=>openReview(b.dataset.uid));
+ $("listStatus").textContent="Requests loaded.";
+}
+function openReview(uid){
+ const r=requests.find(x=>x.uid===uid); if(!r)return;
+ $("selectedUid").value=uid;$("reviewName").value=r.name||"";$("reviewEmail").value=r.email||"";$("reviewOrganisation").value=r.organisation||"";
+ $("reviewRole").value=["learner","volunteer","manager"].includes(r.requestedRole)?r.requestedRole:"learner";
+ $("reviewReason").value=r.requestReason||"";
+ document.querySelectorAll("#appChecks input").forEach(c=>c.checked=false);
+ $("reviewCard").style.display="block";$("reviewStatus").textContent="";
+ $("reviewCard").scrollIntoView({behavior:"smooth"});
+}
+async function approve(){
+ const uid=$("selectedUid").value;if(!uid)return;
+ const allowedApps=[...document.querySelectorAll("#appChecks input:checked")].map(c=>c.value);
+ $("reviewStatus").textContent="Approving…";
+ await updateDoc(doc(db,"users",uid),{
+  name:$("reviewName").value.trim(),organisation:$("reviewOrganisation").value.trim(),
+  role:$("reviewRole").value,status:"active",allowedApps,
+  approvedAt:serverTimestamp(),approvedBy:auth.currentUser.uid,updatedAt:serverTimestamp()
+ });
+ $("reviewStatus").textContent="Access approved.";
+ $("reviewCard").style.display="none";await loadRequests();
+}
+async function reject(){
+ const uid=$("selectedUid").value;if(!uid)return;
+ if(!confirm("Reject this access request? The Firebase Authentication login will remain, but it will not be allowed into RECONNECT-US."))return;
+ $("reviewStatus").textContent="Rejecting…";
+ await updateDoc(doc(db,"users",uid),{status:"rejected",allowedApps:[],rejectedAt:serverTimestamp(),rejectedBy:auth.currentUser.uid,updatedAt:serverTimestamp()});
+ $("reviewCard").style.display="none";await loadRequests();
+}
+
+$("loginBtn").onclick=async()=>{try{$("loginMessage").textContent="";const c=await signInWithEmailAndPassword(auth,$("loginEmail").value.trim(),$("loginPassword").value);if(!await verifyAdmin(c.user)){await signOut(auth);throw new Error("This page is restricted to the RECONNECT-US Super Admin.");}}catch(e){$("loginMessage").textContent=e.message;}};
+$("refreshBtn").onclick=loadRequests;$("approveBtn").onclick=approve;$("rejectBtn").onclick=reject;$("closeBtn").onclick=()=>$("reviewCard").style.display="none";$("signOutBtn").onclick=()=>signOut(auth);
+
+onAuthStateChanged(auth,async user=>{
+ if(!user){$("loginOverlay").style.display="flex";return}
+ if(!await verifyAdmin(user)){await signOut(auth);return}
+ $("loginOverlay").style.display="none";
+ try{await loadApps();await loadRequests()}catch(e){$("listStatus").textContent="Could not load requests: "+e.message}
+});
+</script>
+</body>
+</html>
