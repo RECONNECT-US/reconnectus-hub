@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RECONNECT-US | Business & Funding Support Directory</title>
+<style>
+:root{
+  --navy:#0b1f33; --blue:#123f67; --teal:#0f8b8d; --orange:#f28c28;
+  --pale:#eef5f8; --white:#fff; --text:#183042; --muted:#5d7180; --green:#19734b;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;background:#eaf1f5;color:var(--text);line-height:1.5}
+header{background:linear-gradient(135deg,var(--navy),var(--blue));color:white;padding:28px 18px 24px;border-bottom:5px solid var(--orange)}
+.wrap{max-width:1180px;margin:auto}
+.brand{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.logo{font-weight:900;font-size:clamp(26px,5vw,42px);letter-spacing:1px}
+.logo span{color:#5bd1cf}
+.tag{font-size:15px;opacity:.9}
+h1{font-size:clamp(22px,4vw,34px);margin:20px 0 8px}
+header p{max-width:850px;margin:0;color:#e6f0f6}
+main{max-width:1180px;margin:auto;padding:22px 16px 40px}
+.notice{background:#fff8e8;border-left:5px solid var(--orange);padding:14px 16px;border-radius:10px;margin-bottom:18px}
+.tools{background:white;border-radius:14px;padding:15px;box-shadow:0 4px 18px #16344c18;margin-bottom:20px}
+.search{display:flex;gap:10px;flex-wrap:wrap}
+input{flex:1;min-width:220px;padding:13px 14px;border:2px solid #cad8e1;border-radius:9px;font-size:16px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-top:11px}
+button{border:0;border-radius:999px;padding:9px 13px;background:#dfeaf0;color:var(--navy);font-weight:700;cursor:pointer}
+button.active{background:var(--teal);color:white}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:16px}
+.card{background:white;border-radius:14px;padding:18px;box-shadow:0 4px 18px #16344c16;border-top:4px solid var(--teal);display:flex;flex-direction:column}
+.card h2{font-size:20px;margin:0 0 7px;color:var(--navy)}
+.badges{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 10px}
+.badge{font-size:12px;font-weight:700;background:#e6f4f4;color:#09696b;padding:4px 8px;border-radius:999px}
+.badge.orange{background:#fff0df;color:#9a4e00}
+.card p{margin:5px 0 12px}
+.small{font-size:13px;color:var(--muted)}
+.link{display:inline-block;margin-top:auto;background:var(--blue);color:white;text-decoration:none;font-weight:700;padding:11px 14px;border-radius:9px;text-align:center}
+.link:hover,.link:focus{background:var(--teal)}
+.highlight{border-top-color:var(--orange)}
+.status{font-weight:700;color:#8a4300}
+footer{background:var(--navy);color:#dce8ef;text-align:center;padding:22px 15px;font-size:14px}
+.noresults{display:none;background:white;padding:20px;border-radius:12px;text-align:center}
+@media(max-width:500px){header{padding-top:20px}.card{padding:15px}.filters button{font-size:12px}}
+@media print{.tools{display:none}.grid{grid-template-columns:1fr 1fr}.card{box-shadow:none;border:1px solid #bbb}.link{color:#123f67;background:none;padding:0;text-align:left}body{background:white}}
+</style>
+<script>
+window.RECONNECT_DIRECTORY_CONFIG = window.RECONNECT_DIRECTORY_CONFIG || {
+ firebaseConfig: {
+  apiKey:"AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",
+  authDomain:"reconnect-us-hub.firebaseapp.com",
+  projectId:"reconnect-us-hub",
+  storageBucket:"reconnect-us-hub.firebasestorage.app",
+  messagingSenderId:"891220836369",
+  appId:"1:891220836369:web:6f2b4a09350b8d9fe0b1b0"
+},
+ appName: '[DEFAULT]',
+ tenantId: null,
+ loginUrl: '../index.html',
+ returnUrlParameter: '',
+ progressPath: 'users/{uid}/appProgress/business-funding-directory'
+};
+</script><style>body.coreLocked>header,body.coreLocked>main,body.coreLocked>footer{display:none!important}#coreGate{max-width:620px;margin:12vh auto;padding:24px;background:white;border-radius:14px}#storageNote{font-size:14px;margin-top:12px}.save-support{margin-bottom:12px;border-radius:8px}.save-support[aria-pressed=true]{background:var(--teal);color:white}</style>
+</head>
+<body class="coreLocked">
+<section id="coreGate" role="status"><h1>RECONNECT-US</h1><p id="coreGateMessage">Checking your sign-in…</p><button onclick="location.reload()">Try again</button></section>
+<header>
+ <div class="wrap">
+   <div class="brand"><div class="logo">RECONNECT<span>-US</span></div><div class="tag">Digital skills • confidence • opportunity</div></div>
+   <h1>Business, Funding & Self-Employment Support Directory</h1>
+   <p>Useful UK organisations and services for people with convictions, prison leavers and others who want help with self-employment, training, business planning, finance or starting again.</p>
+ </div>
+</header>
+
+<main>
+<div class="notice"><strong>Please check before applying:</strong> Eligibility, funding and programmes can change. Some organisations offer grants, some offer loans, and some provide advice or training rather than money. A loan has to be repaid.</div>
+
+<section class="tools">
+ <div class="search"><input id="search" type="search" placeholder="Search e.g. grant, business, training, ex-offender..." aria-label="Search directory"></div>
+ <div class="filters">
+  <button class="active" data-filter="all">All</button>
+  <button data-filter="convictions">Conviction-specific</button>
+  <button data-filter="funding">Funding</button>
+  <button data-filter="business">Business</button>
+  <button data-filter="training">Training</button>
+  <button data-filter="directory">Directories</button>
+ </div>
+<div id="storageNote" role="status">Checking your learner account…</div>
+</section>
+
+<div class="grid" id="cards">
+
+<article class="card highlight" data-tags="convictions funding business training directory">
+ <h2>The Hardman Trust</h2>
+ <div class="badges"><span class="badge">Prison / convictions</span><span class="badge orange">Grants</span></div>
+ <p>Supports people serving long prison sentences with practical and financial help for release, employment, training and personal goals. Its Hardman Directory is also a major directory of prison and post-release support.</p>
+ <p class="small status">Important: its 2026 grant allocation is currently full and new grant applications are due to reopen in early 2027. The directory remains useful.</p>
+ <a class="link" href="https://www.hardmantrust.org.uk/how-we-help/directory/" target="_blank" rel="noopener">Open Hardman Directory</a>
+</article>
+
+<article class="card" data-tags="convictions business directory">
+ <h2>Unlock</h2>
+ <div class="badges"><span class="badge">Conviction-specific</span><span class="badge orange">Self-employment advice</span></div>
+ <p>Independent charity helping people overcome the long-term effects of a criminal record. Its self-employment and business information covers issues people with convictions may need to think about when starting a business.</p>
+ <a class="link" href="https://unlock.org.uk/unlock_category/3-self-employment-business/" target="_blank" rel="noopener">Business & Self-Employment Help</a>
+</article>
+
+<article class="card" data-tags="convictions directory training business">
+ <h2>Clinks Directory of Services</h2>
+ <div class="badges"><span class="badge">Criminal justice</span><span class="badge orange">850+ organisations</span></div>
+ <p>Search for organisations supporting people in the criminal justice system across England and Wales. Useful for finding local help with employment, benefits, training, housing, mentoring and more.</p>
+ <a class="link" href="https://clinks.org/clinks-directory-find-support-your-service-users" target="_blank" rel="noopener">Search the Clinks Directory</a>
+</article>
+
+<article class="card highlight" data-tags="funding business training">
+ <h2>Start Up Loans</h2>
+ <div class="badges"><span class="badge">UK business</span><span class="badge orange">Loan + mentoring</span></div>
+ <p>Government-backed Start Up Loans for eligible UK entrepreneurs. Funding is a personal loan for business purposes, with application support, business-plan help and mentoring for successful applicants.</p>
+ <p class="small">Current headline offer: £500–£25,000 per applicant. Check the website for the current interest rate and full eligibility before applying.</p>
+ <a class="link" href="https://www.startuploans.co.uk/" target="_blank" rel="noopener">Visit Start Up Loans</a>
+</article>
+
+<article class="card" data-tags="funding business training">
+ <h2>The King's Trust – Enterprise</h2>
+ <div class="badges"><span class="badge">Age 18–30</span><span class="badge orange">Funding + mentoring</span></div>
+ <p>Supports eligible young people who want to start a business, including one-to-one support, business planning, cash-flow help, mentoring and access to start-up funding subject to eligibility.</p>
+ <a class="link" href="https://www.kingstrust.org.uk/opportunity-explorer" target="_blank" rel="noopener">Explore King's Trust Support</a>
+</article>
+
+<article class="card highlight" data-tags="funding business">
+ <h2>UnLtd</h2>
+ <div class="badges"><span class="badge">Social enterprise</span><span class="badge orange">Awards / grants</span></div>
+ <p>Funding and tailored support for social entrepreneurs — people building a venture designed to create positive social impact. Particularly worth checking for a community-focused or purpose-led business idea.</p>
+ <a class="link" href="https://unltd.org.uk/awards/" target="_blank" rel="noopener">View UnLtd Awards</a>
+</article>
+
+<article class="card" data-tags="funding directory">
+ <h2>Turn2us Grants Search</h2>
+ <div class="badges"><span class="badge">UK-wide</span><span class="badge orange">Grant finder</span></div>
+ <p>A free and confidential grants search that matches people to charitable funds they may be eligible for. It is not specifically for ex-offenders, but can uncover help based on individual circumstances.</p>
+ <a class="link" href="https://grants-search.turn2us.org.uk/" target="_blank" rel="noopener">Search for Grants</a>
+</article>
+
+<article class="card" data-tags="convictions training funding">
+ <h2>Prisoners' Education Trust</h2>
+ <div class="badges"><span class="badge">People in prison</span><span class="badge orange">Education funding</span></div>
+ <p>Funds distance-learning courses and provides education advice and guidance in prisons across England and Wales. Useful for building qualifications and skills before release, including business, finance and management subjects.</p>
+ <a class="link" href="https://prisonerseducation.org.uk/what-we-do/distance-learning-in-prisons/" target="_blank" rel="noopener">View Education Support</a>
+</article>
+
+<article class="card" data-tags="funding business">
+ <h2>Fredericks Foundation</h2>
+ <div class="badges"><span class="badge">Social enterprise</span><span class="badge orange">Finance + mentoring</span></div>
+ <p>Provides finance and ongoing business support for eligible social enterprises, charities and B-Corps, with a focus on organisations led by or supporting excluded groups. Current criteria include having traded for at least one year.</p>
+ <a class="link" href="https://www.fredericksfoundation.org/looking-for-funding/" target="_blank" rel="noopener">Check Fredericks Funding</a>
+</article>
+
+<article class="card" data-tags="convictions directory training business">
+ <h2>GOV.UK – Ex-Offender Support</h2>
+ <div class="badges"><span class="badge">Official information</span><span class="badge orange">National & regional help</span></div>
+ <p>Government directory page listing national and regional organisations that support ex-offenders, including employment, enterprise, rehabilitation and other practical services.</p>
+ <a class="link" href="https://www.gov.uk/guidance/district-provision-tool/ex-offenders" target="_blank" rel="noopener">Open GOV.UK Support List</a>
+</article>
+
+<article class="card" data-tags="funding business directory">
+ <h2>GOV.UK – Finance & Support for Your Business</h2>
+ <div class="badges"><span class="badge">Business support</span><span class="badge orange">Funding finder</span></div>
+ <p>Official UK government information for finding business finance and support schemes. Useful alongside conviction-specific services when looking for mainstream start-up support.</p>
+ <a class="link" href="https://www.gov.uk/business-finance-support" target="_blank" rel="noopener">Find Business Finance & Support</a>
+</article>
+
+<article class="card" data-tags="business training">
+ <h2>Business Support Helpline – England</h2>
+ <div class="badges"><span class="badge">England</span><span class="badge orange">Business advice</span></div>
+ <p>Official government route for business support in England. Useful for general questions about starting and running a business and finding suitable support.</p>
+ <a class="link" href="https://www.gov.uk/business-support-helpline" target="_blank" rel="noopener">View Business Support</a>
+</article>
+
+</div>
+<div class="noresults" id="noresults"><strong>No matches found.</strong><br>Try a different search word or choose “All”.</div>
+
+<div class="notice" style="margin-top:22px">
+<strong>For RECONNECT-US learners:</strong> Before paying anyone for “guaranteed funding”, check the organisation carefully. Genuine grants have eligibility rules and no organisation can honestly guarantee that an application will be approved. If a service asks for unexpected fees or bank details, stop and check it first.
+</div>
+</main>
+
+<footer>
+<strong>RECONNECT-US</strong><br>
+Supporting digital skills, confidence and positive next steps.<br><br>
+© RECONNECT-US — All rights reserved.
+</footer>
+
+<script>
+const search=document.getElementById('search');
+const cards=[...document.querySelectorAll('.card')];
+const buttons=[...document.querySelectorAll('[data-filter]')];
+const noresults=document.getElementById('noresults');
+let filter='all';
+
+function update(){
+ const q=search.value.trim().toLowerCase();
+ let shown=0;
+ cards.forEach(card=>{
+   const matchesText=!q || card.innerText.toLowerCase().includes(q);
+   const matchesFilter=filter==='all' || card.dataset.tags.split(' ').includes(filter);
+   const show=matchesText && matchesFilter;
+   card.style.display=show?'flex':'none';
+   if(show) shown++;
+ });
+ noresults.style.display=shown?'none':'block';
+}
+search.addEventListener('input',update);
+buttons.forEach(btn=>btn.addEventListener('click',()=>{
+ buttons.forEach(b=>b.classList.remove('active'));
+ btn.classList.add('active'); filter=btn.dataset.filter; update();
+}));
+
+// Directory choices belong to the signed-in Firebase learner.
+let savedSupport=[],visitedSupport=[];
+cards.forEach((card,index)=>{
+ card.dataset.supportId='support-'+(index+1);
+ const button=document.createElement('button');button.className='save-support';button.type='button';
+ button.setAttribute('aria-pressed','false');button.textContent='☆ Save this support';
+ button.addEventListener('click',()=>{
+  const id=card.dataset.supportId;
+  savedSupport=savedSupport.includes(id)?savedSupport.filter(x=>x!==id):[...savedSupport,id];
+  renderSavedSupport();persistDirectory();
+ });
+ card.insertBefore(button,card.querySelector('.link'));
+ card.querySelector('.link').addEventListener('click',()=>{
+  const id=card.dataset.supportId;if(!visitedSupport.includes(id))visitedSupport.push(id);
+  persistDirectory();
+ });
+});
+function renderSavedSupport(){cards.forEach(card=>{
+ const saved=savedSupport.includes(card.dataset.supportId),button=card.querySelector('.save-support');
+ button.setAttribute('aria-pressed',String(saved));button.textContent=saved?'★ Saved — remove':'☆ Save this support';
+});}
+function directoryState(){return {version:1,filter,saved:savedSupport.slice(),visited:visitedSupport.slice()};}
+function applyDirectoryState(value){
+ const v=value&&value.version===1?value:{},ids=new Set(cards.map(c=>c.dataset.supportId));
+ savedSupport=Array.isArray(v.saved)?[...new Set(v.saved.filter(x=>ids.has(x)))]:[];
+ visitedSupport=Array.isArray(v.visited)?[...new Set(v.visited.filter(x=>ids.has(x)))]:[];
+ filter=buttons.some(b=>b.dataset.filter===v.filter)?v.filter:'all';
+ search.value='';buttons.forEach(b=>b.classList.toggle('active',b.dataset.filter===filter));
+ renderSavedSupport();update();
+}
+function persistDirectory(){window.reconnectCloud?.save(directoryState());}
+buttons.forEach(button=>button.addEventListener('click',persistDirectory));
+window.reconnectDirectoryState={read:directoryState,apply:applyDirectoryState,clear:()=>applyDirectoryState(null)};
+</script>
+<script type="module">
+// Learner progress is cloud-only. Pending writes live only in page memory.
+const cfg=window.RECONNECT_DIRECTORY_CONFIG;
+const gate=document.getElementById('coreGate');
+const message=document.getElementById('coreGateMessage');
+const state=window.reconnectDirectoryState;
+let uid=null, record=null, ref=null, auth=null, db=null, api=null;
+let generation=0, loading=false, ready=false, busy=false, timer=null;
+const note=text=>{document.getElementById('storageNote').textContent=text;};
+const lock=text=>{document.body.classList.add('coreLocked');gate.hidden=false;message.textContent=text;};
+const unlock=()=>{gate.hidden=true;document.body.classList.remove('coreLocked');};
+function schedule(){clearTimeout(timer);timer=setTimeout(sync,600);}
+window.reconnectCloud={save(value){
+ if(!uid||loading||!ready||auth.currentUser?.uid!==uid)return;
+ if(JSON.stringify(value)===JSON.stringify(record?.state))return;
+ record={uid,state:value,dirty:true,revision:(record?.revision||0)+1};
+ note('Saving to your learner account… Keep this page open until saved.');schedule();
+}};
+async function sync(){
+ if(!uid||busy||!navigator.onLine||auth.currentUser?.uid!==uid)return;
+ const session=generation, owner=uid, target=ref;
+ busy=true;
+ try{
+  if(record?.dirty){
+   const revision=record.revision, value=record.state;
+   const done=(value.visited||[]).length;
+   const activity=new Date().toISOString();
+   await api.setDoc(target,{
+    ownerUid:owner,appId:'business-funding-directory',lastAppId:'business-funding-directory',
+    lastAppName:'Business & Funding Support Directory',lastActivityAt:activity,
+    updatedAt:api.serverTimestamp(),
+    apps:{'business-funding-directory':{name:'Business & Funding Support Directory',
+     status:done?'in-progress':'not-started',score:done,completed:false,
+     lastActivityAt:activity,data:value}}
+   });
+   if(session!==generation)return;
+   if(record.revision===revision){record.dirty=false;note('Saved to your learner account.');}
+   else schedule();
+  }else if(!ready){
+   const snap=await api.getDocFromServer(target);
+   if(session!==generation||record?.dirty)return;
+   loading=true;
+   record={uid:owner,state:snap.exists()?(snap.data().apps?.['business-funding-directory']?.data||snap.data().state):state.read(),dirty:false,revision:0};
+   state.apply(record.state);record.state=state.read();loading=false;ready=true;unlock();
+   note('Your account progress is up to date.');
+  }
+ }catch(error){
+  if(session!==generation)return;
+  const text=error.code==='permission-denied'?'Firebase access was denied. Ask the site owner to check learner access settings.':'Firebase is unavailable. Reconnect to load or save your learner progress.';
+  if(!ready)lock(text);else note(text+' Unsaved changes remain only while this page is open.');
+ }finally{if(session===generation){busy=false;loading=false;}}
+}
+try{
+ if(!cfg.firebaseConfig?.apiKey||!cfg.firebaseConfig?.projectId||!cfg.firebaseConfig?.authDomain||!cfg.loginUrl||!cfg.progressPath.includes('{uid}'))
+  throw new Error('Site setup is needed: add the existing Core Firebase configuration, learner progress path and central login/access URL in RECONNECT_DIRECTORY_CONFIG.');
+ const base='https://www.gstatic.com/firebasejs/12.0.0/';
+ const [appSDK,authSDK,firestoreSDK]=await Promise.all([import(base+'firebase-app.js'),import(base+'firebase-auth.js'),import(base+'firebase-firestore.js')]);
+ const app=appSDK.getApps().find(a=>a.name===cfg.appName)||appSDK.initializeApp(cfg.firebaseConfig,cfg.appName);
+ if(app.options.projectId!==cfg.firebaseConfig.projectId)throw new Error('Core Firebase project settings do not match.');
+ auth=authSDK.getAuth(app);if(cfg.tenantId)auth.tenantId=cfg.tenantId;
+ db=firestoreSDK.getFirestore(app);api=firestoreSDK;
+ const login=new URL(cfg.loginUrl,location.href);
+ if(login.origin!==location.origin)throw new Error("Central login must share this site’s origin to reuse browser sign-in.");
+ authSDK.onAuthStateChanged(auth,async user=>{
+  generation++;clearTimeout(timer);busy=false;ready=false;loading=true;uid=null;ref=null;record=null;
+  lock('Checking your account…');state.clear();
+  if(!user){
+   loading=false;
+   if(login.pathname===location.pathname){lock('The central login URL points back to this page. Please correct the site configuration.');return;}
+   if(cfg.returnUrlParameter)login.searchParams.set(cfg.returnUrlParameter,location.href);
+   location.replace(login.href);return;
+  }
+  const checkGeneration=generation;
+  try{
+   const profile=await api.getDocFromServer(api.doc(db,'users',user.uid));
+   if(checkGeneration!==generation||auth.currentUser?.uid!==user.uid)return;
+   if(!profile.exists()||profile.data().status!=='active'){
+    loading=false;lock('Your RECONNECT-US account is not active. Return to the main login to check access.');return;
+   }
+  }catch(error){
+   if(checkGeneration!==generation)return;
+   loading=false;lock('Unable to check your RECONNECT-US profile. Check your connection and try again.');return;
+  }
+  uid=user.uid;
+  ref=api.doc(db,cfg.progressPath.replace('{uid}',uid));
+  record={uid,state:state.read(),dirty:false,revision:0};
+  loading=false;
+  note('Signed in. Loading cloud progress…');sync();
+ },()=>lock('We could not verify your sign-in. Reconnect and try again.'));
+}catch(error){lock(error.message||'Unable to load sign-in. Reconnect and try again.');}
+window.addEventListener('online',sync);
+window.addEventListener('offline',()=>{if(uid)note('Offline. Unsaved changes are held only while this page stays open. Reconnect to save to Firebase.');});
+window.addEventListener('focus',sync);
+setInterval(sync,30000);
+
+window.addEventListener('beforeunload',event=>{if(record?.dirty){event.preventDefault();event.returnValue='';}});
+
+</script>
+<script type="module" src="../reconnectus-core/reconnectus-access-guard.js" data-app-id="business-funding-directory" data-login-url="../index.html"></script>
+</body>
+</html>
