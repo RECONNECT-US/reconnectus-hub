@@ -1,6 +1,0 @@
-Add immediately before </body> in each app:
-
-<script type="module"
-  src="../reconnectus-core/reconnectus-access-guard.js"
-  data-app-id="EXACT_FIREBASE_APP_ID">
-</script>
