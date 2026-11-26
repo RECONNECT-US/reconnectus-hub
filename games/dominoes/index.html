@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>RECONNECT-US | Dominoes</title>
+<style>
+:root{color-scheme:light;--ink:#183e3b;--teal:#196b60;--cream:#f7f4eb;--gold:#edbd65}*{box-sizing:border-box}body{margin:0;background:var(--cream);color:var(--ink);font:16px/1.5 system-ui,-apple-system,Segoe UI,sans-serif}button{font:inherit;cursor:pointer;border:0}button:focus-visible,summary:focus-visible{outline:3px solid #c47725;outline-offset:4px}button:disabled{cursor:default;opacity:.45}header{max-width:1200px;margin:auto;padding:26px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px}.brand{font-weight:850;letter-spacing:.14em;font-size:19px}.brand span{color:var(--teal)}.tag{font-size:12px;text-transform:uppercase;letter-spacing:.17em;color:#5d7370}.shell{max-width:1200px;margin:auto;padding:0 28px 24px}.intro{display:flex;align-items:center;justify-content:space-between;gap:20px;margin:6px 0 22px}h1{font:500 clamp(36px,5vw,56px)/1.1 Georgia,serif;margin:4px 0 10px}.intro p{margin:0;color:#526a65}.scores{display:flex;gap:10px}.score{background:#fff;border:1px solid #dddace;border-radius:16px;padding:12px 22px;text-align:center;min-width:100px}.score small{display:block;color:#62766e}.score strong{font-size:27px}.table{background:radial-gradient(ellipse at top,#277a6b,#124b43);border-radius:24px;padding:24px;color:white;box-shadow:0 12px 32px #173f3b20}.topline{display:flex;justify-content:space-between;align-items:center;gap:15px}.eyebrow{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:#c5dfd5}.backs{display:flex;gap:5px;margin-top:10px;flex-wrap:wrap}.back{width:25px;height:43px;border:1px solid #aec5b8;border-radius:5px;background:repeating-linear-gradient(45deg,#e7e4d6 0 3px,#cecebd 3px 5px);box-shadow:0 2px 2px #0002}.pile{text-align:right;font-size:14px;color:#d3e4db}.board-wrap{margin:22px 0 16px;min-height:210px;border:1px solid #ffffff26;border-radius:16px;background:#063f352b;display:flex;align-items:center;padding:20px;overflow-x:auto}.chain{display:flex;align-items:center;gap:5px;margin:auto;min-width:min-content}.empty{color:#d6e7df;text-align:center;margin:auto;max-width:300px}.tile{display:inline-flex;flex-shrink:0;align-items:center;padding:5px;background:#fffaf0;color:#173b36;border:1px solid #dfd9c6;border-radius:8px;box-shadow:0 3px 0 #0002;gap:0}.half{width:35px;height:39px;display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(3,1fr);padding:5px;gap:2px}.half+.half{border-left:1px solid #c7c7b5}.pip{width:6px;height:6px;background:currentColor;border-radius:50%;align-self:center;justify-self:center}.pip.off{visibility:hidden}.status{min-height:55px;background:#ffffff12;border-radius:12px;padding:13px 16px;font-weight:550;display:flex;align-items:center;gap:10px}.light{width:9px;height:9px;border-radius:100%;background:var(--gold);flex-shrink:0}.hand-area{background:white;border:1px solid #e0dfd4;border-radius:20px;margin-top:18px;padding:22px}.hand-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:14px}.hand-head h2{font-size:17px;margin:0}.hint{font-size:13px;color:#61736c}.hand{display:flex;flex-wrap:wrap;gap:12px;min-height:65px;align-items:center}.hand .tile{transition:transform .15s,box-shadow .15s}.hand .tile:not(:disabled):hover{transform:translateY(-5px)}.tile.selected{outline:3px solid var(--teal);outline-offset:3px;transform:translateY(-5px)}.tile.playable{border-color:#408c76}.controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:20px}.btn{padding:11px 18px;border-radius:10px;background:#e9eee8;color:var(--ink);font-weight:650}.btn.primary{background:var(--teal);color:white}.btn.gold{background:var(--gold);color:#293f35}.controls .spacer{flex:1}.placement{display:flex;gap:10px}.under{display:grid;grid-template-columns:1fr 1fr;gap:25px;margin:24px 2px}details{border-top:1px solid #d8dbce;padding-top:14px}summary{cursor:pointer;font-weight:650}details p,details li{font-size:14px;color:#526a65}details ul{padding-left:20px}.note{font-size:13px;color:#6a776e;margin:0}footer{text-align:center;font-size:12px;color:#68796e;padding:12px 16px 25px}.round-pill{background:#e5ece3;padding:5px 12px;border-radius:20px;font-size:13px;white-space:nowrap}@media(max-width:650px){header{padding:20px}.shell{padding:0 16px 20px}.tag{display:none}.intro{align-items:flex-start;flex-direction:column}.scores{width:100%}.score{flex:1;padding:8px 12px}.score strong{font-size:23px}.table{padding:16px;border-radius:18px}.board-wrap{padding:14px;min-height:175px}.hand-area{padding:16px}.hand{gap:10px}.half{width:30px;height:35px;padding:3px}.controls .spacer{display:none}.controls{gap:8px}.btn{padding:10px 12px}.placement{width:100%}.placement button{flex:1}.under{grid-template-columns:1fr;gap:16px}.hand-head{align-items:flex-start;flex-direction:column}.brand{font-size:16px}}
+
+/* Spacious, fully visible playing surface */
+header{max-width:1440px;padding:12px 24px}.shell{max-width:1440px;padding:0 20px 16px}.intro{margin:0 0 12px}h1{font-size:32px;margin:0 0 3px}.intro .tag{display:none}.intro p{font-size:14px}.score{padding:5px 20px}.score strong{font-size:22px}.table{padding:14px}.backs{margin-top:4px;gap:3px}.back{width:15px;height:24px}.board-wrap{height:clamp(380px,56vh,680px);min-height:380px;margin:10px 0;padding:0;overflow:hidden;position:relative;display:block}.chain{width:100%;height:100%;min-width:0;display:block;margin:0}.chain svg{width:100%;height:100%;display:block;touch-action:none;user-select:none}.board-tile{cursor:grab;outline:none}.board-tile:focus .face,.board-tile.chosen .face{stroke:#edbd65;stroke-width:4}.board-tile:active{cursor:grabbing}.status{padding:8px 12px;min-height:40px;font-size:14px}.hand-area{padding:12px 16px;margin-top:12px}.hand-head{margin-bottom:8px}.hand{gap:9px;min-height:53px}.controls{margin-top:12px;gap:8px}.btn{padding:8px 12px;font-size:14px}.placement{gap:7px;flex-wrap:wrap}.end-group{display:flex;align-items:center;gap:4px;background:#edf2ec;border-radius:10px;padding:4px}.end-group span{font-size:12px;padding:0 5px}.end-group button{padding:6px 10px}.board-tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;color:#d5e6de;font-size:12px}.board-tools button{font-size:12px;padding:4px 9px}.board-tools label{display:flex;align-items:center;gap:7px}.board-tools input{width:110px;accent-color:#edbd65}.under{margin:16px 2px;gap:20px}.empty{position:absolute;top:43%;left:15%;max-width:none;width:70%}footer{padding:4px 12px 14px}@media(max-width:650px){header{padding:10px 16px}.intro{flex-direction:row;align-items:center;gap:8px}h1{font-size:25px}.intro p{display:none}.scores{width:auto;gap:5px}.score{min-width:66px;padding:3px 9px}.score small{font-size:11px}.score strong{font-size:19px}.table{padding:10px}.shell{padding:0 10px 12px}.board-wrap{height:440px;min-height:0}.hand-head{gap:3px}.placement{width:100%}.placement button{flex:none}.end-group{flex:1;justify-content:center}.end-group span{padding:0 2px}.end-group button{padding:6px 8px}.hand-area{padding:12px}.board-tools{gap:7px}.board-tools .tip{width:100%}}
+.hand .tile{touch-action:none;user-select:none}.drop-slot{pointer-events:none}.drag-ghost{position:fixed;z-index:1000;pointer-events:none;opacity:.92;transform:translate(-50%,-50%);box-shadow:0 8px 24px #0005}.board-tile{cursor:grab}.board-tools .tip{font-size:13px}
+html:fullscreen{background:var(--cream);overflow:auto}.fullscreen-intro{position:fixed;inset:0;z-index:2000;display:grid;place-items:center;padding:24px;background:#113f38ee;backdrop-filter:blur(7px);color:#fff;text-align:center;cursor:pointer}.fullscreen-intro[hidden]{display:none}.fullscreen-card{max-width:480px;padding:32px}.fullscreen-card h2{font:500 42px/1.15 Georgia,serif;margin:18px 0}.fullscreen-card p{color:#d3e6dc}.fullscreen-card .brand{font-size:16px}.fullscreen-card button{margin-top:12px}.fullscreen-start{display:block;margin:22px auto 0!important;padding:14px 24px!important;font-size:17px!important}header{flex-wrap:wrap;gap:10px}.fullscreen-action{font-size:12px;padding:6px 12px}
+.mode-picker{display:inline-flex;gap:3px;align-items:center;padding:3px;border-radius:10px;background:#ffffff18}.mode-picker button{background:transparent;color:#dfede5;border-radius:7px;font-weight:650;padding:6px 12px}.mode-picker button[aria-pressed="true"]{background:#edbd65;color:#183e3b}.mode-label{font-size:12px;color:#d5e6de}[hidden]{display:none!important}#doubleControls button[aria-pressed="true"]{background:var(--gold);color:var(--ink)}
+/* Fit the complete game to the available screen; rules open above the table. */
+html,html:fullscreen,body{width:100%;height:100%;margin:0;overflow:hidden}body{height:100dvh}
+#gameScreen{position:fixed;top:0;left:0;width:100%;height:100dvh;display:grid;grid-template-rows:auto minmax(0,1fr) auto;transform-origin:top left;gap:6px;padding:8px 14px 5px}
+#gameScreen>header{max-width:none;width:100%;margin:0;padding:0 4px;gap:8px;min-height:30px}.brand{font-size:16px}header .tag{font-size:10px}
+.shell{width:100%;max-width:none;min-height:0;margin:0;padding:0;display:grid;grid-template-rows:auto minmax(160px,1fr) auto auto;gap:7px}
+.intro{margin:0;gap:12px;min-height:38px}h1{font-size:27px;margin:0}.intro p{display:none}.scores{gap:6px}.score{display:flex;align-items:center;gap:12px;padding:3px 12px;border-radius:10px;min-width:85px}.score small{font-size:12px}.score strong{font-size:21px}
+.table{min-height:0;display:grid;grid-template-rows:auto minmax(85px,1fr) auto auto;gap:5px;padding:9px 12px;border-radius:16px}.topline{min-height:26px}.topline>div:first-child{display:flex;gap:12px;align-items:center;min-width:0}.eyebrow{font-size:10px;letter-spacing:.07em;white-space:nowrap}.backs{margin:0;gap:2px}.back{width:10px;height:17px}.pile{font-size:11px;line-height:1.2;white-space:nowrap}.pile br{display:none}.pile strong{margin-left:5px}
+.board-wrap{height:auto;min-height:0;margin:0;padding:0;border-radius:12px}.chain{min-height:0}.board-tools{gap:4px 8px;align-items:center}.board-tools .mode-picker{padding:2px;gap:2px}.board-tools button{font-size:12px;padding:3px 8px}.mode-label{font-size:11px}.board-tools .tip{font-size:11px;width:auto;line-height:1.2}#difficultyNote{display:none}.status{min-height:27px;padding:4px 9px;font-size:12px;line-height:1.3;border-radius:8px}
+.hand-area{min-width:0;padding:8px 12px;margin:0;border-radius:13px}.hand-head{margin-bottom:5px;gap:10px;flex-direction:row;align-items:center}.hand-head h2{font-size:14px;white-space:nowrap}.hint{font-size:11px;line-height:1.2}.hand{min-height:0;gap:7px;padding:4px 3px}.hand .tile{padding:3px;border-radius:6px}.hand .half{width:30px;height:32px;padding:3px}.hand .pip{width:5px;height:5px}.controls{margin-top:5px;gap:5px}.btn{font-size:12px;padding:6px 10px;border-radius:8px}.placement{width:auto;gap:5px}.end-group{padding:2px;gap:3px}.end-group span{font-size:11px}.end-group button{padding:4px 8px}.controls .spacer{display:block}.under{display:block;margin:0 3px;min-height:22px}.under details{position:relative;border:0;padding:0}.under summary{font-size:12px;width:max-content}.rules-content{position:absolute;bottom:29px;left:0;width:min(650px,calc(100vw - 40px));max-height:60vh;overflow:auto;background:#fffdf6;color:var(--ink);border:1px solid #d3dbcc;border-radius:14px;padding:12px 20px;box-shadow:0 10px 40px #0005;z-index:50}.rules-content p,.rules-content li{font-size:13px}footer{font-size:10px;padding:0;line-height:1.3}
+@media(max-width:800px){#gameScreen{padding:6px 8px 4px;gap:4px}header .tag{display:none}.shell{gap:5px}.intro{min-height:31px}h1{font-size:22px}.score{min-width:70px;gap:6px;padding:2px 8px}.score strong{font-size:18px}.table{padding:7px;gap:4px}.board-tools .tip{width:100%;font-size:10px}.hand-area{padding:6px 8px}.hand-head{flex-direction:row;gap:6px}.hand .half{width:26px;height:29px}.hand .tile{padding:2px}.hand{gap:6px}.placement{width:auto}.end-group{flex:none}.controls .spacer{display:none}.controls .btn{padding:5px 8px}.end-group button{padding:4px 7px}.eyebrow{font-size:9px}.backs{gap:1px}.back{width:7px;height:13px}}
+@media(max-height:600px){#gameScreen{gap:3px;padding-top:4px}.shell{gap:4px}.intro{min-height:27px}h1{font-size:21px}.score strong{font-size:17px}.hand .half{width:25px;height:27px}.hand .pip{width:4px;height:4px}.hand-head{margin-bottom:2px}.hand-area{padding:5px 8px}.board-tools .tip{display:none}.table{gap:3px;padding:6px}.status{min-height:23px;font-size:11px}.controls{margin-top:3px}.brand{font-size:14px}}
+.cloud-account{font-size:11px;color:#526a65;max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cloud-status{font-size:11px;color:#196b60}.cloud-status.cloud-warning{color:#9a4d12}.cloud-gate{position:fixed;inset:0;z-index:3000;display:grid;place-items:center;background:#123f39ef;padding:20px;color:var(--ink)}.cloud-gate-card{width:min(490px,95vw);background:#fffaf0;border-radius:20px;padding:27px;text-align:center;box-shadow:0 12px 45px #0004}.cloud-gate h2{font:500 30px Georgia,serif;margin:0 0 15px}.cloud-gate p{font-size:15px;color:#526a65}.cloud-gate a{display:inline-block;text-decoration:none}.cloud-gate .btn{margin:5px}.cloud-gate small{display:block;margin-top:12px;color:#6a776e;font-size:12px}</style>
+</head>
+<body>
+<div class="cloud-gate" id="cloudGate" hidden role="dialog" aria-modal="true" aria-labelledby="cloudTitle"><div class="cloud-gate-card"><h2 id="cloudTitle">Opening your game</h2><p id="cloudMessage">Checking your sign-in and loading your saved Dominoes game…</p><button class="btn primary" id="cloudRetry">Try again</button><button class="btn primary" id="cloudReload" hidden>Load latest saved game</button><a class="btn" href="../../index.html">Go to RECONNECT-US login</a><small>Your game is saved to your signed-in learner account.</small></div></div><div id="gameScreen" inert><header><div class="brand">RECONNECT<span>-US</span></div><div class="tag">A little play. A little connection.</div><span class="round-pill" id="round"></span><span class="cloud-account" id="cloudAccount"></span><span class="cloud-status" id="cloudStatus" role="status" aria-live="polite">Checking sign-in…</span><button class="btn" id="retryCloud" hidden>Retry save</button><button class="btn fullscreen-action" id="fullscreenButton">Full screen ⛶</button></header>
+<main class="shell"><section class="intro"><div><div class="tag">Make time to play</div><h1>A good connection.</h1><p>A classic game of dominoes. Your next move awaits.</p></div><div class="scores"><div class="score"><small>You</small><strong id="youScore">0</strong></div><div class="score"><small>Computer</small><strong id="cpuScore">0</strong></div></div></section>
+<section class="table" aria-label="Domino table"><div class="topline"><div><div class="eyebrow" id="cpuLabel">Computer</div><div class="backs" id="backs" aria-hidden="true"></div></div><div class="pile">Draw pile<br><strong id="pileCount"></strong></div></div><div class="board-wrap" id="boardWrap"><div class="chain" id="chain" aria-label="Domino chain"></div></div><div class="board-tools"><span class="mode-label">Computer level</span><div class="mode-picker" role="group" aria-label="Computer difficulty"><button id="easyLevel" aria-pressed="false">Easy</button><button id="normalLevel" aria-pressed="true">Normal</button><button id="hardLevel" aria-pressed="false">Hard</button></div><span class="mode-label">Placement guides</span><div class="mode-picker" role="group" aria-label="Play mode"><button id="beginnerMode" type="button" aria-pressed="true">Beginner</button><button id="normalMode" type="button" aria-pressed="false">Normal</button></div><span class="tip" id="difficultyNote"></span><span class="tip" id="modeTip">Drag a highlighted tile from your hand onto a glowing space. Tiles snap neatly together.</span><button class="btn" id="tidy">Tidy table</button></div><div class="status" role="status" aria-live="polite"><span class="light"></span><span id="status"></span></div></section>
+<section class="hand-area" aria-label="Your tiles"><div class="hand-head"><h2 id="handTitle">Your hand</h2><span class="hint" id="hint">Select a highlighted tile to begin.</span></div><div class="hand" id="hand"></div><div class="controls"><div class="end-group" id="doubleControls" hidden role="group" aria-label="Double placement"><span>Place double</span><button class="btn" id="crossDouble" aria-pressed="true">Crossways ⊥</button><button class="btn" id="longDouble" aria-pressed="false">Lengthways —</button></div><div class="placement"><div class="end-group"><span>Left end</span><button class="btn primary" id="leftUp" aria-label="Play left end upwards">↑</button><button class="btn primary" id="left">←</button><button class="btn primary" id="leftDown" aria-label="Play left end downwards">↓</button></div><div class="end-group"><span>Right end</span><button class="btn primary" id="rightUp" aria-label="Play right end upwards">↑</button><button class="btn primary" id="right">→</button><button class="btn primary" id="rightDown" aria-label="Play right end downwards">↓</button></div></div><button class="btn" id="draw">Draw a tile</button><button class="btn" id="pass">Pass</button><span class="spacer"></span><button class="btn gold" id="next">New round</button><button class="btn" id="reset">Reset scores</button></div></section>
+<div class="under"><details id="rules"><summary>How to play</summary><div class="rules-content"><p>You and the computer each start with seven double-six tiles. You start round one; the starter alternates each round.</p><ul><li>Sign in through RECONNECT-US to play. Your tiles, scores, round, and settings save automatically to your account. Wait for “Saved to your account” before leaving if you want to resume on another device.</li><li>Choose Easy, Normal, or Hard for the computer. Easy plays casually; Normal balances its hand; Hard considers possible replies and blocking moves. Difficulty is separate from placement guides. You can change either setting without restarting the round.</li><li>Choose Beginner to see glowing placement guides, or Normal to play without them. You can switch during a round without changing your tiles or scores.</li><li>Drag a highlighted tile from your hand beside either matching end. Beginner mode shows glowing spaces to help you. Move around the end to choose up, down, or straight, then release to snap into place. You can also select a tile and use the arrow buttons. Drop your first tile anywhere on the felt.</li><li>Doubles normally sit crossways across the matching end. Select a double to choose Crossways or Lengthways before dragging it. A double continues the same chain; play continues at either exposed end.</li><li>If you cannot play, draw one tile at a time until you can. Pass only when the draw pile is empty and no tile fits.</li><li>Empty your hand to win. If both players pass, the lower pip total wins; equal totals draw.</li><li>The winner scores the total pips left in the opponent’s hand. A draw scores zero. Play as many rounds as you like.</li></ul></div></details></div>
+</main><footer>© RECONNECT-US — 18 October 2026 — All rights reserved.</footer></div>
+<script>
+'use strict';
+const $=id=>document.getElementById(id);
+let state,selected=null,timer=null,epoch=0,cloudGameReady=false;
+let beginner=true,doubleCrossways=true,difficulty="normal";
+let boardSelected=null,view={x:-600,y:-280,w:1200,h:560};
+const patterns=[[],[4],[0,8],[0,4,8],[0,2,6,8],[0,2,4,6,8],[0,2,3,5,6,8]];
+function half(n){return '<span class="half" aria-hidden="true">'+Array.from({length:9},(_,i)=>'<i class="pip'+(patterns[n].includes(i)?'':' off')+'"></i>').join('')+'</span>'}
+function tileHTML(t){return half(t[0])+half(t[1])}
+function fits(t,side){if(!state.chain.length)return true;const n=side==='left'?state.chain[0][0]:state.chain.at(-1)[1];return t.includes(n)}
+function legal(t){return fits(t,'left')||fits(t,'right')}
+function canPlay(hand){return hand.some(legal)}
+function pips(hand){return hand.reduce((s,t)=>s+t[0]+t[1],0)}
+function render(){
+ queueScreenFit();
+ for(const level of ['easy','normal','hard'])$(level+'Level').setAttribute('aria-pressed',String(difficulty===level));
+ $('difficultyNote').textContent={easy:'Easy: a relaxed opponent.',normal:'Normal: a thoughtful opponent.',hard:'Hard: plans ahead and looks for ways to block you.'}[difficulty];
+ $('beginnerMode').setAttribute('aria-pressed',String(beginner));$('normalMode').setAttribute('aria-pressed',String(!beginner));
+ $('modeTip').textContent=beginner?'Beginner: glowing spaces show where your tile can go.':'Normal: drag your tile beside a matching end. Placement guides are off.';
+ $('round').textContent='Round '+state.round; $('youScore').textContent=state.scores[0];$('cpuScore').textContent=state.scores[1];$('pileCount').textContent=state.pile.length+' tiles';$('cpuLabel').textContent='Computer · '+difficulty[0].toUpperCase()+difficulty.slice(1)+' · '+state.cpu.length+' tiles';$('backs').innerHTML=state.cpu.map(()=>'<span class="back"></span>').join('');
+ renderBoard();
+ $('handTitle').textContent='Your hand · '+state.you.length+' tiles';const active=cloudGameReady&&state.turn==='you'&&!state.over;
+ $('hand').innerHTML='';state.you.forEach((t,i)=>{const b=document.createElement('button');b.className='tile'+(legal(t)?' playable':'')+(selected===i?' selected':'');b.innerHTML=tileHTML(t);b.setAttribute('aria-label',t[0]+' and '+t[1]+(legal(t)?', playable':', no match'));b.setAttribute('aria-pressed',selected===i);b.disabled=!active||!legal(t);b.dataset.handIndex=i;b.onclick=()=>{selected=i;render()};$('hand').append(b)});
+ $('left').disabled=!active||selected===null||!fits(state.you[selected],'left');$('right').disabled=!active||selected===null||!fits(state.you[selected],'right');$('draw').disabled=!active||canPlay(state.you)||!state.pile.length;$('pass').disabled=!active||canPlay(state.you)||!!state.pile.length;
+ for(const side of ['left','right'])for(const direction of ['Up','Down'])$(side+direction).disabled=$(side).disabled;
+ $('next').disabled=!cloudGameReady;$('reset').disabled=!cloudGameReady;
+ $('status').textContent=cloudGameReady?state.message:'Loading your saved game…';$('next').textContent=state.over?'Next round':'New round';$('hint').textContent=!cloudGameReady?'Loading your saved game…':state.over?'Round finished. Ready for another?':!active?'The computer is thinking…':selected!==null?(beginner?'Drag your tile onto a glowing space, or use the arrows.':'Drag your tile beside a matching end, or use the arrows.'):canPlay(state.you)?'Drag a highlighted tile onto the table.':state.pile.length?'No match? Draw a tile.':'No match and no tiles left. Pass your turn.';
+}
+function newRound(reset=false){handDrag=null;drag=null;if(ghost){ghost.remove();ghost=null}clearTimeout(timer);epoch++;const old=state;const round=reset||!old?1:old.round+1;let deck=[];for(let a=0;a<=6;a++)for(let b=a;b<=6;b++)deck.push([a,b]);for(let i=deck.length-1;i>0;i--){let j=Math.floor(Math.random()*(i+1));[deck[i],deck[j]]=[deck[j],deck[i]]}state={you:deck.splice(0,7),cpu:deck.splice(0,7),pile:deck,chain:[],layout:[],scores:reset||!old?[0,0]:[...old.scores],round,turn:round%2?'you':'cpu',passes:0,over:false,message:''};selected=null;boardSelected=null;state.message=state.turn==='you'?'Your turn. Choose any tile to start.':'The computer opens this round.';render();if(state.turn==='cpu')scheduleCPU()}
+function finish(winner,blocked=false){state.over=true;selected=null;const a=pips(state.you),b=pips(state.cpu);if(winner==='draw')state.message='A drawn round! Both hands have '+a+' pips. No points awarded.';else{const points=winner==='you'?b:a;state.scores[winner==='you'?0:1]+=points;state.message=(winner==='you'?'You win':'Computer wins')+(blocked?' the blocked round ('+a+'–'+b+' pips)':' the round')+'! +'+points+' points. Play another round?'}render()}
+function checkBlocked(){if(state.passes<2)return false;const a=pips(state.you),b=pips(state.cpu);finish(a===b?'draw':a<b?'you':'cpu',true);return true}
+function place(who,index,side,direction,position){const hand=state[who];if(!cloudGameReady||state.over||state.turn!==who||!hand[index]||!fits(hand[index],side))return;const playing=hand[index],cross=who==='you'?doubleCrossways:true;if(!position&&state.layout.length){if(!candidates(side,playing,cross).length)tidyLayout();position=choosePosition(side,direction,playing,cross);if(!position)return;}let t=hand.splice(index,1)[0].slice();if(state.chain.length){const n=side==='left'?state.chain[0][0]:state.chain.at(-1)[1];if(side==='left'&&t[1]!==n||side==='right'&&t[0]!==n)t.reverse()}addPosition(side,direction,position,t,cross);if(side==='left')state.chain.unshift(t);else state.chain.push(t);state.passes=0;selected=null;if(!hand.length){finish(who);return}state.turn=who==='you'?'cpu':'you';state.message=who==='you'?'Nice connection. Computer’s turn.':'Computer played '+t[0]+'–'+t[1]+'. Your turn.';render();if(state.turn==='cpu')scheduleCPU()}
+
+function possibleMoves(hand,left,right){
+ const moves=[];hand.forEach((t,i)=>{if(left===null){moves.push({i,side:'right',left:t[0],right:t[1]});return}if(t.includes(left))moves.push({i,side:'left',left:t[0]===left?t[1]:t[0],right});if(t.includes(right)&&left!==right)moves.push({i,side:'right',left,right:t[0]===right?t[1]:t[0]})});return moves;
+}
+function moveValue(hand,move){const remaining=hand.filter((_,i)=>i!==move.i),t=hand[move.i];return t[0]+t[1]+(isDouble(t)?3:0)+possibleMoves(remaining,move.left,move.right).length*4+remaining.filter(t=>t.includes(move.left)).length+remaining.filter(t=>t.includes(move.right)).length}
+function aiEvaluation(own,other,left,right){return (pips(other)-pips(own))*2+possibleMoves(own,left,right).length*5-possibleMoves(other,left,right).length*5}
+function planValue(own,other,bag,left,right,turn,depth,passes=0){
+ if(!own.length)return 1000+pips(other);if(!other.length)return -1000-pips(own);
+ if(passes===2){const delta=pips(other)-pips(own);return delta===0?0:(delta>0?600:-600)+delta}
+ if(depth===0)return aiEvaluation(own,other,left,right);
+ let hand=turn?other:own,moves=possibleMoves(hand,left,right),rest=bag;
+ if(!moves.length&&rest.length){hand=hand.slice();rest=rest.slice();while(!moves.length&&rest.length){hand.push(rest.pop());moves=possibleMoves(hand,left,right)}if(turn)other=hand;else own=hand}
+ if(!moves.length)return planValue(own,other,rest,left,right,!turn,depth-1,passes+1);
+ let best=turn?Infinity:-Infinity;
+ for(const m of moves){const remaining=hand.filter((_,i)=>i!==m.i),value=planValue(turn?own:remaining,turn?remaining:other,rest,m.left,m.right,!turn,depth-1,0);best=turn?Math.min(best,value):Math.max(best,value)}return best;
+}
+function chooseComputerMove(){
+ const left=state.chain.length?state.chain[0][0]:null,right=state.chain.length?state.chain.at(-1)[1]:null,moves=possibleMoves(state.cpu,left,right);
+ if(!moves.length)return null;if(difficulty==='easy')return moves[Math.floor(Math.random()*moves.length)];
+ if(difficulty==='normal')return moves.reduce((best,m)=>moveValue(state.cpu,m)>moveValue(state.cpu,best)?m:best,moves[0]);
+ // Infer possible hands only from the computer's own tiles, public tiles, and opponent tile count.
+ const key=t=>Math.min(...t)+','+Math.max(...t),known=new Set([...state.cpu,...state.chain].map(key)),unknown=[];
+ for(let a=0;a<=6;a++)for(let b=a;b<=6;b++)if(!known.has(a+','+b))unknown.push([a,b]);
+ const scores=moves.map(()=>0),samples=20;
+ for(let sample=0;sample<samples;sample++){
+ const pool=unknown.slice();for(let i=pool.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[pool[i],pool[j]]=[pool[j],pool[i]]}
+ const other=pool.splice(0,state.you.length);
+ for(let i=0;i<moves.length;i++){const m=moves[i],own=state.cpu.filter((_,j)=>j!==m.i);scores[i]+=planValue(own,other,pool,m.left,m.right,true,2)}
+ }
+ let best=0;for(let i=1;i<moves.length;i++)if(scores[i]>scores[best]||scores[i]===scores[best]&&moveValue(state.cpu,moves[i])>moveValue(state.cpu,moves[best]))best=i;return moves[best];
+}
+for(const level of ['easy','normal','hard'])$(level+'Level').onclick=()=>{if(handDrag)return;difficulty=level;render()};
+
+function scheduleCPU(){const token=epoch;timer=setTimeout(()=>{if(!cloudGameReady||token!==epoch||state.over||state.turn!=='cpu')return;let drawn=0;while(!canPlay(state.cpu)&&state.pile.length){state.cpu.push(state.pile.pop());drawn++}if(canPlay(state.cpu)){const c=chooseComputerMove();place('cpu',c.i,c.side);if(!state.over&&drawn){state.message='Computer drew '+drawn+' '+(drawn===1?'tile':'tiles')+' and played. Your turn.';render()}}else{state.passes++;if(checkBlocked())return;state.turn='you';state.message='Computer passes. Your turn.';render()}},750)}
+$('left').onclick=()=>{if(selected!==null)place('you',selected,'left')};$('right').onclick=()=>{if(selected!==null)place('you',selected,'right')};
+$('draw').onclick=()=>{if(!cloudGameReady||state.over||state.turn!=='you'||canPlay(state.you)||!state.pile.length)return;const t=state.pile.pop();state.you.push(t);selected=legal(t)?state.you.length-1:null;state.message='You drew '+t[0]+'–'+t[1]+'. '+(legal(t)?'Choose an end to play it.':state.pile.length?'Draw again to find a match.':'The pile is empty. Pass your turn.');render()};
+$('pass').onclick=()=>{if(!cloudGameReady||state.over||state.turn!=='you'||state.pile.length||canPlay(state.you))return;state.passes++;selected=null;if(checkBlocked())return;state.turn='cpu';state.message='You pass. Computer’s turn.';render();scheduleCPU()};
+$('next').onclick=()=>{if(state.over||confirm('Deal a new round? This unfinished round will not score.'))newRound()};$('reset').onclick=()=>{if(confirm('Reset both scores and start a fresh match?'))newRound(true)};
+
+
+const rad=a=>a*Math.PI/180;
+function overlaps(p,q){const pw=Math.abs(Math.cos(rad(p.a)))>0.5?44:23,ph=pw===44?23:44,qw=Math.abs(Math.cos(rad(q.a)))>0.5?44:23,qh=qw===44?23:44;return Math.abs(p.x-q.x)<pw+qw+2&&Math.abs(p.y-q.y)<ph+qh+2}
+
+function isDouble(t){return !!t&&t[0]===t[1]}
+function extentAlong(a,d){return Math.abs(Math.cos(rad(a-d)))>.5?44:23}
+function geometry(p,previous,side,d,t,cross=true){
+ const sign=side==='left'?-1:1,heading=p.h??p.a,offset=isDouble(previous)?0:24;
+ const ex=p.x+sign*offset*Math.cos(rad(heading)),ey=p.y+sign*offset*Math.sin(rad(heading));
+ const headingNew=wrapAngle(d+(side==='left'?180:0)),a=wrapAngle(headingNew+(isDouble(t)&&cross?90:0));
+ const oldExtent=isDouble(previous)?extentAlong(p.a,d):23,newExtent=extentAlong(a,d),distance=oldExtent+newExtent+4;
+ return {x:ex+distance*Math.cos(rad(d)),y:ey+distance*Math.sin(rad(d)),a,h:headingNew,side,d,cross:isDouble(t)&&cross};
+}
+function candidates(side,t=selected!==null?state.you[selected]:null,cross=doubleCrossways){
+ if(!state.layout.length)return [{x:0,y:0,a:isDouble(t)&&cross?90:0,h:0,side:'right',cross:isDouble(t)&&cross}];
+ const i=side==='left'?0:state.layout.length-1,p=state.layout[i],previous=state.chain[i];
+ return [0,90,180,-90].map(d=>geometry(p,previous,side,d,t,cross)).filter(q=>state.layout.every(p=>!overlaps(p,q)));
+}
+function choosePosition(side,direction,t,cross){const options=candidates(side,t,cross);let desired=direction==='up'?-90:direction==='down'?90:side==='left'?180:0;return options.sort((p,q)=>Math.abs(wrapAngle(p.d-desired))-Math.abs(wrapAngle(q.d-desired)))[0]}
+function addPosition(side,direction,position,t,cross){
+ const heading=direction==='up'?-90:direction==='down'?90:0;let next=position||{x:0,y:0,h:heading,a:heading};
+ if(!state.layout.length){const h=next.h??heading;next={...next,h,a:wrapAngle(h+(isDouble(t)&&cross?90:0)),cross:isDouble(t)&&cross}}
+ if(side==='left')state.layout.unshift({...next});else state.layout.push({...next});boardSelected=null;
+}
+function tidyLayout(){
+ const old=state.layout;state.layout=[];
+ for(let i=0;i<state.chain.length;i++){
+ const t=state.chain[i],cross=old[i]?.cross??true;
+ if(!i){state.layout.push({x:0,y:0,h:0,a:isDouble(t)&&cross?90:0,cross:isDouble(t)&&cross});continue}
+ const desired=i%6===0?90:Math.floor(i/6)%2?180:0;
+ const p=state.layout.at(-1),options=[desired,0,90,180,-90].map(d=>geometry(p,state.chain[i-1],'right',d,t,cross)).filter(q=>state.layout.every(p=>!overlaps(p,q)));
+ if(!options.length){state.layout=[];for(let j=0;j<state.chain.length;j++){const tile=state.chain[j],c=old[j]?.cross??true;state.layout.push(j?geometry(state.layout[j-1],state.chain[j-1],'right',0,tile,c):{x:0,y:0,h:0,a:isDouble(tile)&&c?90:0,cross:isDouble(tile)&&c})}return}
+ state.layout.push(options[0]);
+ }
+}
+function dropOptions(index){if(index===null||!state.you[index]||state.turn!=='you'||state.over)return [];const t=state.you[index];if(!state.chain.length)return candidates('right',t);return ['left','right'].filter(s=>fits(t,s)).flatMap(s=>candidates(s,t))}
+function syncDoubleControls(){const t=selected===null?null:state.you[selected];$('doubleControls').hidden=!isDouble(t)||state.over||state.turn!=='you';$('crossDouble').setAttribute('aria-pressed',String(doubleCrossways));$('longDouble').setAttribute('aria-pressed',String(!doubleCrossways))}
+function slotHTML(p,hot=false){if(!beginner)return '';return '<g class="drop-slot" transform="translate('+p.x+' '+p.y+') rotate('+p.a+')"><rect x="-44" y="-23" width="88" height="46" rx="6" fill="'+(hot?'#edbd6588':'#c6e8d51c')+'" stroke="'+(hot?'#ffda8d':'#bce9d3')+'" stroke-width="2" stroke-dasharray="6 4"/></g>'}
+function svgHalf(n,x){return patterns[n].map(i=>'<circle cx="'+(x+(i%3-1)*11)+'" cy="'+((Math.floor(i/3)-1)*11)+'" r="3.6" fill="#183e3b"/>').join('')}
+function fitView(){const box=$('chain').getBoundingClientRect(),ratio=box.width/Math.max(box.height,1)||2;const extent=state.layout.length?[...state.layout,...candidates('left'),...candidates('right')]:[];const xs=extent.map(p=>p.x),ys=extent.map(p=>p.y);const x0=Math.min(-260,...xs)-70,x1=Math.max(260,...xs)+70,y0=Math.min(-130,...ys)-70,y1=Math.max(130,...ys)+70;let w=x1-x0,h=y1-y0;if(w/h<ratio)w=h*ratio;else h=w/ratio;view={x:(x0+x1-w)/2,y:(y0+y1-h)/2,w,h}}
+function renderBoard(fit=true){
+ syncDoubleControls();
+ window.RECONNECTUS_DOMINOES_CHANGED?.();
+ if(fit)fitView();
+ let lines=dropOptions(selected).map(p=>slotHTML(p,!!handDrag&&handDrag.target&&p.side===handDrag.target.side&&p.x===handDrag.target.x&&p.y===handDrag.target.y)).join('');
+ $('chain').innerHTML='<svg viewBox="'+[view.x,view.y,view.w,view.h].join(' ')+'" aria-label="Domino table. Drop a hand tile beside a matching end.">'+lines+state.chain.map((t,i)=>{const p=state.layout[i];return '<g class="board-tile '+(boardSelected===t?'chosen':'')+'" data-index="'+i+'" tabindex="0" role="button" aria-label="'+t[0]+' and '+t[1]+', tile '+(i+1)+(i===0?', left end':i===state.chain.length-1?', right end':'')+'. Drag or use arrow keys to move the connected chain." transform="translate('+p.x+' '+p.y+') rotate('+p.a+')"><rect class="face" x="-44" y="-23" width="88" height="46" rx="6" fill="#fffaf0" stroke="#d5d0bc"/><path d="M0 -18V18" stroke="#babda9"/>'+svgHalf(t[0],-22)+svgHalf(t[1],22)+(i===0?'<circle cx="-38" cy="-17" r="3" fill="#b07621"/>':'')+(i===state.chain.length-1?'<circle cx="38" cy="-17" r="3" fill="#b07621"/>':'')+'</g>'}).join('')+'</svg>';
+
+}
+function boardPoint(event){const svg=$('chain').querySelector('svg');if(!svg)return null;return new DOMPoint(event.clientX,event.clientY).matrixTransform(svg.getScreenCTM().inverse())}
+
+let drag=null,handDrag=null,ghost=null,suppressClick=false;
+function wrapAngle(a){return ((a+540)%360)-180}
+$('chain').addEventListener('pointerdown',e=>{const g=e.target.closest('[data-index]');if(!cloudGameReady||!g||handDrag||state.turn==='cpu'&&!state.over)return;const p=boardPoint(e);drag={x:p.x,y:p.y,layout:state.layout.map(p=>({...p}))};$('chain').setPointerCapture(e.pointerId);e.preventDefault()});
+$('chain').addEventListener('pointermove',e=>{if(!drag)return;const p=boardPoint(e);state.layout=drag.layout.map(q=>({...q,x:q.x+p.x-drag.x,y:q.y+p.y-drag.y}));renderBoard(false)});
+function endDrag(){if(!drag)return;drag=null;renderBoard()}
+$('chain').addEventListener('pointerup',endDrag);$('chain').addEventListener('pointercancel',endDrag);
+$('chain').addEventListener('keydown',e=>{if(!cloudGameReady||state.turn==='cpu'&&!state.over||!e.target.closest('[data-index]')||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(e.key))return;e.preventDefault();const i=e.target.dataset.index;for(const p of state.layout){p.x+=e.key==='ArrowLeft'?-12:e.key==='ArrowRight'?12:0;p.y+=e.key==='ArrowUp'?-12:e.key==='ArrowDown'?12:0}renderBoard();$('chain').querySelector('[data-index="'+i+'"]').focus()});
+$('tidy').onclick=()=>{tidyLayout();renderBoard()};
+$('hand').addEventListener('click',e=>{if(suppressClick){e.stopImmediatePropagation();e.preventDefault();suppressClick=false}},true);
+$('hand').addEventListener('pointerdown',e=>{const tile=e.target.closest('[data-hand-index]');if(!tile||tile.disabled||e.button!==0)return;const i=Number(tile.dataset.handIndex);selected=i;for(const b of $('hand').querySelectorAll('[data-hand-index]')){b.classList.toggle('selected',Number(b.dataset.handIndex)===i);b.setAttribute('aria-pressed',Number(b.dataset.handIndex)===i)}
+ if(state.chain.length&&!dropOptions(i).length)tidyLayout();renderBoard();handDrag={i,tile:state.you[i],startX:e.clientX,startY:e.clientY,moved:false,target:null};$('hand').setPointerCapture(e.pointerId);e.preventDefault()});
+$('hand').addEventListener('pointermove',e=>{if(!handDrag)return;const d=handDrag;if(Math.hypot(e.clientX-d.startX,e.clientY-d.startY)>6)d.moved=true;if(!d.moved)return;
+ if(!ghost){ghost=document.createElement('div');ghost.className='tile drag-ghost';ghost.innerHTML=tileHTML(d.tile);ghost.setAttribute('aria-hidden','true');document.body.append(ghost)}ghost.style.left=e.clientX+'px';ghost.style.top=e.clientY+'px';
+ const r=$('chain').getBoundingClientRect();d.target=null;
+ if(e.clientX>=r.left&&e.clientX<=r.right&&e.clientY>=r.top&&e.clientY<=r.bottom){const p=boardPoint(e);if(!state.chain.length)d.target={x:Math.max(view.x+55,Math.min(view.x+view.w-55,p.x)),y:Math.max(view.y+55,Math.min(view.y+view.h-55,p.y)),a:isDouble(d.tile)&&doubleCrossways?90:0,h:0,cross:isDouble(d.tile)&&doubleCrossways,side:'right'};else{const opts=dropOptions(d.i).sort((a,b)=>Math.hypot(a.x-p.x,a.y-p.y)-Math.hypot(b.x-p.x,b.y-p.y));if(opts[0]&&Math.hypot(opts[0].x-p.x,opts[0].y-p.y)<100)d.target=opts[0]}}
+ renderBoard(false);if(!state.chain.length&&d.target)$('chain').querySelector('svg').insertAdjacentHTML('beforeend',slotHTML(d.target,true));
+});
+function finishHandDrag(e,cancel=false){if(!handDrag)return;const d=handDrag;handDrag=null;if(ghost){ghost.remove();ghost=null}if($('hand').hasPointerCapture(e.pointerId))$('hand').releasePointerCapture(e.pointerId);suppressClick=d.moved;
+ if(!cancel&&d.moved&&d.target&&state.turn==='you'&&state.you[d.i]===d.tile){place('you',d.i,d.target.side,undefined,d.target)}else{if(d.moved&&!cancel)state.message=beginner?'Drop onto a glowing space beside a matching end. Your tile is still in your hand.':'Drop beside a matching end. Your tile is still in your hand.';render()}}
+$('hand').addEventListener('pointerup',e=>finishHandDrag(e));$('hand').addEventListener('pointercancel',e=>finishHandDrag(e,true));
+for(const side of ['left','right'])for(const dir of ['Up','Down'])$(side+dir).onclick=()=>{if(selected!==null)place('you',selected,side,dir.toLowerCase())};
+$('crossDouble').onclick=()=>{doubleCrossways=true;renderBoard()};
+$('longDouble').onclick=()=>{doubleCrossways=false;renderBoard()};
+$('beginnerMode').onclick=()=>{if(handDrag)return;beginner=true;render()};
+$('normalMode').onclick=()=>{if(handDrag)return;beginner=false;render()};
+window.addEventListener('resize',queueScreenFit);
+
+
+let screenFitQueued=false;
+function queueScreenFit(){if(screenFitQueued)return;screenFitQueued=true;requestAnimationFrame(()=>{screenFitQueued=false;fitGameScreen()})}
+function fitGameScreen(){
+ const screen=$('gameScreen');if(!screen)return;
+ const w=window.innerWidth,h=window.innerHeight;let scale=1;
+ for(let i=0;i<5;i++){
+ screen.style.width=(w/scale)+'px';screen.style.height=(h/scale)+'px';screen.style.transform='scale('+scale+')';
+ const shell=document.querySelector('.shell'),table=document.querySelector('.table');const extraH=Math.max(0,shell.scrollHeight-shell.clientHeight,table.scrollHeight-table.clientHeight);const neededH=Math.max(screen.scrollHeight,screen.clientHeight+extraH),neededW=screen.scrollWidth;
+ if(neededH<=h/scale+1&&neededW<=w/scale+1)break;
+ scale*=Math.min((h/scale)/neededH,(w/scale)/neededW)*.985;
+ }
+ screen.style.width=(w/scale)+'px';screen.style.height=(h/scale)+'px';screen.style.transform='scale('+scale+')';renderBoard();
+}
+if(typeof ResizeObserver!=='undefined'){const layoutObserver=new ResizeObserver(queueScreenFit);layoutObserver.observe($('hand'));layoutObserver.observe(document.querySelector('.controls'))}
+
+// State snapshots use JSON text because Firestore does not accept nested tile arrays directly.
+function exportDominoesSnapshot(){
+ return JSON.stringify({schema:1,state:{you:state.you,cpu:state.cpu,pile:state.pile,chain:state.chain,layout:state.layout.map(p=>({x:p.x,y:p.y,a:p.a,h:p.h??p.a,cross:!!p.cross})),scores:state.scores,round:state.round,turn:state.turn,passes:state.passes,over:state.over},preferences:{difficulty,beginner,doubleCrossways}});
+}
+function readDominoesSnapshot(json){
+ if(typeof json!=='string'||json.length>100000)throw Error('This saved game cannot be opened.');
+ const saved=JSON.parse(json),s=saved?.state,p=saved?.preferences;
+ if(saved?.schema!==1||!s||!p||!['easy','normal','hard'].includes(p.difficulty)||typeof p.beginner!=='boolean'||typeof p.doubleCrossways!=='boolean')throw Error('This saved game has an unsupported format.');
+ const arrays=['you','cpu','pile','chain'];const keys=[];
+ for(const name of arrays){if(!Array.isArray(s[name])||s[name].length>28)throw Error('Invalid saved tiles.');for(const t of s[name]){if(!Array.isArray(t)||t.length!==2||t.some(n=>!Number.isInteger(n)||n<0||n>6))throw Error('Invalid saved tile.');keys.push(Math.min(...t)+','+Math.max(...t))}}
+ if(keys.length!==28||new Set(keys).size!==28)throw Error('The saved game has missing or duplicate tiles.');
+ for(let i=1;i<s.chain.length;i++)if(s.chain[i-1][1]!==s.chain[i][0])throw Error('The saved chain does not match.');
+ if(!Array.isArray(s.scores)||s.scores.length!==2||s.scores.some(n=>!Number.isSafeInteger(n)||n<0)||!Number.isSafeInteger(s.round)||s.round<1||!['you','cpu'].includes(s.turn)||typeof s.over!=='boolean'||!Number.isInteger(s.passes)||s.passes<0||s.passes>2||!s.over&&(!s.you.length||!s.cpu.length))throw Error('Invalid saved round.');
+ if(!Array.isArray(s.layout)||s.layout.length!==s.chain.length)throw Error('The saved layout is incomplete.');
+ const layout=s.layout.map((v,i)=>{if(!v||![v.x,v.y,v.a,v.h].every(Number.isFinite)||Math.abs(v.x)>1000000||Math.abs(v.y)>1000000||v.a%90!==0||v.h%90!==0||typeof v.cross!=='boolean')throw Error('Invalid saved layout.');if(wrapAngle(v.a)!==wrapAngle(v.h+(isDouble(s.chain[i])&&v.cross?90:0)))throw Error('Invalid saved tile direction.');return {x:v.x,y:v.y,a:wrapAngle(v.a),h:wrapAngle(v.h),cross:v.cross}});
+ for(let i=0;i<layout.length;i++)for(let j=i+1;j<layout.length;j++)if(overlaps(layout[i],layout[j]))throw Error('Saved tiles overlap.');
+ return {state:{you:s.you.map(t=>t.slice()),cpu:s.cpu.map(t=>t.slice()),pile:s.pile.map(t=>t.slice()),chain:s.chain.map(t=>t.slice()),layout,scores:s.scores.slice(),round:s.round,turn:s.turn,passes:s.passes,over:s.over,message:s.over?'Saved round finished. Ready for another?':s.turn==='cpu'?'Game restored. Computer’s turn.':'Game restored. Your turn.'},preferences:{difficulty:p.difficulty,beginner:p.beginner,doubleCrossways:p.doubleCrossways}};
+}
+function pauseCloudGame(){document.getElementById('gameScreen').inert=true;cloudGameReady=false;clearTimeout(timer);epoch++;handDrag=null;drag=null;if(ghost){ghost.remove();ghost=null}selected=null;render()}
+function restoreDominoesSnapshot(json){const saved=readDominoesSnapshot(json);pauseCloudGame();state=saved.state;difficulty=saved.preferences.difficulty;beginner=saved.preferences.beginner;doubleCrossways=saved.preferences.doubleCrossways;boardSelected=null;render()}
+window.RECONNECTUS_DOMINOES={
+ export:exportDominoesSnapshot,
+ validate:readDominoesSnapshot,
+ restore:restoreDominoesSnapshot,
+ pause:pauseCloudGame,
+ fresh(){pauseCloudGame();difficulty='normal';beginner=true;doubleCrossways=true;newRound(true)},
+ resume(){document.getElementById('gameScreen').inert=false;cloudGameReady=true;render();if(state.turn==='cpu'&&!state.over)scheduleCPU()}
+};
+
+newRound(true);
+setupFullscreen();
+
+function setupFullscreen(){
+ const button=$('fullscreenButton');let busy=false;
+ function sync(){const full=!!document.fullscreenElement;button.textContent=full?'Leave full screen':'Full screen ⛶';requestAnimationFrame(()=>{fitGameScreen();renderBoard()})}
+ async function enter(automatic=false){if(busy||document.fullscreenElement)return;busy=true;try{await document.documentElement.requestFullscreen()}catch{if(!automatic){state.message='Use the browser’s full-screen control if full screen is unavailable here.';render()}}finally{busy=false;sync()}}
+ button.onclick=async()=>{if(document.fullscreenElement){try{await document.exitFullscreen()}catch{}sync()}else enter()};
+ document.addEventListener('fullscreenchange',sync);
+ if(document.fullscreenEnabled===false||!document.documentElement.requestFullscreen){button.hidden=true;return}
+ enter(true);
+}
+// The downloaded file is a standalone preview. It never reads or writes learner records.
+if(window.location.protocol==='file:'){
+ document.getElementById('cloudGate').hidden=true;
+ document.getElementById('cloudStatus').textContent='Local preview — no account saving';
+ document.getElementById('cloudAccount').textContent='';
+ window.RECONNECTUS_DOMINOES.resume();
+}
+
+</script>
+<script>
+async function connectDominoesCloud({auth,db,onAuthStateChanged,doc,getDocFromServer,runTransaction,serverTimestamp,waitForAccess}){
+ const api=window.RECONNECTUS_DOMINOES;
+ let session=null,generation=0,saveTimer=null;
+ const status=document.getElementById('cloudStatus'),account=document.getElementById('cloudAccount'),gate=document.getElementById('cloudGate');
+ const retry=document.getElementById('retryCloud'),reload=document.getElementById('cloudReload'),gateRetry=document.getElementById('cloudRetry');
+ function badge(text,bad=false){status.textContent=text;status.classList.toggle('cloud-warning',bad);retry.hidden=!bad}
+ function showGate(title,text,conflict=false){gate.hidden=false;document.getElementById('cloudTitle').textContent=title;document.getElementById('cloudMessage').textContent=text;reload.hidden=!conflict;gateRetry.hidden=conflict}
+ function key(uid){return 'reconnect-us:dominoes:v1:'+uid}
+ function cache(s,dirty){try{localStorage.setItem(key(s.uid),JSON.stringify({uid:s.uid,baseRevision:s.revision,snapshotJson:s.latestJson,dirty,at:Date.now()}));return true}catch{return false}}
+ function readCache(uid){try{const v=JSON.parse(localStorage.getItem(key(uid))||'null');return v?.uid===uid&&typeof v.snapshotJson==='string'?v:null}catch{return null}}
+ function current(s){return session===s&&generation===s.generation&&auth.currentUser?.uid===s.uid}
+ function revision(data){if(!data||Object.keys(data).length===0)return 0;if(!Number.isSafeInteger(data.revision)||data.revision<0||typeof data.snapshotJson!=='string')throw Error('The saved Dominoes data has an unsupported format.');return data.revision}
+ async function flush(s=session){
+  clearTimeout(saveTimer);if(!s||!current(s)||!s.ready||!s.dirty||s.saving||s.conflict)return;
+  if(navigator.onLine===false){badge(s.localOk===false?'Offline — saving unavailable':'Offline — saved on this device',true);return}
+  s.saving=true;const payload=s.latestJson,expected=s.revision;badge('Saving…');
+  try{
+   const saved=api.validate(payload);
+   const nextRevision=await runTransaction(db,async transaction=>{
+    if(!current(s))throw Object.assign(Error('Account changed.'),{code:'account-changed'});
+    const snap=await transaction.get(s.ref);if(!current(s))throw Object.assign(Error('Account changed.'),{code:'account-changed'});const existing=snap.exists()?snap.data():null;
+    if(revision(existing)!==expected)throw Object.assign(Error('A newer game was saved on another tab or device.'),{code:'dominoes-conflict'});
+    const now=new Date().toISOString();
+    transaction.set(s.ref,{gameId:'dominoes',gameName:'Dominoes',learnerUid:s.uid,schemaVersion:1,revision:expected+1,snapshotJson:payload,savedAtMillis:Date.now(),updatedAt:serverTimestamp()});
+    transaction.set(s.hubRef,{appId:'games',lastGameId:'dominoes',lastGameName:'Dominoes',lastActivityAt:now,updatedAt:serverTimestamp(),games:{dominoes:{name:'Dominoes',status:saved.state.over?'completed':'started',score:saved.state.scores[0],completed:saved.state.over,lastActivityAt:now,data:{schemaVersion:1,saveDocument:'users/'+s.uid+'/appProgress/dominoes'}}}},{mergeFields:['appId','lastGameId','lastGameName','lastActivityAt','updatedAt','games.dominoes']});
+    return expected+1;
+   });
+   if(!current(s))return;
+   s.revision=nextRevision;s.savedJson=payload;s.dirty=s.latestJson!==payload;
+   s.localOk=cache(s,s.dirty);badge(s.dirty?'Saving…':'Saved to your account');
+  }catch(error){
+   if(!current(s))return;
+   if(error.code==='dominoes-conflict'){
+    s.conflict=true;api.pause();badge('A newer game is available',true);showGate('Your game changed elsewhere','A newer game was saved in another tab or on another device. Load that saved game to continue. This device’s unfinished version is kept as a local backup.',true);
+   }else{console.error('Dominoes cloud save failed:',error);badge('Not saved online — retry',true)}
+  }finally{
+   s.saving=false;
+   if(current(s)&&s.ready&&s.dirty&&!s.conflict&&s.savedJson===payload)saveTimer=setTimeout(()=>flush(s),350);
+  }
+ }
+ function changed(){
+  const s=session;if(!s?.ready||s.conflict||!current(s))return;
+  const json=api.export();if(json===s.latestJson)return;
+  s.latestJson=json;s.dirty=json!==s.savedJson;
+  const local=cache(s,s.dirty);s.localOk=local;badge(navigator.onLine===false?(local?'Offline — saved on this device':'Offline — saving unavailable'):'Saving…',navigator.onLine===false);
+  clearTimeout(saveTimer);if(s.dirty)saveTimer=setTimeout(()=>flush(s),450);
+ }
+ async function boot(user,ignoreLocal=false){
+  const token=++generation;clearTimeout(saveTimer);session=null;api.pause();api.fresh();
+  if(!user){account.textContent='';badge('Sign in to save',true);showGate('Sign in to play','Sign in through RECONNECT-US so your Dominoes game can be saved to your own learner account.');return}
+  account.textContent=user.displayName||'Your learner account';badge('Loading your saved game…');gate.hidden=true;
+  const s={uid:user.uid,generation:token,ref:doc(db,'users',user.uid,'appProgress','dominoes'),hubRef:doc(db,'users',user.uid,'appProgress','games'),revision:0,ready:false,saving:false,dirty:false,conflict:false,latestJson:null,savedJson:null};session=s;
+  try{
+   await waitForAccess(user);if(!current(s))return;
+   const snap=await getDocFromServer(s.ref);if(!current(s))return;
+   const raw=snap.exists()?snap.data():null;s.revision=revision(raw);
+   const remote=typeof raw?.snapshotJson==='string'?raw.snapshotJson:null;
+   if(remote)api.validate(remote);
+   const local=readCache(s.uid);let pending=null;
+   if(local?.dirty&&ignoreLocal){try{localStorage.setItem(key(s.uid)+':backup',JSON.stringify(local))}catch{}}
+   if(local?.dirty&&!ignoreLocal){
+    try{api.validate(local.snapshotJson)}catch{s.conflict=true;badge('A device backup needs review',true);showGate('Open your cloud save','The unfinished version on this device could not be read. Load your saved cloud game to continue; the device copy will be kept as a backup.',true);return}
+    if(local.snapshotJson!==remote&&local.baseRevision!==s.revision){s.conflict=true;badge('Choose the latest saved game',true);showGate('Two saved versions found','Your cloud game has changed since this device last saved. Load the latest cloud game to continue. The version on this device will be kept as a local backup.',true);return}
+    if(local.baseRevision===s.revision&&local.snapshotJson!==remote)pending=local.snapshotJson;
+   }
+   const chosen=pending||remote;if(chosen)api.restore(chosen);
+   s.latestJson=api.export();s.savedJson=remote;s.dirty=s.latestJson!==remote;s.ready=true;
+   gate.hidden=true;badge(s.dirty?'Saving…':'Saved to your account');s.localOk=cache(s,s.dirty);api.resume();
+   if(s.dirty)flush(s);
+  }catch(error){
+   if(!current(s))return;console.error('Dominoes cloud load failed:',error);badge('Could not load your game',true);
+   const permissions=error.code==='permission-denied';showGate('Your saved game is not ready',permissions?'Firebase has not allowed access to your learner’s game record. Your existing progress has not been overwritten. Please ask your RECONNECT-US administrator to check the Firestore rules.':'Your saved game could not be opened. Check your connection and try again. Your existing cloud progress has not been overwritten.');
+  }
+ }
+ retry.onclick=()=>{if(session?.ready&&!session.conflict)flush();else boot(auth.currentUser)};
+ gateRetry.onclick=()=>boot(auth.currentUser);reload.onclick=()=>boot(auth.currentUser,true);
+ window.RECONNECTUS_DOMINOES_CHANGED=changed;
+ window.addEventListener('online',()=>{if(session?.ready)flush();else boot(auth.currentUser)});
+ window.addEventListener('offline',()=>{if(session?.ready)badge(session.localOk===false?'Offline — saving unavailable':'Offline — saved on this device',true)});
+ document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='hidden'){changed();flush()}});
+ window.addEventListener('pagehide',()=>{changed();flush()});
+ onAuthStateChanged(auth,user=>boot(user));
+ return {flush,changed};
+}
+
+
+(async()=>{
+ if(window.location.protocol==='file:')return;
+ try{
+ const [appSDK,authSDK,storeSDK]=await Promise.all([
+  import('https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js'),
+  import('https://www.gstatic.com/firebasejs/12.0.0/firebase-auth.js'),
+  import('https://www.gstatic.com/firebasejs/12.0.0/firebase-firestore.js')
+ ]);
+ const firebaseConfig={
+  apiKey: "AIzaSyCCzSiaYBDdpFNqUlsNtyvyLxRBu6SIJnQ",
+  authDomain: "reconnect-us-hub.firebaseapp.com",
+  projectId: "reconnect-us-hub",
+  storageBucket: "reconnect-us-hub.firebasestorage.app",
+  messagingSenderId: "891220836369",
+  appId: "1:891220836369:web:6f2b4a09350b8d9fe0b1b0"
+};
+ const app=appSDK.getApps().length?appSDK.getApp():appSDK.initializeApp(firebaseConfig),auth=authSDK.getAuth(app),db=storeSDK.getFirestore(app);
+ const guard=document.createElement('script');guard.type='module';guard.src='../../reconnectus-core/reconnectus-access-guard.js';guard.dataset.appId='games';guard.dataset.loginUrl='../../index.html';
+ await new Promise((resolve,reject)=>{const timeout=setTimeout(()=>reject(Error('Games access could not be loaded.')),20000);guard.onload=()=>{clearTimeout(timeout);resolve()};guard.onerror=()=>{clearTimeout(timeout);reject(Error('The shared Games access file could not be opened.'))};document.body.appendChild(guard)});
+ async function waitForAccess(user){
+  const started=Date.now();while(Date.now()-started<25000){
+   if(auth.currentUser?.uid!==user.uid)throw Error('The signed-in account changed.');
+   if(window.ruAccessUser?.uid===user.uid)return;
+   if(window.ruAccessUser&&window.ruAccessUser.uid!==user.uid){window.location.reload();throw Error('Refreshing access for your new account.')}
+   await new Promise(resolve=>setTimeout(resolve,100));
+  }
+  throw Error('RECONNECT-US could not confirm Games access.');
+ }
+ await connectDominoesCloud({auth,db,onAuthStateChanged:authSDK.onAuthStateChanged,doc:storeSDK.doc,getDocFromServer:storeSDK.getDocFromServer,runTransaction:storeSDK.runTransaction,serverTimestamp:storeSDK.serverTimestamp,waitForAccess});
+ }catch(error){
+  console.error('Dominoes connection failed:',error);window.RECONNECTUS_DOMINOES.pause();
+  document.getElementById('cloudTitle').textContent='Unable to connect';document.getElementById('cloudMessage').textContent='Please open Dominoes through your RECONNECT-US website and check your internet connection. Your saved progress has not been changed.';
+  document.getElementById('cloudGate').hidden=false;document.getElementById('cloudStatus').textContent='Cloud connection unavailable';document.getElementById('cloudRetry').onclick=()=>window.location.reload();
+ }
+})();
+
+</script>
+</body></html>
